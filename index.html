@@ -68,12 +68,73 @@
             width: 55%;
             position: relative;
             background: var(--bg-primary);
+            transition: width 0.3s ease;
+        }
+
+        .graph-container.minimized {
+            width: 60px;
+        }
+
+        .graph-container.minimized canvas {
+            display: none;
+        }
+
+        .graph-container.minimized .controls,
+        .graph-container.minimized .stats,
+        .graph-container.minimized .theme-toggle {
+            display: none;
+        }
+
+        .minimize-toggle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--control-bg);
+            padding: 15px;
+            border: 1px solid var(--control-border);
+            z-index: 100;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+            display: none;
+        }
+
+        .graph-container.minimized .minimize-toggle {
+            display: block;
+        }
+
+        .minimize-btn {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--control-bg);
+            padding: 10px 15px;
+            border: 1px solid var(--control-border);
+            z-index: 100;
+            cursor: pointer;
+            font-size: 10px;
+            color: var(--control-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+
+        .minimize-btn:hover {
+            background: var(--button-bg);
+            color: var(--button-text);
+        }
+
+        .graph-container.minimized .minimize-btn {
+            display: none;
         }
 
         .theme-toggle {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
             background: var(--control-bg);
             padding: 12px;
             border: 1px solid var(--control-border);
@@ -446,9 +507,11 @@ But isn't that what makes it interesting?
             </div>
         </div>
 
-        <div class="graph-container">
+        <div class="graph-container" id="graphContainer">
             <canvas id="canvas"></canvas>
 
+            <div class="minimize-btn" id="minimizeBtn">← Minimize</div>
+            <div class="minimize-toggle" id="minimizeToggle">→</div>
             <div class="theme-toggle" id="themeToggle">☀ Light Mode</div>
 
             <div class="controls">
@@ -513,56 +576,138 @@ But isn't that what makes it interesting?
                 // Core/Central - main identity
                 { id: 'home', label: 'Home', region: 'central', size: 14, navigable: true },
                 { id: 'about', label: 'About', region: 'central', size: 12, navigable: true },
+                { id: 'byu', label: 'BYU', region: 'central', size: 9 },
 
-                // Frontal lobe - technical skills
+                // Frontal lobe - technical skills & programming
                 { id: 'projects', label: 'Projects', region: 'frontal', size: 12, navigable: true },
                 { id: 'ml', label: 'Machine Learning', region: 'frontal', size: 10 },
                 { id: 'neural-nets', label: 'Neural Networks', region: 'frontal', size: 9 },
-                { id: 'python', label: 'Python', region: 'frontal', size: 9 },
+                { id: 'python', label: 'Python', region: 'frontal', size: 10 },
                 { id: 'web-dev', label: 'Web Dev', region: 'frontal', size: 9 },
+                { id: 'javascript', label: 'JavaScript', region: 'frontal', size: 9 },
+                { id: 'react', label: 'React', region: 'frontal', size: 8 },
+                { id: 'nodejs', label: 'Node.js', region: 'frontal', size: 8 },
+                { id: 'typescript', label: 'TypeScript', region: 'frontal', size: 7 },
+                { id: 'ai', label: 'AI', region: 'frontal', size: 9 },
+                { id: 'deep-learning', label: 'Deep Learning', region: 'frontal', size: 8 },
+                { id: 'data-science', label: 'Data Science', region: 'frontal', size: 8 },
 
-                // Parietal - knowledge management
+                // Parietal - tools & infrastructure
                 { id: 'resume', label: 'Resume', region: 'parietal', size: 11, navigable: true },
                 { id: 'automation', label: 'Automation', region: 'parietal', size: 8 },
+                { id: 'docker', label: 'Docker', region: 'parietal', size: 8 },
+                { id: 'git', label: 'Git', region: 'parietal', size: 8 },
+                { id: 'aws', label: 'AWS', region: 'parietal', size: 7 },
+                { id: 'postgresql', label: 'PostgreSQL', region: 'parietal', size: 7 },
+                { id: 'linux', label: 'Linux', region: 'parietal', size: 7 },
+                { id: 'api', label: 'REST APIs', region: 'parietal', size: 7 },
 
-                // Temporal - academic/research
+                // Temporal - neuroscience & learning
                 { id: 'neuroscience', label: 'Neuroscience', region: 'temporal', size: 11 },
                 { id: 'misc', label: 'Thoughts', region: 'temporal', size: 10, navigable: true },
                 { id: 'cell-biology', label: 'Cell Biology', region: 'temporal', size: 8 },
+                { id: 'cognitive-sci', label: 'Cognitive Science', region: 'temporal', size: 8 },
+                { id: 'neurobiology', label: 'Neurobiology', region: 'temporal', size: 7 },
+                { id: 'learning', label: 'Learning Theory', region: 'temporal', size: 7 },
+                { id: 'memory', label: 'Memory', region: 'temporal', size: 7 },
+                { id: 'research', label: 'Research', region: 'temporal', size: 7 },
 
-                // Occipital - communication
+                // Occipital - communication & frontend
                 { id: 'contact', label: 'Contact', region: 'occipital', size: 10, navigable: true },
+                { id: 'html-css', label: 'HTML/CSS', region: 'occipital', size: 8 },
+                { id: 'ui-ux', label: 'UI/UX', region: 'occipital', size: 7 },
+                { id: 'github', label: 'GitHub', region: 'occipital', size: 7 },
 
-                // Cerebellum - hidden/experimental
+                // Cerebellum - experimental & side projects
                 { id: 'hidden', label: '???', region: 'cerebellum', size: 8, navigable: true },
                 { id: 'crypto', label: 'Crypto Bot', region: 'cerebellum', size: 7 },
-                { id: 'scraping', label: 'Web Scraping', region: 'cerebellum', size: 7 }
+                { id: 'scraping', label: 'Web Scraping', region: 'cerebellum', size: 7 },
+                { id: 'obsidian', label: 'Obsidian', region: 'cerebellum', size: 7 },
+                { id: 'java', label: 'Java', region: 'cerebellum', size: 6 },
+                { id: 'cpp', label: 'C++', region: 'cerebellum', size: 6 }
             ],
             links: [
+                // Core connections
                 { source: 'home', target: 'about' },
                 { source: 'home', target: 'projects' },
                 { source: 'home', target: 'resume' },
                 { source: 'home', target: 'contact' },
                 { source: 'home', target: 'misc' },
                 { source: 'about', target: 'neuroscience' },
+                { source: 'about', target: 'byu' },
+
+                // Projects & programming
                 { source: 'projects', target: 'ml' },
                 { source: 'projects', target: 'neural-nets' },
                 { source: 'projects', target: 'python' },
                 { source: 'projects', target: 'web-dev' },
                 { source: 'projects', target: 'resume' },
+                { source: 'projects', target: 'javascript' },
+
+                // ML & AI cluster
                 { source: 'ml', target: 'neural-nets' },
                 { source: 'ml', target: 'python' },
+                { source: 'ml', target: 'ai' },
+                { source: 'ml', target: 'deep-learning' },
+                { source: 'ml', target: 'data-science' },
+                { source: 'ai', target: 'neural-nets' },
+                { source: 'deep-learning', target: 'neural-nets' },
                 { source: 'neural-nets', target: 'neuroscience' },
+                { source: 'data-science', target: 'python' },
+
+                // Programming languages
                 { source: 'python', target: 'automation' },
                 { source: 'python', target: 'web-dev' },
-                { source: 'neuroscience', target: 'cell-biology' },
-                { source: 'neuroscience', target: 'misc' },
+                { source: 'python', target: 'data-science' },
+                { source: 'javascript', target: 'web-dev' },
+                { source: 'javascript', target: 'react' },
+                { source: 'javascript', target: 'nodejs' },
+                { source: 'javascript', target: 'typescript' },
+                { source: 'typescript', target: 'react' },
+                { source: 'react', target: 'web-dev' },
+                { source: 'nodejs', target: 'web-dev' },
+                { source: 'nodejs', target: 'api' },
+
+                // Infrastructure & tools
                 { source: 'resume', target: 'automation' },
+                { source: 'docker', target: 'automation' },
+                { source: 'git', target: 'github' },
+                { source: 'aws', target: 'docker' },
+                { source: 'postgresql', target: 'nodejs' },
+                { source: 'api', target: 'postgresql' },
+                { source: 'linux', target: 'automation' },
+
+                // Neuroscience cluster
+                { source: 'neuroscience', target: 'cell-biology' },
+                { source: 'neuroscience', target: 'cognitive-sci' },
+                { source: 'neuroscience', target: 'neurobiology' },
+                { source: 'neuroscience', target: 'misc' },
+                { source: 'cognitive-sci', target: 'learning' },
+                { source: 'cognitive-sci', target: 'memory' },
+                { source: 'cognitive-sci', target: 'ai' },
+                { source: 'neurobiology', target: 'cell-biology' },
+                { source: 'learning', target: 'memory' },
+                { source: 'research', target: 'neuroscience' },
+                { source: 'byu', target: 'neuroscience' },
+                { source: 'byu', target: 'research' },
+
+                // Frontend & design
+                { source: 'contact', target: 'github' },
+                { source: 'web-dev', target: 'html-css' },
+                { source: 'html-css', target: 'ui-ux' },
+                { source: 'ui-ux', target: 'react' },
+
+                // Experimental
                 { source: 'hidden', target: 'misc' },
                 { source: 'hidden', target: 'crypto' },
                 { source: 'hidden', target: 'scraping' },
                 { source: 'crypto', target: 'python' },
-                { source: 'scraping', target: 'automation' }
+                { source: 'scraping', target: 'automation' },
+                { source: 'scraping', target: 'python' },
+                { source: 'obsidian', target: 'automation' },
+                { source: 'misc', target: 'obsidian' },
+                { source: 'java', target: 'projects' },
+                { source: 'cpp', target: 'projects' }
             ]
         };
 
@@ -862,6 +1007,19 @@ But isn't that what makes it interesting?
             const isLight = document.body.classList.contains('light-mode');
             themeToggle.textContent = isLight ? '🌙 Dark Mode' : '☀ Light Mode';
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Minimize/maximize graph
+        const graphContainer = document.getElementById('graphContainer');
+        const minimizeBtn = document.getElementById('minimizeBtn');
+        const minimizeToggle = document.getElementById('minimizeToggle');
+
+        minimizeBtn.addEventListener('click', () => {
+            graphContainer.classList.add('minimized');
+        });
+
+        minimizeToggle.addEventListener('click', () => {
+            graphContainer.classList.remove('minimized');
         });
 
         // Navigation functions
