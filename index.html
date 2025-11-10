@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jake's computer</title>
-    <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+    <title>jake davis</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
             font-family: 'JetBrains Mono', 'Courier New', monospace;
-            background: #0d1117;
-            color: #c9d1d9;
-            margin: 0;
-            padding: 0;
-            font-size: 14px;
-            line-height: 1.5;
-            overflow-x: hidden;
+            background: #000000;
+            color: #ffffff;
+            overflow: hidden;
         }
 
         .container {
@@ -32,21 +29,56 @@
             flex: 1;
             padding: 40px;
             overflow-y: auto;
-            max-width: 900px;
-            background: #0d1117;
+            background: #0a0a0a;
+            border-right: 1px solid #1a1a1a;
         }
 
         .graph-container {
-            width: 45%;
-            min-width: 400px;
-            border-left: 1px solid #21262d;
+            width: 50%;
             position: relative;
-            background: #161b22;
+            background: #000000;
         }
 
-        #cy {
+        #canvas {
+            display: block;
+            cursor: grab;
             width: 100%;
             height: 100%;
+        }
+
+        #canvas:active {
+            cursor: grabbing;
+        }
+
+        .graph-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 12px 16px;
+            border: 1px solid #333;
+            font-size: 10px;
+            color: #666;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 8px 12px;
+            border: 1px solid #ffffff;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            font-size: 12px;
+            z-index: 1000;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
         }
 
         @media (max-width: 1024px) {
@@ -56,14 +88,13 @@
 
             .graph-container {
                 width: 100%;
-                height: 50vh;
-                min-width: unset;
-                border-left: none;
-                border-top: 1px solid #21262d;
+                height: 40vh;
+                border-right: none;
+                border-top: 1px solid #1a1a1a;
             }
 
             .main-content {
-                padding: 20px;
+                height: 60vh;
             }
         }
 
@@ -72,11 +103,11 @@
             cursor: pointer;
             padding: 8px 0;
             transition: all 0.15s ease;
-            color: #8b949e;
+            color: #666;
         }
 
         .path:hover {
-            color: #58a6ff;
+            color: #fff;
         }
 
         .content {
@@ -99,16 +130,15 @@
             margin-bottom: 20px;
             padding: 6px 12px;
             display: inline-block;
-            color: #8b949e;
-            border: 1px solid #30363d;
-            border-radius: 6px;
+            color: #666;
+            border: 1px solid #333;
             transition: all 0.15s ease;
             font-size: 13px;
         }
 
         .back:hover {
-            border-color: #58a6ff;
-            color: #58a6ff;
+            border-color: #fff;
+            color: #fff;
         }
 
         .file {
@@ -116,33 +146,33 @@
             cursor: pointer;
             padding: 6px 0;
             transition: all 0.15s ease;
-            color: #8b949e;
+            color: #666;
         }
 
         .file:hover {
-            color: #c9d1d9;
+            color: #fff;
         }
 
         pre {
             white-space: pre-wrap;
             margin: 15px 0;
-            color: #c9d1d9;
-            background: #161b22;
+            color: #ccc;
+            background: #0f0f0f;
             padding: 16px;
-            border-radius: 6px;
-            border: 1px solid #21262d;
+            border: 1px solid #1a1a1a;
             font-size: 13px;
             line-height: 1.6;
         }
 
         a {
-            color: #58a6ff;
+            color: #fff;
             text-decoration: none;
+            border-bottom: 1px solid #333;
             transition: all 0.15s ease;
         }
 
         a:hover {
-            text-decoration: underline;
+            border-bottom-color: #fff;
         }
     </style>
 </head>
@@ -150,39 +180,39 @@
     <div class="container">
         <div class="main-content">
             <div id="main">
-        <div class="path" onclick="navigate('home')">/home/jake</div>
-        <div class="path" onclick="navigate('projects')">/home/jake/projects</div>
-        <div class="path" onclick="navigate('about')">/home/jake/about.txt</div>
-        <div class="path" onclick="navigate('contact')">/home/jake/contact</div>
-        <div class="path" onclick="navigate('resume')">/home/jake/resume.pdf</div>
-        <div class="path" onclick="navigate('misc')">/var/log/thoughts</div>
-        <div class="path" onclick="navigate('hidden')">/test/1099/w-2/fun/find-me.txt</div>
-    </div>
+                <div class="path" onclick="navigate('home')">/home/jake</div>
+                <div class="path" onclick="navigate('projects')">/home/jake/projects</div>
+                <div class="path" onclick="navigate('about')">/home/jake/about.txt</div>
+                <div class="path" onclick="navigate('contact')">/home/jake/contact</div>
+                <div class="path" onclick="navigate('resume')">/home/jake/resume.pdf</div>
+                <div class="path" onclick="navigate('misc')">/var/log/thoughts</div>
+                <div class="path" onclick="navigate('hidden')">/test/1099/w-2/fun/find-me.txt</div>
+            </div>
 
-    <!-- Home Directory -->
-    <div id="home" class="content">
-        <div class="back" onclick="goBack()">← /</div>
-        <div class="file" onclick="navigate('about')">about.txt</div>
-        <div class="file" onclick="navigate('contact')">contact/</div>
-        <div class="file" onclick="navigate('projects')">projects/</div>
-        <div class="file" onclick="navigate('resume')">resume.pdf</div>
-        <div class="file">.bashrc</div>
-        <div class="file">.ssh/</div>
-        <div class="file">documents/</div>
-    </div>
+            <!-- Home Directory -->
+            <div id="home" class="content">
+                <div class="back" onclick="goBack()">← /</div>
+                <div class="file" onclick="navigate('about')">about.txt</div>
+                <div class="file" onclick="navigate('contact')">contact/</div>
+                <div class="file" onclick="navigate('projects')">projects/</div>
+                <div class="file" onclick="navigate('resume')">resume.pdf</div>
+                <div class="file">.bashrc</div>
+                <div class="file">.ssh/</div>
+                <div class="file">documents/</div>
+            </div>
 
-    <!-- Projects -->
-    <div id="projects" class="content">
-        <div class="back" onclick="goBack()">← /home/jake</div>
-        <div class="file">neural-networks/</div>
-        <div class="file">web-scraper/</div>
-        <div class="file">crypto-bot/</div>
-        <div class="file">portfolio-site/</div>
-        <div class="file">ml-experiments/</div>
-        <div class="file">api-tools/</div>
-        <div class="file">README.md</div>
-        
-        <pre>
+            <!-- Projects -->
+            <div id="projects" class="content">
+                <div class="back" onclick="goBack()">← /home/jake</div>
+                <div class="file">neural-networks/</div>
+                <div class="file">web-scraper/</div>
+                <div class="file">crypto-bot/</div>
+                <div class="file">portfolio-site/</div>
+                <div class="file">ml-experiments/</div>
+                <div class="file">api-tools/</div>
+                <div class="file">README.md</div>
+
+                <pre>
 // Current projects:
 - Building a neural network from scratch
 - Automated trading bot (work in progress)
@@ -192,13 +222,13 @@
 
 // Tech stack:
 Python, JavaScript, React, Node.js, PostgreSQL, Docker
-        </pre>
-    </div>
+                </pre>
+            </div>
 
-    <!-- About -->
-    <div id="about" class="content">
-        <div class="back" onclick="goBack()">← /home/jake</div>
-        <pre>
+            <!-- About -->
+            <div id="about" class="content">
+                <div class="back" onclick="goBack()">← /home/jake</div>
+                <pre>
 Jake Davis
 
 Software developer and neuroscience student.
@@ -209,34 +239,34 @@ Always looking for interesting problems to solve.
 
 Location: Earth
 Status: Online
-        </pre>
-    </div>
+                </pre>
+            </div>
 
-    <!-- Contact -->
-    <div id="contact" class="content">
-        <div class="back" onclick="goBack()">← /home/jake</div>
-        <div class="file">email.txt</div>
-        <div class="file">github</div>
-        <div class="file">linkedin</div>
-        <div class="file">twitter</div>
-        
-        <pre>
+            <!-- Contact -->
+            <div id="contact" class="content">
+                <div class="back" onclick="goBack()">← /home/jake</div>
+                <div class="file">email.txt</div>
+                <div class="file">github</div>
+                <div class="file">linkedin</div>
+                <div class="file">twitter</div>
+
+                <pre>
 // Get in touch:
 
 email: jake@bryt.works
 github: github.com/jakedev
-linkedin: 
+linkedin:
 instagram: @jjakedavis
 
 // Or just send a message:
 echo "hello" | mail jake@bryt.works
-        </pre>
-    </div>
+                </pre>
+            </div>
 
-    <!-- Resume -->
-    <div id="resume" class="content">
-        <div class="back" onclick="goBack()">← /home/jake</div>
-        <pre>
+            <!-- Resume -->
+            <div id="resume" class="content">
+                <div class="back" onclick="goBack()">← /home/jake</div>
+                <pre>
 JAKE DAVIS
 Software Developer
 
@@ -261,13 +291,13 @@ Languages: Python, JavaScript, Java, C++, Spanish
 Frontend: React, HTML/CSS, TypeScript
 Backend: Node.js, Express, PostgreSQL
 Tools: Git, Docker, AWS, Linux
-        </pre>
-    </div>
+                </pre>
+            </div>
 
-    <!-- Misc/Thoughts -->
-    <div id="misc" class="content">
-        <div class="back" onclick="goBack()">← /</div>
-        <pre>
+            <!-- Misc/Thoughts -->
+            <div id="misc" class="content">
+                <div class="back" onclick="goBack()">← /</div>
+                <pre>
 [2024-01-15 14:32] Starting new ML project
 [2024-01-12 09:15] Coffee intake: excessive
 [2024-01-10 23:47] Fixed the bug. It was a semicolon.
@@ -275,13 +305,13 @@ Tools: Git, Docker, AWS, Linux
 [2024-01-05 11:30] New year, new repository structure
 [2024-01-03 08:45] Reading papers on transformer architectures
 [2024-01-01 00:01] Hello 2024
-        </pre>
-    </div>
+                </pre>
+            </div>
 
-    <!-- Hidden -->
-    <div id="hidden" class="content">
-        <div class="back" onclick="goBack()">← /</div>
-        <pre>
+            <!-- Hidden -->
+            <div id="hidden" class="content">
+                <div class="back" onclick="goBack()">← /</div>
+                <pre>
 You found the secret file!
 
     ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -301,215 +331,348 @@ But isn't that what makes it interesting?
 
 // Congratulations on finding this
 // Keep exploring, keep questioning
-        </pre>
-    </div>
+                </pre>
+            </div>
         </div>
+
         <div class="graph-container">
-            <div id="cy"></div>
+            <canvas id="canvas"></canvas>
+            <div class="graph-info">Drag nodes • Scroll to zoom • Click to navigate</div>
+            <div class="tooltip" id="tooltip"></div>
         </div>
     </div>
 
     <script>
-        let cy; // Graph instance
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('tooltip');
         let currentPage = null;
 
-        function navigate(page) {
-            // Hide main menu
-            document.getElementById('main').style.display = 'none';
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-            // Hide all content
+        // Graph data representing portfolio sections
+        const graphData = {
+            nodes: [
+                { id: 'home', label: 'home', size: 14, group: 1 },
+                { id: 'about', label: 'about', size: 10, group: 2 },
+                { id: 'projects', label: 'projects', size: 12, group: 3 },
+                { id: 'resume', label: 'resume', size: 11, group: 3 },
+                { id: 'contact', label: 'contact', size: 9, group: 2 },
+                { id: 'misc', label: 'thoughts', size: 10, group: 4 },
+                { id: 'hidden', label: '???', size: 8, group: 5 }
+            ],
+            links: [
+                { source: 'home', target: 'about' },
+                { source: 'home', target: 'projects' },
+                { source: 'home', target: 'resume' },
+                { source: 'home', target: 'contact' },
+                { source: 'about', target: 'resume' },
+                { source: 'projects', target: 'resume' },
+                { source: 'contact', target: 'about' },
+                { source: 'misc', target: 'home' },
+                { source: 'misc', target: 'projects' },
+                { source: 'hidden', target: 'misc' }
+            ]
+        };
+
+        const groupColors = {
+            1: '#ffffff',
+            2: '#cccccc',
+            3: '#aaaaaa',
+            4: '#888888',
+            5: '#666666'
+        };
+
+        let settings = {
+            repulsion: 120,
+            linkDistance: 100,
+            damping: 0.85,
+            centeringForce: 0.015
+        };
+
+        // Initialize physics
+        graphData.nodes.forEach(node => {
+            node.x = Math.random() * canvas.width;
+            node.y = Math.random() * canvas.height;
+            node.vx = 0;
+            node.vy = 0;
+            node.fx = null;
+            node.fy = null;
+        });
+
+        const neighbors = new Map();
+        graphData.nodes.forEach(node => neighbors.set(node.id, new Set()));
+        graphData.links.forEach(link => {
+            neighbors.get(link.source).add(link.target);
+            neighbors.get(link.target).add(link.source);
+        });
+
+        // Interaction state
+        let dragNode = null;
+        let hoveredNode = null;
+        let isDragging = false;
+        let panOffset = { x: 0, y: 0 };
+        let isPanning = false;
+        let panStart = { x: 0, y: 0 };
+        let zoom = 1;
+
+        function getNodeAt(x, y) {
+            const adjustedX = (x - panOffset.x) / zoom;
+            const adjustedY = (y - panOffset.y) / zoom;
+
+            return graphData.nodes.find(node => {
+                const dx = adjustedX - node.x;
+                const dy = adjustedY - node.y;
+                return Math.sqrt(dx * dx + dy * dy) < node.size * 2;
+            });
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            dragNode = getNodeAt(x, y);
+            if (dragNode) {
+                dragNode.fx = dragNode.x;
+                dragNode.fy = dragNode.y;
+                isDragging = true;
+            } else {
+                isPanning = true;
+                panStart = { x: e.clientX - panOffset.x, y: e.clientY - panOffset.y };
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            if (isDragging && dragNode) {
+                dragNode.fx = (x - panOffset.x) / zoom;
+                dragNode.fy = (y - panOffset.y) / zoom;
+            } else if (isPanning) {
+                panOffset.x = e.clientX - panStart.x;
+                panOffset.y = e.clientY - panStart.y;
+            } else {
+                const newHoveredNode = getNodeAt(x, y);
+                if (newHoveredNode !== hoveredNode) {
+                    hoveredNode = newHoveredNode;
+                    if (hoveredNode) {
+                        tooltip.textContent = hoveredNode.label;
+                        tooltip.classList.add('visible');
+                    } else {
+                        tooltip.classList.remove('visible');
+                    }
+                }
+                if (hoveredNode) {
+                    tooltip.style.left = e.clientX + 15 + 'px';
+                    tooltip.style.top = e.clientY + 15 + 'px';
+                }
+            }
+        });
+
+        canvas.addEventListener('mouseup', (e) => {
+            if (dragNode && !isDragging) {
+                // This was a click, not a drag
+                navigate(dragNode.id);
+            }
+
+            if (dragNode) {
+                dragNode.fx = null;
+                dragNode.fy = null;
+            }
+            dragNode = null;
+            isDragging = false;
+            isPanning = false;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            if (dragNode) {
+                dragNode.fx = null;
+                dragNode.fy = null;
+            }
+            dragNode = null;
+            isDragging = false;
+            isPanning = false;
+            hoveredNode = null;
+            tooltip.classList.remove('visible');
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            const newZoom = Math.max(0.3, Math.min(3, zoom * zoomFactor));
+
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            panOffset.x = mouseX - (mouseX - panOffset.x) * (newZoom / zoom);
+            panOffset.y = mouseY - (mouseY - panOffset.y) * (newZoom / zoom);
+
+            zoom = newZoom;
+        });
+
+        // Physics simulation
+        function simulate() {
+            const alpha = 0.3;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            graphData.nodes.forEach(node => {
+                if (node.fx !== null) {
+                    node.x = node.fx;
+                    node.y = node.fy;
+                    node.vx = 0;
+                    node.vy = 0;
+                    return;
+                }
+
+                let fx = 0, fy = 0;
+
+                // Repulsion
+                graphData.nodes.forEach(other => {
+                    if (node === other) return;
+                    const dx = node.x - other.x;
+                    const dy = node.y - other.y;
+                    const distSq = dx * dx + dy * dy;
+                    const dist = Math.sqrt(distSq) || 1;
+
+                    const nodeMass = node.size / 8;
+                    const otherMass = other.size / 8;
+                    const force = (settings.repulsion * nodeMass * otherMass) / distSq;
+                    fx += (dx / dist) * force;
+                    fy += (dy / dist) * force;
+                });
+
+                // Attraction along links
+                graphData.links.forEach(link => {
+                    let source, target;
+                    if (link.source === node.id) {
+                        source = node;
+                        target = graphData.nodes.find(n => n.id === link.target);
+                    } else if (link.target === node.id) {
+                        source = node;
+                        target = graphData.nodes.find(n => n.id === link.source);
+                    }
+
+                    if (source && target) {
+                        const dx = target.x - source.x;
+                        const dy = target.y - source.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                        const force = (dist - settings.linkDistance) / dist;
+                        fx += dx * force * 0.1;
+                        fy += dy * force * 0.1;
+                    }
+                });
+
+                // Centering force
+                fx += (centerX - node.x) * settings.centeringForce;
+                fy += (centerY - node.y) * settings.centeringForce;
+
+                // Update velocity and position
+                node.vx = (node.vx + fx * alpha) * settings.damping;
+                node.vy = (node.vy + fy * alpha) * settings.damping;
+                node.x += node.vx;
+                node.y += node.vy;
+            });
+        }
+
+        // Render
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(panOffset.x, panOffset.y);
+            ctx.scale(zoom, zoom);
+
+            // Draw links
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1 / zoom;
+            graphData.links.forEach(link => {
+                const source = graphData.nodes.find(n => n.id === link.source);
+                const target = graphData.nodes.find(n => n.id === link.target);
+
+                if (source && target) {
+                    const isConnected = hoveredNode && (
+                        source === hoveredNode || target === hoveredNode
+                    );
+                    ctx.globalAlpha = isConnected ? 0.4 : 0.1;
+                    ctx.beginPath();
+                    ctx.moveTo(source.x, source.y);
+                    ctx.lineTo(target.x, target.y);
+                    ctx.stroke();
+                }
+            });
+            ctx.globalAlpha = 1;
+
+            // Draw nodes
+            graphData.nodes.forEach(node => {
+                const isHovered = node === hoveredNode;
+                const isActive = node.id === currentPage;
+                const isConnected = hoveredNode && neighbors.get(hoveredNode.id)?.has(node.id);
+
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+                ctx.fillStyle = groupColors[node.group] || '#888';
+                ctx.globalAlpha = isHovered || isConnected || !hoveredNode ? 1 : 0.3;
+                ctx.fill();
+
+                if (isActive) {
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2 / zoom;
+                    ctx.stroke();
+                }
+
+                ctx.globalAlpha = 1;
+
+                // Label
+                if (isHovered || isActive || node.size > 12) {
+                    ctx.font = `${11 / zoom}px JetBrains Mono, monospace`;
+                    ctx.fillStyle = '#fff';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(node.label, node.x, node.y + node.size + 18 / zoom);
+                }
+            });
+
+            ctx.restore();
+        }
+
+        // Animation loop
+        function animate() {
+            simulate();
+            render();
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Navigation functions
+        function navigate(page) {
+            document.getElementById('main').style.display = 'none';
             document.querySelectorAll('.content').forEach(content => {
                 content.classList.remove('active');
             });
-
-            // Show selected content
             document.getElementById(page).classList.add('active');
-
-            // Update graph highlighting
             currentPage = page;
-            updateGraphHighlight();
         }
 
         function goBack() {
-            // Show main menu
             document.getElementById('main').style.display = 'block';
-
-            // Hide all content
             document.querySelectorAll('.content').forEach(content => {
                 content.classList.remove('active');
             });
-
-            // Update graph highlighting
             currentPage = 'home';
-            updateGraphHighlight();
         }
 
-        function updateGraphHighlight() {
-            if (!cy) return;
-
-            // Reset all nodes and edges
-            cy.nodes().removeClass('active');
-            cy.edges().removeClass('connected');
-
-            // Highlight current node
-            if (currentPage) {
-                const activeNode = cy.getElementById(currentPage);
-                activeNode.addClass('active');
-
-                // Highlight connected edges
-                activeNode.connectedEdges().addClass('connected');
-            }
-        }
-
-        // Initialize graph
-        document.addEventListener('DOMContentLoaded', function() {
-            cy = cytoscape({
-                container: document.getElementById('cy'),
-
-                elements: [
-                    // Nodes
-                    { data: { id: 'home', label: 'home' } },
-                    { data: { id: 'about', label: 'about' } },
-                    { data: { id: 'projects', label: 'projects' } },
-                    { data: { id: 'resume', label: 'resume' } },
-                    { data: { id: 'contact', label: 'contact' } },
-                    { data: { id: 'misc', label: 'thoughts' } },
-                    { data: { id: 'hidden', label: 'secret' } },
-
-                    // Edges (connections)
-                    { data: { source: 'home', target: 'about' } },
-                    { data: { source: 'home', target: 'projects' } },
-                    { data: { source: 'home', target: 'resume' } },
-                    { data: { source: 'home', target: 'contact' } },
-                    { data: { source: 'about', target: 'resume' } },
-                    { data: { source: 'projects', target: 'resume' } },
-                    { data: { source: 'contact', target: 'about' } },
-                    { data: { source: 'misc', target: 'home' } },
-                    { data: { source: 'misc', target: 'projects' } },
-                    { data: { source: 'misc', target: 'about' } },
-                    { data: { source: 'hidden', target: 'misc' } }
-                ],
-
-                style: [
-                    {
-                        selector: 'node',
-                        style: {
-                            'background-color': '#7c3aed',
-                            'width': '12px',
-                            'height': '12px',
-                            'label': 'data(label)',
-                            'color': '#c9d1d9',
-                            'font-size': '11px',
-                            'font-family': 'JetBrains Mono, monospace',
-                            'text-valign': 'bottom',
-                            'text-halign': 'center',
-                            'text-margin-y': 8,
-                            'transition-property': 'background-color, width, height',
-                            'transition-duration': '0.2s'
-                        }
-                    },
-                    {
-                        selector: 'node.active',
-                        style: {
-                            'background-color': '#a78bfa',
-                            'width': '16px',
-                            'height': '16px'
-                        }
-                    },
-                    {
-                        selector: 'node:hover',
-                        style: {
-                            'background-color': '#a78bfa',
-                            'width': '14px',
-                            'height': '14px'
-                        }
-                    },
-                    {
-                        selector: 'edge',
-                        style: {
-                            'width': 1,
-                            'line-color': '#30363d',
-                            'curve-style': 'bezier',
-                            'opacity': 0.6
-                        }
-                    },
-                    {
-                        selector: 'edge.connected',
-                        style: {
-                            'line-color': '#7c3aed',
-                            'width': 2,
-                            'opacity': 0.8
-                        }
-                    }
-                ],
-
-                layout: {
-                    name: 'cose',
-                    animate: true,
-                    animationDuration: 500,
-                    idealEdgeLength: 120,
-                    nodeOverlap: 80,
-                    refresh: 20,
-                    fit: true,
-                    padding: 60,
-                    randomize: false,
-                    componentSpacing: 100,
-                    nodeRepulsion: 800000,
-                    edgeElasticity: 200,
-                    nestingFactor: 5,
-                    gravity: 50,
-                    numIter: 1000,
-                    initialTemp: 200,
-                    coolingFactor: 0.95,
-                    minTemp: 1.0
-                },
-
-                // Enable interactivity - just like Obsidian!
-                userZoomingEnabled: true,
-                userPanningEnabled: true,
-                boxSelectionEnabled: false,
-                autounselectify: false,
-                autoungrabify: false, // Allow node dragging
-
-                // Wheel sensitivity
-                wheelSensitivity: 0.2
-            });
-
-            // Add click handler for nodes (only when not dragging)
-            let isDragging = false;
-            let dragStartTime = 0;
-
-            cy.on('grab', 'node', function(evt) {
-                isDragging = true;
-                dragStartTime = Date.now();
-            });
-
-            cy.on('free', 'node', function(evt) {
-                setTimeout(() => {
-                    isDragging = false;
-                }, 50);
-            });
-
-            cy.on('tap', 'node', function(evt) {
-                const dragDuration = Date.now() - dragStartTime;
-                // Only navigate if this was a click, not a drag
-                if (!isDragging && dragDuration < 200) {
-                    const nodeId = evt.target.id();
-                    navigate(nodeId);
-                }
-            });
-
-            // Double-click to reset zoom/pan
-            cy.on('dblclick', function(evt) {
-                if (evt.target === cy) {
-                    cy.fit(null, 50);
-                }
-            });
-
-            // Set initial state
-            currentPage = 'home';
-            updateGraphHighlight();
-        });
+        // Initialize
+        currentPage = 'home';
     </script>
 </body>
 </html>
