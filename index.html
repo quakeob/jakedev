@@ -6,39 +6,61 @@
     <title>jake's computer</title>
     <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Courier New', monospace;
-            background: white;
-            color: black;
+            font-family: 'Inter', 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            color: #e0e0e0;
             margin: 0;
             padding: 0;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
         .container {
             display: flex;
             height: 100vh;
+            position: relative;
         }
 
         .main-content {
             flex: 1;
-            padding: 20px;
+            padding: 40px;
             overflow-y: auto;
             max-width: 800px;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
         }
 
         .graph-container {
-            width: 400px;
-            border-left: 1px solid black;
+            width: 500px;
+            border-left: 1px solid rgba(0, 255, 255, 0.2);
             position: relative;
-            background: white;
+            background: radial-gradient(ellipse at center, rgba(26, 26, 46, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+            box-shadow: -20px 0 40px rgba(0, 255, 255, 0.1);
         }
 
         #cy {
             width: 100%;
             height: 100%;
+        }
+
+        .graph-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 12px;
+            color: rgba(0, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10;
+            font-weight: 600;
         }
 
         @media (max-width: 1024px) {
@@ -48,27 +70,51 @@
 
             .graph-container {
                 width: 100%;
-                height: 300px;
+                height: 400px;
                 border-left: none;
-                border-top: 1px solid black;
+                border-top: 1px solid rgba(0, 255, 255, 0.2);
+            }
+
+            .main-content {
+                padding: 20px;
             }
         }
 
         .path {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             cursor: pointer;
+            padding: 12px 16px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+            color: rgba(0, 255, 255, 0.7);
+            font-family: 'Courier New', monospace;
         }
 
         .path:hover {
-            background: black;
-            color: white;
+            background: linear-gradient(90deg, rgba(0, 255, 255, 0.1) 0%, transparent 100%);
+            border-left-color: #00ffff;
+            color: #00ffff;
+            transform: translateX(5px);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .content {
             display: none;
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid black;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .content.active {
@@ -78,36 +124,57 @@
         .back {
             cursor: pointer;
             margin-bottom: 20px;
+            padding: 10px 14px;
+            display: inline-block;
+            color: rgba(255, 0, 255, 0.7);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
 
         .back:hover {
-            background: black;
-            color: white;
+            background: rgba(255, 0, 255, 0.1);
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
         }
 
         .file {
-            margin: 5px 0;
+            margin: 8px 0;
             cursor: pointer;
+            padding: 8px 12px;
+            transition: all 0.2s ease;
+            border-radius: 3px;
+            color: #b0b0b0;
         }
 
         .file:hover {
-            background: black;
-            color: white;
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
+            transform: translateX(5px);
         }
 
         pre {
             white-space: pre-wrap;
             margin: 10px 0;
+            color: #d0d0d0;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid rgba(0, 255, 255, 0.3);
         }
 
         a {
-            color: black;
-            text-decoration: underline;
+            color: #00ffff;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
         }
 
         a:hover {
-            background: black;
-            color: white;
+            color: #ff00ff;
+            border-bottom-color: #ff00ff;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
         }
     </style>
 </head>
@@ -270,6 +337,7 @@ But isn't that what makes it interesting?
     </div>
         </div>
         <div class="graph-container">
+            <div class="graph-title">Knowledge Graph</div>
             <div id="cy"></div>
         </div>
     </div>
@@ -312,12 +380,17 @@ But isn't that what makes it interesting?
         function updateGraphHighlight() {
             if (!cy) return;
 
-            // Reset all nodes
+            // Reset all nodes and edges
             cy.nodes().removeClass('active');
+            cy.edges().removeClass('connected');
 
             // Highlight current node
             if (currentPage) {
-                cy.getElementById(currentPage).addClass('active');
+                const activeNode = cy.getElementById(currentPage);
+                activeNode.addClass('active');
+
+                // Highlight connected edges
+                activeNode.connectedEdges().addClass('connected');
             }
         }
 
@@ -327,14 +400,14 @@ But isn't that what makes it interesting?
                 container: document.getElementById('cy'),
 
                 elements: [
-                    // Nodes
-                    { data: { id: 'home', label: 'home' } },
-                    { data: { id: 'about', label: 'about.txt' } },
-                    { data: { id: 'projects', label: 'projects/' } },
-                    { data: { id: 'resume', label: 'resume.pdf' } },
-                    { data: { id: 'contact', label: 'contact/' } },
-                    { data: { id: 'misc', label: 'thoughts' } },
-                    { data: { id: 'hidden', label: '???' } },
+                    // Nodes with types for color coding
+                    { data: { id: 'home', label: 'HOME', type: 'hub' } },
+                    { data: { id: 'about', label: 'ABOUT', type: 'info' } },
+                    { data: { id: 'projects', label: 'PROJECTS', type: 'work' } },
+                    { data: { id: 'resume', label: 'RESUME', type: 'work' } },
+                    { data: { id: 'contact', label: 'CONTACT', type: 'info' } },
+                    { data: { id: 'misc', label: 'THOUGHTS', type: 'personal' } },
+                    { data: { id: 'hidden', label: '???', type: 'secret' } },
 
                     // Edges (connections)
                     { data: { source: 'home', target: 'about' } },
@@ -343,46 +416,144 @@ But isn't that what makes it interesting?
                     { data: { source: 'home', target: 'contact' } },
                     { data: { source: 'about', target: 'resume' } },
                     { data: { source: 'projects', target: 'resume' } },
+                    { data: { source: 'contact', target: 'about' } },
                     { data: { source: 'misc', target: 'home' } },
                     { data: { source: 'misc', target: 'projects' } },
-                    { data: { source: 'hidden', target: 'misc' } }
+                    { data: { source: 'misc', target: 'about' } },
+                    { data: { source: 'hidden', target: 'misc' } },
+                    { data: { source: 'hidden', target: 'projects' } }
                 ],
 
                 style: [
+                    // Base node styling
                     {
                         selector: 'node',
                         style: {
-                            'background-color': '#ffffff',
-                            'border-color': '#000000',
-                            'border-width': 2,
+                            'background-color': '#1a1a2e',
+                            'border-width': 3,
+                            'border-color': '#00ffff',
                             'label': 'data(label)',
-                            'color': '#000000',
+                            'color': '#00ffff',
                             'text-valign': 'center',
                             'text-halign': 'center',
-                            'font-family': 'Courier New, monospace',
-                            'font-size': '12px',
-                            'width': '60px',
-                            'height': '60px',
+                            'font-family': 'Inter, sans-serif',
+                            'font-size': '11px',
+                            'font-weight': '600',
+                            'width': '80px',
+                            'height': '80px',
                             'text-wrap': 'wrap',
-                            'text-max-width': '55px',
-                            'transition-property': 'background-color, border-color, border-width',
-                            'transition-duration': '0.2s'
+                            'text-max-width': '75px',
+                            'transition-property': 'background-color, border-color, border-width, width, height',
+                            'transition-duration': '0.3s',
+                            'box-shadow': '0 0 20px rgba(0, 255, 255, 0.4)',
+                            'text-outline-width': 0,
+                            'letter-spacing': '1px'
                         }
                     },
+                    // Hub node (home) - cyan glow
+                    {
+                        selector: 'node[type="hub"]',
+                        style: {
+                            'background-color': '#0a4d4d',
+                            'border-color': '#00ffff',
+                            'color': '#00ffff',
+                            'width': '100px',
+                            'height': '100px',
+                            'font-size': '13px',
+                            'border-width': 4,
+                            'box-shadow': '0 0 30px rgba(0, 255, 255, 0.6)'
+                        }
+                    },
+                    // Info nodes - cyan
+                    {
+                        selector: 'node[type="info"]',
+                        style: {
+                            'background-color': '#0a3d4d',
+                            'border-color': '#00d4ff',
+                            'color': '#00d4ff',
+                            'box-shadow': '0 0 20px rgba(0, 212, 255, 0.4)'
+                        }
+                    },
+                    // Work nodes - purple
+                    {
+                        selector: 'node[type="work"]',
+                        style: {
+                            'background-color': '#2e0a4d',
+                            'border-color': '#ff00ff',
+                            'color': '#ff00ff',
+                            'box-shadow': '0 0 20px rgba(255, 0, 255, 0.4)'
+                        }
+                    },
+                    // Personal nodes - green
+                    {
+                        selector: 'node[type="personal"]',
+                        style: {
+                            'background-color': '#0a4d2e',
+                            'border-color': '#00ff88',
+                            'color': '#00ff88',
+                            'box-shadow': '0 0 20px rgba(0, 255, 136, 0.4)'
+                        }
+                    },
+                    // Secret node - gold
+                    {
+                        selector: 'node[type="secret"]',
+                        style: {
+                            'background-color': '#4d3d0a',
+                            'border-color': '#ffd700',
+                            'color': '#ffd700',
+                            'box-shadow': '0 0 25px rgba(255, 215, 0, 0.5)'
+                        }
+                    },
+                    // Active node styling
                     {
                         selector: 'node.active',
                         style: {
-                            'background-color': '#000000',
-                            'color': '#ffffff',
-                            'border-color': '#000000',
-                            'border-width': 3
+                            'border-width': 5,
+                            'width': '90px',
+                            'height': '90px',
+                            'font-size': '13px',
+                            'z-index': 999
                         }
                     },
                     {
+                        selector: 'node.active[type="hub"]',
+                        style: {
+                            'width': '110px',
+                            'height': '110px',
+                            'box-shadow': '0 0 50px rgba(0, 255, 255, 1), 0 0 100px rgba(0, 255, 255, 0.5)'
+                        }
+                    },
+                    {
+                        selector: 'node.active[type="info"]',
+                        style: {
+                            'box-shadow': '0 0 50px rgba(0, 212, 255, 1), 0 0 100px rgba(0, 212, 255, 0.5)'
+                        }
+                    },
+                    {
+                        selector: 'node.active[type="work"]',
+                        style: {
+                            'box-shadow': '0 0 50px rgba(255, 0, 255, 1), 0 0 100px rgba(255, 0, 255, 0.5)'
+                        }
+                    },
+                    {
+                        selector: 'node.active[type="personal"]',
+                        style: {
+                            'box-shadow': '0 0 50px rgba(0, 255, 136, 1), 0 0 100px rgba(0, 255, 136, 0.5)'
+                        }
+                    },
+                    {
+                        selector: 'node.active[type="secret"]',
+                        style: {
+                            'box-shadow': '0 0 50px rgba(255, 215, 0, 1), 0 0 100px rgba(255, 215, 0, 0.5)'
+                        }
+                    },
+                    // Hover effects
+                    {
                         selector: 'node:hover',
                         style: {
-                            'background-color': '#333333',
-                            'color': '#ffffff'
+                            'border-width': 4,
+                            'width': '85px',
+                            'height': '85px'
                         }
                     },
                     {
@@ -391,13 +562,26 @@ But isn't that what makes it interesting?
                             'overlay-opacity': 0
                         }
                     },
+                    // Edge styling
                     {
                         selector: 'edge',
                         style: {
-                            'width': 1,
-                            'line-color': '#000000',
+                            'width': 2,
+                            'line-color': 'rgba(0, 255, 255, 0.3)',
                             'curve-style': 'bezier',
-                            'opacity': 0.3
+                            'opacity': 0.5,
+                            'line-style': 'solid',
+                            'transition-property': 'line-color, width, opacity',
+                            'transition-duration': '0.3s'
+                        }
+                    },
+                    // Connected edges to active node
+                    {
+                        selector: 'edge.connected',
+                        style: {
+                            'width': 3,
+                            'line-color': 'rgba(0, 255, 255, 0.8)',
+                            'opacity': 1
                         }
                     }
                 ],
