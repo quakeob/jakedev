@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jake davis</title>
     <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --border-color: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #666666;
+            --text-tertiary: #cccccc;
+            --control-bg: rgba(0, 0, 0, 0.9);
+            --control-border: #333333;
+            --control-text: #888888;
+            --button-bg: #ffffff;
+            --button-text: #000000;
+            --pre-bg: #0f0f0f;
+            --link-border: #333333;
+        }
+
+        body.light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --border-color: #e0e0e0;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --text-tertiary: #333333;
+            --control-bg: rgba(255, 255, 255, 0.95);
+            --control-border: #d0d0d0;
+            --control-text: #666666;
+            --button-bg: #000000;
+            --button-text: #ffffff;
+            --pre-bg: #fafafa;
+            --link-border: #d0d0d0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,9 +45,10 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #000000;
-            color: #ffffff;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container {
@@ -27,14 +60,35 @@
             flex: 1;
             padding: 40px;
             overflow-y: auto;
-            background: #0a0a0a;
-            border-right: 1px solid #1a1a1a;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
         }
 
         .graph-container {
             width: 55%;
             position: relative;
-            background: #000000;
+            background: var(--bg-primary);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--control-bg);
+            padding: 12px;
+            border: 1px solid var(--control-border);
+            z-index: 100;
+            cursor: pointer;
+            font-size: 10px;
+            color: var(--control-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--button-bg);
+            color: var(--button-text);
         }
 
         #canvas {
@@ -52,9 +106,9 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.9);
+            background: var(--control-bg);
             padding: 20px;
-            border: 1px solid #333333;
+            border: 1px solid var(--control-border);
             max-width: 240px;
             z-index: 100;
         }
@@ -62,7 +116,7 @@
         .controls h3 {
             margin-bottom: 15px;
             font-size: 13px;
-            color: #ffffff;
+            color: var(--text-primary);
             font-weight: 500;
             letter-spacing: 1px;
         }
@@ -75,7 +129,7 @@
             display: block;
             font-size: 10px;
             margin-bottom: 5px;
-            color: #888888;
+            color: var(--control-text);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -91,9 +145,9 @@
         .control-group button {
             width: 100%;
             padding: 8px;
-            background: #ffffff;
-            color: #000000;
-            border: 1px solid #ffffff;
+            background: var(--button-bg);
+            color: var(--button-text);
+            border: 1px solid var(--button-bg);
             cursor: pointer;
             font-size: 10px;
             font-weight: 500;
@@ -103,33 +157,33 @@
         }
 
         .control-group button:hover {
-            background: #000000;
-            color: #ffffff;
+            background: var(--button-text);
+            color: var(--button-bg);
         }
 
         .stats {
             position: absolute;
             bottom: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.9);
+            background: var(--control-bg);
             padding: 12px;
-            border: 1px solid #333333;
+            border: 1px solid var(--control-border);
             font-size: 10px;
-            color: #888888;
+            color: var(--control-text);
             letter-spacing: 0.5px;
         }
 
         .tooltip {
             position: absolute;
-            background: rgba(0, 0, 0, 0.95);
+            background: var(--control-bg);
             padding: 8px 12px;
-            border: 1px solid #ffffff;
+            border: 1px solid var(--text-primary);
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.15s;
             font-size: 11px;
             z-index: 1000;
-            color: #ffffff;
+            color: var(--text-primary);
             letter-spacing: 0.3px;
         }
 
@@ -166,12 +220,12 @@
             cursor: pointer;
             padding: 8px 0;
             transition: all 0.15s ease;
-            color: #666;
+            color: var(--text-secondary);
             font-family: 'Courier New', monospace;
         }
 
         .path:hover {
-            color: #fff;
+            color: var(--text-primary);
         }
 
         .content {
@@ -194,16 +248,16 @@
             margin-bottom: 20px;
             padding: 6px 12px;
             display: inline-block;
-            color: #666;
-            border: 1px solid #333;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
             transition: all 0.15s ease;
             font-size: 13px;
             font-family: 'Courier New', monospace;
         }
 
         .back:hover {
-            border-color: #fff;
-            color: #fff;
+            border-color: var(--text-primary);
+            color: var(--text-primary);
         }
 
         .file {
@@ -211,34 +265,34 @@
             cursor: pointer;
             padding: 6px 0;
             transition: all 0.15s ease;
-            color: #666;
+            color: var(--text-secondary);
             font-family: 'Courier New', monospace;
         }
 
         .file:hover {
-            color: #fff;
+            color: var(--text-primary);
         }
 
         pre {
             white-space: pre-wrap;
             margin: 15px 0;
-            color: #ccc;
-            background: #0f0f0f;
+            color: var(--text-tertiary);
+            background: var(--pre-bg);
             padding: 16px;
-            border: 1px solid #1a1a1a;
+            border: 1px solid var(--border-color);
             font-size: 13px;
             line-height: 1.6;
         }
 
         a {
-            color: #fff;
+            color: var(--text-primary);
             text-decoration: none;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--link-border);
             transition: all 0.15s ease;
         }
 
         a:hover {
-            border-bottom-color: #fff;
+            border-bottom-color: var(--text-primary);
         }
     </style>
 </head>
@@ -395,6 +449,8 @@ But isn't that what makes it interesting?
         <div class="graph-container">
             <canvas id="canvas"></canvas>
 
+            <div class="theme-toggle" id="themeToggle">☀ Light Mode</div>
+
             <div class="controls">
                 <h3>KNOWLEDGE GRAPH</h3>
 
@@ -440,8 +496,14 @@ But isn't that what makes it interesting?
 
         function resizeCanvas() {
             const container = canvas.parentElement;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.width = container.clientWidth * dpr;
+            canvas.height = container.clientHeight * dpr;
+            canvas.style.width = container.clientWidth + 'px';
+            canvas.style.height = container.clientHeight + 'px';
+
+            ctx.scale(dpr, dpr);
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -596,10 +658,11 @@ But isn't that what makes it interesting?
             const distance = 8;
             const z = point.z + distance;
             const scale = zoom;
+            const container = canvas.parentElement;
 
             return {
-                x: (point.x * scale * (distance / z)) + canvas.width / 2,
-                y: (point.y * scale * (distance / z)) + canvas.height / 2,
+                x: (point.x * scale * (distance / z)) + container.clientWidth / 2,
+                y: (point.y * scale * (distance / z)) + container.clientHeight / 2,
                 depth: z,
                 scale: distance / z
             };
@@ -690,6 +753,9 @@ But isn't that what makes it interesting?
         });
 
         function render() {
+            const dpr = window.devicePixelRatio || 1;
+            const isLight = document.body.classList.contains('light-mode');
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const projectedNodes = graphData.nodes.map(node => {
@@ -702,7 +768,7 @@ But isn't that what makes it interesting?
             projectedNodes.sort((a, b) => b.screen.depth - a.screen.depth);
 
             if (showLinks) {
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.12)';
                 ctx.lineWidth = 1;
                 graphData.links.forEach(link => {
                     const source = projectedNodes.find(n => n.node.id === link.source);
@@ -723,7 +789,9 @@ But isn't that what makes it interesting?
                 const isActive = pNode.node.id === currentPage;
 
                 const brightness = Math.floor(150 + (pNode.screen.depth - 3) * -30);
-                const gray = Math.max(100, Math.min(255, brightness));
+                const gray = isLight
+                    ? Math.max(50, Math.min(200, 255 - brightness))  // Inverted for light mode
+                    : Math.max(100, Math.min(255, brightness));      // Dark mode
 
                 ctx.beginPath();
                 ctx.arc(pNode.screen.x, pNode.screen.y, size, 0, Math.PI * 2);
@@ -731,14 +799,14 @@ But isn't that what makes it interesting?
                 ctx.fill();
 
                 if (isHovered || isActive) {
-                    ctx.strokeStyle = '#ffffff';
+                    ctx.strokeStyle = isLight ? '#000000' : '#ffffff';
                     ctx.lineWidth = isActive ? 3 : 2;
                     ctx.stroke();
                 }
 
                 if (isHovered || isActive || pNode.node.size > 11) {
                     ctx.font = '11px monospace';
-                    ctx.fillStyle = '#ffffff';
+                    ctx.fillStyle = isLight ? '#000000' : '#ffffff';
                     ctx.textAlign = 'center';
                     ctx.fillText(pNode.node.label, pNode.screen.x, pNode.screen.y + size + 15);
                 }
@@ -779,6 +847,21 @@ But isn't that what makes it interesting?
             zoom = 100;
             autoRotate = true;
             document.getElementById('autoRotate').checked = true;
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '🌙 Dark Mode';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeToggle.textContent = isLight ? '🌙 Dark Mode' : '☀ Light Mode';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
         // Navigation functions
