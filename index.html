@@ -6,61 +6,47 @@
     <title>jake's computer</title>
     <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
         * {
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', 'Courier New', monospace;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-            color: #e0e0e0;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            background: #0d1117;
+            color: #c9d1d9;
             margin: 0;
             padding: 0;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
         .container {
             display: flex;
             height: 100vh;
-            position: relative;
         }
 
         .main-content {
             flex: 1;
             padding: 40px;
             overflow-y: auto;
-            max-width: 800px;
-            background: rgba(10, 10, 10, 0.6);
-            backdrop-filter: blur(10px);
+            max-width: 900px;
+            background: #0d1117;
         }
 
         .graph-container {
-            width: 500px;
-            border-left: 1px solid rgba(0, 255, 255, 0.2);
+            width: 45%;
+            min-width: 400px;
+            border-left: 1px solid #21262d;
             position: relative;
-            background: radial-gradient(ellipse at center, rgba(26, 26, 46, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
-            box-shadow: -20px 0 40px rgba(0, 255, 255, 0.1);
+            background: #161b22;
         }
 
         #cy {
             width: 100%;
             height: 100%;
-        }
-
-        .graph-title {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 12px;
-            color: rgba(0, 255, 255, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            z-index: 10;
-            font-weight: 600;
         }
 
         @media (max-width: 1024px) {
@@ -70,9 +56,10 @@
 
             .graph-container {
                 width: 100%;
-                height: 400px;
+                height: 50vh;
+                min-width: unset;
                 border-left: none;
-                border-top: 1px solid rgba(0, 255, 255, 0.2);
+                border-top: 1px solid #21262d;
             }
 
             .main-content {
@@ -81,40 +68,26 @@
         }
 
         .path {
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             cursor: pointer;
-            padding: 12px 16px;
-            border-left: 2px solid transparent;
-            transition: all 0.3s ease;
-            color: rgba(0, 255, 255, 0.7);
-            font-family: 'Courier New', monospace;
+            padding: 8px 0;
+            transition: all 0.15s ease;
+            color: #8b949e;
         }
 
         .path:hover {
-            background: linear-gradient(90deg, rgba(0, 255, 255, 0.1) 0%, transparent 100%);
-            border-left-color: #00ffff;
-            color: #00ffff;
-            transform: translateX(5px);
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            color: #58a6ff;
         }
 
         .content {
             display: none;
             margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 255, 255, 0.2);
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.2s ease;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .content.active {
@@ -124,57 +97,52 @@
         .back {
             cursor: pointer;
             margin-bottom: 20px;
-            padding: 10px 14px;
+            padding: 6px 12px;
             display: inline-block;
-            color: rgba(255, 0, 255, 0.7);
-            border: 1px solid rgba(255, 0, 255, 0.3);
-            border-radius: 4px;
-            transition: all 0.3s ease;
+            color: #8b949e;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            font-size: 13px;
         }
 
         .back:hover {
-            background: rgba(255, 0, 255, 0.1);
-            border-color: #ff00ff;
-            color: #ff00ff;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+            border-color: #58a6ff;
+            color: #58a6ff;
         }
 
         .file {
-            margin: 8px 0;
+            margin: 4px 0;
             cursor: pointer;
-            padding: 8px 12px;
-            transition: all 0.2s ease;
-            border-radius: 3px;
-            color: #b0b0b0;
+            padding: 6px 0;
+            transition: all 0.15s ease;
+            color: #8b949e;
         }
 
         .file:hover {
-            background: rgba(0, 255, 255, 0.1);
-            color: #00ffff;
-            transform: translateX(5px);
+            color: #c9d1d9;
         }
 
         pre {
             white-space: pre-wrap;
-            margin: 10px 0;
-            color: #d0d0d0;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 3px solid rgba(0, 255, 255, 0.3);
+            margin: 15px 0;
+            color: #c9d1d9;
+            background: #161b22;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid #21262d;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
         a {
-            color: #00ffff;
+            color: #58a6ff;
             text-decoration: none;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         a:hover {
-            color: #ff00ff;
-            border-bottom-color: #ff00ff;
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -337,7 +305,6 @@ But isn't that what makes it interesting?
     </div>
         </div>
         <div class="graph-container">
-            <div class="graph-title">Knowledge Graph</div>
             <div id="cy"></div>
         </div>
     </div>
@@ -400,14 +367,14 @@ But isn't that what makes it interesting?
                 container: document.getElementById('cy'),
 
                 elements: [
-                    // Nodes with types for color coding
-                    { data: { id: 'home', label: 'HOME', type: 'hub' } },
-                    { data: { id: 'about', label: 'ABOUT', type: 'info' } },
-                    { data: { id: 'projects', label: 'PROJECTS', type: 'work' } },
-                    { data: { id: 'resume', label: 'RESUME', type: 'work' } },
-                    { data: { id: 'contact', label: 'CONTACT', type: 'info' } },
-                    { data: { id: 'misc', label: 'THOUGHTS', type: 'personal' } },
-                    { data: { id: 'hidden', label: '???', type: 'secret' } },
+                    // Nodes
+                    { data: { id: 'home', label: 'home' } },
+                    { data: { id: 'about', label: 'about' } },
+                    { data: { id: 'projects', label: 'projects' } },
+                    { data: { id: 'resume', label: 'resume' } },
+                    { data: { id: 'contact', label: 'contact' } },
+                    { data: { id: 'misc', label: 'thoughts' } },
+                    { data: { id: 'hidden', label: 'secret' } },
 
                     // Edges (connections)
                     { data: { source: 'home', target: 'about' } },
@@ -420,168 +387,58 @@ But isn't that what makes it interesting?
                     { data: { source: 'misc', target: 'home' } },
                     { data: { source: 'misc', target: 'projects' } },
                     { data: { source: 'misc', target: 'about' } },
-                    { data: { source: 'hidden', target: 'misc' } },
-                    { data: { source: 'hidden', target: 'projects' } }
+                    { data: { source: 'hidden', target: 'misc' } }
                 ],
 
                 style: [
-                    // Base node styling
                     {
                         selector: 'node',
                         style: {
-                            'background-color': '#1a1a2e',
-                            'border-width': 3,
-                            'border-color': '#00ffff',
+                            'background-color': '#7c3aed',
+                            'width': '12px',
+                            'height': '12px',
                             'label': 'data(label)',
-                            'color': '#00ffff',
-                            'text-valign': 'center',
-                            'text-halign': 'center',
-                            'font-family': 'Inter, sans-serif',
+                            'color': '#c9d1d9',
                             'font-size': '11px',
-                            'font-weight': '600',
-                            'width': '80px',
-                            'height': '80px',
-                            'text-wrap': 'wrap',
-                            'text-max-width': '75px',
-                            'transition-property': 'background-color, border-color, border-width, width, height',
-                            'transition-duration': '0.3s',
-                            'box-shadow': '0 0 20px rgba(0, 255, 255, 0.4)',
-                            'text-outline-width': 0,
-                            'letter-spacing': '1px'
+                            'font-family': 'JetBrains Mono, monospace',
+                            'text-valign': 'bottom',
+                            'text-halign': 'center',
+                            'text-margin-y': 8,
+                            'transition-property': 'background-color, width, height',
+                            'transition-duration': '0.2s'
                         }
                     },
-                    // Hub node (home) - cyan glow
-                    {
-                        selector: 'node[type="hub"]',
-                        style: {
-                            'background-color': '#0a4d4d',
-                            'border-color': '#00ffff',
-                            'color': '#00ffff',
-                            'width': '100px',
-                            'height': '100px',
-                            'font-size': '13px',
-                            'border-width': 4,
-                            'box-shadow': '0 0 30px rgba(0, 255, 255, 0.6)'
-                        }
-                    },
-                    // Info nodes - cyan
-                    {
-                        selector: 'node[type="info"]',
-                        style: {
-                            'background-color': '#0a3d4d',
-                            'border-color': '#00d4ff',
-                            'color': '#00d4ff',
-                            'box-shadow': '0 0 20px rgba(0, 212, 255, 0.4)'
-                        }
-                    },
-                    // Work nodes - purple
-                    {
-                        selector: 'node[type="work"]',
-                        style: {
-                            'background-color': '#2e0a4d',
-                            'border-color': '#ff00ff',
-                            'color': '#ff00ff',
-                            'box-shadow': '0 0 20px rgba(255, 0, 255, 0.4)'
-                        }
-                    },
-                    // Personal nodes - green
-                    {
-                        selector: 'node[type="personal"]',
-                        style: {
-                            'background-color': '#0a4d2e',
-                            'border-color': '#00ff88',
-                            'color': '#00ff88',
-                            'box-shadow': '0 0 20px rgba(0, 255, 136, 0.4)'
-                        }
-                    },
-                    // Secret node - gold
-                    {
-                        selector: 'node[type="secret"]',
-                        style: {
-                            'background-color': '#4d3d0a',
-                            'border-color': '#ffd700',
-                            'color': '#ffd700',
-                            'box-shadow': '0 0 25px rgba(255, 215, 0, 0.5)'
-                        }
-                    },
-                    // Active node styling
                     {
                         selector: 'node.active',
                         style: {
-                            'border-width': 5,
-                            'width': '90px',
-                            'height': '90px',
-                            'font-size': '13px',
-                            'z-index': 999
+                            'background-color': '#a78bfa',
+                            'width': '16px',
+                            'height': '16px'
                         }
                     },
-                    {
-                        selector: 'node.active[type="hub"]',
-                        style: {
-                            'width': '110px',
-                            'height': '110px',
-                            'box-shadow': '0 0 50px rgba(0, 255, 255, 1), 0 0 100px rgba(0, 255, 255, 0.5)'
-                        }
-                    },
-                    {
-                        selector: 'node.active[type="info"]',
-                        style: {
-                            'box-shadow': '0 0 50px rgba(0, 212, 255, 1), 0 0 100px rgba(0, 212, 255, 0.5)'
-                        }
-                    },
-                    {
-                        selector: 'node.active[type="work"]',
-                        style: {
-                            'box-shadow': '0 0 50px rgba(255, 0, 255, 1), 0 0 100px rgba(255, 0, 255, 0.5)'
-                        }
-                    },
-                    {
-                        selector: 'node.active[type="personal"]',
-                        style: {
-                            'box-shadow': '0 0 50px rgba(0, 255, 136, 1), 0 0 100px rgba(0, 255, 136, 0.5)'
-                        }
-                    },
-                    {
-                        selector: 'node.active[type="secret"]',
-                        style: {
-                            'box-shadow': '0 0 50px rgba(255, 215, 0, 1), 0 0 100px rgba(255, 215, 0, 0.5)'
-                        }
-                    },
-                    // Hover effects
                     {
                         selector: 'node:hover',
                         style: {
-                            'border-width': 4,
-                            'width': '85px',
-                            'height': '85px'
+                            'background-color': '#a78bfa',
+                            'width': '14px',
+                            'height': '14px'
                         }
                     },
-                    {
-                        selector: 'node:active',
-                        style: {
-                            'overlay-opacity': 0
-                        }
-                    },
-                    // Edge styling
                     {
                         selector: 'edge',
                         style: {
-                            'width': 2,
-                            'line-color': 'rgba(0, 255, 255, 0.3)',
+                            'width': 1,
+                            'line-color': '#30363d',
                             'curve-style': 'bezier',
-                            'opacity': 0.5,
-                            'line-style': 'solid',
-                            'transition-property': 'line-color, width, opacity',
-                            'transition-duration': '0.3s'
+                            'opacity': 0.6
                         }
                     },
-                    // Connected edges to active node
                     {
                         selector: 'edge.connected',
                         style: {
-                            'width': 3,
-                            'line-color': 'rgba(0, 255, 255, 0.8)',
-                            'opacity': 1
+                            'line-color': '#7c3aed',
+                            'width': 2,
+                            'opacity': 0.8
                         }
                     }
                 ],
@@ -589,18 +446,18 @@ But isn't that what makes it interesting?
                 layout: {
                     name: 'cose',
                     animate: true,
-                    animationDuration: 1000,
-                    idealEdgeLength: 100,
-                    nodeOverlap: 20,
+                    animationDuration: 500,
+                    idealEdgeLength: 120,
+                    nodeOverlap: 80,
                     refresh: 20,
                     fit: true,
-                    padding: 30,
+                    padding: 60,
                     randomize: false,
                     componentSpacing: 100,
-                    nodeRepulsion: 400000,
-                    edgeElasticity: 100,
+                    nodeRepulsion: 800000,
+                    edgeElasticity: 200,
                     nestingFactor: 5,
-                    gravity: 80,
+                    gravity: 50,
                     numIter: 1000,
                     initialTemp: 200,
                     coolingFactor: 0.95,
