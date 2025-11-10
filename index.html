@@ -364,7 +364,9 @@ But isn't that what makes it interesting?
                             'width': '60px',
                             'height': '60px',
                             'text-wrap': 'wrap',
-                            'text-max-width': '55px'
+                            'text-max-width': '55px',
+                            'transition-property': 'background-color, border-color, border-width',
+                            'transition-duration': '0.2s'
                         }
                     },
                     {
@@ -381,6 +383,12 @@ But isn't that what makes it interesting?
                         style: {
                             'background-color': '#333333',
                             'color': '#ffffff'
+                        }
+                    },
+                    {
+                        selector: 'node:active',
+                        style: {
+                            'overlay-opacity': 0
                         }
                     },
                     {
@@ -413,13 +421,48 @@ But isn't that what makes it interesting?
                     initialTemp: 200,
                     coolingFactor: 0.95,
                     minTemp: 1.0
+                },
+
+                // Enable interactivity - just like Obsidian!
+                userZoomingEnabled: true,
+                userPanningEnabled: true,
+                boxSelectionEnabled: false,
+                autounselectify: false,
+                autoungrabify: false, // Allow node dragging
+
+                // Wheel sensitivity
+                wheelSensitivity: 0.2
+            });
+
+            // Add click handler for nodes (only when not dragging)
+            let isDragging = false;
+            let dragStartTime = 0;
+
+            cy.on('grab', 'node', function(evt) {
+                isDragging = true;
+                dragStartTime = Date.now();
+            });
+
+            cy.on('free', 'node', function(evt) {
+                setTimeout(() => {
+                    isDragging = false;
+                }, 50);
+            });
+
+            cy.on('tap', 'node', function(evt) {
+                const dragDuration = Date.now() - dragStartTime;
+                // Only navigate if this was a click, not a drag
+                if (!isDragging && dragDuration < 200) {
+                    const nodeId = evt.target.id();
+                    navigate(nodeId);
                 }
             });
 
-            // Add click handler for nodes
-            cy.on('tap', 'node', function(evt) {
-                const nodeId = evt.target.id();
-                navigate(nodeId);
+            // Double-click to reset zoom/pan
+            cy.on('dblclick', function(evt) {
+                if (evt.target === cy) {
+                    cy.fit(null, 50);
+                }
             });
 
             // Set initial state
