@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jake's computer</title>
+    <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-width: 800px;
+        }
+
+        .graph-container {
+            width: 400px;
+            border-left: 1px solid black;
+            position: relative;
+            background: white;
+        }
+
+        #cy {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .graph-container {
+                width: 100%;
+                height: 300px;
+                border-left: none;
+                border-top: 1px solid black;
+            }
+        }
+
+        .path {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .path:hover {
+            background: black;
+            color: white;
+        }
+
+        .content {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid black;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .back {
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back:hover {
+            background: black;
+            color: white;
+        }
+
+        .file {
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .file:hover {
+            background: black;
+            color: white;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+
+        a {
+            color: black;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            background: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div id="main">
+        <div class="path" onclick="navigate('home')">/home/jake</div>
+        <div class="path" onclick="navigate('projects')">/home/jake/projects</div>
+        <div class="path" onclick="navigate('about')">/home/jake/about.txt</div>
+        <div class="path" onclick="navigate('contact')">/home/jake/contact</div>
+        <div class="path" onclick="navigate('resume')">/home/jake/resume.pdf</div>
+        <div class="path" onclick="navigate('misc')">/var/log/thoughts</div>
+        <div class="path" onclick="navigate('hidden')">/test/1099/w-2/fun/find-me.txt</div>
+    </div>
+
+    <!-- Home Directory -->
+    <div id="home" class="content">
+        <div class="back" onclick="goBack()">← /</div>
+        <div class="file" onclick="navigate('about')">about.txt</div>
+        <div class="file" onclick="navigate('contact')">contact/</div>
+        <div class="file" onclick="navigate('projects')">projects/</div>
+        <div class="file" onclick="navigate('resume')">resume.pdf</div>
+        <div class="file">.bashrc</div>
+        <div class="file">.ssh/</div>
+        <div class="file">documents/</div>
+    </div>
+
+    <!-- Projects -->
+    <div id="projects" class="content">
+        <div class="back" onclick="goBack()">← /home/jake</div>
+        <div class="file">neural-networks/</div>
+        <div class="file">web-scraper/</div>
+        <div class="file">crypto-bot/</div>
+        <div class="file">portfolio-site/</div>
+        <div class="file">ml-experiments/</div>
+        <div class="file">api-tools/</div>
+        <div class="file">README.md</div>
+        
+        <pre>
+// Current projects:
+- Building a neural network from scratch
+- Automated trading bot (work in progress)
+- Various web scraping utilities
+- Machine learning experiments
+- This portfolio site
+
+// Tech stack:
+Python, JavaScript, React, Node.js, PostgreSQL, Docker
+        </pre>
+    </div>
+
+    <!-- About -->
+    <div id="about" class="content">
+        <div class="back" onclick="goBack()">← /home/jake</div>
+        <pre>
+Jake Davis
+
+Software developer and neuroscience student.
+Interested in machine learning, web development, automation, and the human brain.
+
+Currently working on various personal projects and learning new technologies.
+Always looking for interesting problems to solve.
+
+Location: Earth
+Status: Online
+        </pre>
+    </div>
+
+    <!-- Contact -->
+    <div id="contact" class="content">
+        <div class="back" onclick="goBack()">← /home/jake</div>
+        <div class="file">email.txt</div>
+        <div class="file">github</div>
+        <div class="file">linkedin</div>
+        <div class="file">twitter</div>
+        
+        <pre>
+// Get in touch:
+
+email: jake@bryt.works
+github: github.com/jakedev
+linkedin: 
+instagram: @jjakedavis
+
+// Or just send a message:
+echo "hello" | mail jake@bryt.works
+        </pre>
+    </div>
+
+    <!-- Resume -->
+    <div id="resume" class="content">
+        <div class="back" onclick="goBack()">← /home/jake</div>
+        <pre>
+JAKE DAVIS
+Software Developer
+
+EXPERIENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Software Developer Intern | Tech Corp | 2024
+- Built web applications using React and Node.js
+- Worked with REST APIs and database design
+- Collaborated with team of 5 developers
+
+EDUCATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Neuroscience | Brigham Young University | 2027 (Expected)
+Relevant Coursework: Neurobiology, Cognitive Science, Statistics
+
+SKILLS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Languages: Python, JavaScript, Java, C++, Spanish
+Frontend: React, HTML/CSS, TypeScript
+Backend: Node.js, Express, PostgreSQL
+Tools: Git, Docker, AWS, Linux
+        </pre>
+    </div>
+
+    <!-- Misc/Thoughts -->
+    <div id="misc" class="content">
+        <div class="back" onclick="goBack()">← /</div>
+        <pre>
+[2024-01-15 14:32] Starting new ML project
+[2024-01-12 09:15] Coffee intake: excessive
+[2024-01-10 23:47] Fixed the bug. It was a semicolon.
+[2024-01-08 16:20] Why do I always code better at night?
+[2024-01-05 11:30] New year, new repository structure
+[2024-01-03 08:45] Reading papers on transformer architectures
+[2024-01-01 00:01] Hello 2024
+        </pre>
+    </div>
+
+    <!-- Hidden -->
+    <div id="hidden" class="content">
+        <div class="back" onclick="goBack()">← /</div>
+        <pre>
+You found the secret file!
+
+    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    ░░░█████░░██████░░░███░░░███████░░░░░░░
+    ░░░█░░░█░░█░░░░█░░█░░░█░░░░░█░░░░░░░░░░
+    ░░░█░░░█░░█░░░░█░░█░░░█░░░░░█░░░░░░░░░░
+    ░░░█████░░██████░░░███░░░░░░█░░░░░░░░░░
+    ░░░█░░░█░░█░░░░█░░░░░█░░░░░░█░░░░░░░░░░
+    ░░░█░░░█░░█░░░░█░░░░░█░░░░░░█░░░░░░░░░░
+    ░░░█████░░█░░░░█░░████░░░░░░█░░░░░░░░░░
+    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+Sometimes the best things are hidden in plain sight.
+This path leads to more questions than answers.
+But isn't that what makes it interesting?
+
+// Congratulations on finding this
+// Keep exploring, keep questioning
+        </pre>
+    </div>
+        </div>
+        <div class="graph-container">
+            <div id="cy"></div>
+        </div>
+    </div>
+
+    <script>
+        let cy; // Graph instance
+        let currentPage = null;
+
+        function navigate(page) {
+            // Hide main menu
+            document.getElementById('main').style.display = 'none';
+
+            // Hide all content
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Show selected content
+            document.getElementById(page).classList.add('active');
+
+            // Update graph highlighting
+            currentPage = page;
+            updateGraphHighlight();
+        }
+
+        function goBack() {
+            // Show main menu
+            document.getElementById('main').style.display = 'block';
+
+            // Hide all content
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Update graph highlighting
+            currentPage = 'home';
+            updateGraphHighlight();
+        }
+
+        function updateGraphHighlight() {
+            if (!cy) return;
+
+            // Reset all nodes
+            cy.nodes().removeClass('active');
+
+            // Highlight current node
+            if (currentPage) {
+                cy.getElementById(currentPage).addClass('active');
+            }
+        }
+
+        // Initialize graph
+        document.addEventListener('DOMContentLoaded', function() {
+            cy = cytoscape({
+                container: document.getElementById('cy'),
+
+                elements: [
+                    // Nodes
+                    { data: { id: 'home', label: 'home' } },
+                    { data: { id: 'about', label: 'about.txt' } },
+                    { data: { id: 'projects', label: 'projects/' } },
+                    { data: { id: 'resume', label: 'resume.pdf' } },
+                    { data: { id: 'contact', label: 'contact/' } },
+                    { data: { id: 'misc', label: 'thoughts' } },
+                    { data: { id: 'hidden', label: '???' } },
+
+                    // Edges (connections)
+                    { data: { source: 'home', target: 'about' } },
+                    { data: { source: 'home', target: 'projects' } },
+                    { data: { source: 'home', target: 'resume' } },
+                    { data: { source: 'home', target: 'contact' } },
+                    { data: { source: 'about', target: 'resume' } },
+                    { data: { source: 'projects', target: 'resume' } },
+                    { data: { source: 'misc', target: 'home' } },
+                    { data: { source: 'misc', target: 'projects' } },
+                    { data: { source: 'hidden', target: 'misc' } }
+                ],
+
+                style: [
+                    {
+                        selector: 'node',
+                        style: {
+                            'background-color': '#ffffff',
+                            'border-color': '#000000',
+                            'border-width': 2,
+                            'label': 'data(label)',
+                            'color': '#000000',
+                            'text-valign': 'center',
+                            'text-halign': 'center',
+                            'font-family': 'Courier New, monospace',
+                            'font-size': '12px',
+                            'width': '60px',
+                            'height': '60px',
+                            'text-wrap': 'wrap',
+                            'text-max-width': '55px'
+                        }
+                    },
+                    {
+                        selector: 'node.active',
+                        style: {
+                            'background-color': '#000000',
+                            'color': '#ffffff',
+                            'border-color': '#000000',
+                            'border-width': 3
+                        }
+                    },
+                    {
+                        selector: 'node:hover',
+                        style: {
+                            'background-color': '#333333',
+                            'color': '#ffffff'
+                        }
+                    },
+                    {
+                        selector: 'edge',
+                        style: {
+                            'width': 1,
+                            'line-color': '#000000',
+                            'curve-style': 'bezier',
+                            'opacity': 0.3
+                        }
+                    }
+                ],
+
+                layout: {
+                    name: 'cose',
+                    animate: true,
+                    animationDuration: 1000,
+                    idealEdgeLength: 100,
+                    nodeOverlap: 20,
+                    refresh: 20,
+                    fit: true,
+                    padding: 30,
+                    randomize: false,
+                    componentSpacing: 100,
+                    nodeRepulsion: 400000,
+                    edgeElasticity: 100,
+                    nestingFactor: 5,
+                    gravity: 80,
+                    numIter: 1000,
+                    initialTemp: 200,
+                    coolingFactor: 0.95,
+                    minTemp: 1.0
+                }
+            });
+
+            // Add click handler for nodes
+            cy.on('tap', 'node', function(evt) {
+                const nodeId = evt.target.id();
+                navigate(nodeId);
+            });
+
+            // Set initial state
+            currentPage = 'home';
+            updateGraphHighlight();
+        });
+    </script>
+</body>
+</html>
