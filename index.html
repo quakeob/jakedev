@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jake davis</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
-
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +12,7 @@
         }
 
         body {
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: #000000;
             color: #ffffff;
             overflow: hidden;
@@ -34,7 +32,7 @@
         }
 
         .graph-container {
-            width: 50%;
+            width: 55%;
             position: relative;
             background: #000000;
         }
@@ -50,17 +48,75 @@
             cursor: grabbing;
         }
 
-        .graph-info {
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border: 1px solid #333333;
+            max-width: 240px;
+            z-index: 100;
+        }
+
+        .controls h3 {
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .control-group {
+            margin-bottom: 12px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 10px;
+            margin-bottom: 5px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+        }
+
+        .control-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .control-group button {
+            width: 100%;
+            padding: 8px;
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #ffffff;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .control-group button:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .stats {
             position: absolute;
             bottom: 20px;
             right: 20px;
             background: rgba(0, 0, 0, 0.9);
-            padding: 12px 16px;
-            border: 1px solid #333;
+            padding: 12px;
+            border: 1px solid #333333;
             font-size: 10px;
-            color: #666;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            color: #888888;
+            letter-spacing: 0.5px;
         }
 
         .tooltip {
@@ -71,10 +127,10 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.15s;
-            font-size: 12px;
+            font-size: 11px;
             z-index: 1000;
             color: #ffffff;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .tooltip.visible {
@@ -88,13 +144,20 @@
 
             .graph-container {
                 width: 100%;
-                height: 40vh;
+                height: 50vh;
                 border-right: none;
                 border-top: 1px solid #1a1a1a;
             }
 
             .main-content {
-                height: 60vh;
+                height: 50vh;
+            }
+
+            .controls {
+                top: 10px;
+                right: 10px;
+                padding: 15px;
+                max-width: 200px;
             }
         }
 
@@ -104,6 +167,7 @@
             padding: 8px 0;
             transition: all 0.15s ease;
             color: #666;
+            font-family: 'Courier New', monospace;
         }
 
         .path:hover {
@@ -134,6 +198,7 @@
             border: 1px solid #333;
             transition: all 0.15s ease;
             font-size: 13px;
+            font-family: 'Courier New', monospace;
         }
 
         .back:hover {
@@ -147,6 +212,7 @@
             padding: 6px 0;
             transition: all 0.15s ease;
             color: #666;
+            font-family: 'Courier New', monospace;
         }
 
         .file:hover {
@@ -189,7 +255,6 @@
                 <div class="path" onclick="navigate('hidden')">/test/1099/w-2/fun/find-me.txt</div>
             </div>
 
-            <!-- Home Directory -->
             <div id="home" class="content">
                 <div class="back" onclick="goBack()">← /</div>
                 <div class="file" onclick="navigate('about')">about.txt</div>
@@ -201,7 +266,6 @@
                 <div class="file">documents/</div>
             </div>
 
-            <!-- Projects -->
             <div id="projects" class="content">
                 <div class="back" onclick="goBack()">← /home/jake</div>
                 <div class="file">neural-networks/</div>
@@ -211,7 +275,6 @@
                 <div class="file">ml-experiments/</div>
                 <div class="file">api-tools/</div>
                 <div class="file">README.md</div>
-
                 <pre>
 // Current projects:
 - Building a neural network from scratch
@@ -225,7 +288,6 @@ Python, JavaScript, React, Node.js, PostgreSQL, Docker
                 </pre>
             </div>
 
-            <!-- About -->
             <div id="about" class="content">
                 <div class="back" onclick="goBack()">← /home/jake</div>
                 <pre>
@@ -242,14 +304,12 @@ Status: Online
                 </pre>
             </div>
 
-            <!-- Contact -->
             <div id="contact" class="content">
                 <div class="back" onclick="goBack()">← /home/jake</div>
                 <div class="file">email.txt</div>
                 <div class="file">github</div>
                 <div class="file">linkedin</div>
                 <div class="file">twitter</div>
-
                 <pre>
 // Get in touch:
 
@@ -263,7 +323,6 @@ echo "hello" | mail jake@bryt.works
                 </pre>
             </div>
 
-            <!-- Resume -->
             <div id="resume" class="content">
                 <div class="back" onclick="goBack()">← /home/jake</div>
                 <pre>
@@ -294,7 +353,6 @@ Tools: Git, Docker, AWS, Linux
                 </pre>
             </div>
 
-            <!-- Misc/Thoughts -->
             <div id="misc" class="content">
                 <div class="back" onclick="goBack()">← /</div>
                 <pre>
@@ -308,7 +366,6 @@ Tools: Git, Docker, AWS, Linux
                 </pre>
             </div>
 
-            <!-- Hidden -->
             <div id="hidden" class="content">
                 <div class="back" onclick="goBack()">← /</div>
                 <pre>
@@ -337,7 +394,40 @@ But isn't that what makes it interesting?
 
         <div class="graph-container">
             <canvas id="canvas"></canvas>
-            <div class="graph-info">Drag nodes • Scroll to zoom • Click to navigate</div>
+
+            <div class="controls">
+                <h3>KNOWLEDGE GRAPH</h3>
+
+                <div class="control-group">
+                    <label>
+                        <input type="checkbox" id="autoRotate" checked>
+                        Auto Rotate
+                    </label>
+                </div>
+
+                <div class="control-group">
+                    <label>Speed: <span id="speedValue">1</span></label>
+                    <input type="range" id="speed" min="0.1" max="3" step="0.1" value="1">
+                </div>
+
+                <div class="control-group">
+                    <label>
+                        <input type="checkbox" id="showLinks" checked>
+                        Show Connections
+                    </label>
+                </div>
+
+                <div class="control-group">
+                    <button id="resetBtn">Reset View</button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div>Nodes: <span id="nodeCount">0</span></div>
+                <div>Links: <span id="linkCount">0</span></div>
+                <div>Rotation: <span id="angleDisplay">0°</span></div>
+            </div>
+
             <div class="tooltip" id="tooltip"></div>
         </div>
     </div>
@@ -356,302 +446,340 @@ But isn't that what makes it interesting?
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Graph data representing portfolio sections
         const graphData = {
             nodes: [
-                { id: 'home', label: 'home', size: 14, group: 1 },
-                { id: 'about', label: 'about', size: 10, group: 2 },
-                { id: 'projects', label: 'projects', size: 12, group: 3 },
-                { id: 'resume', label: 'resume', size: 11, group: 3 },
-                { id: 'contact', label: 'contact', size: 9, group: 2 },
-                { id: 'misc', label: 'thoughts', size: 10, group: 4 },
-                { id: 'hidden', label: '???', size: 8, group: 5 }
+                // Core/Central - main identity
+                { id: 'home', label: 'Home', region: 'central', size: 14, navigable: true },
+                { id: 'about', label: 'About', region: 'central', size: 12, navigable: true },
+
+                // Frontal lobe - technical skills
+                { id: 'projects', label: 'Projects', region: 'frontal', size: 12, navigable: true },
+                { id: 'ml', label: 'Machine Learning', region: 'frontal', size: 10 },
+                { id: 'neural-nets', label: 'Neural Networks', region: 'frontal', size: 9 },
+                { id: 'python', label: 'Python', region: 'frontal', size: 9 },
+                { id: 'web-dev', label: 'Web Dev', region: 'frontal', size: 9 },
+
+                // Parietal - knowledge management
+                { id: 'resume', label: 'Resume', region: 'parietal', size: 11, navigable: true },
+                { id: 'automation', label: 'Automation', region: 'parietal', size: 8 },
+
+                // Temporal - academic/research
+                { id: 'neuroscience', label: 'Neuroscience', region: 'temporal', size: 11 },
+                { id: 'misc', label: 'Thoughts', region: 'temporal', size: 10, navigable: true },
+                { id: 'cell-biology', label: 'Cell Biology', region: 'temporal', size: 8 },
+
+                // Occipital - communication
+                { id: 'contact', label: 'Contact', region: 'occipital', size: 10, navigable: true },
+
+                // Cerebellum - hidden/experimental
+                { id: 'hidden', label: '???', region: 'cerebellum', size: 8, navigable: true },
+                { id: 'crypto', label: 'Crypto Bot', region: 'cerebellum', size: 7 },
+                { id: 'scraping', label: 'Web Scraping', region: 'cerebellum', size: 7 }
             ],
             links: [
                 { source: 'home', target: 'about' },
                 { source: 'home', target: 'projects' },
                 { source: 'home', target: 'resume' },
                 { source: 'home', target: 'contact' },
-                { source: 'about', target: 'resume' },
+                { source: 'home', target: 'misc' },
+                { source: 'about', target: 'neuroscience' },
+                { source: 'projects', target: 'ml' },
+                { source: 'projects', target: 'neural-nets' },
+                { source: 'projects', target: 'python' },
+                { source: 'projects', target: 'web-dev' },
                 { source: 'projects', target: 'resume' },
-                { source: 'contact', target: 'about' },
-                { source: 'misc', target: 'home' },
-                { source: 'misc', target: 'projects' },
-                { source: 'hidden', target: 'misc' }
+                { source: 'ml', target: 'neural-nets' },
+                { source: 'ml', target: 'python' },
+                { source: 'neural-nets', target: 'neuroscience' },
+                { source: 'python', target: 'automation' },
+                { source: 'python', target: 'web-dev' },
+                { source: 'neuroscience', target: 'cell-biology' },
+                { source: 'neuroscience', target: 'misc' },
+                { source: 'resume', target: 'automation' },
+                { source: 'hidden', target: 'misc' },
+                { source: 'hidden', target: 'crypto' },
+                { source: 'hidden', target: 'scraping' },
+                { source: 'crypto', target: 'python' },
+                { source: 'scraping', target: 'automation' }
             ]
         };
 
-        const groupColors = {
-            1: '#ffffff',
-            2: '#cccccc',
-            3: '#aaaaaa',
-            4: '#888888',
-            5: '#666666'
-        };
+        function positionNodesInBrain() {
+            graphData.nodes.forEach(node => {
+                let x, y, z;
+                const spread = 0.8 + Math.random() * 0.4;
 
-        let settings = {
-            repulsion: 120,
-            linkDistance: 100,
-            damping: 0.85,
-            centeringForce: 0.015
-        };
+                switch(node.region) {
+                    case 'frontal':
+                        const fAngle = (Math.random() - 0.5) * Math.PI * 0.6;
+                        const fPhi = Math.random() * Math.PI * 0.3 + Math.PI * 0.25;
+                        x = Math.cos(fAngle) * Math.sin(fPhi) * 2 * spread;
+                        y = Math.cos(fPhi) * 2 * spread + 0.5;
+                        z = Math.sin(fAngle) * Math.sin(fPhi) * 2 * spread + 1.5;
+                        break;
+                    case 'parietal':
+                        const pAngle = (Math.random() - 0.5) * Math.PI * 0.8;
+                        const pPhi = Math.random() * Math.PI * 0.2 + Math.PI * 0.1;
+                        x = Math.cos(pAngle) * Math.sin(pPhi) * 2.2 * spread;
+                        y = Math.cos(pPhi) * 2.2 * spread + 0.8;
+                        z = Math.sin(pAngle) * Math.sin(pPhi) * 2.2 * spread;
+                        break;
+                    case 'temporal':
+                        const tSide = Math.random() > 0.5 ? 1 : -1;
+                        x = tSide * (1.8 + Math.random() * 0.5);
+                        y = (Math.random() - 0.5) * 1.5;
+                        z = (Math.random() - 0.3) * 1.5;
+                        break;
+                    case 'occipital':
+                        const oAngle = (Math.random() - 0.5) * Math.PI * 0.7;
+                        const oPhi = Math.random() * Math.PI * 0.3 + Math.PI * 0.3;
+                        x = Math.cos(oAngle) * Math.sin(oPhi) * 2 * spread;
+                        y = Math.cos(oPhi) * 2 * spread;
+                        z = Math.sin(oAngle) * Math.sin(oPhi) * 2 * spread - 1.8;
+                        break;
+                    case 'central':
+                        const cAngle = Math.random() * Math.PI * 2;
+                        const cRadius = Math.random() * 0.8;
+                        x = Math.cos(cAngle) * cRadius;
+                        y = (Math.random() - 0.5) * 0.8;
+                        z = Math.sin(cAngle) * cRadius;
+                        break;
+                    case 'cerebellum':
+                        const cbAngle = Math.random() * Math.PI * 2;
+                        const cbRadius = 0.5 + Math.random() * 0.4;
+                        x = Math.cos(cbAngle) * cbRadius * 0.8;
+                        y = -1.5 - Math.random() * 0.5;
+                        z = Math.sin(cbAngle) * cbRadius * 0.8 - 1.2;
+                        break;
+                    default:
+                        x = (Math.random() - 0.5) * 4;
+                        y = (Math.random() - 0.5) * 4;
+                        z = (Math.random() - 0.5) * 4;
+                }
 
-        // Initialize physics
-        graphData.nodes.forEach(node => {
-            node.x = Math.random() * canvas.width;
-            node.y = Math.random() * canvas.height;
-            node.vx = 0;
-            node.vy = 0;
-            node.fx = null;
-            node.fy = null;
-        });
+                node.x3d = x;
+                node.y3d = y;
+                node.z3d = z;
+            });
+        }
 
-        const neighbors = new Map();
-        graphData.nodes.forEach(node => neighbors.set(node.id, new Set()));
-        graphData.links.forEach(link => {
-            neighbors.get(link.source).add(link.target);
-            neighbors.get(link.target).add(link.source);
-        });
+        positionNodesInBrain();
 
-        // Interaction state
-        let dragNode = null;
+        let angleX = 0.3;
+        let angleY = 0;
+        let autoRotate = true;
+        let rotationSpeed = 1;
+        let zoom = 100;
+        let showLinks = true;
+
+        function rotateX(point, angle) {
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+            return {
+                x: point.x,
+                y: point.y * cos - point.z * sin,
+                z: point.y * sin + point.z * cos
+            };
+        }
+
+        function rotateY(point, angle) {
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+            return {
+                x: point.x * cos - point.z * sin,
+                y: point.y,
+                z: point.x * sin + point.z * cos
+            };
+        }
+
+        function project(point) {
+            const distance = 8;
+            const z = point.z + distance;
+            const scale = zoom;
+
+            return {
+                x: (point.x * scale * (distance / z)) + canvas.width / 2,
+                y: (point.y * scale * (distance / z)) + canvas.height / 2,
+                depth: z,
+                scale: distance / z
+            };
+        }
+
         let hoveredNode = null;
         let isDragging = false;
-        let panOffset = { x: 0, y: 0 };
-        let isPanning = false;
-        let panStart = { x: 0, y: 0 };
-        let zoom = 1;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let dragStartTime = 0;
 
-        function getNodeAt(x, y) {
-            const adjustedX = (x - panOffset.x) / zoom;
-            const adjustedY = (y - panOffset.y) / zoom;
-
-            return graphData.nodes.find(node => {
-                const dx = adjustedX - node.x;
-                const dy = adjustedY - node.y;
-                return Math.sqrt(dx * dx + dy * dy) < node.size * 2;
+        function getNodeAt(x, y, projectedNodes) {
+            return projectedNodes.find(pNode => {
+                const dx = x - pNode.screen.x;
+                const dy = y - pNode.screen.y;
+                const size = pNode.node.size * pNode.screen.scale * 0.8;
+                return Math.sqrt(dx * dx + dy * dy) < size;
             });
         }
 
         canvas.addEventListener('mousedown', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            dragNode = getNodeAt(x, y);
-            if (dragNode) {
-                dragNode.fx = dragNode.x;
-                dragNode.fy = dragNode.y;
-                isDragging = true;
-            } else {
-                isPanning = true;
-                panStart = { x: e.clientX - panOffset.x, y: e.clientY - panOffset.y };
-            }
+            isDragging = true;
+            dragStartTime = Date.now();
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
         });
 
         canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            if (isDragging && dragNode) {
-                dragNode.fx = (x - panOffset.x) / zoom;
-                dragNode.fy = (y - panOffset.y) / zoom;
-            } else if (isPanning) {
-                panOffset.x = e.clientX - panStart.x;
-                panOffset.y = e.clientY - panStart.y;
+            if (isDragging) {
+                const deltaX = e.clientX - lastMouseX;
+                const deltaY = e.clientY - lastMouseY;
+                angleY += deltaX * 0.01;
+                angleX += deltaY * 0.01;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+                autoRotate = false;
+                document.getElementById('autoRotate').checked = false;
             } else {
-                const newHoveredNode = getNodeAt(x, y);
+                const projectedNodes = graphData.nodes.map(node => {
+                    let rotated = rotateX({ x: node.x3d, y: node.y3d, z: node.z3d }, angleX);
+                    rotated = rotateY(rotated, angleY);
+                    const screen = project(rotated);
+                    return { node, screen, rotated };
+                });
+
+                const newHoveredNode = getNodeAt(e.clientX, e.clientY, projectedNodes);
+
                 if (newHoveredNode !== hoveredNode) {
                     hoveredNode = newHoveredNode;
                     if (hoveredNode) {
-                        tooltip.textContent = hoveredNode.label;
+                        tooltip.textContent = hoveredNode.node.label;
+                        tooltip.style.left = e.clientX + 10 + 'px';
+                        tooltip.style.top = e.clientY + 10 + 'px';
                         tooltip.classList.add('visible');
                     } else {
                         tooltip.classList.remove('visible');
                     }
                 }
+
                 if (hoveredNode) {
-                    tooltip.style.left = e.clientX + 15 + 'px';
-                    tooltip.style.top = e.clientY + 15 + 'px';
+                    tooltip.style.left = e.clientX + 10 + 'px';
+                    tooltip.style.top = e.clientY + 10 + 'px';
                 }
             }
         });
 
         canvas.addEventListener('mouseup', (e) => {
-            if (dragNode && !isDragging) {
-                // This was a click, not a drag
-                navigate(dragNode.id);
+            const dragDuration = Date.now() - dragStartTime;
+
+            // If click was quick (not a drag), navigate
+            if (dragDuration < 200 && hoveredNode && hoveredNode.node.navigable) {
+                navigate(hoveredNode.node.id);
             }
 
-            if (dragNode) {
-                dragNode.fx = null;
-                dragNode.fy = null;
-            }
-            dragNode = null;
             isDragging = false;
-            isPanning = false;
         });
 
         canvas.addEventListener('mouseleave', () => {
-            if (dragNode) {
-                dragNode.fx = null;
-                dragNode.fy = null;
-            }
-            dragNode = null;
             isDragging = false;
-            isPanning = false;
             hoveredNode = null;
             tooltip.classList.remove('visible');
         });
 
         canvas.addEventListener('wheel', (e) => {
             e.preventDefault();
-            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-            const newZoom = Math.max(0.3, Math.min(3, zoom * zoomFactor));
-
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            panOffset.x = mouseX - (mouseX - panOffset.x) * (newZoom / zoom);
-            panOffset.y = mouseY - (mouseY - panOffset.y) * (newZoom / zoom);
-
-            zoom = newZoom;
+            zoom *= e.deltaY > 0 ? 0.9 : 1.1;
+            zoom = Math.max(50, Math.min(300, zoom));
         });
 
-        // Physics simulation
-        function simulate() {
-            const alpha = 0.3;
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-
-            graphData.nodes.forEach(node => {
-                if (node.fx !== null) {
-                    node.x = node.fx;
-                    node.y = node.fy;
-                    node.vx = 0;
-                    node.vy = 0;
-                    return;
-                }
-
-                let fx = 0, fy = 0;
-
-                // Repulsion
-                graphData.nodes.forEach(other => {
-                    if (node === other) return;
-                    const dx = node.x - other.x;
-                    const dy = node.y - other.y;
-                    const distSq = dx * dx + dy * dy;
-                    const dist = Math.sqrt(distSq) || 1;
-
-                    const nodeMass = node.size / 8;
-                    const otherMass = other.size / 8;
-                    const force = (settings.repulsion * nodeMass * otherMass) / distSq;
-                    fx += (dx / dist) * force;
-                    fy += (dy / dist) * force;
-                });
-
-                // Attraction along links
-                graphData.links.forEach(link => {
-                    let source, target;
-                    if (link.source === node.id) {
-                        source = node;
-                        target = graphData.nodes.find(n => n.id === link.target);
-                    } else if (link.target === node.id) {
-                        source = node;
-                        target = graphData.nodes.find(n => n.id === link.source);
-                    }
-
-                    if (source && target) {
-                        const dx = target.x - source.x;
-                        const dy = target.y - source.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                        const force = (dist - settings.linkDistance) / dist;
-                        fx += dx * force * 0.1;
-                        fy += dy * force * 0.1;
-                    }
-                });
-
-                // Centering force
-                fx += (centerX - node.x) * settings.centeringForce;
-                fy += (centerY - node.y) * settings.centeringForce;
-
-                // Update velocity and position
-                node.vx = (node.vx + fx * alpha) * settings.damping;
-                node.vy = (node.vy + fy * alpha) * settings.damping;
-                node.x += node.vx;
-                node.y += node.vy;
-            });
-        }
-
-        // Render
         function render() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            ctx.save();
-            ctx.translate(panOffset.x, panOffset.y);
-            ctx.scale(zoom, zoom);
-
-            // Draw links
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.lineWidth = 1 / zoom;
-            graphData.links.forEach(link => {
-                const source = graphData.nodes.find(n => n.id === link.source);
-                const target = graphData.nodes.find(n => n.id === link.target);
-
-                if (source && target) {
-                    const isConnected = hoveredNode && (
-                        source === hoveredNode || target === hoveredNode
-                    );
-                    ctx.globalAlpha = isConnected ? 0.4 : 0.1;
-                    ctx.beginPath();
-                    ctx.moveTo(source.x, source.y);
-                    ctx.lineTo(target.x, target.y);
-                    ctx.stroke();
-                }
+            const projectedNodes = graphData.nodes.map(node => {
+                let rotated = rotateX({ x: node.x3d, y: node.y3d, z: node.z3d }, angleX);
+                rotated = rotateY(rotated, angleY);
+                const screen = project(rotated);
+                return { node, screen, rotated };
             });
-            ctx.globalAlpha = 1;
 
-            // Draw nodes
-            graphData.nodes.forEach(node => {
-                const isHovered = node === hoveredNode;
-                const isActive = node.id === currentPage;
-                const isConnected = hoveredNode && neighbors.get(hoveredNode.id)?.has(node.id);
+            projectedNodes.sort((a, b) => b.screen.depth - a.screen.depth);
+
+            if (showLinks) {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctx.lineWidth = 1;
+                graphData.links.forEach(link => {
+                    const source = projectedNodes.find(n => n.node.id === link.source);
+                    const target = projectedNodes.find(n => n.node.id === link.target);
+
+                    if (source && target) {
+                        ctx.beginPath();
+                        ctx.moveTo(source.screen.x, source.screen.y);
+                        ctx.lineTo(target.screen.x, target.screen.y);
+                        ctx.stroke();
+                    }
+                });
+            }
+
+            projectedNodes.forEach(pNode => {
+                const size = pNode.node.size * pNode.screen.scale * 0.6;
+                const isHovered = hoveredNode && hoveredNode.node.id === pNode.node.id;
+                const isActive = pNode.node.id === currentPage;
+
+                const brightness = Math.floor(150 + (pNode.screen.depth - 3) * -30);
+                const gray = Math.max(100, Math.min(255, brightness));
 
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
-                ctx.fillStyle = groupColors[node.group] || '#888';
-                ctx.globalAlpha = isHovered || isConnected || !hoveredNode ? 1 : 0.3;
+                ctx.arc(pNode.screen.x, pNode.screen.y, size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgb(${gray}, ${gray}, ${gray})`;
                 ctx.fill();
 
-                if (isActive) {
-                    ctx.strokeStyle = '#fff';
-                    ctx.lineWidth = 2 / zoom;
+                if (isHovered || isActive) {
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = isActive ? 3 : 2;
                     ctx.stroke();
                 }
 
-                ctx.globalAlpha = 1;
-
-                // Label
-                if (isHovered || isActive || node.size > 12) {
-                    ctx.font = `${11 / zoom}px JetBrains Mono, monospace`;
-                    ctx.fillStyle = '#fff';
+                if (isHovered || isActive || pNode.node.size > 11) {
+                    ctx.font = '11px monospace';
+                    ctx.fillStyle = '#ffffff';
                     ctx.textAlign = 'center';
-                    ctx.fillText(node.label, node.x, node.y + node.size + 18 / zoom);
+                    ctx.fillText(pNode.node.label, pNode.screen.x, pNode.screen.y + size + 15);
                 }
             });
-
-            ctx.restore();
         }
 
-        // Animation loop
         function animate() {
-            simulate();
+            if (autoRotate) {
+                angleY += 0.005 * rotationSpeed;
+            }
+
+            const degrees = Math.round((angleY % (Math.PI * 2)) * 180 / Math.PI);
+            document.getElementById('angleDisplay').textContent = degrees + '°';
+
             render();
             requestAnimationFrame(animate);
         }
-        animate();
+
+        document.getElementById('nodeCount').textContent = graphData.nodes.length;
+        document.getElementById('linkCount').textContent = graphData.links.length;
+
+        document.getElementById('autoRotate').addEventListener('change', (e) => {
+            autoRotate = e.target.checked;
+        });
+
+        document.getElementById('speed').addEventListener('input', (e) => {
+            rotationSpeed = parseFloat(e.target.value);
+            document.getElementById('speedValue').textContent = e.target.value;
+        });
+
+        document.getElementById('showLinks').addEventListener('change', (e) => {
+            showLinks = e.target.checked;
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            angleX = 0.3;
+            angleY = 0;
+            zoom = 100;
+            autoRotate = true;
+            document.getElementById('autoRotate').checked = true;
+        });
 
         // Navigation functions
         function navigate(page) {
@@ -671,8 +799,8 @@ But isn't that what makes it interesting?
             currentPage = 'home';
         }
 
-        // Initialize
         currentPage = 'home';
+        animate();
     </script>
 </body>
 </html>
