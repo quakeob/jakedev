@@ -1664,10 +1664,14 @@ Tools: Git, Docker, AWS, Linux
 
         // Load ASCII animation
         fetch('ascii-animation.txt')
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch');
+                return response.text();
+            })
             .then(data => {
                 const lines = data.split('\n');
                 let frame = [];
+
                 for (let i = 0; i < lines.length; i++) {
                     frame.push(lines[i]);
                     if (frame.length === 40) { // Each frame is 40 lines
@@ -1675,10 +1679,23 @@ Tools: Git, Docker, AWS, Linux
                         frame = [];
                     }
                 }
-                document.getElementById('asciiAnimation').textContent = asciiFrames[0] || 'Animation loaded!';
+
+                // Add remaining lines as last frame if any
+                if (frame.length > 0) {
+                    asciiFrames.push(frame.join('\n'));
+                }
+
+                console.log(`Loaded ${asciiFrames.length} frames`);
+
+                if (asciiFrames.length > 0) {
+                    document.getElementById('asciiAnimation').textContent = asciiFrames[0];
+                } else {
+                    document.getElementById('asciiAnimation').textContent = 'No frames loaded.';
+                }
             })
             .catch(err => {
-                document.getElementById('asciiAnimation').textContent = 'Failed to load animation.';
+                console.error('Animation load error:', err);
+                document.getElementById('asciiAnimation').textContent = 'Failed to load animation: ' + err.message;
             });
 
         document.getElementById('playBtn').addEventListener('click', () => {
