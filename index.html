@@ -1662,8 +1662,8 @@ Tools: Git, Docker, AWS, Linux
         let animationInterval = null;
         let isPlaying = false;
 
-        // Load ASCII animation
-        fetch('ascii-animation.txt')
+        // Load ASCII animation (only when easter egg page is active)
+        fetch('./ascii-animation.txt')
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch');
                 return response.text();
