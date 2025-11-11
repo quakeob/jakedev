@@ -72,7 +72,8 @@
         }
 
         .graph-container.minimized {
-            width: 60px;
+            width: 0;
+            overflow: hidden;
         }
 
         .graph-container.minimized canvas {
@@ -81,23 +82,36 @@
 
         .graph-container.minimized .controls,
         .graph-container.minimized .stats,
-        .graph-container.minimized .theme-toggle {
+        .graph-container.minimized .theme-toggle,
+        .graph-container.minimized .minimize-btn {
             display: none;
         }
 
         .minimize-toggle {
-            position: absolute;
+            position: fixed;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--control-bg);
-            padding: 15px;
-            border: 1px solid var(--control-border);
+            right: 20px;
+            transform: translateY(-50%);
+            background: transparent;
+            padding: 10px 6px;
+            border: 1px solid var(--border-color);
             z-index: 100;
             cursor: pointer;
-            font-size: 20px;
-            transition: all 0.2s;
+            font-size: 10px;
+            font-family: 'Courier New', monospace;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
             display: none;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .minimize-toggle:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+            background: transparent;
         }
 
         .graph-container.minimized .minimize-toggle {
@@ -172,6 +186,14 @@
             border: 1px solid var(--control-border);
             max-width: 240px;
             z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .controls.visible {
+            opacity: 1;
+            pointer-events: all;
         }
 
         .controls h3 {
@@ -201,6 +223,22 @@
 
         .control-group input[type="checkbox"] {
             margin-right: 8px;
+        }
+
+        .control-group select {
+            width: 100%;
+            padding: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--control-border);
+            font-size: 10px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .control-group select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
         .control-group button {
@@ -383,28 +421,340 @@
 
             <div id="projects" class="content">
                 <div class="back" onclick="goBack()">← /home/jake</div>
-                <div class="file">neural-networks/</div>
-                <div class="file">web-scraper/</div>
-                <div class="file">crypto-bot/</div>
-                <div class="file">portfolio-site/</div>
+                <div class="file" onclick="navigate('vault-keeper-project')">vault-keeper/</div>
+                <div class="file" onclick="navigate('neural-nets-project')">neural-networks/</div>
+                <div class="file" onclick="navigate('crypto-bot-project')">crypto-bot/</div>
+                <div class="file" onclick="navigate('web-scraper-project')">web-scraper/</div>
+                <div class="file" onclick="navigate('portfolio-project')">portfolio-site/</div>
+                <div class="file" onclick="navigate('calorie-tracker-project')">calorie-tracker/</div>
+                <div class="file" onclick="navigate('readme-project')">readme-project/</div>
                 <div class="file">ml-experiments/</div>
                 <div class="file">api-tools/</div>
                 <div class="file">README.md</div>
                 <pre>
 // Current projects:
+- Vault Keeper (AI accountability system)
 - Building a neural network from scratch
 - Automated trading bot (work in progress)
 - Various web scraping utilities
 - Machine learning experiments
 - This portfolio site
+- Calorie tracking automation
+- README side project
 
 // Tech stack:
 Python, JavaScript, React, Node.js, PostgreSQL, Docker
                 </pre>
             </div>
 
+            <!-- Neural Networks Project -->
+            <div id="neural-nets-project" class="content">
+                <div class="back" onclick="navigate('projects')">← /home/jake/projects</div>
+                <pre>
+NEURAL NETWORKS FROM SCRATCH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Building a neural network library in Python without using
+existing ML frameworks like TensorFlow or PyTorch.
+
+FEATURES
+- Custom backpropagation implementation
+- Multiple activation functions (ReLU, Sigmoid, Tanh)
+- Various optimization algorithms (SGD, Adam, RMSprop)
+- Layer types: Dense, Convolutional, Pooling
+- Loss functions: MSE, Cross-entropy
+- Training visualization and metrics
+
+GOALS
+- Deep understanding of neural network internals
+- Learn gradient descent and backpropagation math
+- Implement from NumPy arrays up
+- Compare performance with established frameworks
+
+CURRENT STATUS
+In progress - implementing convolutional layers
+
+Technologies: Python, NumPy, Matplotlib
+                </pre>
+            </div>
+
+            <!-- Crypto Bot Project -->
+            <div id="crypto-bot-project" class="content">
+                <div class="back" onclick="navigate('projects')">← /home/jake/projects</div>
+                <pre>
+AUTOMATED CRYPTO TRADING BOT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Algorithmic trading bot for cryptocurrency markets using
+technical analysis and machine learning predictions.
+
+FEATURES
+- Real-time market data streaming
+- Technical indicators (RSI, MACD, Bollinger Bands)
+- ML model for price prediction
+- Risk management and position sizing
+- Backtesting framework
+- Paper trading mode for testing strategies
+- Multi-exchange support
+
+STRATEGIES
+- Trend following with momentum indicators
+- Mean reversion on volatility
+- ML-based pattern recognition
+- Sentiment analysis from social media
+
+CHALLENGES
+- Market volatility and risk management
+- Latency and execution speed
+- Overfitting in backtests
+- API rate limits
+
+Technologies: Python, Pandas, scikit-learn, WebSocket APIs
+                </pre>
+            </div>
+
+            <!-- Web Scraper Project -->
+            <div id="web-scraper-project" class="content">
+                <div class="back" onclick="navigate('projects')">← /home/jake/projects</div>
+                <pre>
+WEB SCRAPING TOOLKIT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Collection of web scraping utilities for data extraction,
+monitoring, and automation across various websites.
+
+CAPABILITIES
+- Dynamic content scraping (JavaScript-rendered pages)
+- Anti-bot detection evasion
+- Rotating proxies and user agents
+- CAPTCHA solving integration
+- Rate limiting and politeness
+- Data cleaning and normalization
+- Export to CSV, JSON, databases
+
+USE CASES
+- Price monitoring and comparison
+- Research data collection
+- Job listing aggregation
+- Social media analytics
+- News and content aggregation
+
+TECHNICAL APPROACH
+- Selenium for dynamic content
+- BeautifulSoup for HTML parsing
+- Scrapy framework for large-scale scraping
+- Headless browser automation
+- Async requests for performance
+
+Technologies: Python, Selenium, BeautifulSoup, Scrapy, PostgreSQL
+                </pre>
+            </div>
+
+            <!-- Portfolio Site Project -->
+            <div id="portfolio-project" class="content">
+                <div class="back" onclick="navigate('projects')">← /home/jake/projects</div>
+                <pre>
+INTERACTIVE PORTFOLIO SITE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This portfolio website featuring a 3D brain-shaped knowledge
+graph visualization of skills and technologies.
+
+FEATURES
+- 3D rotating brain visualization
+- Canvas-based particle physics
+- 48+ nodes representing skills/technologies
+- Interactive node exploration
+- Drag to rotate, scroll to zoom
+- Light/dark mode toggle
+- Minimizable graph panel
+- Responsive design
+
+TECHNICAL HIGHLIGHTS
+- Custom 3D projection mathematics
+- Brain-region based node positioning
+- Floating animation with sine waves
+- High-DPI canvas rendering
+- CSS custom properties for theming
+- No frameworks - vanilla JavaScript
+
+BRAIN REGIONS
+- Frontal: Technical skills & programming
+- Parietal: Tools & infrastructure
+- Temporal: Neuroscience & learning
+- Occipital: Frontend & communication
+- Central: Core identity
+- Cerebellum: Experimental projects
+
+Technologies: Vanilla JavaScript, HTML5 Canvas, CSS
+                </pre>
+            </div>
+
+            <!-- Vault Keeper Project -->
+            <div id="vault-keeper-project" class="content">
+                <div class="back" onclick="navigate('projects')">← /home/jake/projects</div>
+                <pre>
+VAULT KEEPER - AI ACCOUNTABILITY SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+An Obsidian-based personal accountability system powered by
+Claude AI that reads daily journals and holds you accountable
+to your own stated goals.
+
+CORE CONCEPT
+Uses your own words against you. Reads journal entries, tracks
+behavioral patterns, and generates accountability briefs that
+call out the gap between what you say you'll do and what you
+actually do.
+
+FEATURES
+✓ Pattern Detection
+  - Self-sabotage cycles
+  - Avoidance behaviors (gym, scrolling, nutrition)
+  - Late Vyvanse timing patterns
+  - Post-success drift windows
+
+✓ Data Analysis
+  - Correlation finder (sleep→exam performance, etc.)
+  - Weekly trend analysis
+  - Momentum tracking with streak gamification
+  - Predictive drift warnings
+
+✓ Accountability Tools
+  - Daily morning check-ins
+  - Friday comprehensive reviews
+  - One-button reset plans when drift activates
+  - Priority Stack dashboard with live metrics
+
+✓ Smart Features
+  - Pattern prediction (which pattern activates next)
+  - Visual tracking (charts, graphs, heatmaps)
+  - Tag management for vault organization
+  - System innovation suggestions
+
+TECHNICAL ARCHITECTURE
+- Obsidian vault as data source
+- Claude Code CLI integration
+- Custom slash commands (/morning, /friday-review, /reset)
+- Specialized AI agents (vault-keeper, pattern-scan, etc.)
+- MCP skills system for modular functionality
+- Markdown-based outputs for vault integration
+
+WHY IT WORKS
+Traditional accountability = external pressure
+Vault Keeper = your own documented reality
+
+When you write "I'll wake up at 7am" then sleep til 10am for
+3 days straight, VK shows you the pattern. No judgment, just
+facts from your own journal.
+
+STATUS
+✅ Complete and ready to distribute
+Production-ready accountability system for Obsidian users
+
+USE CASES
+- Students tracking study habits and exam performance
+- Anyone with ADHD managing medication timing and routines
+- Fitness tracking and pattern recognition
+- General productivity and goal accountability
+
+Technologies: Claude AI, Obsidian, Markdown, MCP Protocol
+Contact: jake@bryt.works | jakedev.org
+                </pre>
+            </div>
+
+            <!-- Calorie Tracker Project -->
+            <div id="calorie-tracker-project" class="content">
+                <div class="back" onclick="navigate('projects')">← /home/jake/projects</div>
+                <pre>
+AUTOMATED CALORIE TRACKING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Integration system to automatically populate nutrition
+metrics in Obsidian vault from external calorie tracking
+sources.
+
+CONCEPT
+Eliminate manual data entry for nutrition tracking by
+pulling calorie/macro data directly into daily journal
+templates.
+
+PLANNED FEATURES
+- API integration with MyFitnessPal, LoseIt, or Cronometer
+- Automatic daily nutrition summary in journal
+- Macro breakdown visualization
+- Correlation with energy levels and productivity
+- Integration with Vault Keeper for pattern analysis
+
+TECHNICAL APPROACH
+- REST API calls to nutrition tracking services
+- Data parsing and formatting
+- Obsidian Dataview integration
+- Scheduled data pulls (daily/hourly)
+- Local caching for offline access
+
+VAULT KEEPER SYNERGY
+Once integrated, VK can analyze:
+- Nutrition → Vyvanse effectiveness correlation
+- Protein intake → gym performance
+- Calorie deficit → energy/mood patterns
+- Meal timing → sleep quality
+
+STATUS
+💡 Idea phase - not yet implemented
+
+CHALLENGES TO SOLVE
+- API access and authentication
+- Data format standardization
+- Handling missing/incomplete data
+- Privacy and local-first approach
+
+Technologies: Python, REST APIs, Obsidian Dataview
+                </pre>
+            </div>
+
+            <!-- README Project -->
+            <div id="readme-project" class="content">
+                <div class="back" onclick="navigate('projects')">← /home/jake/projects</div>
+                <pre>
+README PROJECT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Side project started post-exam period (mentioned Nov 5).
+
+STATUS
+🚧 Work in progress
+
+DESCRIPTION
+[Details not in vault - more information needed]
+
+This appears to be a project you started working on after
+finishing exams, during a period of high motivation.
+
+TIMELINE
+- Started: Around November 5, 2024
+- Current status: Unknown
+- Context: Post-exam side project
+
+NOTES
+To expand this section, please provide:
+- What is README?
+- What problem does it solve?
+- What technologies are you using?
+- Current progress and goals?
+
+Technologies: [To be determined]
+                </pre>
+            </div>
+
             <div id="about" class="content">
                 <div class="back" onclick="goBack()">← /home/jake</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin: 20px 0;">
+                    <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/DSCF7420.jpg" alt="Jake Davis" style="max-width: 300px; border: 1px solid var(--border-color);">
+                    <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/DSCF3430.JPG" alt="Photography" style="max-width: 300px; border: 1px solid var(--border-color);">
+                    <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/DSCF3995.JPG" alt="Outdoors" style="max-width: 300px; border: 1px solid var(--border-color);">
+                    <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/77DF0DEE-DE73-4B5F-BD82-1E3463E1F05E_1_201_a.jpeg" alt="Mountaineering" style="max-width: 300px; border: 1px solid var(--border-color);">
+                </div>
                 <pre>
 Jake Davis
 
@@ -413,6 +763,13 @@ Interested in machine learning, web development, automation, and the human brain
 
 Currently working on various personal projects and learning new technologies.
 Always looking for interesting problems to solve.
+
+When I'm not coding, you'll find me:
+- Photography
+- Outdoors (hiking, backpacking, mountaineering)
+- Climbing (bouldering and lead)
+- Skiing
+- Traveling
 
 Location: Earth
 Status: Online
@@ -483,35 +840,23 @@ Tools: Git, Docker, AWS, Linux
 
             <div id="hidden" class="content">
                 <div class="back" onclick="goBack()">← /</div>
-                <pre>
-You found the secret file!
-
-    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    ░░░█████░░██████░░░███░░░███████░░░░░░░
-    ░░░█░░░█░░█░░░░█░░█░░░█░░░░░█░░░░░░░░░░
-    ░░░█░░░█░░█░░░░█░░█░░░█░░░░░█░░░░░░░░░░
-    ░░░█████░░██████░░░███░░░░░░█░░░░░░░░░░
-    ░░░█░░░█░░█░░░░█░░░░░█░░░░░░█░░░░░░░░░░
-    ░░░█░░░█░░█░░░░█░░░░░█░░░░░░█░░░░░░░░░░
-    ░░░█████░░█░░░░█░░████░░░░░░█░░░░░░░░░░
-    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-Sometimes the best things are hidden in plain sight.
-This path leads to more questions than answers.
-But isn't that what makes it interesting?
-
-// Congratulations on finding this
-// Keep exploring, keep questioning
-                </pre>
+                <pre id="asciiAnimation" style="font-size: 6px; line-height: 6px; white-space: pre; overflow: hidden;">Loading...</pre>
+                <div style="margin-top: 20px; font-family: 'Courier New', monospace; color: var(--text-secondary);">
+                    <button id="playBtn" style="background: var(--button-bg); color: var(--button-text); border: 1px solid var(--border-color); padding: 8px 16px; cursor: pointer; font-family: 'Courier New', monospace; margin-right: 10px;">Play</button>
+                    <button id="pauseBtn" style="background: var(--button-bg); color: var(--button-text); border: 1px solid var(--border-color); padding: 8px 16px; cursor: pointer; font-family: 'Courier New', monospace;">Pause</button>
+                    <div style="margin-top: 15px; font-size: 11px;">
+                        You found the secret.<br>
+                        // Keep exploring, keep questioning
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="graph-container" id="graphContainer">
             <canvas id="canvas"></canvas>
 
-            <div class="minimize-btn" id="minimizeBtn">← Minimize</div>
-            <div class="minimize-toggle" id="minimizeToggle">→</div>
+            <div class="minimize-btn" id="minimizeBtn">Hide Graph</div>
+            <div class="minimize-toggle" id="minimizeToggle">Show Graph</div>
             <div class="theme-toggle" id="themeToggle">☀ Light Mode</div>
 
             <div class="controls">
@@ -534,6 +879,29 @@ But isn't that what makes it interesting?
                         <input type="checkbox" id="showLinks" checked>
                         Show Connections
                     </label>
+                </div>
+
+                <div class="control-group">
+                    <label>Brain Region:</label>
+                    <select id="regionSelect">
+                        <option value="">All Regions</option>
+                        <option value="frontal">Frontal (Programming)</option>
+                        <option value="parietal">Parietal (Tools)</option>
+                        <option value="temporal">Temporal (Neuroscience)</option>
+                        <option value="occipital">Occipital (Frontend)</option>
+                        <option value="central">Central (Core)</option>
+                        <option value="cerebellum">Cerebellum (Experimental)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Node Spread: <span id="repulsionValue">1.0</span></label>
+                    <input type="range" id="repulsion" min="0.5" max="2" step="0.1" value="1">
+                </div>
+
+                <div class="control-group">
+                    <label>Float Speed: <span id="floatSpeedValue">1.0</span></label>
+                    <input type="range" id="floatSpeed" min="0" max="3" step="0.1" value="1">
                 </div>
 
                 <div class="control-group">
@@ -580,6 +948,13 @@ But isn't that what makes it interesting?
 
                 // Frontal lobe - technical skills & programming
                 { id: 'projects', label: 'Projects', region: 'frontal', size: 12, navigable: true },
+                { id: 'vault-keeper-project', label: 'Vault Keeper', region: 'frontal', size: 11, navigable: true },
+                { id: 'neural-nets-project', label: 'Neural Nets', region: 'frontal', size: 10, navigable: true },
+                { id: 'crypto-bot-project', label: 'Crypto Bot', region: 'frontal', size: 9, navigable: true },
+                { id: 'web-scraper-project', label: 'Web Scraper', region: 'frontal', size: 9, navigable: true },
+                { id: 'portfolio-project', label: 'Portfolio', region: 'frontal', size: 8, navigable: true },
+                { id: 'calorie-tracker-project', label: 'Calorie Tracker', region: 'frontal', size: 8, navigable: true },
+                { id: 'readme-project', label: 'README', region: 'frontal', size: 7, navigable: true },
                 { id: 'ml', label: 'Machine Learning', region: 'frontal', size: 10 },
                 { id: 'neural-nets', label: 'Neural Networks', region: 'frontal', size: 9 },
                 { id: 'python', label: 'Python', region: 'frontal', size: 10 },
@@ -591,6 +966,11 @@ But isn't that what makes it interesting?
                 { id: 'ai', label: 'AI', region: 'frontal', size: 9 },
                 { id: 'deep-learning', label: 'Deep Learning', region: 'frontal', size: 8 },
                 { id: 'data-science', label: 'Data Science', region: 'frontal', size: 8 },
+                { id: 'backpropagation', label: 'Backpropagation', region: 'frontal', size: 7 },
+                { id: 'numpy', label: 'NumPy', region: 'frontal', size: 7 },
+                { id: 'matplotlib', label: 'Matplotlib', region: 'frontal', size: 6 },
+                { id: 'claude-ai', label: 'Claude AI', region: 'frontal', size: 8 },
+                { id: 'pattern-recognition', label: 'Pattern Recognition', region: 'frontal', size: 7 },
 
                 // Parietal - tools & infrastructure
                 { id: 'resume', label: 'Resume', region: 'parietal', size: 11, navigable: true },
@@ -601,6 +981,21 @@ But isn't that what makes it interesting?
                 { id: 'postgresql', label: 'PostgreSQL', region: 'parietal', size: 7 },
                 { id: 'linux', label: 'Linux', region: 'parietal', size: 7 },
                 { id: 'api', label: 'REST APIs', region: 'parietal', size: 7 },
+                { id: 'websocket', label: 'WebSocket', region: 'parietal', size: 6 },
+                { id: 'pandas', label: 'Pandas', region: 'parietal', size: 7 },
+                { id: 'sklearn', label: 'scikit-learn', region: 'parietal', size: 6 },
+                { id: 'rsi', label: 'RSI', region: 'parietal', size: 6 },
+                { id: 'macd', label: 'MACD', region: 'parietal', size: 6 },
+                { id: 'bollinger', label: 'Bollinger Bands', region: 'parietal', size: 6 },
+                { id: 'backtesting', label: 'Backtesting', region: 'parietal', size: 7 },
+                { id: 'selenium', label: 'Selenium', region: 'parietal', size: 7 },
+                { id: 'beautifulsoup', label: 'BeautifulSoup', region: 'parietal', size: 7 },
+                { id: 'scrapy', label: 'Scrapy', region: 'parietal', size: 6 },
+                { id: 'canvas', label: 'Canvas API', region: 'parietal', size: 7 },
+                { id: '3d-graphics', label: '3D Graphics', region: 'parietal', size: 6 },
+                { id: 'mcp-protocol', label: 'MCP Protocol', region: 'parietal', size: 7 },
+                { id: 'markdown', label: 'Markdown', region: 'parietal', size: 7 },
+                { id: 'dataview', label: 'Dataview', region: 'parietal', size: 6 },
 
                 // Temporal - neuroscience & learning
                 { id: 'neuroscience', label: 'Neuroscience', region: 'temporal', size: 11 },
@@ -707,14 +1102,121 @@ But isn't that what makes it interesting?
                 { source: 'obsidian', target: 'automation' },
                 { source: 'misc', target: 'obsidian' },
                 { source: 'java', target: 'projects' },
-                { source: 'cpp', target: 'projects' }
+                { source: 'cpp', target: 'projects' },
+
+                // Neural Networks Project connections
+                { source: 'projects', target: 'neural-nets-project' },
+                { source: 'neural-nets-project', target: 'neural-nets' },
+                { source: 'neural-nets-project', target: 'backpropagation' },
+                { source: 'neural-nets-project', target: 'numpy' },
+                { source: 'neural-nets-project', target: 'matplotlib' },
+                { source: 'neural-nets-project', target: 'python' },
+                { source: 'backpropagation', target: 'neural-nets' },
+                { source: 'numpy', target: 'python' },
+                { source: 'matplotlib', target: 'python' },
+
+                // Crypto Bot Project connections
+                { source: 'projects', target: 'crypto-bot-project' },
+                { source: 'crypto-bot-project', target: 'ml' },
+                { source: 'crypto-bot-project', target: 'pandas' },
+                { source: 'crypto-bot-project', target: 'sklearn' },
+                { source: 'crypto-bot-project', target: 'websocket' },
+                { source: 'crypto-bot-project', target: 'rsi' },
+                { source: 'crypto-bot-project', target: 'macd' },
+                { source: 'crypto-bot-project', target: 'bollinger' },
+                { source: 'crypto-bot-project', target: 'backtesting' },
+                { source: 'crypto-bot-project', target: 'python' },
+                { source: 'rsi', target: 'pandas' },
+                { source: 'macd', target: 'pandas' },
+                { source: 'bollinger', target: 'pandas' },
+                { source: 'backtesting', target: 'data-science' },
+
+                // Web Scraper Project connections
+                { source: 'projects', target: 'web-scraper-project' },
+                { source: 'web-scraper-project', target: 'selenium' },
+                { source: 'web-scraper-project', target: 'beautifulsoup' },
+                { source: 'web-scraper-project', target: 'scrapy' },
+                { source: 'web-scraper-project', target: 'python' },
+                { source: 'web-scraper-project', target: 'automation' },
+                { source: 'selenium', target: 'automation' },
+                { source: 'beautifulsoup', target: 'python' },
+                { source: 'scrapy', target: 'python' },
+
+                // Portfolio Project connections
+                { source: 'projects', target: 'portfolio-project' },
+                { source: 'portfolio-project', target: 'canvas' },
+                { source: 'portfolio-project', target: '3d-graphics' },
+                { source: 'portfolio-project', target: 'javascript' },
+                { source: 'portfolio-project', target: 'html-css' },
+                { source: 'canvas', target: 'javascript' },
+                { source: '3d-graphics', target: 'canvas' },
+
+                // Vault Keeper Project connections
+                { source: 'projects', target: 'vault-keeper-project' },
+                { source: 'vault-keeper-project', target: 'obsidian' },
+                { source: 'vault-keeper-project', target: 'claude-ai' },
+                { source: 'vault-keeper-project', target: 'pattern-recognition' },
+                { source: 'vault-keeper-project', target: 'mcp-protocol' },
+                { source: 'vault-keeper-project', target: 'markdown' },
+                { source: 'vault-keeper-project', target: 'ai' },
+                { source: 'vault-keeper-project', target: 'automation' },
+                { source: 'claude-ai', target: 'ai' },
+                { source: 'pattern-recognition', target: 'ml' },
+                { source: 'pattern-recognition', target: 'data-science' },
+                { source: 'mcp-protocol', target: 'automation' },
+                { source: 'markdown', target: 'obsidian' },
+                { source: 'dataview', target: 'obsidian' },
+
+                // Calorie Tracker Project connections
+                { source: 'projects', target: 'calorie-tracker-project' },
+                { source: 'calorie-tracker-project', target: 'obsidian' },
+                { source: 'calorie-tracker-project', target: 'api' },
+                { source: 'calorie-tracker-project', target: 'python' },
+                { source: 'calorie-tracker-project', target: 'dataview' },
+                { source: 'calorie-tracker-project', target: 'automation' },
+                { source: 'calorie-tracker-project', target: 'vault-keeper-project' },
+
+                // README Project connections
+                { source: 'projects', target: 'readme-project' }
             ]
         };
+
+        // Initialize all control variables at the top
+        let animationTime = 0;
+        let angleX = 0.3;
+        let angleY = 0;
+        let autoRotate = true;
+        let rotationSpeed = 1;
+        let zoom = 100;
+        let showLinks = true;
+        let highlightedRegion = null;
+        let nodeRepulsion = 1.0;
+        let connectionStrength = 1.0;
+        let floatSpeedMultiplier = 1.0;
+        let hoveredNode = null;
+        let isDragging = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let dragStartTime = 0;
+        let autoRotateTimer = null;
+
+        function resetAutoRotateTimer() {
+            // Clear existing timer
+            if (autoRotateTimer) {
+                clearTimeout(autoRotateTimer);
+            }
+
+            // Set new timer to re-enable auto-rotate after 4 seconds
+            autoRotateTimer = setTimeout(() => {
+                autoRotate = true;
+                document.getElementById('autoRotate').checked = true;
+            }, 4000);
+        }
 
         function positionNodesInBrain() {
             graphData.nodes.forEach(node => {
                 let x, y, z;
-                const spread = 0.8 + Math.random() * 0.4;
+                const spread = (0.8 + Math.random() * 0.4) * nodeRepulsion;
 
                 switch(node.region) {
                     case 'frontal':
@@ -784,10 +1286,8 @@ But isn't that what makes it interesting?
 
         positionNodesInBrain();
 
-        let animationTime = 0;
-
         function updateNodePositions() {
-            animationTime += 1;
+            animationTime += floatSpeedMultiplier;
 
             graphData.nodes.forEach(node => {
                 // Create gentle floating motion using sine waves
@@ -801,13 +1301,6 @@ But isn't that what makes it interesting?
                 node.z3d = node.baseZ + offsetZ;
             });
         }
-
-        let angleX = 0.3;
-        let angleY = 0;
-        let autoRotate = true;
-        let rotationSpeed = 1;
-        let zoom = 100;
-        let showLinks = true;
 
         function rotateX(point, angle) {
             const cos = Math.cos(angle);
@@ -843,12 +1336,6 @@ But isn't that what makes it interesting?
             };
         }
 
-        let hoveredNode = null;
-        let isDragging = false;
-        let lastMouseX = 0;
-        let lastMouseY = 0;
-        let dragStartTime = 0;
-
         function getNodeAt(x, y, projectedNodes) {
             return projectedNodes.find(pNode => {
                 const dx = x - pNode.screen.x;
@@ -866,6 +1353,20 @@ But isn't that what makes it interesting?
         });
 
         canvas.addEventListener('mousemove', (e) => {
+            // Show/hide controls based on mouse position
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const controlsPanel = document.querySelector('.controls');
+
+            // Show controls if mouse is in top-right corner (within 300px from top-right)
+            if (mouseX > rect.width - 300 && mouseY < 300) {
+                controlsPanel.classList.add('visible');
+            } else {
+                controlsPanel.classList.remove('visible');
+            }
+
             if (isDragging) {
                 const deltaX = e.clientX - lastMouseX;
                 const deltaY = e.clientY - lastMouseY;
@@ -875,6 +1376,7 @@ But isn't that what makes it interesting?
                 lastMouseY = e.clientY;
                 autoRotate = false;
                 document.getElementById('autoRotate').checked = false;
+                resetAutoRotateTimer();
             } else {
                 const projectedNodes = graphData.nodes.map(node => {
                     let rotated = rotateX({ x: node.x3d, y: node.y3d, z: node.z3d }, angleX);
@@ -883,7 +1385,12 @@ But isn't that what makes it interesting?
                     return { node, screen, rotated };
                 });
 
-                const newHoveredNode = getNodeAt(e.clientX, e.clientY, projectedNodes);
+                // Convert mouse position to canvas-relative coordinates
+                const canvasRect = canvas.getBoundingClientRect();
+                const mouseCanvasX = e.clientX - canvasRect.left;
+                const mouseCanvasY = e.clientY - canvasRect.top;
+
+                const newHoveredNode = getNodeAt(mouseCanvasX, mouseCanvasY, projectedNodes);
 
                 if (newHoveredNode !== hoveredNode) {
                     hoveredNode = newHoveredNode;
@@ -925,6 +1432,13 @@ But isn't that what makes it interesting?
             e.preventDefault();
             zoom *= e.deltaY > 0 ? 0.9 : 1.1;
             zoom = Math.max(50, Math.min(300, zoom));
+
+            // Disable auto-rotate on zoom and reset timer
+            if (autoRotate) {
+                autoRotate = false;
+                document.getElementById('autoRotate').checked = false;
+            }
+            resetAutoRotateTimer();
         });
 
         function render() {
@@ -943,13 +1457,33 @@ But isn't that what makes it interesting?
             projectedNodes.sort((a, b) => b.screen.depth - a.screen.depth);
 
             if (showLinks) {
-                ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.12)';
-                ctx.lineWidth = 1;
                 graphData.links.forEach(link => {
                     const source = projectedNodes.find(n => n.node.id === link.source);
                     const target = projectedNodes.find(n => n.node.id === link.target);
 
                     if (source && target) {
+                        // Check if this link is connected to hovered node
+                        const isHighlighted = hoveredNode &&
+                            (hoveredNode.node.id === link.source || hoveredNode.node.id === link.target);
+
+                        // Check if link is in highlighted region
+                        const inRegion = !highlightedRegion ||
+                            (source.node.region === highlightedRegion || target.node.region === highlightedRegion);
+
+                        if (isHighlighted) {
+                            ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)';
+                            ctx.lineWidth = 2;
+                        } else if (inRegion) {
+                            ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.12)';
+                            ctx.lineWidth = 1;
+                        } else if (highlightedRegion) {
+                            ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.04)';
+                            ctx.lineWidth = 1;
+                        } else {
+                            ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.12)';
+                            ctx.lineWidth = 1;
+                        }
+
                         ctx.beginPath();
                         ctx.moveTo(source.screen.x, source.screen.y);
                         ctx.lineTo(target.screen.x, target.screen.y);
@@ -963,23 +1497,38 @@ But isn't that what makes it interesting?
                 const isHovered = hoveredNode && hoveredNode.node.id === pNode.node.id;
                 const isActive = pNode.node.id === currentPage;
 
+                // Check if this node is connected to hovered node
+                const isConnected = hoveredNode && graphData.links.some(link =>
+                    (link.source === hoveredNode.node.id && link.target === pNode.node.id) ||
+                    (link.target === hoveredNode.node.id && link.source === pNode.node.id)
+                );
+
+                // Check if node is in highlighted region
+                const inRegion = !highlightedRegion || pNode.node.region === highlightedRegion;
+                const dimmed = highlightedRegion && !inRegion;
+
                 const brightness = Math.floor(150 + (pNode.screen.depth - 3) * -30);
-                const gray = isLight
+                let gray = isLight
                     ? Math.max(50, Math.min(200, 255 - brightness))  // Inverted for light mode
                     : Math.max(100, Math.min(255, brightness));      // Dark mode
+
+                // Dim nodes that aren't in highlighted region
+                if (dimmed) {
+                    gray = isLight ? Math.min(gray + 80, 240) : Math.max(gray - 80, 40);
+                }
 
                 ctx.beginPath();
                 ctx.arc(pNode.screen.x, pNode.screen.y, size, 0, Math.PI * 2);
                 ctx.fillStyle = `rgb(${gray}, ${gray}, ${gray})`;
                 ctx.fill();
 
-                if (isHovered || isActive) {
+                if (isHovered || isActive || isConnected) {
                     ctx.strokeStyle = isLight ? '#000000' : '#ffffff';
-                    ctx.lineWidth = isActive ? 3 : 2;
+                    ctx.lineWidth = isActive ? 3 : (isConnected ? 1.5 : 2);
                     ctx.stroke();
                 }
 
-                if (isHovered || isActive || pNode.node.size > 11) {
+                if (isHovered || isActive || isConnected) {
                     ctx.font = '11px monospace';
                     ctx.fillStyle = isLight ? '#000000' : '#ffffff';
                     ctx.textAlign = 'center';
@@ -1019,12 +1568,37 @@ But isn't that what makes it interesting?
             showLinks = e.target.checked;
         });
 
+        document.getElementById('regionSelect').addEventListener('change', (e) => {
+            highlightedRegion = e.target.value || null;
+        });
+
+        document.getElementById('repulsion').addEventListener('input', (e) => {
+            nodeRepulsion = parseFloat(e.target.value);
+            document.getElementById('repulsionValue').textContent = e.target.value;
+            // Reposition nodes with new spread
+            positionNodesInBrain();
+        });
+
+        document.getElementById('floatSpeed').addEventListener('input', (e) => {
+            floatSpeedMultiplier = parseFloat(e.target.value);
+            document.getElementById('floatSpeedValue').textContent = e.target.value;
+        });
+
         document.getElementById('resetBtn').addEventListener('click', () => {
             angleX = 0.3;
             angleY = 0;
             zoom = 100;
             autoRotate = true;
+            highlightedRegion = null;
+            nodeRepulsion = 1.0;
+            floatSpeedMultiplier = 1.0;
             document.getElementById('autoRotate').checked = true;
+            document.getElementById('regionSelect').value = '';
+            document.getElementById('repulsion').value = '1';
+            document.getElementById('repulsionValue').textContent = '1.0';
+            document.getElementById('floatSpeed').value = '1';
+            document.getElementById('floatSpeedValue').textContent = '1.0';
+            positionNodesInBrain();
         });
 
         // Theme toggle
@@ -1063,6 +1637,9 @@ But isn't that what makes it interesting?
             });
             document.getElementById(page).classList.add('active');
             currentPage = page;
+
+            // Auto-minimize graph when navigating to a page
+            document.getElementById('graphContainer').classList.add('minimized');
         }
 
         function goBack() {
@@ -1071,10 +1648,56 @@ But isn't that what makes it interesting?
                 content.classList.remove('active');
             });
             currentPage = 'home';
+
+            // Auto-show graph when going back to main menu
+            document.getElementById('graphContainer').classList.remove('minimized');
         }
 
         currentPage = 'home';
         animate();
+
+        // ASCII Animation Easter Egg
+        let asciiFrames = [];
+        let currentFrame = 0;
+        let animationInterval = null;
+        let isPlaying = false;
+
+        // Load ASCII animation
+        fetch('ascii-animation.txt')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                let frame = [];
+                for (let i = 0; i < lines.length; i++) {
+                    frame.push(lines[i]);
+                    if (frame.length === 40) { // Each frame is 40 lines
+                        asciiFrames.push(frame.join('\n'));
+                        frame = [];
+                    }
+                }
+                document.getElementById('asciiAnimation').textContent = asciiFrames[0] || 'Animation loaded!';
+            })
+            .catch(err => {
+                document.getElementById('asciiAnimation').textContent = 'Failed to load animation.';
+            });
+
+        document.getElementById('playBtn').addEventListener('click', () => {
+            if (!isPlaying && asciiFrames.length > 0) {
+                isPlaying = true;
+                animationInterval = setInterval(() => {
+                    currentFrame = (currentFrame + 1) % asciiFrames.length;
+                    document.getElementById('asciiAnimation').textContent = asciiFrames[currentFrame];
+                }, 100); // 10 FPS
+            }
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            isPlaying = false;
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
+        });
     </script>
 </body>
 </html>
