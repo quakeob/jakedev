@@ -1732,10 +1732,14 @@ Creative: Photography, videography, drone operations
                 let frame = [];
 
                 for (let i = 0; i < lines.length; i++) {
-                    frame.push(lines[i]);
-                    if (frame.length === 40) { // Each frame is 40 lines
-                        asciiFrames.push(frame.join('\n'));
-                        frame = [];
+                    if (lines[i] === '') {
+                        // Blank line indicates end of frame
+                        if (frame.length > 0) {
+                            asciiFrames.push(frame.join('\n'));
+                            frame = [];
+                        }
+                    } else {
+                        frame.push(lines[i]);
                     }
                 }
 
