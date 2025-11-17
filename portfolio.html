@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>portfolio - jake davis</title>
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --border-color: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #666666;
+            --text-tertiary: #cccccc;
+        }
+
+        body.light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --border-color: #e0e0e0;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --text-tertiary: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 40px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .back-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            color: var(--text-secondary);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            background: var(--bg-secondary);
+            transition: transform 0.2s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .gallery-item h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        .gallery-item p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .category {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">toggle light/dark</button>
+
+    <div class="header">
+        <a href="/" class="back-link">← back to home</a>
+        <h1>/home/jake/portfolio</h1>
+        <p class="subtitle">a collection of work and projects</p>
+    </div>
+
+    <div class="category">
+        <div class="category-title">━━━ WORK EXPERIENCE ━━━</div>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://a.mktgcdn.com/p/KZ5L__GlKXT5x5C2xftysvPN4YS2FXPfKT7OUKgujvo/640x427.jpg" alt="Burton Park City">
+                <h3>Burton - Park City</h3>
+                <p>Retail Sales Representative | 2020-2021<br>Snowboarding gear and outerwear specialist</p>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://www.sltrib.com/resizer/v2/Z2XWII3NBFHPNPNKODENT2IGEA.jpg?auth=88fd88ab64d778c7332b149cfca136aeae36ad0dff0c49452015ca22534ebda4&width=700&quality=88" alt="Ice Castles">
+                <h3>Ice Castles</h3>
+                <p>Photo & Video Team | 2017-2020<br>Large-scale ice structure photography and content production</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="category">
+        <div class="category-title">━━━ PERSONAL PHOTOGRAPHY ━━━</div>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/DSCF7420.jpg" alt="Portrait">
+                <h3>Portrait</h3>
+                <p>Personal photography work</p>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/DSCF3430.JPG" alt="Landscape">
+                <h3>Landscape</h3>
+                <p>Outdoor and nature photography</p>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/DSCF3995.JPG" alt="Adventure">
+                <h3>Adventure</h3>
+                <p>Climbing and outdoor adventures</p>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://raw.githubusercontent.com/quakeob/jakedev/main/77DF0DEE-DE73-4B5F-BD82-1E3463E1F05E_1_201_a.jpeg" alt="Mountaineering">
+                <h3>Mountaineering</h3>
+                <p>High-altitude expeditions and climbing</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+</body>
+</html>
