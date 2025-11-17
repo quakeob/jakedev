@@ -404,6 +404,7 @@
                 <div class="path" onclick="navigate('about')">/home/jake/about.txt</div>
                 <div class="path" onclick="navigate('contact')">/home/jake/contact</div>
                 <div class="path" onclick="navigate('resume')">/home/jake/resume.pdf</div>
+                <div class="path" onclick="window.open('/portfolio', '_blank')" style="cursor: pointer;">/home/jake/portfolio</div>
                 <div class="path" onclick="navigate('misc')">/var/log/thoughts</div>
                 <div class="path" onclick="navigate('hidden')">/test/1099/w-2/fun/find-me.txt</div>
             </div>
@@ -412,6 +413,7 @@
                 <div class="back" onclick="goBack()">← /</div>
                 <div class="file" onclick="navigate('about')">about.txt</div>
                 <div class="file" onclick="navigate('contact')">contact/</div>
+                <div class="file" onclick="window.open('/portfolio', '_blank')" style="cursor: pointer;">portfolio/</div>
                 <div class="file" onclick="navigate('projects')">projects/</div>
                 <div class="file" onclick="navigate('resume')">resume.pdf</div>
                 <div class="file">.bashrc</div>
@@ -1080,6 +1082,7 @@ Creative: Photography, videography, drone operations
 
                 // Occipital - communication & frontend
                 { id: 'contact', label: 'Contact', region: 'occipital', size: 10, navigable: true },
+                { id: 'portfolio', label: 'Photo Portfolio', region: 'occipital', size: 11, navigable: true, external: true },
                 { id: 'html-css', label: 'HTML/CSS', region: 'occipital', size: 8 },
                 { id: 'ui-ux', label: 'UI/UX', region: 'occipital', size: 7 },
                 { id: 'github', label: 'GitHub', region: 'occipital', size: 7 },
@@ -1159,6 +1162,9 @@ Creative: Photography, videography, drone operations
 
                 // Frontend & design
                 { source: 'contact', target: 'github' },
+                { source: 'about', target: 'portfolio' },
+                { source: 'portfolio', target: 'ui-ux' },
+                { source: 'portfolio', target: 'html-css' },
                 { source: 'web-dev', target: 'html-css' },
                 { source: 'html-css', target: 'ui-ux' },
                 { source: 'ui-ux', target: 'react' },
@@ -1487,7 +1493,11 @@ Creative: Photography, videography, drone operations
 
             // If click was quick (not a drag), navigate
             if (dragDuration < 200 && hoveredNode && hoveredNode.node.navigable) {
-                navigate(hoveredNode.node.id);
+                if (hoveredNode.node.external) {
+                    window.open('/' + hoveredNode.node.id, '_blank');
+                } else {
+                    navigate(hoveredNode.node.id);
+                }
             }
 
             isDragging = false;
