@@ -314,6 +314,28 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .graph-container {
+                width: 0 !important;
+                height: 0 !important;
+                overflow: hidden;
+            }
+
+            .graph-container.minimized {
+                width: 0;
+                height: 0;
+            }
+
+            .main-content {
+                height: 100vh;
+                width: 100%;
+            }
+
+            .minimize-toggle {
+                display: none;
+            }
+        }
+
         .path {
             margin-bottom: 8px;
             cursor: pointer;
