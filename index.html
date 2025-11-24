@@ -326,6 +326,23 @@
                 height: 0;
             }
 
+            .graph-container:not(.minimized) {
+                width: 100% !important;
+                height: 100vh !important;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 999;
+            }
+
+            .graph-container:not(.minimized) .minimize-btn {
+                display: block !important;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+
             .main-content {
                 height: 100vh;
                 width: 100%;
@@ -334,6 +351,25 @@
             .minimize-toggle {
                 display: none;
             }
+
+            .mobile-graph-toggle {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: var(--button-bg);
+                color: var(--button-text);
+                border: 1px solid var(--border-color);
+                padding: 12px 20px;
+                cursor: pointer;
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+                z-index: 100;
+            }
+        }
+
+        .mobile-graph-toggle {
+            display: none;
         }
 
         .path {
@@ -441,6 +477,7 @@
                 <div class="file">.bashrc</div>
                 <div class="file">.ssh/</div>
                 <div class="file">documents/</div>
+                <button class="mobile-graph-toggle" onclick="toggleMobileGraph()">Show Graph</button>
             </div>
 
             <div id="projects" class="content">
@@ -1743,6 +1780,11 @@ Creative: Photography, videography, drone operations
 
             // Auto-minimize graph when navigating to a page
             document.getElementById('graphContainer').classList.add('minimized');
+        }
+
+        function toggleMobileGraph() {
+            const graphContainer = document.getElementById('graphContainer');
+            graphContainer.classList.toggle('minimized');
         }
 
         function goBack() {
