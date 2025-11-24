@@ -52,27 +52,34 @@
         }
 
         .container {
-            display: flex;
+            position: relative;
             height: 100vh;
         }
 
         .main-content {
-            flex: 1;
+            position: relative;
+            z-index: 10;
+            width: 60%;
             padding: 40px;
             overflow-y: auto;
             background: var(--bg-secondary);
+            height: 100vh;
         }
 
         .graph-container {
-            width: 40%;
-            position: relative;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
             background: var(--bg-secondary);
-            transition: width 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
         .graph-container.minimized {
-            width: 0;
-            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .graph-container.minimized canvas {
@@ -118,14 +125,14 @@
         }
 
         .minimize-btn {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--control-bg);
             padding: 10px 15px;
             border: 1px solid var(--control-border);
-            z-index: 100;
+            z-index: 1000;
             cursor: pointer;
             font-size: 10px;
             color: var(--control-text);
@@ -144,14 +151,14 @@
         }
 
         .theme-toggle {
-            position: absolute;
+            position: fixed;
             top: 60px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--control-bg);
             padding: 12px;
             border: 1px solid var(--control-border);
-            z-index: 100;
+            z-index: 1000;
             cursor: pointer;
             font-size: 10px;
             color: var(--control-text);
@@ -177,14 +184,14 @@
         }
 
         .controls {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             background: var(--control-bg);
             padding: 20px;
             border: 1px solid var(--control-border);
             max-width: 240px;
-            z-index: 100;
+            z-index: 1000;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
@@ -260,7 +267,7 @@
         }
 
         .stats {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             right: 20px;
             background: var(--control-bg);
@@ -269,6 +276,7 @@
             font-size: 10px;
             color: var(--control-text);
             letter-spacing: 0.5px;
+            z-index: 1000;
         }
 
         .tooltip {
@@ -312,37 +320,13 @@
         }
 
         @media (max-width: 768px) {
-            .graph-container {
-                width: 0 !important;
-                height: 0 !important;
-                overflow: hidden;
+            .main-content {
+                width: 100%;
+                height: 100vh;
             }
 
             .graph-container.minimized {
-                width: 0;
-                height: 0;
-            }
-
-            .graph-container:not(.minimized) {
-                width: 100% !important;
-                height: 100vh !important;
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 999;
-            }
-
-            .graph-container:not(.minimized) .minimize-btn {
-                display: block !important;
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 1000;
-            }
-
-            .main-content {
-                height: 100vh;
-                width: 100%;
+                display: none;
             }
 
             .minimize-toggle {
