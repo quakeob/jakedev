@@ -163,7 +163,7 @@
             background: transparent;
         }
 
-        .graph-container.minimized .minimize-toggle {
+        #graphContainer.minimized ~ .minimize-toggle {
             display: block;
             pointer-events: auto;
         }
@@ -1015,7 +1015,6 @@ Creative: Photography, videography, drone operations
             <canvas id="canvas"></canvas>
 
             <div class="minimize-btn" id="minimizeBtn">Hide Graph</div>
-            <div class="minimize-toggle" id="minimizeToggle">Show Graph</div>
             <div class="theme-toggle" id="themeToggle">☀ Light Mode</div>
 
             <div class="controls">
@@ -1076,6 +1075,8 @@ Creative: Photography, videography, drone operations
 
             <div class="tooltip" id="tooltip"></div>
         </div>
+
+        <div class="minimize-toggle" id="minimizeToggle">Show Graph</div>
     </div>
 
     <script>
