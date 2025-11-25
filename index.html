@@ -77,11 +77,17 @@
 
         .main-content .path,
         .main-content .file,
-        .main-content .back,
+        .main-content .back {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 8px 10px;
+            margin: 5px 0;
+            cursor: pointer !important;
+            position: relative;
+            z-index: 100;
+        }
+
         .main-content pre {
             background: rgba(0, 0, 0, 0.85);
-            padding: 10px;
-            margin: 5px 0;
         }
 
         body.light-mode .main-content .path,
