@@ -90,7 +90,7 @@
         .main-content .path,
         .main-content .file,
         .main-content .back {
-            background: rgba(0, 0, 0, 0.85);
+            background: transparent;
             padding: 8px 10px;
             margin: 5px 0;
             cursor: pointer !important;
@@ -104,7 +104,10 @@
 
         body.light-mode .main-content .path,
         body.light-mode .main-content .file,
-        body.light-mode .main-content .back,
+        body.light-mode .main-content .back {
+            background: transparent;
+        }
+
         body.light-mode .main-content pre {
             background: rgba(255, 255, 255, 0.85);
         }
@@ -1774,13 +1777,13 @@ Creative: Photography, videography, drone operations
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             document.body.classList.add('light-mode');
-            themeToggle.textContent = '🌙 Dark Mode';
+            themeToggle.textContent = '⏾ Dark Mode';
         }
 
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
             const isLight = document.body.classList.contains('light-mode');
-            themeToggle.textContent = isLight ? '🌙 Dark Mode' : '☀ Light Mode';
+            themeToggle.textContent = isLight ? '⏾ Dark Mode' : '☀ Light Mode';
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 

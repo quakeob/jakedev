@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>portfolio - jake davis</title>
     <style>
         :root {
-            --bg-primary: #000000;
+            --bg-primary: #050505;
             --bg-secondary: #0a0a0a;
-            --border-color: #1a1a1a;
-            --text-primary: #ffffff;
-            --text-secondary: #666666;
-            --text-tertiary: #cccccc;
+            --border-color: #333;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888;
+            --text-tertiary: #555;
+            --overlay-bg: rgba(0, 0, 0, 0.95);
+            --scanline-color: rgba(0, 0, 0, 0.5);
+            --glow-color: rgba(255, 255, 255, 0.15);
         }
 
         body.light-mode {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f5f5f5;
-            --border-color: #e0e0e0;
-            --text-primary: #000000;
-            --text-secondary: #666666;
-            --text-tertiary: #333333;
+            --bg-primary: #f0f0f0;
+            --bg-secondary: #e5e5e5;
+            --border-color: #ccc;
+            --text-primary: #111;
+            --text-secondary: #555;
+            --text-tertiary: #888;
+            --overlay-bg: rgba(255, 255, 255, 0.95);
+            --scanline-color: rgba(255, 255, 255, 0.5);
+            --glow-color: rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -30,17 +37,50 @@
         }
 
         body {
-            font-family: 'Courier New', monospace;
+            font-family: 'Courier New', Courier, monospace;
             background: var(--bg-primary);
             color: var(--text-primary);
             padding: 40px;
             transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            text-shadow: 0 0 2px var(--glow-color);
+        }
+
+        /* CRT Effects */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% {
+                opacity: 0.97;
+            }
+
+            50% {
+                opacity: 0.99;
+            }
+
+            100% {
+                opacity: 0.94;
+            }
         }
 
         .header {
             margin-bottom: 40px;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .back-link {
@@ -48,63 +88,70 @@
             text-decoration: none;
             font-size: 14px;
             display: inline-block;
-            margin-bottom: 20px;
+            transition: all 0.2s;
         }
 
         .back-link:hover {
             color: var(--text-secondary);
+            text-decoration: underline;
         }
 
         h1 {
             font-size: 24px;
             font-weight: normal;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 14px;
+            letter-spacing: 1px;
         }
 
         .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 10px 20px;
+            padding: 8px 16px;
             cursor: pointer;
             font-family: 'Courier New', monospace;
             font-size: 12px;
+            transition: all 0.2s;
         }
 
         .theme-toggle:hover {
             background: var(--bg-secondary);
+            border-color: var(--text-primary);
         }
 
+        /* Masonry Layout */
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+            column-count: 3;
+            column-gap: 30px;
         }
 
         .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 30px;
+            position: relative;
             transition: transform 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
         }
 
         .gallery-item:hover {
-            transform: scale(1.02);
+            transform: scale(1.01);
+            border-color: var(--text-secondary);
+            z-index: 10;
         }
 
         .gallery-item img {
             width: 100%;
-            height: 250px;
-            object-fit: cover;
-            cursor: pointer;
+            height: auto;
+            display: block;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
         }
 
+        .gallery-item:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Lightbox */
         .fullscreen-overlay {
             display: none;
             position: fixed;
@@ -112,11 +159,11 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
+            background: var(--overlay-bg);
+            z-index: 10000;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
+            flex-direction: column;
         }
 
         .fullscreen-overlay.active {
@@ -125,65 +172,68 @@
 
         .fullscreen-overlay img {
             max-width: 90%;
-            max-height: 90%;
+            max-height: 80vh;
             object-fit: contain;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
-        .category {
-            margin-bottom: 50px;
+        .image-info {
+            margin-top: 20px;
+            text-align: center;
+            color: var(--text-primary);
+            font-size: 14px;
+            max-width: 600px;
         }
 
-        .category-title {
-            font-size: 18px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
+        .metadata {
+            margin-top: 10px;
             color: var(--text-secondary);
+            font-size: 12px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-secondary);
         }
 
         /* Mobile responsive */
+        @media (max-width: 1024px) {
+            .gallery {
+                column-count: 2;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 20px;
             }
 
-            .header {
-                margin-bottom: 30px;
-            }
-
             .gallery {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                column-count: 1;
             }
 
             .gallery-item img {
-                height: 300px;
-            }
-
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
-                padding: 8px 15px;
-                font-size: 11px;
-            }
-
-            .fullscreen-overlay img {
-                max-width: 95%;
-                max-height: 95%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
-            }
-
-            .back-link {
-                font-size: 12px;
-            }
-
-            .gallery-item img {
-                height: 250px;
+                filter: grayscale(0%);
+                /* Always color on mobile */
             }
 
             .theme-toggle {
@@ -193,90 +243,103 @@
         }
     </style>
 </head>
+
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()">toggle light/dark</button>
+    <div class="crt-overlay"></div>
 
     <div class="header">
-        <a href="/" class="back-link">← back to home</a>
+        <a href="index.html" class="back-link">← /home/jake</a>
+        <h1>/portfolio</h1>
+        <button class="theme-toggle" onclick="toggleTheme()">LIGHT/DARK</button>
     </div>
 
     <div class="gallery">
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3233.jpg" alt="Photo 1">
+        <!-- Images will be loaded here -->
+        <div class="gallery-item" data-iso="400" data-shutter="1/125" data-aperture="f/2.8">
+            <img src="BWPHOTO/DSCF3233.jpg" alt="Street photography">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3289.jpg" alt="Photo 2">
+        <div class="gallery-item" data-iso="200" data-shutter="1/250" data-aperture="f/4.0">
+            <img src="BWPHOTO/DSCF3289.jpg" alt="Architecture">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3291.jpg" alt="Photo 3">
+        <div class="gallery-item" data-iso="800" data-shutter="1/60" data-aperture="f/1.8">
+            <img src="BWPHOTO/DSCF3291.jpg" alt="Portrait">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3296.jpg" alt="Photo 4">
+        <div class="gallery-item" data-iso="100" data-shutter="1/500" data-aperture="f/5.6">
+            <img src="BWPHOTO/DSCF3296.jpg" alt="Landscape">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3494.jpg" alt="Photo 5">
+        <div class="gallery-item" data-iso="400" data-shutter="1/125" data-aperture="f/2.8">
+            <img src="BWPHOTO/DSCF3494.jpg" alt="Urban">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3495.jpg" alt="Photo 6">
+        <div class="gallery-item" data-iso="1600" data-shutter="1/30" data-aperture="f/1.4">
+            <img src="BWPHOTO/DSCF3495.jpg" alt="Night scene">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3554.jpg" alt="Photo 7">
+        <div class="gallery-item" data-iso="200" data-shutter="1/200" data-aperture="f/8.0">
+            <img src="BWPHOTO/DSCF3554.jpg" alt="Nature">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3766.jpg" alt="Photo 8">
+        <div class="gallery-item" data-iso="400" data-shutter="1/100" data-aperture="f/2.0">
+            <img src="BWPHOTO/DSCF3766.jpg" alt="Abstract">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF3767.jpg" alt="Photo 9">
+        <div class="gallery-item" data-iso="100" data-shutter="1/400" data-aperture="f/4.0">
+            <img src="BWPHOTO/DSCF3767.jpg" alt="Travel">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF4073.jpg" alt="Photo 10">
+        <div class="gallery-item" data-iso="800" data-shutter="1/60" data-aperture="f/2.8">
+            <img src="BWPHOTO/DSCF4073.jpg" alt="Candid">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF4108.jpg" alt="Photo 11">
+        <div class="gallery-item" data-iso="200" data-shutter="1/125" data-aperture="f/5.6">
+            <img src="BWPHOTO/DSCF4108.jpg" alt="Street">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF4109.jpg" alt="Photo 12">
+        <div class="gallery-item" data-iso="400" data-shutter="1/250" data-aperture="f/2.8">
+            <img src="BWPHOTO/DSCF4109.jpg" alt="Portrait">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF4166.jpg" alt="Photo 13">
+        <div class="gallery-item" data-iso="100" data-shutter="1/1000" data-aperture="f/1.8">
+            <img src="BWPHOTO/DSCF4166.jpg" alt="Action">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF4171.jpg" alt="Photo 14">
+        <div class="gallery-item" data-iso="1600" data-shutter="1/50" data-aperture="f/1.4">
+            <img src="BWPHOTO/DSCF4171.jpg" alt="Low light">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF4278.jpg" alt="Photo 15">
+        <div class="gallery-item" data-iso="200" data-shutter="1/125" data-aperture="f/4.0">
+            <img src="BWPHOTO/DSCF4278.jpg" alt="Architecture">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/DSCF7488.jpg" alt="Photo 16">
+        <div class="gallery-item" data-iso="400" data-shutter="1/200" data-aperture="f/2.8">
+            <img src="BWPHOTO/DSCF7488.jpg" alt="Nature">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_2471.JPG" alt="Photo 17">
+        <div class="gallery-item" data-iso="100" data-shutter="1/500" data-aperture="f/8.0">
+            <img src="BWPHOTO/IMG_2471.JPG" alt="Landscape">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_2586.JPG" alt="Photo 18">
+        <div class="gallery-item" data-iso="200" data-shutter="1/250" data-aperture="f/5.6">
+            <img src="BWPHOTO/IMG_2586.JPG" alt="Travel">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_4840.JPG" alt="Photo 19">
+        <div class="gallery-item" data-iso="800" data-shutter="1/100" data-aperture="f/2.0">
+            <img src="BWPHOTO/IMG_4840.JPG" alt="Portrait">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_4929.JPG" alt="Photo 20">
+        <div class="gallery-item" data-iso="400" data-shutter="1/125" data-aperture="f/2.8">
+            <img src="BWPHOTO/IMG_4929.JPG" alt="Street">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_5628.JPG" alt="Photo 21">
+        <div class="gallery-item" data-iso="100" data-shutter="1/200" data-aperture="f/4.0">
+            <img src="BWPHOTO/IMG_5628.JPG" alt="Abstract">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_5632.JPG" alt="Photo 22">
+        <div class="gallery-item" data-iso="200" data-shutter="1/125" data-aperture="f/5.6">
+            <img src="BWPHOTO/IMG_5632.JPG" alt="Nature">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_5638.JPG" alt="Photo 23">
+        <div class="gallery-item" data-iso="400" data-shutter="1/60" data-aperture="f/2.8">
+            <img src="BWPHOTO/IMG_5638.JPG" alt="Candid">
         </div>
-        <div class="gallery-item">
-            <img src="BWPHOTO/IMG_5650.JPG" alt="Photo 24">
+        <div class="gallery-item" data-iso="800" data-shutter="1/30" data-aperture="f/1.8">
+            <img src="BWPHOTO/IMG_5650.JPG" alt="Night">
         </div>
     </div>
 
     <div class="fullscreen-overlay" id="fullscreenOverlay">
+        <div class="close-btn" onclick="closeLightbox()">×</div>
         <img src="" alt="Fullscreen photo" id="fullscreenImage">
+        <div class="image-info">
+            <div id="imageTitle">FILENAME.JPG</div>
+            <div class="metadata">
+                <span id="metaISO">ISO 400</span>
+                <span id="metaShutter">1/125s</span>
+                <span id="metaAperture">f/2.8</span>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -291,21 +354,54 @@
             document.body.classList.add('light-mode');
         }
 
-        // Fullscreen functionality
+        // Lightbox functionality
         const overlay = document.getElementById('fullscreenOverlay');
         const fullscreenImg = document.getElementById('fullscreenImage');
-        const galleryImages = document.querySelectorAll('.gallery-item img');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const imageTitle = document.getElementById('imageTitle');
+        const metaISO = document.getElementById('metaISO');
+        const metaShutter = document.getElementById('metaShutter');
+        const metaAperture = document.getElementById('metaAperture');
 
-        galleryImages.forEach(img => {
-            img.addEventListener('click', () => {
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
                 fullscreenImg.src = img.src;
+
+                // Set metadata (simulated for now, or read from data attributes)
+                const pathParts = img.src.split('/');
+                const filename = pathParts[pathParts.length - 1];
+                imageTitle.innerText = filename;
+
+                // Randomize metadata if not set (just for effect if data attrs missing)
+                metaISO.innerText = "ISO " + (item.dataset.iso || "400");
+                metaShutter.innerText = (item.dataset.shutter || "1/125") + "s";
+                metaAperture.innerText = item.dataset.aperture || "f/2.8";
+
                 overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
             });
         });
 
-        overlay.addEventListener('click', () => {
+        function closeLightbox() {
             overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Close on background click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeLightbox();
+            }
         });
     </script>
 </body>
+
 </html>
