@@ -596,6 +596,63 @@
         </div>
     </div>
 
+    <!-- Philosophy of Service Section -->
+    <div class="content-section" style="margin-top: 80px; margin-bottom: 80px;">
+        <h3 style="text-align: center;">A Changed Philosophy</h3>
+        <p>
+            My understanding of service has evolved from a simple desire to do good into something deeper—a commitment
+            to apply my specific skills and talents in service of others. It's no longer enough to simply want to help;
+            true service means bringing your whole self, your unique abilities, to bear on the needs before you.
+        </p>
+        <p>
+            My service journey has taken many forms—from volunteer work with the Red Cross to ride-alongs in ambulances,
+            from leading mountain bike groups to documenting humanitarian work in Ecuador. Each experience taught me
+            something different about what it means to serve, but all of them shared a common thread: showing up,
+            being present, and doing what needed to be done.
+        </p>
+        <p>
+            One of my skills is the ability to capture moments and emotion with a camera. Through the lens, I can
+            preserve the dignity in a person's eyes, the strength in their posture, the hope in their smile. Photography
+            becomes more than documentation—it becomes a form of witness, of advocacy, of connection. When I serve with
+            this gift, I'm not just doing what is good; I'm doing what I'm uniquely positioned to do best.
+        </p>
+    </div>
+
+    <!-- Video -->
+    <div style="margin: 60px 0; text-align: center;">
+        <iframe width="80%" height="450" src="https://www.youtube.com/embed/GWEa5mVC2Y0"
+                style="border: 1px solid var(--border-color); max-width: 800px;"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Conclusion -->
+    <div class="content-section" style="margin-bottom: 80px;">
+        <p>
+            This shift in perspective has transformed my approach entirely. Service is no longer about checking boxes
+            or fulfilling obligations. It's about striving to be like Him—to see people as He sees them, to serve
+            as He served, with intention, compassion, and the fullness of who we are. The question is no longer
+            "What good can I do?" but "What is the best I can offer, and how can I become more like Him in the giving?"
+        </p>
+        <p>
+            The video above captures some of these moments—glimpses of the beauty, struggle, and humanity I've been
+            privileged to witness and document.
+        </p>
+    </div>
+
+    <!-- Alaska Gallery -->
+    <div class="gallery-section">
+        <div class="gallery" id="gallery-alaska">
+            <div class="gallery-track" id="gallery-alaska-track"></div>
+            <div class="gallery-controls">
+                <button class="gallery-btn" onclick="prevSlide('alaska')">‹</button>
+                <button class="gallery-btn" onclick="nextSlide('alaska')">›</button>
+            </div>
+            <div class="gallery-counter" id="gallery-alaska-counter">Slide 1 / 3</div>
+        </div>
+    </div>
+
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
         <div class="lightbox-content">
@@ -721,7 +778,8 @@
         // Slideshow state
         const slideshows = {
             ecuador: { currentIndex: 0, slides: [] },
-            bw: { currentIndex: 0, slides: [] }
+            bw: { currentIndex: 0, slides: [] },
+            alaska: { currentIndex: 0, slides: [] }
         };
 
         const PHOTOS_PER_SLIDE = 3;
@@ -730,6 +788,7 @@
         function loadGallery() {
             const ecuadorTrack = document.getElementById('gallery-ecuador-track');
             const bwTrack = document.getElementById('gallery-bw-track');
+            const alaskaTrack = document.getElementById('gallery-alaska-track');
 
             // Ecuador color photos
             const ecuadorPhotos = [
@@ -769,9 +828,16 @@
                 'IMG_2863.JPG', 'IMG_2882.JPG', 'IMG_2886.JPG', 'IMG_2907.JPG', 'IMG_2919.JPG'
             ];
 
+            // Alaska photos
+            const alaskaPhotos = [
+                'DSCF6388.jpg', 'DSCF6443.jpg', 'DSCF6450.jpg', 'DSCF6545.jpg',
+                'IMG_0078.JPG', 'IMG_9122.jpeg', 'IMG_9184.jpeg', 'IMG_9262.jpeg', 'IMG_9282.jpeg'
+            ];
+
             // Group photos into slides
             slideshows.ecuador.slides = groupIntoSlides(ecuadorPhotos, 'ecuadorphotophil');
             slideshows.bw.slides = groupIntoSlides(bwPhotos, 'ecuadorphotophil/BlackandWhite');
+            slideshows.alaska.slides = groupIntoSlides(alaskaPhotos, 'alaska');
 
             // Load Ecuador slides
             slideshows.ecuador.slides.forEach(slidePhotos => {
@@ -799,8 +865,22 @@
                 bwTrack.appendChild(slide);
             });
 
+            // Load Alaska slides
+            slideshows.alaska.slides.forEach(slidePhotos => {
+                const slide = document.createElement('div');
+                slide.className = 'gallery-slide';
+                slidePhotos.forEach(photo => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `<img src="${photo.path}" alt="Alaska - ${photo.name}" loading="lazy">`;
+                    slide.appendChild(item);
+                });
+                alaskaTrack.appendChild(slide);
+            });
+
             updateCounter('ecuador');
             updateCounter('bw');
+            updateCounter('alaska');
 
             // Build photo array for lightbox navigation
             buildPhotoArray();
