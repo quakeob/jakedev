@@ -433,6 +433,24 @@
                 letter-spacing: 0.5px;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             }
+
+            /* Mobile notice - positioned at bottom */
+            .mobile-notice {
+                display: block !important;
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                background: var(--control-bg);
+                padding: 15px;
+                border: 1px solid var(--border-color);
+                z-index: 999;
+                font-size: 11px;
+                color: var(--text-secondary);
+                text-align: center;
+                line-height: 1.5;
+                backdrop-filter: blur(10px);
+            }
         }
 
         .mobile-graph-toggle {
@@ -440,6 +458,10 @@
         }
 
         .mobile-theme-toggle {
+            display: none;
+        }
+
+        .mobile-notice {
             display: none;
         }
 
@@ -1128,6 +1150,11 @@ Creative: Photography, videography, drone operations
     </div>
 
     <div class="mobile-theme-toggle" id="mobileThemeToggle">☀</div>
+
+    <div class="mobile-notice">
+        This website is intended for larger screens and computers.<br>
+        For the full interactive experience, please visit on desktop.
+    </div>
 
     <script>
         const canvas = document.getElementById('canvas');
