@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Thought Process | jake davis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .title-block {
+            color: #4ade80;
+            font-size: 14px;
+            white-space: pre;
+            line-height: 1.4;
+        }
+
+        /* Navigation / Stage Selector */
+        .nav-panel {
+            margin-bottom: 24px;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            background: rgba(17, 24, 39, 0.5);
+            padding: 16px;
+        }
+
+        .nav-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stage-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .stage-btn {
+            text-align: left;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.15s ease;
+        }
+
+        .stage-btn:hover {
+            color: #e5e7eb;
+            background: rgba(55, 65, 81, 1);
+        }
+
+        .stage-btn.active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid #15803d;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .play-btn {
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            background: transparent;
+        }
+
+        .play-btn.playing {
+            border: 1px solid #b91c1c;
+            color: #f87171;
+        }
+
+        .play-btn.playing:hover {
+            background: rgba(185, 28, 28, 0.3);
+        }
+
+        .play-btn.paused {
+            border: 1px solid #15803d;
+            color: #4ade80;
+        }
+
+        .play-btn.paused:hover {
+            background: rgba(34, 197, 94, 0.3);
+        }
+
+        .divider {
+            color: #4b5563;
+        }
+
+        .status-text {
+            color: #6b7280;
+        }
+
+        .status-value {
+            color: #4ade80;
+        }
+
+        .status-processing {
+            color: #facc15;
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Terminal Panel */
+        .terminal {
+            border: 1px solid #374151;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: #111827;
+            padding: 4px 12px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .terminal-title {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .terminal-body {
+            padding: 16px;
+            font-size: 14px;
+            min-height: 200px;
+        }
+
+        .comment {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .input-text {
+            color: #4ade80;
+        }
+
+        .input-meta {
+            color: #4b5563;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        /* Token styles */
+        .token-label {
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .token-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .token {
+            padding: 2px 8px;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid #15803d;
+            color: #4ade80;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .cursor {
+            color: #4ade80;
+            animation: blink 1.06s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Embedding styles */
+        .embed-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .embed-token {
+            color: #6b7280;
+            width: 48px;
+        }
+
+        .embed-arrow {
+            color: #4b5563;
+        }
+
+        .embed-vector {
+            color: #a78bfa;
+        }
+
+        .embed-meta {
+            color: #4b5563;
+        }
+
+        /* Attention matrix */
+        .attention-label {
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+
+        .attention-grid {
+            font-size: 9px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .attention-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .attention-header {
+            width: 32px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .attention-cell {
+            width: 32px;
+            text-align: center;
+        }
+
+        /* Neuron activations */
+        .neuron-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+        }
+
+        .neuron {
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .neuron-meta {
+            color: #4b5563;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* Reasoning stage */
+        .reason-line {
+            color: #22d3ee;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        /* Output stage */
+        .output-text {
+            color: #4ade80;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* Stats panel */
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .stats-label {
+            color: #6b7280;
+        }
+
+        .stats-value.blue { color: #60a5fa; }
+        .stats-value.purple { color: #a78bfa; }
+        .stats-value.yellow { color: #facc15; }
+        .stats-value.cyan { color: #22d3ee; }
+        .stats-value.orange { color: #fb923c; }
+        .stats-value.pink { color: #f472b6; }
+        .stats-value.green { color: #4ade80; }
+
+        .stats-divider {
+            border-top: 1px solid #374151;
+            margin: 8px 0;
+        }
+
+        /* Process Flow */
+        .flow-panel {
+            border: 1px solid #374151;
+            border-radius: 4px;
+            background: rgba(17, 24, 39, 0.3);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .flow-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .flow-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 64px;
+        }
+
+        .flow-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+
+        .flow-circle.active {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+        }
+
+        .flow-circle.completed {
+            border-color: #4b5563;
+            background: #1f2937;
+            color: #6b7280;
+        }
+
+        .flow-circle.pending {
+            border-color: #374151;
+            color: #4b5563;
+        }
+
+        .flow-name {
+            text-align: center;
+        }
+
+        .flow-name.active { color: #4ade80; }
+        .flow-name.completed { color: #6b7280; }
+        .flow-name.pending { color: #4b5563; }
+
+        .flow-line {
+            flex: 1;
+            height: 1px;
+            margin: 0 8px;
+        }
+
+        .flow-line.completed {
+            background: #15803d;
+        }
+
+        .flow-line.pending {
+            background: #374151;
+        }
+
+        /* Log Output */
+        .log-panel {
+            border: 1px solid #374151;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 16px;
+        }
+
+        .log-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .log-entries {
+            font-size: 12px;
+            height: 128px;
+            overflow: hidden;
+        }
+
+        .log-entry {
+            color: #4b5563;
+            margin-bottom: 4px;
+        }
+
+        .log-entry.latest {
+            color: #4ade80;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            color: #4b5563;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stage-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stage-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .controls {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="breadcrumb"><a href="/">← /home/jake/projects</a></div>
+            <pre class="title-block">
+LLM THOUGHT PROCESS VISUALIZATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Watch how a language model processes your input through
+tokenization, embedding, attention, and generation stages.
+</pre>
+        </div>
+
+        <!-- Navigation / Stage Selector -->
+        <div class="nav-panel">
+            <div class="nav-label">$ ls -la /proc/llm/</div>
+            <div class="stage-grid" id="stageGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="play-btn playing" id="playBtn">[PAUSE]</button>
+            <span class="divider">|</span>
+            <span class="status-text">stage: <span class="status-value" id="stagePath">/proc/tokenizer</span></span>
+            <span class="divider">|</span>
+            <span class="status-text">status: <span class="status-processing">processing</span></span>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Input Panel -->
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-title">input.txt</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="comment"># User query</div>
+                    <div class="input-text">"How does an AI think?"</div>
+                    <div class="input-meta">len: 20 chars | tokens: 6</div>
+                </div>
+            </div>
+
+            <!-- Process Panel -->
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-title" id="processTitle">/proc/tokenizer</span>
+                </div>
+                <div class="terminal-body" id="processBody">
+                    <!-- Populated by JS based on stage -->
+                </div>
+            </div>
+
+            <!-- Stats Panel -->
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-title">/proc/llm/stats</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="stats-row">
+                        <span class="stats-label">model:</span>
+                        <span class="stats-value blue">claude-opus-4-5</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">parameters:</span>
+                        <span class="stats-value purple">~175B</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">context_len:</span>
+                        <span class="stats-value yellow">200K tokens</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">embed_dim:</span>
+                        <span class="stats-value cyan">4096</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">layers:</span>
+                        <span class="stats-value orange">96</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">attn_heads:</span>
+                        <span class="stats-value pink">64</span>
+                    </div>
+                    <div class="stats-divider"></div>
+                    <div class="stats-row">
+                        <span class="stats-label">stage:</span>
+                        <span class="stats-value green" id="stageCount">1/6</span>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stats-label">tokens_in:</span>
+                        <span class="stats-value green">6</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process Flow -->
+        <div class="flow-panel">
+            <div class="flow-label">$ cat /proc/llm/pipeline</div>
+            <div class="flow-container" id="flowContainer">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- Log Output -->
+        <div class="log-panel">
+            <div class="log-label">$ tail -f /var/log/llm.log</div>
+            <div class="log-entries" id="logEntries">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            // Interactive visualization of transformer architecture
+        </div>
+    </div>
+
+    <script>
+        // State
+        let activeStage = 0;
+        let isPlaying = true;
+        let tokens = [];
+        let typedOutput = '';
+        let attentionMatrix = [];
+        let neuronActivations = [];
+        let logEntries = [];
+        let cursorVisible = true;
+        let stageInterval = null;
+        let cursorInterval = null;
+        let neuronInterval = null;
+        let typingInterval = null;
+
+        // Constants
+        const inputText = "How does an AI think?";
+        const tokenizedInput = ["How", "does", "an", "AI", "think", "?"];
+        const outputText = "An AI processes information through neural networks, analyzing patterns in data to generate contextually relevant responses based on learned associations and probabilistic reasoning.";
+
+        const stages = [
+            { name: "tokenize", path: "/proc/tokenizer", description: "Breaking input into tokens" },
+            { name: "embed", path: "/proc/embeddings", description: "Converting tokens to vectors" },
+            { name: "attend", path: "/proc/attention", description: "Computing self-attention weights" },
+            { name: "transform", path: "/proc/layers", description: "Forward pass through transformer blocks" },
+            { name: "reason", path: "/proc/inference", description: "Building coherent representations" },
+            { name: "generate", path: "/proc/output", description: "Sampling output tokens" }
+        ];
+
+        // DOM Elements
+        const stageGrid = document.getElementById('stageGrid');
+        const playBtn = document.getElementById('playBtn');
+        const stagePath = document.getElementById('stagePath');
+        const processTitle = document.getElementById('processTitle');
+        const processBody = document.getElementById('processBody');
+        const stageCount = document.getElementById('stageCount');
+        const flowContainer = document.getElementById('flowContainer');
+        const logEntriesEl = document.getElementById('logEntries');
+
+        // Initialize stage buttons
+        function initStageButtons() {
+            stageGrid.innerHTML = stages.map((stage, i) => `
+                <button class="stage-btn ${i === activeStage ? 'active' : ''}" data-index="${i}">
+                    ${i === activeStage ? '> ' : ''}${stage.name}/
+                </button>
+            `).join('');
+
+            stageGrid.querySelectorAll('.stage-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setActiveStage(parseInt(btn.dataset.index));
+                    stopPlaying();
+                });
+            });
+        }
+
+        // Initialize flow diagram
+        function initFlowDiagram() {
+            flowContainer.innerHTML = stages.map((stage, i) => {
+                const isActive = i === activeStage;
+                const isCompleted = i < activeStage;
+                const stateClass = isActive ? 'active' : (isCompleted ? 'completed' : 'pending');
+
+                let html = `
+                    <div class="flow-stage">
+                        <div class="flow-circle ${stateClass}">
+                            ${isCompleted ? '✓' : i + 1}
+                        </div>
+                        <span class="flow-name ${stateClass}">${stage.name}</span>
+                    </div>
+                `;
+
+                if (i < stages.length - 1) {
+                    html += `<div class="flow-line ${isCompleted ? 'completed' : 'pending'}"></div>`;
+                }
+
+                return html;
+            }).join('');
+        }
+
+        // Update stage display
+        function setActiveStage(index) {
+            activeStage = index;
+
+            // Update UI
+            stagePath.textContent = stages[activeStage].path;
+            processTitle.textContent = stages[activeStage].path;
+            stageCount.textContent = `${activeStage + 1}/6`;
+
+            // Update stage buttons
+            stageGrid.querySelectorAll('.stage-btn').forEach((btn, i) => {
+                btn.className = `stage-btn ${i === activeStage ? 'active' : ''}`;
+                btn.textContent = `${i === activeStage ? '> ' : ''}${stages[i].name}/`;
+            });
+
+            // Update flow diagram
+            initFlowDiagram();
+
+            // Update process body
+            updateProcessBody();
+
+            // Add log entry
+            addLogEntry();
+        }
+
+        // Add log entry
+        function addLogEntry() {
+            const timestamp = new Date().toISOString().slice(11, 19);
+            const messages = [
+                `[${timestamp}] Tokenizing input string...`,
+                `[${timestamp}] Mapping tokens to embedding space (dim=4096)`,
+                `[${timestamp}] Computing attention scores across ${tokenizedInput.length} positions`,
+                `[${timestamp}] Processing through 96 transformer layers`,
+                `[${timestamp}] Aggregating context vectors`,
+                `[${timestamp}] Sampling from probability distribution`
+            ];
+
+            logEntries.push(messages[activeStage]);
+            if (logEntries.length > 9) logEntries.shift();
+
+            renderLogEntries();
+        }
+
+        function renderLogEntries() {
+            logEntriesEl.innerHTML = logEntries.map((entry, i) => `
+                <div class="log-entry ${i === logEntries.length - 1 ? 'latest' : ''}">${entry}</div>
+            `).join('') + `<div class="log-entry latest"><span class="cursor">▊</span></div>`;
+        }
+
+        // Update process body based on stage
+        function updateProcessBody() {
+            // Clear intervals
+            if (neuronInterval) clearInterval(neuronInterval);
+            if (typingInterval) clearInterval(typingInterval);
+
+            const description = stages[activeStage].description;
+            let content = `<div class="comment"># ${description}</div>`;
+
+            switch(activeStage) {
+                case 0: // Tokenization
+                    content += renderTokenization();
+                    break;
+                case 1: // Embedding
+                    content += renderEmbedding();
+                    break;
+                case 2: // Attention
+                    content += renderAttention();
+                    break;
+                case 3: // Transform
+                    content += renderTransform();
+                    break;
+                case 4: // Reasoning
+                    content += renderReasoning();
+                    break;
+                case 5: // Generation
+                    content += renderGeneration();
+                    break;
+            }
+
+            processBody.innerHTML = content;
+
+            // Start animations for specific stages
+            if (activeStage === 0) animateTokens();
+            if (activeStage === 3 || activeStage === 4) startNeuronAnimation();
+            if (activeStage === 5) startTypingAnimation();
+        }
+
+        function renderTokenization() {
+            return `
+                <div class="token-label">tokens[] =</div>
+                <div class="token-container" id="tokenContainer">
+                    <span class="cursor">▊</span>
+                </div>
+            `;
+        }
+
+        function animateTokens() {
+            const container = document.getElementById('tokenContainer');
+            tokens = [];
+
+            tokenizedInput.forEach((token, i) => {
+                setTimeout(() => {
+                    tokens.push(token);
+                    container.innerHTML = tokens.map((t, idx) =>
+                        `<span class="token">[${idx}] "${t}"</span>`
+                    ).join('') + `<span class="cursor">▊</span>`;
+                }, i * 150);
+            });
+        }
+
+        function renderEmbedding() {
+            return tokenizedInput.slice(0, 4).map((token, i) => `
+                <div class="embed-row">
+                    <span class="embed-token">"${token}"</span>
+                    <span class="embed-arrow">→</span>
+                    <span class="embed-vector">[${(Math.random() * 2 - 1).toFixed(3)}, ${(Math.random() * 2 - 1).toFixed(3)}, ${(Math.random() * 2 - 1).toFixed(3)}, ...]</span>
+                </div>
+            `).join('') + `<div class="embed-meta">... (${tokenizedInput.length} × 4096 tensor)</div>`;
+        }
+
+        function renderAttention() {
+            // Generate attention matrix
+            attentionMatrix = tokenizedInput.map(() =>
+                tokenizedInput.map(() => Math.random().toFixed(2))
+            );
+
+            let html = `<div class="attention-label">attention_weights:</div>`;
+            html += `<div class="attention-grid">`;
+
+            // Header row
+            html += `<div class="attention-row">`;
+            html += `<span class="attention-header"></span>`;
+            tokenizedInput.forEach(t => {
+                html += `<span class="attention-header">${t.slice(0, 3)}</span>`;
+            });
+            html += `</div>`;
+
+            // Data rows
+            attentionMatrix.forEach((row, i) => {
+                html += `<div class="attention-row">`;
+                html += `<span class="attention-header">${tokenizedInput[i].slice(0, 3)}</span>`;
+                row.forEach(val => {
+                    const intensity = parseFloat(val);
+                    const r = Math.floor(intensity * 100 + 100);
+                    const g = Math.floor(intensity * 200 + 50);
+                    const b = Math.floor(intensity * 100 + 100);
+                    html += `<span class="attention-cell" style="color: rgb(${r}, ${g}, ${b})">${val}</span>`;
+                });
+                html += `</div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+        function renderTransform() {
+            return `
+                <div class="attention-label">layer_activations:</div>
+                <div class="neuron-grid" id="neuronGrid">
+                    ${renderNeurons()}
+                </div>
+                <div class="neuron-meta">processing layer 47/96...</div>
+            `;
+        }
+
+        function renderNeurons() {
+            if (neuronActivations.length === 0) {
+                neuronActivations = Array.from({ length: 24 }, () => Math.random());
+            }
+            return neuronActivations.map(val => {
+                const bgColor = `rgba(245, 158, 11, ${val * 0.8})`;
+                const textColor = val > 0.5 ? '#000' : '#666';
+                return `<div class="neuron" style="background: ${bgColor}; color: ${textColor}">${val.toFixed(1)}</div>`;
+            }).join('');
+        }
+
+        function startNeuronAnimation() {
+            neuronInterval = setInterval(() => {
+                neuronActivations = Array.from({ length: 24 }, () => Math.random());
+                const grid = document.getElementById('neuronGrid');
+                if (grid) {
+                    grid.innerHTML = renderNeurons();
+                }
+            }, 200);
+        }
+
+        function renderReasoning() {
+            const lines = [
+                'semantic_parse: "question about cognition"',
+                'intent_class: "explanation_request"',
+                'domain_weights: [0.8 tech, 0.6 science]',
+                'confidence: 0.94'
+            ];
+
+            return `
+                <div class="attention-label">context_aggregation:</div>
+                ${lines.map(line => `<div class="reason-line">${line}</div>`).join('')}
+            `;
+        }
+
+        function renderGeneration() {
+            return `
+                <div class="attention-label">output_stream:</div>
+                <div class="output-text" id="outputText"><span class="cursor">▊</span></div>
+            `;
+        }
+
+        function startTypingAnimation() {
+            typedOutput = '';
+            let i = 0;
+
+            typingInterval = setInterval(() => {
+                if (i <= outputText.length) {
+                    typedOutput = outputText.slice(0, i);
+                    const el = document.getElementById('outputText');
+                    if (el) {
+                        el.innerHTML = typedOutput + `<span class="cursor">▊</span>`;
+                    }
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                }
+            }, 25);
+        }
+
+        // Play/Pause
+        function togglePlay() {
+            if (isPlaying) {
+                stopPlaying();
+            } else {
+                startPlaying();
+            }
+        }
+
+        function startPlaying() {
+            isPlaying = true;
+            playBtn.textContent = '[PAUSE]';
+            playBtn.className = 'play-btn playing';
+
+            stageInterval = setInterval(() => {
+                setActiveStage((activeStage + 1) % stages.length);
+            }, 3000);
+        }
+
+        function stopPlaying() {
+            isPlaying = false;
+            playBtn.textContent = '[PLAY]';
+            playBtn.className = 'play-btn paused';
+
+            if (stageInterval) {
+                clearInterval(stageInterval);
+                stageInterval = null;
+            }
+        }
+
+        // Cursor blink
+        cursorInterval = setInterval(() => {
+            cursorVisible = !cursorVisible;
+            document.querySelectorAll('.cursor').forEach(el => {
+                el.style.opacity = cursorVisible ? '1' : '0';
+            });
+        }, 530);
+
+        // Event listeners
+        playBtn.addEventListener('click', togglePlay);
+
+        // Initialize
+        initStageButtons();
+        initFlowDiagram();
+        updateProcessBody();
+        addLogEntry();
+        startPlaying();
+    </script>
+</body>
+</html>
