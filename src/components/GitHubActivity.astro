@@ -44,6 +44,8 @@
     font-size: 0.75rem;
     color: var(--text-3);
     white-space: nowrap;
+    margin-left: auto;
+    padding-left: 1rem;
   }
   .gh-error { color: var(--text-3); font-size: 0.875rem; }
 
@@ -104,7 +106,7 @@
     var t = isTerm();
     container.innerHTML = items.map(function(e) {
       if (t) return '<div class="gh-event"><span class="gh-content"><span style="color:var(--text-3)">$ </span><span style="color:var(--accent)">' + e.cmd + '</span>  <span class="gh-time">// ' + e.time + '</span></span><span class="gh-content"><span style="color:var(--text-3)">&gt; </span><span class="gh-msg">' + e.sub + '</span></span></div>';
-      return '<div class="gh-event"><span class="gh-dot"></span><span class="gh-content"><span class="gh-action">' + e.action + ' </span><span class="gh-repo">' + e.repo + '</span><span class="gh-msg">' + e.detail + '</span></span><span class="gh-time">' + e.time + '</span></div>';
+      return '<div class="gh-event"><span class="gh-dot"></span><span class="gh-content"><span class="gh-action">' + e.action + ' </span><span class="gh-repo">' + e.repo + '</span><span class="gh-msg">' + e.detail + '</span></span><span class="gh-time"> ' + e.time + '</span></div>';
     }).join('');
   }
 
