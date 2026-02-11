@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import CommandPalette from '../components/CommandPalette.astro';
-import NowPlaying from '../components/NowPlaying.astro';
 import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
@@ -74,7 +73,6 @@ const { title = 'Jake Davis', description = 'AI systems builder, programmer, neu
   <footer class="py-16 px-6" style="border-top: 1px solid var(--border);">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
       <div class="flex items-center gap-6 flex-wrap">
-        <NowPlaying />
         <p class="text-sm" style="color: var(--text-3);">© 2026 Jake Davis</p>
       </div>
       <div class="flex gap-6">
