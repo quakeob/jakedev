@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jake Davis</title>
+    <meta name="description" content="Software developer and neuroscience student building at the intersection of code and cognition.">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --text-2: #888;
+            --text-3: #555;
+            --border: #222;
+            --hover: #fff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: #fff; color: #000; }
+        a { color: var(--text); text-decoration: none; }
+        a:hover { color: var(--hover); }
+        img { display: block; max-width: 100%; }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+        .nav-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo { font-size: 14px; font-weight: bold; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a {
+            font-size: 12px;
+            color: var(--text-2);
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--hover); }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 160px 0 80px;
+            border-bottom: 1px solid var(--border);
+        }
+        .hero h1 {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(48px, 10vw, 96px);
+            font-weight: bold;
+            line-height: 1;
+            letter-spacing: -2px;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+        .hero p {
+            font-size: 16px;
+            color: var(--text-2);
+            max-width: 480px;
+        }
+
+        /* ── SECTION ── */
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 40px;
+        }
+
+        /* ── PROJECTS ── */
+        .project {
+            padding: 28px 0;
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            align-items: baseline;
+            transition: padding-left 0.2s;
+        }
+        .project:hover { padding-left: 8px; }
+        .project:last-child { border-bottom: 1px solid var(--border); }
+        .project-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .project-desc {
+            color: var(--text-2);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .project-tags span {
+            font-size: 11px;
+            color: var(--text-3);
+            border: 1px solid var(--border);
+            padding: 2px 8px;
+        }
+
+        /* ── ABOUT ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        .about-bio {
+            color: var(--text-2);
+            margin-bottom: 32px;
+        }
+        .about-bio strong { color: var(--text); }
+        .about-meta h4 {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 6px;
+            margin-top: 20px;
+        }
+        .about-meta h4:first-child { margin-top: 0; }
+        .about-meta p {
+            color: var(--text-2);
+            font-size: 13px;
+        }
+        .about-links {
+            margin-top: 32px;
+            display: flex;
+            gap: 24px;
+        }
+        .about-links a {
+            font-size: 13px;
+            color: var(--text-2);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .about-links a:hover {
+            color: var(--hover);
+            border-color: var(--hover);
+        }
+        .about-photo {
+            overflow: hidden;
+        }
+        .about-photo img {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.4s;
+        }
+        .about-photo:hover img { filter: grayscale(0%); }
+
+        /* ── EXPERIENCE ── */
+        .exp-row {
+            display: grid;
+            grid-template-columns: 2fr 2.5fr 1fr;
+            gap: 16px;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+            align-items: baseline;
+            transition: padding-left 0.2s;
+        }
+        .exp-row:hover { padding-left: 8px; }
+        .exp-row:last-of-type { border-bottom: 1px solid var(--border); }
+        .exp-name { font-weight: bold; color: #fff; }
+        .exp-role { color: var(--text-2); font-size: 13px; }
+        .exp-year { color: var(--text-3); font-size: 13px; text-align: right; }
+        .exp-edu {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .exp-edu-name { font-weight: bold; color: #fff; }
+        .exp-edu-degree { color: var(--text-2); font-size: 13px; }
+        .exp-edu-year { color: var(--text-3); font-size: 13px; }
+
+        /* ── PHOTOS ── */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+        .photo-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+        .photo-grid img:hover { filter: grayscale(0%); }
+        .photo-link {
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 13px;
+            color: var(--text-2);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .photo-link:hover {
+            color: var(--hover);
+            border-color: var(--hover);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 80px 0 40px;
+        }
+        .footer-cta {
+            font-size: clamp(36px, 8vw, 72px);
+            font-weight: bold;
+            line-height: 1;
+            letter-spacing: -1px;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+        .footer-email {
+            font-size: 16px;
+            color: var(--text-2);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+            transition: color 0.2s, border-color 0.2s;
+            display: inline-block;
+            margin-bottom: 60px;
+        }
+        .footer-email:hover {
+            color: var(--hover);
+            border-color: var(--hover);
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-links { display: flex; gap: 20px; }
+        .footer-links a {
+            font-size: 12px;
+            color: var(--text-3);
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--hover); }
+        .footer-copy { font-size: 11px; color: var(--text-3); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .project { grid-template-columns: 1fr; gap: 8px; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-photo img { height: 300px; }
+            .exp-row { grid-template-columns: 1fr; gap: 4px; }
+            .exp-year { text-align: left; }
+            .photo-grid { grid-template-columns: repeat(2, 1fr); }
+            .photo-grid img { height: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a class="nav-logo" href="#">JAKE DAVIS</a>
+        <div class="nav-links">
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="hero">
+        <h1>Jake<br>Davis</h1>
+        <p>Software developer & neuroscience student building at the intersection of code and cognition.</p>
+    </div>
+
+    <section id="work">
+        <div class="section-label">01 / Projects</div>
+
+        <div class="project">
+            <div class="project-name">Vault Keeper</div>
+            <div>
+                <div class="project-desc">AI-powered personal accountability system. Reads journals, detects behavioral patterns like self-sabotage cycles, generates data-driven insights with pattern prediction and recovery plans.</div>
+                <div class="project-tags">
+                    <span>Claude AI</span><span>Obsidian</span><span>MCP Protocol</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-name">Neural Networks from Scratch</div>
+            <div>
+                <div class="project-desc">Custom neural network library built without frameworks. Backpropagation, multiple activation functions, optimizers (SGD, Adam, RMSprop), and convolutional layers from NumPy arrays up.</div>
+                <div class="project-tags">
+                    <span>Python</span><span>NumPy</span><span>Matplotlib</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-name">3D Brain Visualization</div>
+            <div>
+                <div class="project-desc">Interactive brain-shaped knowledge graph with 80+ nodes mapped to brain regions. Custom 3D projection, floating physics, drag-to-rotate — all vanilla JavaScript.</div>
+                <div class="project-tags">
+                    <span>JavaScript</span><span>Canvas API</span><span>3D Math</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-name">Crypto Trading Bot</div>
+            <div>
+                <div class="project-desc">Algorithmic trading system. Real-time data streaming, technical indicators (RSI, MACD, Bollinger), ML-based price prediction, backtesting framework, multi-exchange support.</div>
+                <div class="project-tags">
+                    <span>Python</span><span>Pandas</span><span>scikit-learn</span><span>WebSocket</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-name">Web Scraping Toolkit</div>
+            <div>
+                <div class="project-desc">Scraping utilities for dynamic content extraction, anti-detection, rotating proxies, headless browser automation, and export to CSV, JSON, and databases.</div>
+                <div class="project-tags">
+                    <span>Python</span><span>Selenium</span><span>Scrapy</span><span>BeautifulSoup</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project">
+            <div class="project-name">Claude Token Tracker</div>
+            <div>
+                <div class="project-desc">Native macOS SwiftUI widget that tracks Claude Code token usage in real-time. Parses JSONL session files, displays per-model breakdowns and API cost estimates.</div>
+                <div class="project-tags">
+                    <span>Swift</span><span>SwiftUI</span><span>WidgetKit</span><span>macOS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-label">02 / About</div>
+        <div class="about-grid">
+            <div>
+                <p class="about-bio">
+                    <strong>Neuroscience student at BYU</strong> with a deep interest in how the brain learns — and how to make machines do the same. I build tools that sit at the edge of code and cognition. Fluent in Spanish from two years serving in Ecuador. When I'm not building, I'm climbing, skiing, or somewhere deep in the mountains.
+                </p>
+                <div class="about-meta">
+                    <h4>Languages</h4>
+                    <p>Python, JavaScript, TypeScript, Swift, Java, C++, Spanish</p>
+                    <h4>Stack</h4>
+                    <p>React, Node.js, PostgreSQL, Docker, AWS, Git, Linux</p>
+                    <h4>Domains</h4>
+                    <p>Machine Learning, Data Science, Neuroscience, Web Dev</p>
+                </div>
+                <div class="about-links">
+                    <a href="/portfolio">Photo Portfolio</a>
+                    <a href="/humanitarian">Humanitarian Work</a>
+                </div>
+            </div>
+            <div class="about-photo">
+                <img src="DSCF7420.jpg" alt="Jake Davis" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="section-label">03 / Experience</div>
+
+        <div class="exp-row">
+            <span class="exp-name">Peaks Lighting</span>
+            <span class="exp-role">Process Engineer — Aluminum Manufacturing</span>
+            <span class="exp-year">2025 – 26</span>
+        </div>
+        <div class="exp-row">
+            <span class="exp-name">Self-Employed</span>
+            <span class="exp-role">Software Developer & Freelance</span>
+            <span class="exp-year">2021 – 25</span>
+        </div>
+        <div class="exp-row">
+            <span class="exp-name">Ecuador Mission</span>
+            <span class="exp-role">Missionary — Leadership & Spanish Fluency</span>
+            <span class="exp-year">2023 – 25</span>
+        </div>
+        <div class="exp-row">
+            <span class="exp-name">Drone Shows</span>
+            <span class="exp-role">Setup & Operations Coordinator</span>
+            <span class="exp-year">2025</span>
+        </div>
+        <div class="exp-row">
+            <span class="exp-name">Ice Castles</span>
+            <span class="exp-role">Photo/Video Team & Winter Build Crew</span>
+            <span class="exp-year">2017 – 20</span>
+        </div>
+
+        <div class="exp-edu">
+            <div>
+                <div class="exp-edu-name">Brigham Young University</div>
+                <div class="exp-edu-degree">B.S. Neuroscience</div>
+            </div>
+            <span class="exp-edu-year">Expected 2027</span>
+        </div>
+    </section>
+
+    <section id="photos">
+        <div class="section-label">04 / Photography</div>
+        <div class="photo-grid">
+            <img src="DSCF3430.JPG" alt="Photography" loading="lazy">
+            <img src="DSCF3995.JPG" alt="Outdoors" loading="lazy">
+            <img src="77DF0DEE-DE73-4B5F-BD82-1E3463E1F05E_1_201_a.jpeg" alt="Mountains" loading="lazy">
+            <img src="DSCF7420.jpg" alt="Jake" loading="lazy">
+        </div>
+        <a href="/portfolio" class="photo-link">View full portfolio</a>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-cta">Let's connect.</div>
+        <a class="footer-email" href="mailto:jake@bryt.works">jake@bryt.works</a>
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="https://github.com/quakeob" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://www.instagram.com/jjakedavis" target="_blank" rel="noopener">Instagram</a>
+                <a href="/portfolio">Portfolio</a>
+                <a href="/humanitarian">Humanitarian</a>
+                <a href="/tokens">Tokens</a>
+            </div>
+            <span class="footer-copy">&copy; 2026 Jake Davis</span>
+        </div>
+    </footer>
+
+</div>
+
+</body>
+</html>

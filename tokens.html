@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokens — Jake Davis</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --text-2: #888;
+            --text-3: #555;
+            --border: #222;
+            --hover: #fff;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        ::selection { background: #fff; color: #000; }
+        a { color: var(--text); text-decoration: none; }
+        a:hover { color: var(--hover); }
+
+        .header {
+            width: 100%;
+            max-width: 480px;
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+        .back-link {
+            font-size: 13px;
+            color: var(--text-2);
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--hover); }
+        h1 { font-size: 14px; font-weight: bold; letter-spacing: 1px; }
+
+        .widget {
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 40px;
+        }
+
+        /* Hero number */
+        .hero-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .hero-label {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        /* Stat row */
+        .stat-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .stat-box {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            border: 1px solid var(--border);
+        }
+        .stat-title {
+            font-size: 11px;
+            color: var(--text-3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Model rows */
+        .model-section {
+            margin-bottom: 32px;
+        }
+        .model-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .model-name {
+            font-size: 12px;
+            color: var(--text-2);
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .model-bar-bg {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+        }
+        .model-bar-fill {
+            height: 100%;
+            background: var(--text-2);
+            transition: width 1.2s ease;
+            width: 0;
+        }
+        .model-tokens {
+            font-size: 11px;
+            color: var(--text-3);
+            width: 56px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 24px 0;
+        }
+
+        /* Footer stats */
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        .footer-label { color: var(--text-3); }
+        .footer-value { color: var(--text-2); }
+        .footer-since {
+            font-size: 11px;
+            color: var(--text-3);
+            margin-top: 8px;
+        }
+
+        /* Activity chart */
+        .activity-section {
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 40px;
+        }
+        .activity-title {
+            font-size: 11px;
+            color: var(--text-3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .activity-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 80px;
+        }
+        .activity-bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .activity-bar {
+            width: 100%;
+            background: var(--text-3);
+            min-height: 2px;
+            transition: height 1s ease;
+        }
+        .activity-date {
+            font-size: 8px;
+            color: var(--text-3);
+        }
+
+        /* Download */
+        .download {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .download a {
+            font-size: 12px;
+            color: var(--text-3);
+            border: 1px solid var(--border);
+            padding: 10px 24px;
+            display: inline-block;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .download a:hover { color: var(--hover); border-color: var(--hover); }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="/" class="back-link">&larr; home</a>
+    <h1>TOKENS</h1>
+    <span style="width: 60px;"></span>
+</div>
+
+<div class="widget">
+    <div class="hero-number" id="heroNumber">0</div>
+    <div class="hero-label">lifetime tokens</div>
+
+    <div class="stat-row">
+        <div class="stat-box">
+            <div class="stat-title">Input</div>
+            <div class="stat-value" id="inputTokens">0</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-title">Output</div>
+            <div class="stat-value" id="outputTokens">0</div>
+        </div>
+    </div>
+
+    <div class="model-section" id="modelRows"></div>
+
+    <div class="divider"></div>
+
+    <div class="footer-row">
+        <span class="footer-label">API Equivalent</span>
+        <span class="footer-value" id="costEstimate">~$0.00</span>
+    </div>
+    <div class="footer-row">
+        <span class="footer-label" id="msgCount">0 msgs</span>
+        <span class="footer-label" id="sessionCount">0 sessions</span>
+    </div>
+    <div class="footer-since" id="sinceDate">Since --</div>
+</div>
+
+<div class="activity-section">
+    <div class="activity-title">Daily Activity</div>
+    <div class="activity-chart" id="activityChart"></div>
+</div>
+
+<div class="download">
+    <a href="https://github.com/quakeob/ClaudeTokenTracker" target="_blank">download desktop widget for macOS</a>
+</div>
+
+<script>
+    function formatNumber(n) { return n.toLocaleString(); }
+    function formatCompact(n) {
+        if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+        if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+        return '' + n;
+    }
+
+    function animateCount(el, target, formatter, duration) {
+        duration = duration || 1200;
+        var start = performance.now();
+        function step(now) {
+            var t = Math.min((now - start) / duration, 1);
+            var ease = 1 - Math.pow(1 - t, 3);
+            el.textContent = formatter(Math.floor(ease * target));
+            if (t < 1) requestAnimationFrame(step);
+            else el.textContent = formatter(target);
+        }
+        requestAnimationFrame(step);
+    }
+
+    function modelName(raw) {
+        if (raw.includes('opus-4-6')) return 'Opus 4.6';
+        if (raw.includes('opus-4-5')) return 'Opus 4.5';
+        if (raw.includes('sonnet-4-5')) return 'Sonnet 4.5';
+        if (raw.includes('sonnet-4')) return 'Sonnet 4';
+        if (raw.includes('haiku')) return 'Haiku';
+        return raw;
+    }
+
+    function estimateCost(model, u) {
+        var m = model.toLowerCase();
+        if (m.includes('opus')) {
+            return u.inputTokens / 1e6 * 15 + u.outputTokens / 1e6 * 75
+                 + u.cacheReadInputTokens / 1e6 * 1.875 + u.cacheCreationInputTokens / 1e6 * 18.75;
+        } else if (m.includes('sonnet')) {
+            return u.inputTokens / 1e6 * 3 + u.outputTokens / 1e6 * 15
+                 + u.cacheReadInputTokens / 1e6 * 0.375 + u.cacheCreationInputTokens / 1e6 * 3.75;
+        } else if (m.includes('haiku')) {
+            return u.inputTokens / 1e6 * 0.25 + u.outputTokens / 1e6 * 1.25
+                 + u.cacheReadInputTokens / 1e6 * 0.03125 + u.cacheCreationInputTokens / 1e6 * 0.3125;
+        }
+        return 0;
+    }
+
+    fetch('token-data.json?v=' + Date.now())
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var usage = data.modelUsage || {};
+            var totalTokens = 0, totalInput = 0, totalOutput = 0, totalCost = 0;
+            var models = [];
+
+            Object.keys(usage).forEach(function(key) {
+                var u = usage[key];
+                var t = u.inputTokens + u.outputTokens + u.cacheReadInputTokens + u.cacheCreationInputTokens;
+                var inp = u.inputTokens + u.cacheReadInputTokens + u.cacheCreationInputTokens;
+                totalTokens += t;
+                totalInput += inp;
+                totalOutput += u.outputTokens;
+                totalCost += estimateCost(key, u);
+                models.push({ raw: key, name: modelName(key), tokens: t });
+            });
+
+            models.sort(function(a, b) { return b.tokens - a.tokens; });
+
+            animateCount(document.getElementById('heroNumber'), totalTokens, formatNumber, 1500);
+            animateCount(document.getElementById('inputTokens'), totalInput, formatCompact, 1200);
+            animateCount(document.getElementById('outputTokens'), totalOutput, formatCompact, 1200);
+
+            var rowsEl = document.getElementById('modelRows');
+            models.forEach(function(m) {
+                var pct = totalTokens > 0 ? (m.tokens / totalTokens * 100) : 0;
+                var row = document.createElement('div');
+                row.className = 'model-row';
+                row.innerHTML =
+                    '<span class="model-name">' + m.name + '</span>' +
+                    '<div class="model-bar-bg"><div class="model-bar-fill" data-width="' + pct + '%"></div></div>' +
+                    '<span class="model-tokens">' + formatCompact(m.tokens) + '</span>';
+                rowsEl.appendChild(row);
+            });
+
+            setTimeout(function() {
+                document.querySelectorAll('.model-bar-fill').forEach(function(bar) {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 100);
+
+            document.getElementById('costEstimate').textContent = '~$' + totalCost.toFixed(2);
+            document.getElementById('msgCount').textContent = (data.totalMessages || 0) + ' msgs';
+            document.getElementById('sessionCount').textContent = (data.totalSessions || 0) + ' sessions';
+
+            if (data.firstSessionDate) {
+                var d = new Date(data.firstSessionDate);
+                var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                document.getElementById('sinceDate').textContent = 'Since ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+            }
+
+            var activity = data.dailyActivity || [];
+            var maxMsgs = Math.max.apply(null, activity.map(function(a) { return a.messageCount; }));
+            var chartEl = document.getElementById('activityChart');
+
+            activity.forEach(function(day) {
+                var h = maxMsgs > 0 ? (day.messageCount / maxMsgs * 70) : 2;
+                var parts = day.date.split('-');
+                var group = document.createElement('div');
+                group.className = 'activity-bar-group';
+                group.innerHTML =
+                    '<div class="activity-bar" data-height="' + h + 'px" style="height: 2px;"></div>' +
+                    '<span class="activity-date">' + parts[1] + '/' + parts[2] + '</span>';
+                chartEl.appendChild(group);
+            });
+
+            setTimeout(function() {
+                document.querySelectorAll('.activity-bar').forEach(function(bar) {
+                    bar.style.height = bar.getAttribute('data-height');
+                });
+            }, 300);
+        });
+</script>
+
+</body>
+</html>

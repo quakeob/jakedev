@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio — Jake Davis</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --text-2: #888;
+            --text-3: #555;
+            --border: #222;
+            --hover: #fff;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.7;
+            padding: 0 24px 60px;
+        }
+
+        ::selection { background: #fff; color: #000; }
+        a { color: var(--text); text-decoration: none; }
+        a:hover { color: var(--hover); }
+
+        .header {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+        .back-link {
+            font-size: 13px;
+            color: var(--text-2);
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--hover); }
+        h1 { font-size: 14px; font-weight: bold; letter-spacing: 1px; }
+
+        /* Gallery */
+        .gallery {
+            max-width: 960px;
+            margin: 0 auto;
+            column-count: 3;
+            column-gap: 12px;
+        }
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 12px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s;
+        }
+        .gallery-item:hover img { opacity: 0.8; }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        .lightbox-info {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 24px; right: 24px;
+            font-size: 24px;
+            color: var(--text-2);
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--border);
+            width: 40px; height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lightbox-close:hover { color: var(--hover); border-color: var(--hover); }
+
+        @media (max-width: 768px) {
+            .gallery { column-count: 2; }
+        }
+        @media (max-width: 480px) {
+            .gallery { column-count: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="/" class="back-link">&larr; home</a>
+    <h1>PORTFOLIO</h1>
+    <span style="width: 60px;"></span>
+</div>
+
+<div class="gallery">
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3233.jpg" alt="Street photography"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3289.jpg" alt="Architecture"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3291.jpg" alt="Portrait"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3296.jpg" alt="Landscape"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3494.jpg" alt="Urban"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3495.jpg" alt="Night scene"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3554.jpg" alt="Nature"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3766.jpg" alt="Abstract"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF3767.jpg" alt="Travel"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF4073.jpg" alt="Candid"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF4108.jpg" alt="Street"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF4109.jpg" alt="Portrait"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF4166.jpg" alt="Action"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF4171.jpg" alt="Low light"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF4278.jpg" alt="Architecture"></div>
+    <div class="gallery-item"><img src="BWPHOTO/DSCF7488.jpg" alt="Nature"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_2471.JPG" alt="Landscape"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_2586.JPG" alt="Travel"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_4840.JPG" alt="Portrait"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_4929.JPG" alt="Street"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_5628.JPG" alt="Abstract"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_5632.JPG" alt="Nature"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_5638.JPG" alt="Candid"></div>
+    <div class="gallery-item"><img src="BWPHOTO/IMG_5650.JPG" alt="Night"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img src="" alt="" id="lightboxImage">
+    <div class="lightbox-info" id="lightboxInfo"></div>
+</div>
+
+<script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImage');
+    const lightboxInfo = document.getElementById('lightboxInfo');
+
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const img = item.querySelector('img');
+            lightboxImg.src = img.src;
+            const filename = img.src.split('/').pop();
+            lightboxInfo.textContent = filename;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+</script>
+
+</body>
+</html>

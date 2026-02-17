@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humanitarian — Jake Davis</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --text-2: #888;
+            --text-3: #555;
+            --border: #222;
+            --hover: #fff;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.7;
+            padding: 0 24px 80px;
+        }
+
+        ::selection { background: #fff; color: #000; }
+        a { color: var(--text-2); text-decoration: none; }
+        a:hover { color: var(--hover); }
+        img { display: block; max-width: 100%; }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .header {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 48px;
+        }
+        .back-link { font-size: 13px; color: var(--text-2); transition: color 0.2s; }
+        .back-link:hover { color: var(--hover); }
+        h1 { font-size: 14px; font-weight: bold; letter-spacing: 1px; }
+
+        /* Definition */
+        .definition {
+            border: 1px solid var(--border);
+            padding: 32px;
+            margin-bottom: 48px;
+        }
+        .definition h2 {
+            font-size: 28px;
+            font-weight: normal;
+            margin-bottom: 8px;
+        }
+        .definition .pronunciation {
+            color: var(--text-3);
+            font-style: italic;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .definition .pos {
+            color: var(--text-3);
+            font-style: italic;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .definition ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+            color: var(--text-2);
+        }
+        .definition li { margin-bottom: 8px; }
+
+        /* Blockquote */
+        .quote {
+            border-left: 2px solid var(--border);
+            padding: 16px 24px;
+            margin: 32px 0;
+            color: var(--text-2);
+            font-style: italic;
+        }
+        .quote .cite {
+            font-style: normal;
+            font-size: 12px;
+            color: var(--text-3);
+            margin-top: 8px;
+        }
+
+        /* Content sections */
+        .content h3 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .content p {
+            color: var(--text-2);
+            margin-bottom: 16px;
+        }
+        .content p strong { color: var(--text); }
+        .content-section {
+            margin-bottom: 48px;
+        }
+
+        /* Featured image */
+        .featured-img {
+            margin: 32px 0;
+            text-align: center;
+        }
+        .featured-img img {
+            max-width: 60%;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+        }
+
+        /* Gallery slideshow */
+        .gallery-section {
+            margin: 48px 0;
+        }
+        .gallery {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #050505;
+        }
+        .gallery-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.4s ease;
+        }
+        .gallery-slide {
+            flex: 0 0 100%;
+            height: 100%;
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+        }
+        .gallery-item {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .gallery-controls {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .gallery-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            padding: 12px 16px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            pointer-events: auto;
+            margin: 0 8px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .gallery-btn:hover { color: var(--hover); border-color: var(--hover); }
+        .gallery-counter {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: var(--text-3);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            margin: 60px 0;
+        }
+        .cta a {
+            display: inline-block;
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            padding: 12px 32px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .cta a:hover { color: var(--hover); border-color: var(--hover); }
+
+        /* Video */
+        .video-section {
+            margin: 48px 0;
+            text-align: center;
+        }
+        .video-section iframe {
+            border: 1px solid var(--border);
+            max-width: 100%;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+        .lightbox-info {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 24px; right: 24px;
+            font-size: 24px;
+            color: var(--text-2);
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--border);
+            width: 40px; height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lightbox-close:hover { color: var(--hover); border-color: var(--hover); }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: var(--text-2);
+            cursor: pointer;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lightbox-nav:hover { color: var(--hover); border-color: var(--hover); }
+        .lightbox-prev { left: 24px; }
+        .lightbox-next { right: 24px; }
+
+        @media (max-width: 768px) {
+            .gallery { height: 280px; }
+            .featured-img img { max-width: 100%; }
+            .definition { padding: 20px; }
+            .definition h2 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <a href="/" class="back-link">&larr; home</a>
+        <h1>HUMANITARIAN</h1>
+        <span style="width: 60px;"></span>
+    </div>
+
+    <div class="definition">
+        <h2>humanitarian</h2>
+        <div class="pronunciation">/hjuːˌmænɪˈtɛəriən/</div>
+        <div class="pos"><em>adjective</em></div>
+        <ol>
+            <li>concerned with or seeking to promote human welfare.</li>
+            <li>denoting an event or situation which causes or involves widespread human suffering, especially one which requires aid to be given to the people involved.</li>
+        </ol>
+        <div class="pos"><em>noun</em></div>
+        <ol>
+            <li>a person who seeks to promote human welfare; a philanthropist.</li>
+        </ol>
+    </div>
+
+    <div class="quote">
+        "But he that is greatest among you shall be your servant."
+        <div class="cite">— Matthew 23:11 (KJV)</div>
+    </div>
+
+    <div class="content-section">
+        <div class="content">
+            <h3>Purpose</h3>
+            <p>
+                This page serves as a visual documentary of service and the living conditions of the people of Ecuador.
+                Through photography, we seek to capture both the challenges and the resilience of communities, creating
+                a lasting record that honors their stories and experiences.
+            </p>
+            <p>
+                These images are not just observations — they are a commitment to bearing witness, to understanding, and
+                to contributing to meaningful change through awareness and action.
+            </p>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="content">
+            <h3>What is Photo Philanthropy?</h3>
+            <p>
+                <strong>Photo philanthropy</strong> is the practice of using photography as a tool for social good and
+                humanitarian service. It combines the art of visual storytelling with the mission of raising awareness,
+                documenting social conditions, and advocating for positive change.
+            </p>
+            <p>
+                Unlike traditional photojournalism, photo philanthropy is driven by a commitment to give back — whether
+                through donating proceeds, providing visibility to underserved communities, or partnering with
+                organizations working on the ground. The camera becomes an instrument of advocacy, empathy, and action.
+            </p>
+            <p>
+                Through this work, we aim to illuminate stories that might otherwise remain unseen, creating bridges
+                of understanding between communities and inspiring collective responsibility for the welfare of others.
+            </p>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="content">
+            <h3>Ecuador: Beauty & Struggle</h3>
+
+            <div class="featured-img">
+                <img src="ecuadorphotophil/headpic.JPG" alt="Ecuador">
+            </div>
+
+            <p>
+                Ecuador is a nation of breathtaking landscapes and resilient people, yet beneath its beauty lies a complex
+                reality of systemic challenges that impact daily life. Corruption permeates many levels of government and
+                institutions, diverting resources away from communities that need them most.
+            </p>
+            <p>
+                Access to quality education remains a significant barrier. Many rural areas lack adequate schools, trained
+                teachers, and basic supplies. Children often travel hours on foot to reach classrooms with crumbling walls
+                and no electricity. The cycle of limited education perpetuates poverty, as generations struggle to break
+                free from circumstances they were born into.
+            </p>
+            <p>
+                Economic instability forces families into impossible choices — between putting food on the table today or
+                sending children to school for tomorrow. Healthcare is often inaccessible or unaffordable, leaving
+                treatable conditions to become chronic struggles.
+            </p>
+            <p>
+                Yet amid these challenges, the Ecuadorian people demonstrate extraordinary strength. They build homes with
+                their hands, create communities through shared struggle, and maintain hope for their children's futures.
+                This gallery documents both the hardship and the humanity — the obstacles that exist and the dignity with
+                which they are faced.
+            </p>
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <div class="gallery" id="gallery-ecuador">
+            <div class="gallery-track" id="gallery-ecuador-track"></div>
+            <div class="gallery-controls">
+                <button class="gallery-btn" onclick="prevSlide('ecuador')">&#8249;</button>
+                <button class="gallery-btn" onclick="nextSlide('ecuador')">&#8250;</button>
+            </div>
+            <div class="gallery-counter" id="gallery-ecuador-counter">1 / 1</div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="content">
+            <h3>Black & White Collection</h3>
+            <p>
+                In black and white, the world reduces to its essence — light and shadow, form and texture, presence and
+                absence. This monochrome collection captures moments stripped of color's distraction, revealing the raw
+                emotional truth beneath.
+            </p>
+            <p>
+                These images explore the timeless quality of human experience, where the absence of color creates space
+                for contemplation and connection. Through contrast and composition, the photographs speak to universal
+                themes of resilience, dignity, and the quiet strength found in everyday moments.
+            </p>
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <div class="gallery" id="gallery-bw">
+            <div class="gallery-track" id="gallery-bw-track"></div>
+            <div class="gallery-controls">
+                <button class="gallery-btn" onclick="prevSlide('bw')">&#8249;</button>
+                <button class="gallery-btn" onclick="nextSlide('bw')">&#8250;</button>
+            </div>
+            <div class="gallery-counter" id="gallery-bw-counter">1 / 1</div>
+        </div>
+    </div>
+
+    <div class="content-section" style="margin-top: 60px;">
+        <div class="content">
+            <h3>What Can I Do?</h3>
+            <p>
+                Awareness is the first step, but action creates change. If these images have moved you, there are
+                tangible ways to make a difference in the lives of children and families in Ecuador.
+            </p>
+            <p>
+                <strong>UNICEF Ecuador</strong> works on the ground to provide essential services — clean water,
+                education, healthcare, protection from violence, and emergency relief. Their programs reach the
+                most vulnerable communities, creating lasting impact through sustainable development.
+            </p>
+            <p>
+                Every contribution, no matter the size, helps build a better future. Whether through donation,
+                volunteering, or simply spreading awareness, you have the power to be part of the solution.
+            </p>
+        </div>
+    </div>
+
+    <div class="cta">
+        <a href="https://www.unicef.org/ecuador/en" target="_blank" rel="noopener noreferrer">
+            LEARN MORE & SUPPORT UNICEF ECUADOR
+        </a>
+    </div>
+
+    <div class="content-section">
+        <div class="content">
+            <h3>A Changed Philosophy</h3>
+            <p>
+                My understanding of service has evolved from a simple desire to do good into something deeper — a commitment
+                to apply my specific skills and talents in service of others. It's no longer enough to simply want to help;
+                true service means bringing your whole self, your unique abilities, to bear on the needs before you.
+            </p>
+            <p>
+                My service journey has taken many forms — from volunteer work with the Red Cross to ride-alongs in ambulances,
+                from leading mountain bike groups to documenting humanitarian work in Ecuador. Each experience taught me
+                something different about what it means to serve, but all of them shared a common thread: showing up,
+                being present, and doing what needed to be done.
+            </p>
+            <p>
+                One of my skills is the ability to capture moments and emotion with a camera. Through the lens, I can
+                preserve the dignity in a person's eyes, the strength in their posture, the hope in their smile. Photography
+                becomes more than documentation — it becomes a form of witness, of advocacy, of connection.
+            </p>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/GWEa5mVC2Y0?si=lG7ux9ROqaY42-pl"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+    </div>
+
+    <div class="content-section">
+        <div class="content">
+            <p>
+                This shift in perspective has transformed my approach entirely. Service is no longer about checking boxes
+                or fulfilling obligations. It's about striving to be like Him — to see people as He sees them, to serve
+                as He served, with intention, compassion, and the fullness of who we are.
+            </p>
+            <p>
+                The video above captures some of these moments — glimpses of the beauty, struggle, and humanity I've been
+                privileged to witness and document.
+            </p>
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <div class="gallery" id="gallery-alaska">
+            <div class="gallery-track" id="gallery-alaska-track"></div>
+            <div class="gallery-controls">
+                <button class="gallery-btn" onclick="prevSlide('alaska')">&#8249;</button>
+                <button class="gallery-btn" onclick="nextSlide('alaska')">&#8250;</button>
+            </div>
+            <div class="gallery-counter" id="gallery-alaska-counter">1 / 1</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext">&#8250;</button>
+    <img id="lightboxImage" src="" alt="">
+    <div class="lightbox-info" id="lightboxInfo"></div>
+</div>
+
+<script>
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxInfo = document.getElementById('lightboxInfo');
+    let allPhotos = [];
+    let currentLightboxIndex = 0;
+
+    function buildPhotoArray() {
+        allPhotos = [];
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            allPhotos.push({ src: img.src, alt: img.alt });
+        });
+    }
+
+    document.addEventListener('click', e => {
+        const item = e.target.closest('.gallery-item');
+        if (item) {
+            const img = item.querySelector('img');
+            if (img) {
+                currentLightboxIndex = allPhotos.findIndex(p => p.src === img.src);
+                showLightbox(currentLightboxIndex);
+            }
+        }
+    });
+
+    function showLightbox(index) {
+        if (index >= 0 && index < allPhotos.length) {
+            currentLightboxIndex = index;
+            lightboxImage.src = allPhotos[index].src;
+            lightboxInfo.textContent = allPhotos[index].alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    document.getElementById('lightboxPrev').addEventListener('click', e => {
+        e.stopPropagation();
+        currentLightboxIndex = (currentLightboxIndex - 1 + allPhotos.length) % allPhotos.length;
+        showLightbox(currentLightboxIndex);
+    });
+    document.getElementById('lightboxNext').addEventListener('click', e => {
+        e.stopPropagation();
+        currentLightboxIndex = (currentLightboxIndex + 1) % allPhotos.length;
+        showLightbox(currentLightboxIndex);
+    });
+    document.getElementById('lightboxClose').addEventListener('click', () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) { lightbox.classList.remove('active'); document.body.style.overflow = ''; }
+    });
+    document.addEventListener('keydown', e => {
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') { lightbox.classList.remove('active'); document.body.style.overflow = ''; }
+            else if (e.key === 'ArrowLeft') { currentLightboxIndex = (currentLightboxIndex - 1 + allPhotos.length) % allPhotos.length; showLightbox(currentLightboxIndex); }
+            else if (e.key === 'ArrowRight') { currentLightboxIndex = (currentLightboxIndex + 1) % allPhotos.length; showLightbox(currentLightboxIndex); }
+        }
+    });
+
+    // Slideshows
+    const slideshows = {
+        ecuador: { currentIndex: 0, slides: [] },
+        bw: { currentIndex: 0, slides: [] },
+        alaska: { currentIndex: 0, slides: [] }
+    };
+    const PHOTOS_PER_SLIDE = 3;
+
+    function loadGallery() {
+        const ecuadorPhotos = [
+            'headpic.JPG', 'IMG_1731.JPG', 'IMG_1764.JPG', 'IMG_1788.JPG', 'IMG_2017.JPG',
+            'IMG_2023.JPG', 'IMG_2026.JPG', 'IMG_2066.JPG', 'IMG_2093.JPG', 'IMG_2103.JPG',
+            'IMG_2120.JPG', 'IMG_2139.JPG', 'IMG_2171.JPG', 'IMG_2189.JPG', 'IMG_2329.JPG',
+            'IMG_2452.JPG', 'IMG_2453.JPG', 'IMG_2615.JPG', 'IMG_2918.JPG', 'IMG_3019.JPG',
+            'IMG_3032.JPG', 'IMG_3087.JPG', 'IMG_3089.JPG', 'IMG_3090.JPG', 'IMG_3104.JPG',
+            'IMG_3105.JPG', 'IMG_3114.JPG', 'IMG_3127.JPG', 'IMG_3158.JPG', 'IMG_3188.JPG',
+            'IMG_3189.JPG', 'IMG_3203.JPG', 'IMG_3204.JPG', 'IMG_3205.JPG', 'IMG_3206.JPG',
+            'IMG_3208.JPG', 'IMG_3210.JPG', 'IMG_3214.JPG', 'IMG_3217.JPG', 'IMG_3218.JPG',
+            'IMG_3221.JPG', 'IMG_3222.JPG', 'IMG_3223.JPG', 'IMG_3225.JPG', 'IMG_3226.JPG',
+            'IMG_3227.JPG', 'IMG_3229.JPG', 'IMG_3230.JPG', 'IMG_3233.JPG', 'IMG_3235.JPG',
+            'IMG_3236.JPG', 'IMG_3237.JPG', 'IMG_3239.JPG', 'IMG_3240.JPG', 'IMG_3241.JPG',
+            'IMG_3243.JPG', 'IMG_3244.JPG', 'IMG_3246.JPG', 'IMG_3249.JPG', 'IMG_3250.JPG',
+            'IMG_3251.JPG', 'IMG_3253.JPG', 'IMG_3254.JPG', 'IMG_3255.JPG', 'IMG_3256.JPG',
+            'IMG_3257.JPG', 'IMG_3259.JPG', 'IMG_3260.JPG', 'IMG_3263.JPG', 'IMG_3265.JPG',
+            'IMG_3267.JPG', 'IMG_3268.JPG', 'IMG_3270.JPG', 'IMG_3271.JPG', 'IMG_3272.JPG',
+            'IMG_3273.JPG', 'IMG_3274.JPG', 'IMG_3275.JPG', 'IMG_3276.JPG', 'IMG_3278.JPG',
+            'IMG_3279.JPG', 'IMG_3280.JPG', 'IMG_3283.JPG', 'IMG_3284.JPG', 'IMG_3285.JPG',
+            'IMG_3286.JPG', 'IMG_3287.JPG', 'IMG_3289.JPG', 'IMG_3290.JPG', 'IMG_3291.JPG',
+            'IMG_3292.JPG', 'IMG_3293.JPG', 'IMG_3294.JPG', 'IMG_3296.JPG', 'IMG_3298.JPG',
+            'IMG_3299.JPG', 'IMG_3302.JPG', 'IMG_3303.JPG', 'IMG_3304.JPG'
+        ];
+
+        const bwPhotos = [
+            'IMG_2114.JPG', 'IMG_2115.JPG', 'IMG_2116.JPG', 'IMG_2138.JPG', 'IMG_2142.JPG',
+            'IMG_2157.JPG', 'IMG_2160.JPG', 'IMG_2206.JPG', 'IMG_2210.JPG', 'IMG_2217.JPG',
+            'IMG_2218.JPG', 'IMG_2219.JPG', 'IMG_2226.JPG', 'IMG_2234.JPG', 'IMG_2249.JPG',
+            'IMG_2250.JPG', 'IMG_2258.JPG', 'IMG_2263.JPG', 'IMG_2273.JPG', 'IMG_2297.JPG',
+            'IMG_2301.JPG', 'IMG_2331.JPG', 'IMG_2348.JPG', 'IMG_2365.JPG', 'IMG_2395.JPG',
+            'IMG_2415.JPG', 'IMG_2441.JPG', 'IMG_2451.JPG', 'IMG_2462.JPG', 'IMG_2485.JPG',
+            'IMG_2488.JPG', 'IMG_2508.JPG', 'IMG_2509.JPG', 'IMG_2540.JPG', 'IMG_2541.JPG',
+            'IMG_2550.JPG', 'IMG_2583.JPG', 'IMG_2623.JPG', 'IMG_2645.JPG', 'IMG_2660.JPG',
+            'IMG_2689.JPG', 'IMG_2747.JPG', 'IMG_2755.JPG', 'IMG_2802.JPG', 'IMG_2856.JPG',
+            'IMG_2863.JPG', 'IMG_2882.JPG', 'IMG_2886.JPG', 'IMG_2907.JPG', 'IMG_2919.JPG'
+        ];
+
+        const alaskaPhotos = [
+            'DSCF6388.jpg', 'DSCF6443.jpg', 'DSCF6450.jpg', 'DSCF6545.jpg',
+            'IMG_0078.JPG', 'IMG_9122.jpeg', 'IMG_9184.jpeg', 'IMG_9262.jpeg', 'IMG_9282.jpeg'
+        ];
+
+        slideshows.ecuador.slides = groupIntoSlides(ecuadorPhotos, 'ecuadorphotophil');
+        slideshows.bw.slides = groupIntoSlides(bwPhotos, 'ecuadorphotophil/BlackandWhite');
+        slideshows.alaska.slides = groupIntoSlides(alaskaPhotos, 'alaska');
+
+        buildSlides('ecuador', document.getElementById('gallery-ecuador-track'));
+        buildSlides('bw', document.getElementById('gallery-bw-track'));
+        buildSlides('alaska', document.getElementById('gallery-alaska-track'));
+
+        updateCounter('ecuador');
+        updateCounter('bw');
+        updateCounter('alaska');
+
+        buildPhotoArray();
+    }
+
+    function groupIntoSlides(photos, basePath) {
+        const slides = [];
+        for (let i = 0; i < photos.length; i += PHOTOS_PER_SLIDE) {
+            slides.push(photos.slice(i, i + PHOTOS_PER_SLIDE).map(p => ({ name: p, path: basePath + '/' + p })));
+        }
+        return slides;
+    }
+
+    function buildSlides(gallery, track) {
+        slideshows[gallery].slides.forEach(slidePhotos => {
+            const slide = document.createElement('div');
+            slide.className = 'gallery-slide';
+            slidePhotos.forEach(photo => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = '<img src="' + photo.path + '" alt="' + photo.name + '" loading="lazy">';
+                slide.appendChild(item);
+            });
+            track.appendChild(slide);
+        });
+    }
+
+    function nextSlide(gallery) {
+        const s = slideshows[gallery];
+        s.currentIndex = (s.currentIndex + 1) % s.slides.length;
+        updateSlidePosition(gallery);
+    }
+    function prevSlide(gallery) {
+        const s = slideshows[gallery];
+        s.currentIndex = (s.currentIndex - 1 + s.slides.length) % s.slides.length;
+        updateSlidePosition(gallery);
+    }
+    function updateSlidePosition(gallery) {
+        document.getElementById('gallery-' + gallery + '-track').style.transform =
+            'translateX(-' + slideshows[gallery].currentIndex * 100 + '%)';
+        updateCounter(gallery);
+    }
+    function updateCounter(gallery) {
+        const s = slideshows[gallery];
+        document.getElementById('gallery-' + gallery + '-counter').textContent =
+            (s.currentIndex + 1) + ' / ' + s.slides.length;
+    }
+
+    window.addEventListener('DOMContentLoaded', loadGallery);
+</script>
+
+</body>
+</html>
