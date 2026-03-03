@@ -335,7 +335,7 @@ const hasSidebar = isTokenTracker || isFuel;
                 <div class="fuel-dash__nav">
                   <span class="fuel-dash__nav-btn">‹</span>
                   <span class="fuel-dash__nav-title">Today</span>
-                  <span class="fuel-dash__add-btn">⊕</span>
+                  <span class="fuel-dash__add-btn">+</span>
                 </div>
 
                 <div class="fuel-card">
@@ -370,7 +370,7 @@ const hasSidebar = isTokenTracker || isFuel;
 
                 <div class="fuel-card">
                   <div class="fuel-section-header">
-                    <span class="fuel-section-header__icon">◉</span>
+                    <svg class="fuel-section-header__svg" width="14" height="14" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>
                     <span class="fuel-section-header__title">Macros</span>
                   </div>
                   <div class="fuel-dash__macros">
@@ -405,153 +405,319 @@ const hasSidebar = isTokenTracker || isFuel;
 
                 <div class="fuel-card">
                   <div class="fuel-section-header" style="margin-bottom:6px;">
-                    <span class="fuel-section-header__icon">💧</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#4DA6FF"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
                     <span class="fuel-section-header__title">Water</span>
                     <span style="margin-left:auto;" class="fuel-water-count">5/8</span>
                   </div>
                   <div class="fuel-dash__water-drops">
-                    <span class="fuel-drop fuel-drop--filled">💧</span>
-                    <span class="fuel-drop fuel-drop--filled">💧</span>
-                    <span class="fuel-drop fuel-drop--filled">💧</span>
-                    <span class="fuel-drop fuel-drop--filled">💧</span>
-                    <span class="fuel-drop fuel-drop--filled">💧</span>
-                    <span class="fuel-drop">💧</span>
-                    <span class="fuel-drop">💧</span>
-                    <span class="fuel-drop">💧</span>
+                    <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                    <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                    <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                    <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                    <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                    <svg class="fuel-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                    <svg class="fuel-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                    <svg class="fuel-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
                   </div>
                   <div class="fuel-water-bar"><div class="fuel-water-bar__fill" style="width:62.5%;"></div></div>
                 </div>
               </div>
             </div>
 
-            <!-- SCREEN 1: AI Input -->
+            <!-- SCREEN 1: AI Input — matches AddFoodSheet > NLPInputView > ParsedFoodConfirmView -->
             <div class="fuel-screen" data-screen="1">
-              <div class="fuel-input">
-                <div class="fuel-input__header">Add Food</div>
-                <div class="fuel-input__field" id="fuel-input-field">
-                  <span class="fuel-input__cursor">|</span>
+              <div class="fuel-ai">
+                <div class="fuel-ai__navbar">
+                  <span class="fuel-ai__navbar-btn">Cancel</span>
+                  <span class="fuel-ai__navbar-title">Add Food</span>
+                  <span></span>
                 </div>
-                <div class="fuel-input__hint">type what you ate in plain english</div>
+
+                <div class="fuel-card">
+                  <div class="fuel-ai__icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z" fill="#4DCC66"/>
+                    </svg>
+                  </div>
+                  <div class="fuel-ai__heading">Describe what you ate</div>
+                  <div class="fuel-ai__subheading">AI will estimate the nutrition info</div>
+
+                  <div class="fuel-input__field" id="fuel-input-field">
+                    <span class="fuel-input__cursor">|</span>
+                  </div>
+
+                  <div class="fuel-ai__examples">
+                    <span class="fuel-ai__chip">2 eggs and toast</span>
+                    <span class="fuel-ai__chip">chicken caesar salad</span>
+                    <span class="fuel-ai__chip">grande latte with oat milk</span>
+                  </div>
+
+                  <div class="fuel-ai__btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;">
+                      <path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z" fill="white"/>
+                    </svg>
+                    Parse Food
+                  </div>
+                </div>
+
                 <div class="fuel-input__result" id="fuel-parse-result">
                   <div class="fuel-input__parsing" id="fuel-parsing">
                     <span class="fuel-input__spinner"></span>
-                    <span>parsing with claude...</span>
+                    <span>Analyzing with Claude...</span>
                   </div>
                   <div class="fuel-input__foods" id="fuel-foods" style="display:none;">
-                    <div class="fuel-food-item">
-                      <span class="fuel-food-item__emoji">🥚</span>
-                      <div class="fuel-food-item__info">
-                        <div class="fuel-food-item__name">Eggs (2 large)</div>
-                        <div class="fuel-food-item__macros">144 cal · 12g P · 1g C · 10g F</div>
+                    <div class="fuel-ai__confirm-header">
+                      <div class="fuel-ai__confirm-count">4 items found</div>
+                      <div class="fuel-ai__confirm-cal">376 cal total</div>
+                    </div>
+                    <div class="fuel-card fuel-ai__food-card">
+                      <div class="fuel-ai__food-row">
+                        <span class="fuel-ai__food-emoji">🥚</span>
+                        <div class="fuel-ai__food-info">
+                          <div class="fuel-ai__food-name">Eggs (2 large)</div>
+                          <div class="fuel-ai__food-serving">2 large eggs, scrambled</div>
+                        </div>
+                        <div class="fuel-ai__food-cals">
+                          <span class="fuel-ai__food-cal-num">144</span>
+                          <span class="fuel-ai__food-cal-unit">cal</span>
+                        </div>
                       </div>
-                      <span class="fuel-food-item__conf">98%</span>
-                    </div>
-                    <div class="fuel-food-item">
-                      <span class="fuel-food-item__emoji">🍞</span>
-                      <div class="fuel-food-item__info">
-                        <div class="fuel-food-item__name">Sourdough Toast</div>
-                        <div class="fuel-food-item__macros">128 cal · 4g P · 25g C · 1g F</div>
+                      <div class="fuel-ai__food-chips">
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 12g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 1g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 10g</span>
                       </div>
-                      <span class="fuel-food-item__conf">95%</span>
                     </div>
-                    <div class="fuel-food-item">
-                      <span class="fuel-food-item__emoji">🧈</span>
-                      <div class="fuel-food-item__info">
-                        <div class="fuel-food-item__name">Butter (1 tbsp)</div>
-                        <div class="fuel-food-item__macros">102 cal · 0g P · 0g C · 12g F</div>
+                    <div class="fuel-card fuel-ai__food-card">
+                      <div class="fuel-ai__food-row">
+                        <span class="fuel-ai__food-emoji">🍞</span>
+                        <div class="fuel-ai__food-info">
+                          <div class="fuel-ai__food-name">Sourdough Toast</div>
+                          <div class="fuel-ai__food-serving">1 slice</div>
+                        </div>
+                        <div class="fuel-ai__food-cals">
+                          <span class="fuel-ai__food-cal-num">128</span>
+                          <span class="fuel-ai__food-cal-unit">cal</span>
+                        </div>
                       </div>
-                      <span class="fuel-food-item__conf">92%</span>
-                    </div>
-                    <div class="fuel-food-item">
-                      <span class="fuel-food-item__emoji">☕</span>
-                      <div class="fuel-food-item__info">
-                        <div class="fuel-food-item__name">Black Coffee</div>
-                        <div class="fuel-food-item__macros">2 cal · 0g P · 0g C · 0g F</div>
+                      <div class="fuel-ai__food-chips">
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 4g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 25g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 1g</span>
                       </div>
-                      <span class="fuel-food-item__conf">99%</span>
                     </div>
-                    <div class="fuel-food-item__total">
-                      <span>Total</span>
-                      <span>376 cal</span>
+                    <div class="fuel-card fuel-ai__food-card">
+                      <div class="fuel-ai__food-row">
+                        <span class="fuel-ai__food-emoji">🧈</span>
+                        <div class="fuel-ai__food-info">
+                          <div class="fuel-ai__food-name">Butter</div>
+                          <div class="fuel-ai__food-serving">1 tbsp</div>
+                        </div>
+                        <div class="fuel-ai__food-cals">
+                          <span class="fuel-ai__food-cal-num">102</span>
+                          <span class="fuel-ai__food-cal-unit">cal</span>
+                        </div>
+                      </div>
+                      <div class="fuel-ai__food-chips">
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 0g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 0g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 12g</span>
+                      </div>
                     </div>
+                    <div class="fuel-card fuel-ai__food-card">
+                      <div class="fuel-ai__food-row">
+                        <span class="fuel-ai__food-emoji">☕</span>
+                        <div class="fuel-ai__food-info">
+                          <div class="fuel-ai__food-name">Black Coffee</div>
+                          <div class="fuel-ai__food-serving">1 cup</div>
+                        </div>
+                        <div class="fuel-ai__food-cals">
+                          <span class="fuel-ai__food-cal-num">2</span>
+                          <span class="fuel-ai__food-cal-unit">cal</span>
+                        </div>
+                      </div>
+                      <div class="fuel-ai__food-chips">
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 0g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 0g</span>
+                        <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 0g</span>
+                      </div>
+                    </div>
+                    <div class="fuel-ai__log-btn">Log All</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- SCREEN 2: Meals breakdown -->
+            <!-- SCREEN 2: Meals — matches DashboardView scrolled to MealSectionViews -->
             <div class="fuel-screen" data-screen="2">
               <div class="fuel-meals">
-                <div class="fuel-meals__header">Today's Meals</div>
-                <div class="fuel-meal-group">
-                  <div class="fuel-meal-group__label">🌅 Breakfast · 376 cal</div>
-                  <div class="fuel-meal-entry">
-                    <span>🥚 Eggs (2 large)</span><span>144</span>
+                <div class="fuel-meals__nav">
+                  <span class="fuel-dash__nav-btn">‹</span>
+                  <span class="fuel-dash__nav-title" style="font-size:17px;">Today</span>
+                  <span class="fuel-dash__add-btn">+</span>
+                </div>
+                <div class="fuel-card">
+                  <div class="fuel-meal__head">
+                    <span class="fuel-meal__emoji">🌅</span>
+                    <span class="fuel-meal__name">Breakfast</span>
+                    <span class="fuel-meal__cal">376 cal</span>
+                    <span class="fuel-meal__plus">+</span>
                   </div>
-                  <div class="fuel-meal-entry">
-                    <span>🍞 Sourdough Toast</span><span>128</span>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">🥚</span>
+                    <span class="fuel-meal__item-name">Scrambled Eggs</span>
+                    <span class="fuel-meal__item-cal">144</span>
                   </div>
-                  <div class="fuel-meal-entry">
-                    <span>🧈 Butter</span><span>102</span>
+                  <div class="fuel-meal__divider"></div>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">🍞</span>
+                    <span class="fuel-meal__item-name">Toast with Butter</span>
+                    <span class="fuel-meal__item-cal">230</span>
                   </div>
-                  <div class="fuel-meal-entry">
-                    <span>☕ Black Coffee</span><span>2</span>
+                  <div class="fuel-meal__divider"></div>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">☕</span>
+                    <span class="fuel-meal__item-name">Black Coffee</span>
+                    <span class="fuel-meal__item-cal">2</span>
                   </div>
                 </div>
-                <div class="fuel-meal-group">
-                  <div class="fuel-meal-group__label">☀️ Lunch · 520 cal</div>
-                  <div class="fuel-meal-entry">
-                    <span>🥗 Chicken Salad</span><span>380</span>
+                <div class="fuel-card">
+                  <div class="fuel-meal__head">
+                    <span class="fuel-meal__emoji">☀️</span>
+                    <span class="fuel-meal__name">Lunch</span>
+                    <span class="fuel-meal__cal">520 cal</span>
+                    <span class="fuel-meal__plus">+</span>
                   </div>
-                  <div class="fuel-meal-entry">
-                    <span>🍎 Apple</span><span>95</span>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">🥗</span>
+                    <span class="fuel-meal__item-name">Chicken Caesar Salad</span>
+                    <span class="fuel-meal__item-cal">380</span>
                   </div>
-                  <div class="fuel-meal-entry">
-                    <span>🥜 Almonds (handful)</span><span>45</span>
+                  <div class="fuel-meal__divider"></div>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">🍎</span>
+                    <span class="fuel-meal__item-name">Apple</span>
+                    <span class="fuel-meal__item-cal">95</span>
+                  </div>
+                  <div class="fuel-meal__divider"></div>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">🥜</span>
+                    <span class="fuel-meal__item-name">Almonds</span>
+                    <span class="fuel-meal__item-cal">45</span>
                   </div>
                 </div>
-                <div class="fuel-meal-group">
-                  <div class="fuel-meal-group__label">🌙 Dinner · 320 cal</div>
-                  <div class="fuel-meal-entry">
-                    <span>🍣 Salmon (4oz)</span><span>234</span>
+                <div class="fuel-card">
+                  <div class="fuel-meal__head">
+                    <span class="fuel-meal__emoji">🌙</span>
+                    <span class="fuel-meal__name">Dinner</span>
+                    <span class="fuel-meal__cal">320 cal</span>
+                    <span class="fuel-meal__plus">+</span>
                   </div>
-                  <div class="fuel-meal-entry">
-                    <span>🥦 Steamed Broccoli</span><span>86</span>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">🍣</span>
+                    <span class="fuel-meal__item-name">Grilled Salmon</span>
+                    <span class="fuel-meal__item-cal">234</span>
                   </div>
+                  <div class="fuel-meal__divider"></div>
+                  <div class="fuel-meal__item">
+                    <span class="fuel-meal__item-emoji">🥦</span>
+                    <span class="fuel-meal__item-name">Steamed Broccoli</span>
+                    <span class="fuel-meal__item-cal">86</span>
+                  </div>
+                </div>
+                <div class="fuel-card">
+                  <div class="fuel-meal__head">
+                    <span class="fuel-meal__emoji">🍿</span>
+                    <span class="fuel-meal__name">Snacks</span>
+                    <span class="fuel-meal__cal"></span>
+                    <span class="fuel-meal__plus">+</span>
+                  </div>
+                  <div class="fuel-meal__empty">No foods logged</div>
                 </div>
               </div>
             </div>
 
-            <!-- SCREEN 3: Watch + HealthKit -->
+            <!-- SCREEN 3: Integrations — matches Settings/Integration features -->
             <div class="fuel-screen" data-screen="3">
-              <div class="fuel-health">
-                <div class="fuel-health__header">Integrations</div>
-                <div class="fuel-health__card">
-                  <div class="fuel-health__card-icon">⌚</div>
-                  <div class="fuel-health__card-info">
-                    <div class="fuel-health__card-title">Apple Watch</div>
-                    <div class="fuel-health__card-desc">Quick log from your wrist. View calories, macros, and water. Add foods with voice or templates.</div>
+              <div class="fuel-integrations">
+                <div class="fuel-integrations__nav">
+                  <span class="fuel-dash__nav-btn">‹</span>
+                  <span class="fuel-dash__nav-title" style="font-size:17px;">Settings</span>
+                  <span></span>
+                </div>
+                <div class="fuel-int__section-label">INTEGRATIONS</div>
+                <div class="fuel-card">
+                  <div class="fuel-int__row">
+                    <div class="fuel-int__icon fuel-int__icon--blue">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                    </div>
+                    <div class="fuel-int__info">
+                      <div class="fuel-int__name">Apple Watch</div>
+                      <div class="fuel-int__desc">Quick log from your wrist</div>
+                    </div>
+                    <div class="fuel-int__badge">Connected</div>
                   </div>
                 </div>
-                <div class="fuel-health__card">
-                  <div class="fuel-health__card-icon">❤️</div>
-                  <div class="fuel-health__card-info">
-                    <div class="fuel-health__card-title">HealthKit</div>
-                    <div class="fuel-health__card-desc">Syncs calories, macros, and weight to Apple Health. Reads weight entries back for tracking.</div>
+                <div class="fuel-card">
+                  <div class="fuel-int__row">
+                    <div class="fuel-int__icon fuel-int__icon--red">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </div>
+                    <div class="fuel-int__info">
+                      <div class="fuel-int__name">Apple Health</div>
+                      <div class="fuel-int__desc">Syncs calories, macros & weight</div>
+                    </div>
+                    <div class="fuel-int__toggle fuel-int__toggle--on"></div>
                   </div>
                 </div>
-                <div class="fuel-health__card">
-                  <div class="fuel-health__card-icon">📷</div>
-                  <div class="fuel-health__card-info">
-                    <div class="fuel-health__card-title">Barcode Scanner</div>
-                    <div class="fuel-health__card-desc">Vision framework scans UPC barcodes instantly. Auto-fills nutrition from OpenFoodFacts.</div>
+                <div class="fuel-card">
+                  <div class="fuel-int__row">
+                    <div class="fuel-int__icon fuel-int__icon--orange">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+                    </div>
+                    <div class="fuel-int__info">
+                      <div class="fuel-int__name">Barcode Scanner</div>
+                      <div class="fuel-int__desc">Scan UPC for instant nutrition</div>
+                    </div>
+                    <span class="fuel-int__chevron">›</span>
                   </div>
                 </div>
-                <div class="fuel-health__card">
-                  <div class="fuel-health__card-icon">📱</div>
-                  <div class="fuel-health__card-info">
-                    <div class="fuel-health__card-title">Home Widget</div>
-                    <div class="fuel-health__card-desc">WidgetKit home screen widget shows today's calories and macro progress at a glance.</div>
+                <div class="fuel-int__section-label">WIDGETS</div>
+                <div class="fuel-card">
+                  <div class="fuel-int__row">
+                    <div class="fuel-int__icon fuel-int__icon--green">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/><path d="M7 12h4v5H7zm6-5h4v10h-4z"/></svg>
+                    </div>
+                    <div class="fuel-int__info">
+                      <div class="fuel-int__name">Home Screen Widget</div>
+                      <div class="fuel-int__desc">Calories & macros at a glance</div>
+                    </div>
+                    <span class="fuel-int__chevron">›</span>
+                  </div>
+                </div>
+                <div class="fuel-int__section-label">AI</div>
+                <div class="fuel-card">
+                  <div class="fuel-int__row">
+                    <div class="fuel-int__icon fuel-int__icon--purple">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z"/></svg>
+                    </div>
+                    <div class="fuel-int__info">
+                      <div class="fuel-int__name">Claude API</div>
+                      <div class="fuel-int__desc">AI-powered food parsing</div>
+                    </div>
+                    <div class="fuel-int__badge fuel-int__badge--active">Active</div>
+                  </div>
+                </div>
+                <div class="fuel-card">
+                  <div class="fuel-int__row">
+                    <div class="fuel-int__icon fuel-int__icon--teal">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                    </div>
+                    <div class="fuel-int__info">
+                      <div class="fuel-int__name">iCloud Sync</div>
+                      <div class="fuel-int__desc">Cross-device data sync</div>
+                    </div>
+                    <div class="fuel-int__toggle fuel-int__toggle--on"></div>
                   </div>
                 </div>
               </div>
@@ -662,6 +828,7 @@ const hasSidebar = isTokenTracker || isFuel;
         var eaten = 1216, protein = 86, carbs = 134, fat = 42;
         var calLeft = document.getElementById('fuel-cal-left');
         var eatenEl = document.getElementById('fuel-eaten');
+        var remainingStatEl = document.getElementById('fuel-remaining-stat');
         var ringEl = document.getElementById('fuel-ring');
         var proteinEl = document.getElementById('fuel-protein');
         var carbsEl = document.getElementById('fuel-carbs');
@@ -683,10 +850,11 @@ const hasSidebar = isTokenTracker || isFuel;
 
           if (calLeft) calLeft.textContent = remaining;
           if (eatenEl) eatenEl.textContent = eaten.toLocaleString();
+          if (remainingStatEl) remainingStatEl.textContent = remaining.toLocaleString();
           if (ringEl) ringEl.setAttribute('stroke-dashoffset', dashoffset);
-          if (proteinEl) proteinEl.textContent = protein + 'g';
-          if (carbsEl) carbsEl.textContent = carbs + 'g';
-          if (fatEl) fatEl.textContent = fat + 'g';
+          if (proteinEl) proteinEl.textContent = protein + ' / 150g';
+          if (carbsEl) carbsEl.textContent = carbs + ' / 250g';
+          if (fatEl) fatEl.textContent = fat + ' / 70g';
           if (proteinBar) proteinBar.style.width = Math.min((protein / 150) * 100, 100) + '%';
           if (carbsBar) carbsBar.style.width = Math.min((carbs / 250) * 100, 100) + '%';
           if (fatBar) fatBar.style.width = Math.min((fat / 70) * 100, 100) + '%';

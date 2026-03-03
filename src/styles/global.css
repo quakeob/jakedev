@@ -1383,40 +1383,30 @@ img {
   width: 340px;
   min-height: 700px;
   border-radius: 48px;
-  background: #1c1c1e;
-  border: 3px solid #2c2c2e;
+  background: linear-gradient(180deg, #000000 0%, #1c1c1e 4%);
+  border: 3px solid #3a3a3c;
   padding: 0;
   position: relative;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', system-ui, sans-serif;
   color: #fff;
+  -webkit-font-smoothing: antialiased;
   box-shadow:
-    0 40px 100px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(255, 255, 255, 0.03),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    0 50px 100px rgba(0, 0, 0, 0.5),
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .fuel-phone__notch {
-  width: 120px;
-  height: 32px;
+  width: 90px;
+  height: 24px;
   background: #000;
-  border-radius: 0 0 20px 20px;
+  border-radius: 12px;
   position: absolute;
-  top: 0;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-}
-
-.fuel-phone__notch::after {
-  content: '';
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, #1a1a2e 40%, transparent 41%);
-  border-radius: 50%;
-  position: absolute;
-  right: 18px;
-  top: 10px;
 }
 
 .fuel-phone__content {
@@ -1426,11 +1416,11 @@ img {
 }
 
 .fuel-phone__home-bar {
-  width: 120px;
+  width: 134px;
   height: 5px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-  margin: 8px auto 6px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  margin: 12px auto 8px;
   position: relative;
   z-index: 5;
 }
@@ -1468,9 +1458,11 @@ img {
   margin-bottom: 10px;
 }
 
-.fuel-section-header__icon {
+.fuel-section-header__icon,
+.fuel-section-header__svg {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
 }
 
 .fuel-section-header__title {
@@ -1484,7 +1476,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0 4px;
+  padding: 44px 0 4px;
   margin-bottom: 4px;
 }
 
@@ -1495,13 +1487,17 @@ img {
 }
 
 .fuel-dash__nav-btn {
-  font-size: 16px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.35);
+  font-weight: 300;
+  line-height: 1;
 }
 
 .fuel-dash__add-btn {
-  font-size: 22px;
+  font-size: 24px;
   color: #4DCC66;
+  font-weight: 300;
+  line-height: 1;
 }
 
 .fuel-dash__ring-wrap {
@@ -1631,23 +1627,23 @@ img {
   transition: width 1s ease;
 }
 
-/* Water card — drop icons */
+/* Water card — SVG drop icons */
 .fuel-dash__water-drops {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   flex-wrap: wrap;
   margin: 6px 0;
 }
 
 .fuel-drop {
-  font-size: 18px;
-  opacity: 0.2;
-  transition: opacity 0.3s ease;
+  width: 20px;
+  height: 20px;
+  fill: rgba(255, 255, 255, 0.1);
+  transition: fill 0.3s ease, transform 0.3s ease;
 }
 
 .fuel-drop--filled {
-  opacity: 1;
-  color: #4DA6FF;
+  fill: #4DA6FF;
 }
 
 .fuel-water-bar {
@@ -1670,12 +1666,180 @@ img {
   color: #4DA6FF;
 }
 
-/* === AI Input === */
-.fuel-input__header {
+/* === AI Input — matches AddFoodSheet + ParsedFoodConfirmView === */
+.fuel-ai__navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 48px 0 12px;
+}
+
+.fuel-ai__navbar-btn {
+  font-size: 15px;
+  color: #4DCC66;
+}
+
+.fuel-ai__navbar-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.fuel-ai__icon {
+  text-align: center;
+  margin: 12px 0 8px;
+}
+
+.fuel-ai__heading {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.fuel-ai__subheading {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 16px;
+}
+
+.fuel-ai__examples {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 10px 0 14px;
+}
+
+.fuel-ai__chip {
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
+
+.fuel-ai__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #4DCC66;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.fuel-ai__confirm-header {
+  text-align: center;
+  padding: 12px 0 8px;
+}
+
+.fuel-ai__confirm-count {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.fuel-ai__confirm-cal {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+}
+
+.fuel-ai__food-card {
+  padding: 12px 14px !important;
+}
+
+.fuel-ai__food-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fuel-ai__food-emoji {
+  font-size: 22px;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.fuel-ai__food-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.fuel-ai__food-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.fuel-ai__food-serving {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 1px;
+}
+
+.fuel-ai__food-cals {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.fuel-ai__food-cal-num {
   font-size: 18px;
   font-weight: 700;
-  margin-bottom: 18px;
   letter-spacing: -0.02em;
+}
+
+.fuel-ai__food-cal-unit {
+  display: block;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: right;
+}
+
+.fuel-ai__food-chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.fuel-ai__macro-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.fuel-ai__macro-chip--p {
+  color: #40CCFF;
+  background: rgba(64, 204, 255, 0.12);
+}
+
+.fuel-ai__macro-chip--c {
+  color: #FF8C33;
+  background: rgba(255, 140, 51, 0.12);
+}
+
+.fuel-ai__macro-chip--f {
+  color: #9959E6;
+  background: rgba(153, 89, 230, 0.12);
+}
+
+.fuel-ai__log-btn {
+  text-align: center;
+  padding: 14px;
+  border-radius: 14px;
+  background: #4DCC66;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 8px;
+  letter-spacing: -0.01em;
 }
 
 .fuel-input__field {
@@ -1731,147 +1895,185 @@ img {
   to { transform: rotate(360deg); }
 }
 
-.fuel-food-item {
+
+/* === Meals — matches MealSectionView in FuelCard === */
+.fuel-meals__nav {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  margin-bottom: 4px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  transition: background 0.3s ease;
+  justify-content: space-between;
+  padding: 44px 0 8px;
 }
 
-.fuel-food-item__emoji {
+.fuel-meal__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.fuel-meal__emoji {
+  font-size: 18px;
+}
+
+.fuel-meal__name {
+  font-size: 15px;
+  font-weight: 600;
+  flex: 1;
+  letter-spacing: -0.01em;
+}
+
+.fuel-meal__cal {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 500;
+}
+
+.fuel-meal__plus {
   font-size: 20px;
-  width: 28px;
+  color: #4DCC66;
+  font-weight: 300;
+  margin-left: 2px;
+  line-height: 1;
+}
+
+.fuel-meal__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.fuel-meal__item-emoji {
+  font-size: 14px;
+  width: 20px;
   text-align: center;
 }
 
-.fuel-food-item__info {
+.fuel-meal__item-name {
   flex: 1;
-}
-
-.fuel-food-item__name {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.fuel-food-item__macros {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.3);
-  margin-top: 2px;
-}
-
-.fuel-food-item__conf {
-  font-size: 9px;
-  color: #4DCC66;
-  font-weight: 600;
-  text-shadow: 0 0 6px rgba(77, 204, 102, 0.3);
-}
-
-.fuel-food-item__total {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 12px;
-  background: rgba(77, 204, 102, 0.06);
-  border: 1px solid rgba(77, 204, 102, 0.08);
-  border-radius: 12px;
-  margin-top: 4px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* === Meals === */
-.fuel-meals__header {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 18px;
-  letter-spacing: -0.02em;
+.fuel-meal__item-cal {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
-.fuel-meal-group {
-  margin-bottom: 14px;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.025);
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.035);
+.fuel-meal__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  margin: 0 0 0 28px;
 }
 
-.fuel-meal-group__label {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.55);
-  margin-bottom: 8px;
-}
-
-.fuel-meal-entry {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
-  padding: 5px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.025);
-}
-
-.fuel-meal-entry:last-child {
-  border-bottom: none;
-}
-
-.fuel-meal-entry span:last-child {
+.fuel-meal__empty {
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.2);
-  font-weight: 600;
+  padding: 4px 0;
 }
 
-/* === Health / Integrations === */
-.fuel-health__header {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 18px;
-  letter-spacing: -0.02em;
-}
-
-.fuel-health__card {
+/* === Integrations — iOS Settings style === */
+.fuel-integrations__nav {
   display: flex;
-  gap: 12px;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  margin-bottom: 8px;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  align-items: center;
+  justify-content: space-between;
+  padding: 44px 0 8px;
 }
 
-.fuel-health__card-icon {
-  font-size: 22px;
-  width: 36px;
-  height: 36px;
+.fuel-int__section-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.03em;
+  padding: 14px 0 6px;
+}
+
+.fuel-int__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fuel-int__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 10px;
   flex-shrink: 0;
 }
 
-.fuel-health__card-info {
+.fuel-int__icon--blue { background: #007AFF; }
+.fuel-int__icon--red { background: #FF3B30; }
+.fuel-int__icon--orange { background: #FF9500; }
+.fuel-int__icon--green { background: #34C759; }
+.fuel-int__icon--purple { background: #AF52DE; }
+.fuel-int__icon--teal { background: #5AC8FA; }
+
+.fuel-int__info {
   flex: 1;
+  min-width: 0;
 }
 
-.fuel-health__card-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.75);
-  margin-bottom: 3px;
+.fuel-int__name {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
-.fuel-health__card-desc {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.25);
-  line-height: 1.5;
+.fuel-int__desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 1px;
+}
+
+.fuel-int__badge {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.fuel-int__badge--active {
+  color: #4DCC66;
+}
+
+.fuel-int__chevron {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 300;
+}
+
+.fuel-int__toggle {
+  width: 42px;
+  height: 26px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.12);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.fuel-int__toggle::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.fuel-int__toggle--on {
+  background: #34C759;
+}
+
+.fuel-int__toggle--on::after {
+  transform: translateX(16px);
 }
 
 @media (max-width: 1024px) {
