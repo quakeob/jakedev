@@ -763,6 +763,10 @@ img {
   padding: 1.5rem 2rem;
 }
 
+.project-card.has-preview:hover {
+  transform: none;
+}
+
 .project-card__index {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -815,6 +819,290 @@ img {
 .project-card__credits span:first-child {
   color: var(--grey);
   margin-right: 0.5em;
+}
+
+/* Expandable project card */
+.has-preview {
+  position: relative;
+  overflow: visible;
+  border-radius: 20px;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), background 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  border: 1px solid transparent;
+}
+
+.has-preview:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 48px -8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.project-expand {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.65s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), padding 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+  padding: 0 0;
+}
+
+.has-preview:hover .project-expand {
+  max-height: 420px;
+  opacity: 1;
+  padding: 1.5rem 0 0.5rem;
+}
+
+.project-expand__showcase {
+  display: flex;
+  align-items: center;
+}
+
+.project-expand__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.project-expand__text {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-2);
+  max-width: 480px;
+}
+
+.project-expand__features {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.project-expand__feature {
+  display: flex;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.project-expand__feature-label {
+  color: var(--grey);
+  min-width: 60px;
+}
+
+.project-expand__feature-value {
+  color: var(--text-2);
+}
+
+.widget-mock {
+  width: 320px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: rgba(40, 40, 44, 0.85);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Rounded', system-ui, var(--font-mono);
+}
+
+.widget-mock__header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+.widget-mock__icon {
+  color: rgba(168, 85, 247, 0.8);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.widget-mock__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.02em;
+}
+
+.widget-mock__body {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.widget-mock__left {
+  flex: 1;
+}
+
+.widget-mock__big {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.widget-mock__sub {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+.widget-mock__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.widget-mock__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+
+.widget-mock__stat-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+}
+
+.widget-mock__stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.widget-mock__stat-model {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 149, 0, 0.7);
+}
+
+.widget-mock__stat-cost {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(34, 197, 94, 0.7);
+}
+
+/* Chart */
+.widget-mock__chart {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.widget-mock__chart-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.widget-mock__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 50px;
+}
+
+.widget-mock__bar {
+  flex: 1;
+  height: var(--h);
+  background: rgba(0, 210, 235, 0.35);
+  border-radius: 3px 3px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  transition: height 0.6s var(--ease);
+}
+
+.has-preview:hover .widget-mock__bar {
+  animation: barGrow 0.5s var(--ease) backwards;
+}
+
+.has-preview:hover .widget-mock__bar:nth-child(1) { animation-delay: 0.1s; }
+.has-preview:hover .widget-mock__bar:nth-child(2) { animation-delay: 0.15s; }
+.has-preview:hover .widget-mock__bar:nth-child(3) { animation-delay: 0.2s; }
+.has-preview:hover .widget-mock__bar:nth-child(4) { animation-delay: 0.25s; }
+.has-preview:hover .widget-mock__bar:nth-child(5) { animation-delay: 0.3s; }
+.has-preview:hover .widget-mock__bar:nth-child(6) { animation-delay: 0.35s; }
+.has-preview:hover .widget-mock__bar:nth-child(7) { animation-delay: 0.4s; }
+
+@keyframes barGrow {
+  from { height: 0; }
+}
+
+.widget-mock__bar span {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 4px;
+  position: absolute;
+  bottom: -14px;
+}
+
+.widget-mock__bar--peak {
+  background: rgba(255, 149, 0, 0.6);
+}
+
+.widget-mock__bar--today {
+  background: rgba(0, 210, 235, 0.5);
+}
+
+/* Model breakdown */
+.widget-mock__models {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.widget-mock__model-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+}
+
+.widget-mock__model-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.widget-mock__model-name {
+  color: rgba(255, 255, 255, 0.4);
+  flex: 1;
+}
+
+.widget-mock__model-val {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .project-expand {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .widget-mock {
+    width: 100%;
+  }
 }
 
 /* ═══════════════════════════════════════════════

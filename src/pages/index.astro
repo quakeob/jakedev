@@ -19,6 +19,13 @@ const projects = [
     status: 'Active',
   },
   {
+    title: 'Token Tracker',
+    desc: 'Native macOS widget tracking Claude Code usage in real-time. Parses sessions, shows per-model breakdowns and costs.',
+    tags: ['Swift', 'SwiftUI', 'macOS'],
+    link: '/projects/time-audit',
+    status: 'Active',
+  },
+  {
     title: 'Marketplace Scraper',
     desc: 'Automated vehicle deal finder for Toyota Tacoma & 4Runner. Scrapes listings, scores deals, sends alerts.',
     tags: ['Python', 'SQLite', 'Telegram'],
@@ -38,13 +45,6 @@ const projects = [
     tags: ['Obsidian', 'Python', 'AI'],
     link: '/projects/vault-keeper',
     status: 'Legacy',
-  },
-  {
-    title: 'Token Tracker',
-    desc: 'Native macOS widget tracking Claude Code usage in real-time. Parses sessions, shows per-model breakdowns and costs.',
-    tags: ['Swift', 'SwiftUI', 'macOS'],
-    link: '/projects/time-audit',
-    status: 'Active',
   },
 ];
 
@@ -144,7 +144,7 @@ const galleryPhotos = [
     </div>
     <div class="project-list">
       {projects.map((project, i) => (
-        <a href={project.link} class="project-card js-in" style={`animation-delay: ${i * 0.05}s`}>
+        <a href={project.link} class={`project-card js-in ${project.title === 'Token Tracker' ? 'has-preview' : ''}`} style={`animation-delay: ${i * 0.05}s`}>
           <div class="project-card__index lead">
             {String(i + 1).padStart(2, '0')}
           </div>
@@ -156,6 +156,80 @@ const galleryPhotos = [
               <span class="u-g">{project.status}</span>
             </div>
           </div>
+          {project.title === 'Token Tracker' && (
+            <div class="project-expand">
+              <div class="project-expand__showcase">
+                <div class="widget-mock">
+                  <div class="widget-mock__header">
+                    <span class="widget-mock__icon">*</span>
+                    <span class="widget-mock__label">Claude Token Tracker</span>
+                  </div>
+                  <div class="widget-mock__body">
+                    <div class="widget-mock__left">
+                      <div class="widget-mock__big" id="widget-total">14.2M</div>
+                      <div class="widget-mock__sub">lifetime tokens</div>
+                    </div>
+                    <div class="widget-mock__right">
+                      <div class="widget-mock__stat">
+                        <span class="widget-mock__stat-label">Today</span>
+                        <span class="widget-mock__stat-value" id="widget-today">847.3K</span>
+                      </div>
+                      <div class="widget-mock__stat">
+                        <span class="widget-mock__stat-model">Opus</span>
+                        <span class="widget-mock__stat-cost" id="widget-cost">~$142.80</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="widget-mock__chart">
+                    <div class="widget-mock__chart-label">7-day usage</div>
+                    <div class="widget-mock__bars">
+                      <div class="widget-mock__bar" style="--h: 35%;"><span>M</span></div>
+                      <div class="widget-mock__bar" style="--h: 62%;"><span>T</span></div>
+                      <div class="widget-mock__bar" style="--h: 48%;"><span>W</span></div>
+                      <div class="widget-mock__bar widget-mock__bar--peak" style="--h: 85%;"><span>T</span></div>
+                      <div class="widget-mock__bar" style="--h: 71%;"><span>F</span></div>
+                      <div class="widget-mock__bar" style="--h: 40%;"><span>S</span></div>
+                      <div class="widget-mock__bar widget-mock__bar--today" style="--h: 55%;"><span>S</span></div>
+                    </div>
+                  </div>
+                  <div class="widget-mock__models">
+                    <div class="widget-mock__model-row">
+                      <span class="widget-mock__model-dot" style="background: #ff9500;"></span>
+                      <span class="widget-mock__model-name">Opus</span>
+                      <span class="widget-mock__model-val">8.4M</span>
+                    </div>
+                    <div class="widget-mock__model-row">
+                      <span class="widget-mock__model-dot" style="background: #007aff;"></span>
+                      <span class="widget-mock__model-name">Sonnet</span>
+                      <span class="widget-mock__model-val">4.1M</span>
+                    </div>
+                    <div class="widget-mock__model-row">
+                      <span class="widget-mock__model-dot" style="background: #34c759;"></span>
+                      <span class="widget-mock__model-name">Haiku</span>
+                      <span class="widget-mock__model-val">1.7M</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-expand__details">
+                <p class="project-expand__text">Native macOS widget that parses Claude Code session files in real-time. Tracks per-model token breakdowns across Opus, Sonnet, and Haiku with estimated cost calculations. Multi-device iCloud encrypted syncing, Discord rich presence support. Reads directly from ~/.claude — fully local, fully private.</p>
+                <div class="project-expand__features">
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Stack</span>
+                    <span class="project-expand__feature-value">Swift · SwiftUI · WidgetKit</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Updates</span>
+                    <span class="project-expand__feature-value">Every 15 min via timeline provider</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Sizes</span>
+                    <span class="project-expand__feature-value">Small + Medium widget families</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </a>
       ))}
     </div>
@@ -511,6 +585,36 @@ const galleryPhotos = [
             if (speed >= 500) clearInterval(easeInterval);
           }, 150);
         }, 300);
+      });
+    })();
+
+    // ═══════════ WIDGET PREVIEW ANIMATION ═══════════
+    (function() {
+      const card = document.querySelector('.has-preview');
+      if (!card) return;
+
+      const totalEl = document.getElementById('widget-total');
+      const todayEl = document.getElementById('widget-today');
+      const costEl = document.getElementById('widget-cost');
+
+      let total = 14.2, today = 847.3, cost = 142.80;
+      let tickInt;
+
+      function fmt(n) { return n >= 1000 ? (n/1000).toFixed(1) + 'M' : n.toFixed(1) + 'K'; }
+
+      card.addEventListener('mouseenter', () => {
+        tickInt = setInterval(() => {
+          total += 0.8 + Math.random() * 2.4;
+          today += 0.3 + Math.random() * 1.2;
+          cost += 0.01 + Math.random() * 0.08;
+          if (totalEl) totalEl.textContent = total >= 1000 ? (total/1000).toFixed(1) + 'B' : total.toFixed(1) + 'M';
+          if (todayEl) todayEl.textContent = fmt(today);
+          if (costEl) costEl.textContent = '~$' + cost.toFixed(2);
+        }, 800);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        clearInterval(tickInt);
       });
     })();
 
