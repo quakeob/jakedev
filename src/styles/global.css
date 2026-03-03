@@ -1495,7 +1495,7 @@ img {
 
 .fuel-dash__add-btn {
   font-size: 24px;
-  color: #4DCC66;
+  color: rgba(77, 204, 102, 0.8);
   font-weight: 300;
   line-height: 1;
 }
@@ -1560,7 +1560,7 @@ img {
   font-weight: 700;
 }
 
-.fuel-dash__stat-val--green { color: #4DCC66; }
+.fuel-dash__stat-val--green { color: rgba(77, 204, 102, 0.8); }
 .fuel-dash__stat-val--primary { color: rgba(255,255,255,0.85); }
 .fuel-dash__stat-val--secondary { color: rgba(255,255,255,0.45); }
 
@@ -1593,9 +1593,9 @@ img {
   font-weight: 600;
 }
 
-.fuel-macro__val--protein { color: #40CCFF; }
-.fuel-macro__val--carbs { color: #FF8C33; }
-.fuel-macro__val--fat { color: #9959E6; }
+.fuel-macro__val--protein { color: rgba(64, 204, 255, 0.75); }
+.fuel-macro__val--carbs { color: rgba(255, 140, 51, 0.75); }
+.fuel-macro__val--fat { color: rgba(153, 89, 230, 0.75); }
 
 .fuel-macro__track {
   height: 6px;
@@ -1610,9 +1610,9 @@ img {
   transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.fuel-macro__fill--protein { background: #40CCFF; }
-.fuel-macro__fill--carbs { background: #FF8C33; }
-.fuel-macro__fill--fat { background: #9959E6; }
+.fuel-macro__fill--protein { background: rgba(64, 204, 255, 0.65); }
+.fuel-macro__fill--carbs { background: rgba(255, 140, 51, 0.65); }
+.fuel-macro__fill--fat { background: rgba(153, 89, 230, 0.65); }
 
 .fuel-macro-split {
   display: flex;
@@ -1636,14 +1636,14 @@ img {
 }
 
 .fuel-drop {
-  width: 20px;
-  height: 20px;
-  fill: rgba(255, 255, 255, 0.1);
-  transition: fill 0.3s ease, transform 0.3s ease;
+  width: 14px;
+  height: 14px;
+  fill: rgba(255, 255, 255, 0.08);
+  transition: fill 0.3s ease;
 }
 
 .fuel-drop--filled {
-  fill: #4DA6FF;
+  fill: rgba(77, 166, 255, 0.7);
 }
 
 .fuel-water-bar {
@@ -1655,7 +1655,7 @@ img {
 
 .fuel-water-bar__fill {
   height: 100%;
-  background: #4DA6FF;
+  background: rgba(77, 166, 255, 0.6);
   border-radius: 3px;
   transition: width 1s ease;
 }
@@ -1663,7 +1663,7 @@ img {
 .fuel-water-count {
   font-size: 13px;
   font-weight: 600;
-  color: #4DA6FF;
+  color: rgba(77, 166, 255, 0.7);
 }
 
 /* === AI Input — matches AddFoodSheet + ParsedFoodConfirmView === */
@@ -1676,7 +1676,7 @@ img {
 
 .fuel-ai__navbar-btn {
   font-size: 15px;
-  color: #4DCC66;
+  color: rgba(77, 204, 102, 0.8);
 }
 
 .fuel-ai__navbar-title {
@@ -1727,7 +1727,7 @@ img {
   gap: 6px;
   padding: 14px;
   border-radius: 14px;
-  background: #4DCC66;
+  background: rgba(77, 204, 102, 0.85);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -1834,7 +1834,7 @@ img {
   text-align: center;
   padding: 14px;
   border-radius: 14px;
-  background: #4DCC66;
+  background: rgba(77, 204, 102, 0.85);
   color: #fff;
   font-size: 15px;
   font-weight: 700;
@@ -1857,7 +1857,7 @@ img {
 }
 
 .fuel-input__cursor {
-  color: #4DCC66;
+  color: rgba(77, 204, 102, 0.8);
   animation: cursorBlink 1s step-end infinite;
   text-shadow: 0 0 8px rgba(77, 204, 102, 0.4);
 }
@@ -1886,7 +1886,7 @@ img {
   width: 14px;
   height: 14px;
   border: 2px solid rgba(255, 255, 255, 0.08);
-  border-top-color: #4DCC66;
+  border-top-color: rgba(77, 204, 102, 0.8);
   border-radius: 50%;
   animation: fuelSpin 0.7s linear infinite;
 }
@@ -1930,7 +1930,7 @@ img {
 
 .fuel-meal__plus {
   font-size: 20px;
-  color: #4DCC66;
+  color: rgba(77, 204, 102, 0.8);
   font-weight: 300;
   margin-left: 2px;
   line-height: 1;
@@ -2037,7 +2037,7 @@ img {
 }
 
 .fuel-int__badge--active {
-  color: #4DCC66;
+  color: rgba(77, 204, 102, 0.8);
 }
 
 .fuel-int__chevron {
