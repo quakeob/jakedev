@@ -22,7 +22,7 @@ const projects = [
     title: 'Token Tracker',
     desc: 'Native macOS widget tracking Claude Code usage in real-time. Parses sessions, shows per-model breakdowns and costs.',
     tags: ['Swift', 'SwiftUI', 'macOS'],
-    link: '/projects/time-audit',
+    link: '/projects/token-tracker',
     status: 'Active',
   },
   {
@@ -180,9 +180,9 @@ const galleryPhotos = [
                       </div>
                     </div>
                   </div>
-                  <div class="widget-mock__chart">
-                    <div class="widget-mock__chart-label">7-day usage</div>
-                    <div class="widget-mock__bars">
+                  <div class="widget-mock__chart" id="widget-chart">
+                    <div class="widget-mock__chart-label" id="widget-chart-label">7-day usage</div>
+                    <div class="widget-mock__bars" id="widget-bars">
                       <div class="widget-mock__bar" style="--h: 35%;"><span>M</span></div>
                       <div class="widget-mock__bar" style="--h: 62%;"><span>T</span></div>
                       <div class="widget-mock__bar" style="--h: 48%;"><span>W</span></div>
@@ -596,11 +596,85 @@ const galleryPhotos = [
       const totalEl = document.getElementById('widget-total');
       const todayEl = document.getElementById('widget-today');
       const costEl = document.getElementById('widget-cost');
+      const barsEl = document.getElementById('widget-bars');
+      const labelEl = document.getElementById('widget-chart-label');
 
       let total = 14.2, today = 847.3, cost = 142.80;
       let tickInt;
 
       function fmt(n) { return n >= 1000 ? (n/1000).toFixed(1) + 'M' : n.toFixed(1) + 'K'; }
+
+      const chartViews = [
+        {
+          label: 'Hourly',
+          bars: [
+            { h: 20, l: '6a' }, { h: 45, l: '8a' }, { h: 78, l: '10a' },
+            { h: 55, l: '12p' }, { h: 30, l: '2p' }, { h: 65, l: '4p' },
+            { h: 88, l: '6p' }, { h: 72, l: '8p' }, { h: 40, l: '10p' },
+          ],
+          peak: 6, today: null,
+        },
+        {
+          label: '7-day',
+          bars: [
+            { h: 35, l: 'M' }, { h: 62, l: 'T' }, { h: 48, l: 'W' },
+            { h: 85, l: 'T' }, { h: 71, l: 'F' }, { h: 40, l: 'S' },
+            { h: 55, l: 'S' },
+          ],
+          peak: 3, today: 6,
+        },
+        {
+          label: 'Monthly',
+          bars: [
+            { h: 30, l: 'Sep' }, { h: 52, l: 'Oct' }, { h: 68, l: 'Nov' },
+            { h: 45, l: 'Dec' }, { h: 74, l: 'Jan' }, { h: 90, l: 'Feb' },
+            { h: 58, l: 'Mar' },
+          ],
+          peak: 5, today: 6,
+        },
+      ];
+
+      let viewIndex = 0;
+      let cycleInt;
+
+      function renderBars(view) {
+        // Fade out
+        barsEl.style.opacity = '0';
+        barsEl.style.transform = 'translateY(4px)';
+        labelEl.style.opacity = '0';
+
+        setTimeout(() => {
+          labelEl.textContent = view.label + ' usage';
+          barsEl.innerHTML = view.bars.map((b, i) => {
+            let cls = 'widget-mock__bar';
+            if (i === view.peak) cls += ' widget-mock__bar--peak';
+            else if (i === view.today) cls += ' widget-mock__bar--today';
+            return '<div class="' + cls + '" style="--h: ' + b.h + '%;"><span>' + b.l + '</span></div>';
+          }).join('');
+
+          // Fade in
+          requestAnimationFrame(() => {
+            barsEl.style.opacity = '1';
+            barsEl.style.transform = 'translateY(0)';
+            labelEl.style.opacity = '1';
+          });
+        }, 250);
+      }
+
+      function cycleChart() {
+        viewIndex = (viewIndex + 1) % chartViews.length;
+        renderBars(chartViews[viewIndex]);
+      }
+
+      // Start cycling when card is visible
+      const chartObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          cycleInt = setInterval(cycleChart, 3000);
+        } else {
+          clearInterval(cycleInt);
+        }
+      }, { threshold: 0.2 });
+      chartObs.observe(card);
 
       card.addEventListener('mouseenter', () => {
         tickInt = setInterval(() => {

@@ -33,11 +33,10 @@ const { title = 'Jake Davis — Developer & AI Builder', description = 'Develope
   <!-- Preloader -->
   <div class="preloader" id="preloader">
     <div class="preloader__wrapper">
-      <span class="preloader__deco">(</span>
-      <div class="preloader__text lead">
-        Loading
+      <div class="preloader__bar-line">
+        <span class="preloader__bracket">[</span><span class="preloader__fill" id="preloader-fill"></span><span class="preloader__bracket">]</span>
       </div>
-      <span class="preloader__deco">)</span>
+      <div class="preloader__pct" id="preloader-pct">0%</div>
     </div>
   </div>
 
@@ -100,22 +99,37 @@ const { title = 'Jake Davis — Developer & AI Builder', description = 'Develope
     gsap.ticker.lagSmoothing(0);
 
     // ═══════════════════════════════════════
-    // PRELOADER
+    // PRELOADER — ASCII PROGRESS BAR
     // ═══════════════════════════════════════
-    window.addEventListener('load', () => {
+    (function() {
+      const fillEl = document.getElementById('preloader-fill');
+      const pctEl = document.getElementById('preloader-pct');
       const preloader = document.getElementById('preloader');
-      gsap.to(preloader, {
-        opacity: 0,
-        duration: 0.6,
-        delay: 0.3,
-        ease: 'power2.inOut',
-        onComplete: () => {
-          preloader.style.display = 'none';
-          lenis.start();
-          animateHero();
-        }
+      const barWidth = 30;
+
+      function render(progress) {
+        const filled = Math.round((progress / 100) * barWidth);
+        fillEl.textContent = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+        pctEl.textContent = Math.round(progress) + '%';
+      }
+
+      render(0);
+
+      window.addEventListener('load', () => {
+        render(100);
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.4,
+          delay: 0.1,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            preloader.style.display = 'none';
+            lenis.start();
+            animateHero();
+          }
+        });
       });
-    });
+    })();
 
     // ═══════════════════════════════════════
     // CUSTOM CURSOR

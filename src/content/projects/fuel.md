@@ -1,51 +1,77 @@
 ---
 title: "Fuel"
-description: "Calorie tracker with NLP food input, macro tracking, and barcode scanning. Built as a PWA, heading to the App Store."
+description: "Native iOS calorie tracker with AI food parsing, barcode scanning, HealthKit sync, and Apple Watch companion. Type what you ate in plain English — Claude handles the rest."
 status: "Live"
 emoji: "🔥"
-tags: ["JavaScript", "PWA", "NLP", "OpenFoodFacts API"]
-github: "https://github.com/quakeob/fuel-app"
-live: "https://fuel.jakedavis.dev"
+tags: ["Swift", "SwiftUI", "SwiftData", "HealthKit", "Claude API"]
+github: "https://github.com/quakeob/fuel-ios"
 order: 1
 ---
 
 ## The Problem
 
-Every calorie tracker I've used makes the same mistake: they assume I want to scroll through a database of 10,000 foods to log "2 eggs and toast." That's not tracking — that's data entry. And data entry is why people quit on day three.
-
-I wanted something that felt like texting a friend. Type what you ate in plain English, get your macros, move on.
+Every calorie tracker makes the same mistake: they assume I want to scroll through a database of 10,000 foods to log "2 eggs and toast." That's not tracking — that's data entry. And data entry is why people quit on day three.
 
 ## The Approach
 
-Fuel takes a natural language input — like "2 eggs, slice of sourdough with butter, black coffee" — and breaks it down into calories, protein, carbs, and fat. No dropdowns. No searching. Just type and go.
-
-For packaged foods, there's barcode scanning via the OpenFoodFacts API. Point your camera at a barcode and the nutrition data populates instantly. Between NLP and barcodes, you can log a full day of eating in under 60 seconds.
+Type what you ate in plain English. "2 eggs, slice of sourdough with butter, black coffee." Claude parses it into calories, protein, carbs, fat, and fiber with confidence scores. For packaged foods, scan the barcode with the camera. Between AI and barcodes, you can log a full day of eating in under 60 seconds.
 
 ## Architecture
 
-This is a single-file PWA. Vanilla JavaScript, no framework, no build step, no backend. Everything runs client-side with data stored in localStorage.
+```
+User Input (text / barcode / template)
+              ↓
+     ┌────────┴────────┐
+     │                 │
+Claude API       Vision Framework
+(NLP parse)     (barcode scan)
+     │                 │
+     └────────┬────────┘
+              ↓
+        SwiftData
+     (FoodEntry model)
+              ↓
+    ┌─────────┼─────────┐
+    │         │         │
+Dashboard  HealthKit  Watch App
+```
 
-That was a deliberate choice. I didn't want users to create accounts. I didn't want to manage a database of food logs. I wanted something you could open, use, and close — like a calculator for food.
+**AI parsing.** Claude Haiku takes raw text and returns structured nutrition JSON — food name, calories, macros, serving size, and a confidence score (0–1). Temperature 0.1 for deterministic results. Retry logic with backoff for rate limits.
 
-The NLP parsing uses a custom tokenizer that handles quantities, units, and food names. It maps common foods to a local nutrition database, with fallback to the OpenFoodFacts API for anything it doesn't recognize.
+**Offline fallback.** A local SQLite database of USDA foods handles parsing when the API is unavailable. Plus an in-memory cache of 200 recently parsed foods to minimize API calls.
+
+**Data layer.** SwiftData with `FoodEntry`, `DailyLog`, `UserGoals`, and `WeightEntry` models. Cascade deletes, computed properties for daily totals, date-keyed lookups.
+
+## Features
+
+- AI food parsing via Claude with confidence scoring
+- Barcode scanning via Vision framework
+- Animated calorie ring with overage visualization (150%+)
+- Per-macro progress bars (protein, carbs, fat, fiber)
+- Meal categories — breakfast, lunch, dinner, snacks
+- Quick-add templates with usage tracking
+- Water intake tracking (glass-by-glass)
+- Weight logging with HealthKit read/write
+- Daily streak system
+- Apple Watch companion app
+- Home screen widget via WidgetKit
 
 ## Key Decisions
 
-**PWA over native app.** I wanted this on people's home screens within seconds, not after an App Store download. PWAs install instantly and work offline. That said, I'm now wrapping it with Capacitor to hit the App Store too — best of both worlds.
+**Native over PWA.** The original Fuel was a vanilla JS PWA. Rebuilding in SwiftUI unlocked HealthKit, barcode scanning via Vision, Apple Watch, and widgets — things that aren't possible or are deeply compromised on the web.
 
-**No accounts, no backend.** Privacy by architecture. Your food data never leaves your phone. There's no server to hack because there's no server.
+**Claude over custom NLP.** The PWA version used hand-rolled pattern matching. It worked for "2 eggs" but fell apart on "leftover pad thai, maybe half a serving." Claude handles ambiguity, estimates portions, and assigns confidence scores so users know when to double-check.
 
-**Dark, premium UI.** Most calorie trackers look like they were designed in 2012. Fuel has a dark theme with smooth animations and a minimal interface. It should feel like a premium tool, not a medical form.
+**SwiftData over Core Data.** Modern, declarative, and plays well with SwiftUI's observation system. No NSFetchedResultsController boilerplate.
 
-## What I Learned
-
-Building the NLP parser was the most interesting part. Natural language is messy — "2 eggs" and "a couple eggs" and "eggs x2" all mean the same thing. Getting that right without a full NLP library meant writing a lot of pattern matching and fuzzy logic by hand.
-
-The PWA ecosystem is also more capable than most developers realize. Service workers, cache API, and the Web App Manifest give you 90% of what a native app offers with 10% of the complexity.
+**No accounts.** Your food data stays on your device. HealthKit integration is opt-in. The only network call is to Claude for parsing.
 
 ## Stack
 
-- **Frontend:** Vanilla JavaScript, HTML5, CSS3
-- **Data:** localStorage, OpenFoodFacts API
-- **Deployment:** Static hosting, PWA
-- **Coming Soon:** Capacitor for iOS/Android native builds
+- **Framework:** SwiftUI (iOS 17.0+, watchOS 10.0+)
+- **Data:** SwiftData, SQLite3 (offline USDA foods)
+- **AI:** Anthropic Claude API (Haiku)
+- **Health:** HealthKit.framework
+- **Scanning:** Vision Framework
+- **Watch:** watchOS companion with WatchConnectivity
+- **Widgets:** WidgetKit

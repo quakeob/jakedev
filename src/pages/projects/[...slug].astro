@@ -17,11 +17,15 @@ const allProjects = (await getCollection('projects')).sort((a, b) => a.data.orde
 const currentIndex = allProjects.findIndex((p) => p.id === project.id);
 const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
 const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+
+const isTokenTracker = project.id === 'token-tracker';
+const isFuel = project.id === 'fuel';
+const hasSidebar = isTokenTracker || isFuel;
 ---
 
 <BaseLayout title={`${project.data.title} — Jake Davis`} description={project.data.description}>
-  <article style="padding: clamp(8rem, 12vh, 12rem) 30px clamp(4rem, 8vh, 8rem);">
-    <div style="max-width: 700px;">
+  <article class={`project-article ${hasSidebar ? 'project-article--has-sidebar' : ''}`}>
+    <div class="project-article__main">
       <!-- Back link -->
       <a href="/#work" class="lead" style="display: inline-block; margin-bottom: 3rem; color: var(--grey);">
         ← Back to work
@@ -77,7 +81,774 @@ const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentI
         )}
       </nav>
     </div>
+
+    {isTokenTracker && (
+      <aside class="project-sidebar" id="project-sidebar">
+        <div class="project-sidebar__sticky">
+          <div class="widget-page" id="widget-page">
+            <!-- SCREEN 0: Main stats -->
+            <div class="widget-page__screen widget-page__screen--active" data-screen="0">
+              <div class="widget-page__header">
+                <span class="widget-page__icon">*</span>
+                <span class="widget-page__label">Claude Token Tracker</span>
+              </div>
+              <div class="widget-page__hero">
+                <div class="widget-page__big" id="wp-total">14.2M</div>
+                <div class="widget-page__sub">lifetime tokens</div>
+              </div>
+              <div class="widget-page__stats">
+                <div class="widget-page__stat">
+                  <span class="widget-page__stat-label">Today</span>
+                  <span class="widget-page__stat-value" id="wp-today">847.3K</span>
+                </div>
+                <div class="widget-page__stat">
+                  <span class="widget-page__stat-label">Sessions</span>
+                  <span class="widget-page__stat-value" id="wp-sessions">142</span>
+                </div>
+                <div class="widget-page__stat">
+                  <span class="widget-page__stat-label">Cost</span>
+                  <span class="widget-page__stat-value widget-page__stat-value--cost" id="wp-cost">~$142.80</span>
+                </div>
+              </div>
+              <div class="widget-page__chart">
+                <div class="widget-page__chart-label" id="wp-chart-label">7-day usage</div>
+                <div class="widget-page__bars" id="wp-bars">
+                  <div class="widget-page__bar" style="--h: 35%;"><span>M</span></div>
+                  <div class="widget-page__bar" style="--h: 62%;"><span>T</span></div>
+                  <div class="widget-page__bar" style="--h: 48%;"><span>W</span></div>
+                  <div class="widget-page__bar widget-page__bar--peak" style="--h: 85%;"><span>T</span></div>
+                  <div class="widget-page__bar" style="--h: 71%;"><span>F</span></div>
+                  <div class="widget-page__bar" style="--h: 40%;"><span>S</span></div>
+                  <div class="widget-page__bar widget-page__bar--today" style="--h: 55%;"><span>S</span></div>
+                </div>
+              </div>
+              <div class="widget-page__models">
+                <div class="widget-page__model-row">
+                  <span class="widget-page__model-dot" style="background: #ff9500;"></span>
+                  <span class="widget-page__model-name">Opus</span>
+                  <span class="widget-page__model-val" id="wp-opus">8.4M</span>
+                </div>
+                <div class="widget-page__model-row">
+                  <span class="widget-page__model-dot" style="background: #007aff;"></span>
+                  <span class="widget-page__model-name">Sonnet</span>
+                  <span class="widget-page__model-val" id="wp-sonnet">4.1M</span>
+                </div>
+                <div class="widget-page__model-row">
+                  <span class="widget-page__model-dot" style="background: #34c759;"></span>
+                  <span class="widget-page__model-name">Haiku</span>
+                  <span class="widget-page__model-val" id="wp-haiku">1.7M</span>
+                </div>
+              </div>
+              <div class="widget-page__budget">
+                <div class="widget-page__budget-header">
+                  <span class="widget-page__budget-label">Daily budget</span>
+                  <span class="widget-page__budget-pct" id="wp-budget-pct">67%</span>
+                </div>
+                <div class="widget-page__budget-track">
+                  <div class="widget-page__budget-fill" id="wp-budget-fill" style="width: 67%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 1: Settings -->
+            <div class="widget-page__screen" data-screen="1">
+              <div class="widget-page__header">
+                <span class="widget-page__icon">&#9881;</span>
+                <span class="widget-page__label">Settings</span>
+              </div>
+              <div class="wp-settings">
+                <div class="wp-settings__section">
+                  <div class="wp-settings__section-title">GENERAL</div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Always on top</span>
+                    <span class="wp-settings__toggle wp-settings__toggle--on" id="ws-aot"></span>
+                  </div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Show on all spaces</span>
+                    <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                  </div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Launch at login</span>
+                    <span class="wp-settings__toggle"></span>
+                  </div>
+                </div>
+                <div class="wp-settings__section">
+                  <div class="wp-settings__section-title">APPEARANCE</div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Widget opacity</span>
+                    <div class="wp-settings__slider">
+                      <div class="wp-settings__slider-track">
+                        <div class="wp-settings__slider-fill" id="ws-opacity" style="width: 85%;"></div>
+                      </div>
+                      <span class="wp-settings__slider-val">85%</span>
+                    </div>
+                  </div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Cost estimate</span>
+                    <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                  </div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Model breakdown</span>
+                    <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                  </div>
+                </div>
+                <div class="wp-settings__section">
+                  <div class="wp-settings__section-title">BUDGET & ALERTS</div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Daily budget</span>
+                    <span class="wp-settings__val">2,000,000</span>
+                  </div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Warning at</span>
+                    <span class="wp-settings__val">80%</span>
+                  </div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Notifications</span>
+                    <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                  </div>
+                </div>
+                <div class="wp-settings__section">
+                  <div class="wp-settings__section-title">DATA</div>
+                  <div class="wp-settings__row">
+                    <span class="wp-settings__row-label">Refresh interval</span>
+                    <span class="wp-settings__val">10s</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 2: iCloud Sync -->
+            <div class="widget-page__screen" data-screen="2">
+              <div class="widget-page__header">
+                <span class="widget-page__icon" style="color: rgba(0, 122, 255, 0.8);">&#9729;</span>
+                <span class="widget-page__label">iCloud Sync</span>
+              </div>
+              <div class="wp-sync">
+                <div class="wp-sync__status">
+                  <div class="wp-sync__status-icon">&#10003;</div>
+                  <div class="wp-sync__status-text">Synced</div>
+                  <div class="wp-sync__status-sub">Last sync 12s ago</div>
+                </div>
+                <div class="wp-sync__machines">
+                  <div class="wp-sync__section-title">DEVICES</div>
+                  <div class="wp-sync__machine">
+                    <div class="wp-sync__machine-icon">&#9633;</div>
+                    <div class="wp-sync__machine-info">
+                      <div class="wp-sync__machine-name">MacBook Pro</div>
+                      <div class="wp-sync__machine-detail">8.4M tokens · Updated now</div>
+                    </div>
+                    <div class="wp-sync__machine-dot wp-sync__machine-dot--active"></div>
+                  </div>
+                  <div class="wp-sync__machine">
+                    <div class="wp-sync__machine-icon">&#9633;</div>
+                    <div class="wp-sync__machine-info">
+                      <div class="wp-sync__machine-name">Mac Mini M2</div>
+                      <div class="wp-sync__machine-detail">5.8M tokens · 3m ago</div>
+                    </div>
+                    <div class="wp-sync__machine-dot wp-sync__machine-dot--active"></div>
+                  </div>
+                </div>
+                <div class="wp-sync__totals">
+                  <div class="wp-sync__section-title">COMBINED</div>
+                  <div class="wp-sync__total-row">
+                    <span>Total tokens</span>
+                    <span class="wp-sync__total-val">14.2M</span>
+                  </div>
+                  <div class="wp-sync__total-row">
+                    <span>Total cost</span>
+                    <span class="wp-sync__total-val wp-sync__total-val--cost">~$142.80</span>
+                  </div>
+                </div>
+                <div class="wp-sync__encrypt">
+                  <span class="wp-sync__encrypt-icon">&#128274;</span>
+                  <span class="wp-sync__encrypt-text">End-to-end encrypted via iCloud Drive</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 3: Discord Presence -->
+            <div class="widget-page__screen" data-screen="3">
+              <div class="widget-page__header">
+                <span class="widget-page__icon" style="color: rgba(88, 101, 242, 0.9);">&#9673;</span>
+                <span class="widget-page__label">Discord Rich Presence</span>
+              </div>
+              <div class="wp-discord">
+                <div class="wp-discord__preview">
+                  <div class="wp-discord__card">
+                    <div class="wp-discord__card-header">PLAYING A GAME</div>
+                    <div class="wp-discord__card-body">
+                      <div class="wp-discord__card-icon">
+                        <span>*</span>
+                      </div>
+                      <div class="wp-discord__card-info">
+                        <div class="wp-discord__card-name">Claude Code</div>
+                        <div class="wp-discord__card-detail" id="wp-discord-detail">Lifetime: 14.2M tokens</div>
+                        <div class="wp-discord__card-detail" id="wp-discord-state">Today: 847.3K | Opus</div>
+                        <div class="wp-discord__card-elapsed" id="wp-discord-time">02:34:17 elapsed</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="wp-discord__info">
+                  <div class="wp-settings__section">
+                    <div class="wp-settings__section-title">STATUS</div>
+                    <div class="wp-settings__row">
+                      <span class="wp-settings__row-label">Rich Presence</span>
+                      <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                    </div>
+                    <div class="wp-discord__hint">Shows token stats in your Discord profile. Connects via local IPC — no auth needed.</div>
+                  </div>
+                  <div class="wp-settings__section">
+                    <div class="wp-settings__section-title">DISPLAYS</div>
+                    <div class="wp-settings__row">
+                      <span class="wp-settings__row-label">Lifetime tokens</span>
+                      <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                    </div>
+                    <div class="wp-settings__row">
+                      <span class="wp-settings__row-label">Daily tokens</span>
+                      <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                    </div>
+                    <div class="wp-settings__row">
+                      <span class="wp-settings__row-label">Top model</span>
+                      <span class="wp-settings__toggle wp-settings__toggle--on"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="widget-page__scroll-hint lead">( Scroll )</div>
+        </div>
+      </aside>
+    )}
+
+    {isFuel && (
+      <aside class="project-sidebar" id="project-sidebar">
+        <div class="project-sidebar__sticky">
+          <div class="fuel-phone" id="fuel-phone">
+            <div class="fuel-phone__notch"></div>
+
+            <!-- SCREEN 0: Dashboard -->
+            <div class="fuel-screen fuel-screen--active" data-screen="0">
+              <div class="fuel-dash">
+                <div class="fuel-dash__nav">
+                  <span class="fuel-dash__nav-btn">‹</span>
+                  <span class="fuel-dash__nav-title">Today</span>
+                  <span class="fuel-dash__add-btn">⊕</span>
+                </div>
+
+                <div class="fuel-card">
+                  <div class="fuel-dash__ring-wrap">
+                    <svg class="fuel-dash__ring" viewBox="0 0 140 140">
+                      <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+                      <circle cx="70" cy="70" r="58" fill="none" stroke="#4DCC66" stroke-width="14"
+                        stroke-dasharray="364" stroke-dashoffset="143" stroke-linecap="round"
+                        transform="rotate(-90 70 70)" id="fuel-ring" class="fuel-dash__ring-fill"/>
+                    </svg>
+                    <div class="fuel-dash__ring-inner">
+                      <div class="fuel-dash__ring-cal" id="fuel-cal-left">784</div>
+                      <div class="fuel-dash__ring-label">remaining</div>
+                      <div class="fuel-dash__ring-unit">cal</div>
+                    </div>
+                  </div>
+                  <div class="fuel-dash__stats">
+                    <div class="fuel-dash__stat">
+                      <div class="fuel-dash__stat-val fuel-dash__stat-val--green" id="fuel-eaten">1,216</div>
+                      <div class="fuel-dash__stat-label">Eaten</div>
+                    </div>
+                    <div class="fuel-dash__stat">
+                      <div class="fuel-dash__stat-val fuel-dash__stat-val--primary" id="fuel-remaining-stat">784</div>
+                      <div class="fuel-dash__stat-label">Remaining</div>
+                    </div>
+                    <div class="fuel-dash__stat">
+                      <div class="fuel-dash__stat-val fuel-dash__stat-val--secondary">2,000</div>
+                      <div class="fuel-dash__stat-label">Target</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fuel-card">
+                  <div class="fuel-section-header">
+                    <span class="fuel-section-header__icon">◉</span>
+                    <span class="fuel-section-header__title">Macros</span>
+                  </div>
+                  <div class="fuel-dash__macros">
+                    <div class="fuel-macro">
+                      <div class="fuel-macro__header">
+                        <span class="fuel-macro__name">Protein</span>
+                        <span class="fuel-macro__val fuel-macro__val--protein" id="fuel-protein">86 / 150g</span>
+                      </div>
+                      <div class="fuel-macro__track"><div class="fuel-macro__fill fuel-macro__fill--protein" id="fuel-protein-bar" style="width: 57%;"></div></div>
+                    </div>
+                    <div class="fuel-macro">
+                      <div class="fuel-macro__header">
+                        <span class="fuel-macro__name">Carbs</span>
+                        <span class="fuel-macro__val fuel-macro__val--carbs" id="fuel-carbs">134 / 250g</span>
+                      </div>
+                      <div class="fuel-macro__track"><div class="fuel-macro__fill fuel-macro__fill--carbs" id="fuel-carbs-bar" style="width: 54%;"></div></div>
+                    </div>
+                    <div class="fuel-macro">
+                      <div class="fuel-macro__header">
+                        <span class="fuel-macro__name">Fat</span>
+                        <span class="fuel-macro__val fuel-macro__val--fat" id="fuel-fat">42 / 70g</span>
+                      </div>
+                      <div class="fuel-macro__track"><div class="fuel-macro__fill fuel-macro__fill--fat" id="fuel-fat-bar" style="width: 60%;"></div></div>
+                    </div>
+                    <div class="fuel-macro-split">
+                      <div class="fuel-macro-split__seg" style="width:33%;background:#40CCFF;"></div>
+                      <div class="fuel-macro-split__seg" style="width:41%;background:#FF8C33;"></div>
+                      <div class="fuel-macro-split__seg" style="width:26%;background:#9959E6;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fuel-card">
+                  <div class="fuel-section-header" style="margin-bottom:6px;">
+                    <span class="fuel-section-header__icon">💧</span>
+                    <span class="fuel-section-header__title">Water</span>
+                    <span style="margin-left:auto;" class="fuel-water-count">5/8</span>
+                  </div>
+                  <div class="fuel-dash__water-drops">
+                    <span class="fuel-drop fuel-drop--filled">💧</span>
+                    <span class="fuel-drop fuel-drop--filled">💧</span>
+                    <span class="fuel-drop fuel-drop--filled">💧</span>
+                    <span class="fuel-drop fuel-drop--filled">💧</span>
+                    <span class="fuel-drop fuel-drop--filled">💧</span>
+                    <span class="fuel-drop">💧</span>
+                    <span class="fuel-drop">💧</span>
+                    <span class="fuel-drop">💧</span>
+                  </div>
+                  <div class="fuel-water-bar"><div class="fuel-water-bar__fill" style="width:62.5%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 1: AI Input -->
+            <div class="fuel-screen" data-screen="1">
+              <div class="fuel-input">
+                <div class="fuel-input__header">Add Food</div>
+                <div class="fuel-input__field" id="fuel-input-field">
+                  <span class="fuel-input__cursor">|</span>
+                </div>
+                <div class="fuel-input__hint">type what you ate in plain english</div>
+                <div class="fuel-input__result" id="fuel-parse-result">
+                  <div class="fuel-input__parsing" id="fuel-parsing">
+                    <span class="fuel-input__spinner"></span>
+                    <span>parsing with claude...</span>
+                  </div>
+                  <div class="fuel-input__foods" id="fuel-foods" style="display:none;">
+                    <div class="fuel-food-item">
+                      <span class="fuel-food-item__emoji">🥚</span>
+                      <div class="fuel-food-item__info">
+                        <div class="fuel-food-item__name">Eggs (2 large)</div>
+                        <div class="fuel-food-item__macros">144 cal · 12g P · 1g C · 10g F</div>
+                      </div>
+                      <span class="fuel-food-item__conf">98%</span>
+                    </div>
+                    <div class="fuel-food-item">
+                      <span class="fuel-food-item__emoji">🍞</span>
+                      <div class="fuel-food-item__info">
+                        <div class="fuel-food-item__name">Sourdough Toast</div>
+                        <div class="fuel-food-item__macros">128 cal · 4g P · 25g C · 1g F</div>
+                      </div>
+                      <span class="fuel-food-item__conf">95%</span>
+                    </div>
+                    <div class="fuel-food-item">
+                      <span class="fuel-food-item__emoji">🧈</span>
+                      <div class="fuel-food-item__info">
+                        <div class="fuel-food-item__name">Butter (1 tbsp)</div>
+                        <div class="fuel-food-item__macros">102 cal · 0g P · 0g C · 12g F</div>
+                      </div>
+                      <span class="fuel-food-item__conf">92%</span>
+                    </div>
+                    <div class="fuel-food-item">
+                      <span class="fuel-food-item__emoji">☕</span>
+                      <div class="fuel-food-item__info">
+                        <div class="fuel-food-item__name">Black Coffee</div>
+                        <div class="fuel-food-item__macros">2 cal · 0g P · 0g C · 0g F</div>
+                      </div>
+                      <span class="fuel-food-item__conf">99%</span>
+                    </div>
+                    <div class="fuel-food-item__total">
+                      <span>Total</span>
+                      <span>376 cal</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 2: Meals breakdown -->
+            <div class="fuel-screen" data-screen="2">
+              <div class="fuel-meals">
+                <div class="fuel-meals__header">Today's Meals</div>
+                <div class="fuel-meal-group">
+                  <div class="fuel-meal-group__label">🌅 Breakfast · 376 cal</div>
+                  <div class="fuel-meal-entry">
+                    <span>🥚 Eggs (2 large)</span><span>144</span>
+                  </div>
+                  <div class="fuel-meal-entry">
+                    <span>🍞 Sourdough Toast</span><span>128</span>
+                  </div>
+                  <div class="fuel-meal-entry">
+                    <span>🧈 Butter</span><span>102</span>
+                  </div>
+                  <div class="fuel-meal-entry">
+                    <span>☕ Black Coffee</span><span>2</span>
+                  </div>
+                </div>
+                <div class="fuel-meal-group">
+                  <div class="fuel-meal-group__label">☀️ Lunch · 520 cal</div>
+                  <div class="fuel-meal-entry">
+                    <span>🥗 Chicken Salad</span><span>380</span>
+                  </div>
+                  <div class="fuel-meal-entry">
+                    <span>🍎 Apple</span><span>95</span>
+                  </div>
+                  <div class="fuel-meal-entry">
+                    <span>🥜 Almonds (handful)</span><span>45</span>
+                  </div>
+                </div>
+                <div class="fuel-meal-group">
+                  <div class="fuel-meal-group__label">🌙 Dinner · 320 cal</div>
+                  <div class="fuel-meal-entry">
+                    <span>🍣 Salmon (4oz)</span><span>234</span>
+                  </div>
+                  <div class="fuel-meal-entry">
+                    <span>🥦 Steamed Broccoli</span><span>86</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 3: Watch + HealthKit -->
+            <div class="fuel-screen" data-screen="3">
+              <div class="fuel-health">
+                <div class="fuel-health__header">Integrations</div>
+                <div class="fuel-health__card">
+                  <div class="fuel-health__card-icon">⌚</div>
+                  <div class="fuel-health__card-info">
+                    <div class="fuel-health__card-title">Apple Watch</div>
+                    <div class="fuel-health__card-desc">Quick log from your wrist. View calories, macros, and water. Add foods with voice or templates.</div>
+                  </div>
+                </div>
+                <div class="fuel-health__card">
+                  <div class="fuel-health__card-icon">❤️</div>
+                  <div class="fuel-health__card-info">
+                    <div class="fuel-health__card-title">HealthKit</div>
+                    <div class="fuel-health__card-desc">Syncs calories, macros, and weight to Apple Health. Reads weight entries back for tracking.</div>
+                  </div>
+                </div>
+                <div class="fuel-health__card">
+                  <div class="fuel-health__card-icon">📷</div>
+                  <div class="fuel-health__card-info">
+                    <div class="fuel-health__card-title">Barcode Scanner</div>
+                    <div class="fuel-health__card-desc">Vision framework scans UPC barcodes instantly. Auto-fills nutrition from OpenFoodFacts.</div>
+                  </div>
+                </div>
+                <div class="fuel-health__card">
+                  <div class="fuel-health__card-icon">📱</div>
+                  <div class="fuel-health__card-info">
+                    <div class="fuel-health__card-title">Home Widget</div>
+                    <div class="fuel-health__card-desc">WidgetKit home screen widget shows today's calories and macro progress at a glance.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="fuel-phone__home-bar"></div>
+          </div>
+          <div class="widget-page__scroll-hint lead">( scroll )</div>
+        </div>
+      </aside>
+    )}
   </article>
+
+  {isFuel && (
+    <script is:inline>
+      (function() {
+        // === Typing animation for AI input screen ===
+        var inputField = document.getElementById('fuel-input-field');
+        var parsingEl = document.getElementById('fuel-parsing');
+        var foodsEl = document.getElementById('fuel-foods');
+        var text = '2 eggs, sourdough toast with butter, black coffee';
+        var typed = '';
+        var charIdx = 0;
+        var typingDone = false;
+        var showingResults = false;
+
+        function typeLoop() {
+          if (charIdx < text.length) {
+            typed += text[charIdx];
+            charIdx++;
+            inputField.innerHTML = typed + '<span class="fuel-input__cursor">|</span>';
+            setTimeout(typeLoop, 40 + Math.random() * 60);
+          } else if (!typingDone) {
+            typingDone = true;
+            // Show parsing state
+            parsingEl.style.display = 'flex';
+            foodsEl.style.display = 'none';
+            setTimeout(function() {
+              parsingEl.style.display = 'none';
+              foodsEl.style.display = 'block';
+              showingResults = true;
+              // Reset after a while
+              setTimeout(resetTyping, 6000);
+            }, 1800);
+          }
+        }
+
+        function resetTyping() {
+          typed = '';
+          charIdx = 0;
+          typingDone = false;
+          showingResults = false;
+          inputField.innerHTML = '<span class="fuel-input__cursor">|</span>';
+          parsingEl.style.display = 'none';
+          foodsEl.style.display = 'none';
+          setTimeout(typeLoop, 1500);
+        }
+
+        // Start typing when AI screen becomes visible
+        var aiStarted = false;
+
+        // === Scroll-driven screen switching ===
+        var screens = document.querySelectorAll('.fuel-screen');
+        var currentScreen = 0;
+
+        function showFuelScreen(idx) {
+          if (idx === currentScreen) return;
+          currentScreen = idx;
+          screens.forEach(function(s) { s.classList.remove('fuel-screen--active'); });
+          screens[idx].classList.add('fuel-screen--active');
+          // Start typing animation when AI input screen appears
+          if (idx === 1 && !aiStarted) {
+            aiStarted = true;
+            setTimeout(typeLoop, 600);
+          }
+        }
+
+        function initFuelScroll() {
+          if (typeof ScrollTrigger === 'undefined') {
+            setTimeout(initFuelScroll, 100);
+            return;
+          }
+          var proseEl = document.querySelector('.project-article--has-sidebar .prose');
+          if (!proseEl) return;
+          var headings = proseEl.querySelectorAll('h2');
+          // The Problem, The Approach → 0 (Dashboard)
+          // Architecture, Features → 1 (AI Input)
+          // Key Decisions → 2 (Meals)
+          // Stack → 3 (Integrations)
+          var screenMap = [0, 0, 1, 1, 2, 3];
+
+          headings.forEach(function(h, i) {
+            var target = i < screenMap.length ? screenMap[i] : 3;
+            ScrollTrigger.create({
+              trigger: h,
+              start: 'top 60%',
+              onEnter: function() { showFuelScreen(target); },
+              onEnterBack: function() {
+                var prev = i > 0 && (i - 1) < screenMap.length ? screenMap[i - 1] : 0;
+                showFuelScreen(i === 0 ? 0 : prev);
+              }
+            });
+          });
+        }
+        initFuelScroll();
+
+        // === Dashboard number ticking ===
+        var eaten = 1216, protein = 86, carbs = 134, fat = 42;
+        var calLeft = document.getElementById('fuel-cal-left');
+        var eatenEl = document.getElementById('fuel-eaten');
+        var ringEl = document.getElementById('fuel-ring');
+        var proteinEl = document.getElementById('fuel-protein');
+        var carbsEl = document.getElementById('fuel-carbs');
+        var fatEl = document.getElementById('fuel-fat');
+        var proteinBar = document.getElementById('fuel-protein-bar');
+        var carbsBar = document.getElementById('fuel-carbs-bar');
+        var fatBar = document.getElementById('fuel-fat-bar');
+
+        setInterval(function() {
+          var add = Math.floor(2 + Math.random() * 8);
+          eaten = Math.min(eaten + add, 2000);
+          protein = Math.min(protein + Math.floor(Math.random() * 2), 150);
+          carbs = Math.min(carbs + Math.floor(Math.random() * 3), 250);
+          fat = Math.min(fat + Math.floor(Math.random() * 2), 70);
+
+          var remaining = Math.max(2000 - eaten, 0);
+          var pct = eaten / 2000;
+          var dashoffset = 327 - (327 * Math.min(pct, 1));
+
+          if (calLeft) calLeft.textContent = remaining;
+          if (eatenEl) eatenEl.textContent = eaten.toLocaleString();
+          if (ringEl) ringEl.setAttribute('stroke-dashoffset', dashoffset);
+          if (proteinEl) proteinEl.textContent = protein + 'g';
+          if (carbsEl) carbsEl.textContent = carbs + 'g';
+          if (fatEl) fatEl.textContent = fat + 'g';
+          if (proteinBar) proteinBar.style.width = Math.min((protein / 150) * 100, 100) + '%';
+          if (carbsBar) carbsBar.style.width = Math.min((carbs / 250) * 100, 100) + '%';
+          if (fatBar) fatBar.style.width = Math.min((fat / 70) * 100, 100) + '%';
+
+          if (pct >= 1 && ringEl) ringEl.setAttribute('stroke', '#E64D4D');
+        }, 1500);
+      })();
+    </script>
+  )}
+
+  {isTokenTracker && (
+    <script is:inline>
+      (function() {
+        // === Stats ticking ===
+        const totalEl = document.getElementById('wp-total');
+        const todayEl = document.getElementById('wp-today');
+        const costEl = document.getElementById('wp-cost');
+        const opusEl = document.getElementById('wp-opus');
+        const sonnetEl = document.getElementById('wp-sonnet');
+        const haikuEl = document.getElementById('wp-haiku');
+        const budgetPctEl = document.getElementById('wp-budget-pct');
+        const budgetFillEl = document.getElementById('wp-budget-fill');
+        const discordDetailEl = document.getElementById('wp-discord-detail');
+        const discordStateEl = document.getElementById('wp-discord-state');
+        const discordTimeEl = document.getElementById('wp-discord-time');
+
+        let total = 14.2, today = 847.3, cost = 142.80;
+        let opus = 8.4, sonnet = 4.1, haiku = 1.7, budget = 67;
+        let elapsed = 9257; // seconds
+
+        function fmtM(n) { return n.toFixed(1) + 'M'; }
+        function fmtK(n) { return n >= 1000 ? (n/1000).toFixed(1) + 'M' : n.toFixed(1) + 'K'; }
+        function fmtTime(s) {
+          const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+          return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')+' elapsed';
+        }
+
+        setInterval(function() {
+          total += 0.3 + Math.random() * 1.2;
+          today += 0.1 + Math.random() * 0.8;
+          cost += 0.005 + Math.random() * 0.04;
+          budget = Math.min(budget + 0.15 + Math.random() * 0.3, 98);
+          elapsed++;
+
+          var r = Math.random();
+          if (r < 0.5) opus += 0.2 + Math.random() * 0.8;
+          else if (r < 0.8) sonnet += 0.1 + Math.random() * 0.5;
+          else haiku += 0.05 + Math.random() * 0.3;
+
+          if (totalEl) totalEl.textContent = fmtM(total);
+          if (todayEl) todayEl.textContent = fmtK(today);
+          if (costEl) costEl.textContent = '~$' + cost.toFixed(2);
+          if (opusEl) opusEl.textContent = fmtM(opus);
+          if (sonnetEl) sonnetEl.textContent = fmtM(sonnet);
+          if (haikuEl) haikuEl.textContent = fmtM(haiku);
+          if (budgetPctEl) budgetPctEl.textContent = Math.round(budget) + '%';
+          if (budgetFillEl) {
+            budgetFillEl.style.width = budget + '%';
+            if (budget > 85) budgetFillEl.style.background = 'rgba(255, 69, 58, 0.7)';
+            else if (budget > 60) budgetFillEl.style.background = 'rgba(255, 149, 0, 0.6)';
+          }
+          if (discordDetailEl) discordDetailEl.textContent = 'Lifetime: ' + fmtM(total) + ' tokens';
+          if (discordStateEl) discordStateEl.textContent = 'Today: ' + fmtK(today) + ' | Opus';
+          if (discordTimeEl) discordTimeEl.textContent = fmtTime(elapsed);
+        }, 1200);
+
+        // === Chart cycling ===
+        var barsEl = document.getElementById('wp-bars');
+        var labelEl = document.getElementById('wp-chart-label');
+        var chartViews = [
+          { label: 'Hourly', bars: [
+            {h:20,l:'6a'},{h:45,l:'8a'},{h:78,l:'10a'},{h:55,l:'12p'},
+            {h:30,l:'2p'},{h:65,l:'4p'},{h:88,l:'6p'},{h:72,l:'8p'},{h:40,l:'10p'}
+          ], peak: 6 },
+          { label: '7-day', bars: [
+            {h:35,l:'M'},{h:62,l:'T'},{h:48,l:'W'},{h:85,l:'T'},
+            {h:71,l:'F'},{h:40,l:'S'},{h:55,l:'S'}
+          ], peak: 3, today: 6 },
+          { label: 'Monthly', bars: [
+            {h:30,l:'Sep'},{h:52,l:'Oct'},{h:68,l:'Nov'},{h:45,l:'Dec'},
+            {h:74,l:'Jan'},{h:90,l:'Feb'},{h:58,l:'Mar'}
+          ], peak: 5, today: 6 },
+        ];
+        var ci = 0;
+        setInterval(function() {
+          ci = (ci + 1) % chartViews.length;
+          var v = chartViews[ci];
+          if (!barsEl || !labelEl) return;
+          barsEl.style.opacity = '0';
+          barsEl.style.transform = 'translateY(4px)';
+          labelEl.style.opacity = '0';
+          setTimeout(function() {
+            labelEl.textContent = v.label + ' usage';
+            barsEl.innerHTML = v.bars.map(function(b, i) {
+              var cls = 'widget-page__bar';
+              if (i === v.peak) cls += ' widget-page__bar--peak';
+              else if (i === v.today) cls += ' widget-page__bar--today';
+              return '<div class="' + cls + '" style="--h:' + b.h + '%;"><span>' + b.l + '</span></div>';
+            }).join('');
+            requestAnimationFrame(function() {
+              barsEl.style.opacity = '1';
+              barsEl.style.transform = 'translateY(0)';
+              labelEl.style.opacity = '1';
+            });
+          }, 250);
+        }, 3000);
+
+        // === Scroll-driven screen switching ===
+        var screens = document.querySelectorAll('.widget-page__screen');
+        var currentScreen = 0;
+
+        function showScreen(idx) {
+          if (idx === currentScreen) return;
+          currentScreen = idx;
+          screens.forEach(function(s) { s.classList.remove('widget-page__screen--active'); });
+          screens[idx].classList.add('widget-page__screen--active');
+        }
+
+        // Wait for GSAP/ScrollTrigger to load (they're in the layout after <slot/>)
+        function initScrollScreens() {
+          if (typeof ScrollTrigger === 'undefined') {
+            setTimeout(initScrollScreens, 100);
+            return;
+          }
+
+          var proseEl = document.querySelector('.project-article--has-sidebar .prose');
+          if (!proseEl) return;
+
+          var headings = proseEl.querySelectorAll('h2');
+          // Map headings to screens:
+          // The Problem, The Approach → 0 (Token Stats)
+          // Architecture, Features → 1 (Settings)
+          // Key Decisions → 2 (iCloud Sync)
+          // Stack → 3 (Discord Presence)
+          var screenMap = [0, 0, 1, 1, 2, 3];
+
+          headings.forEach(function(h, i) {
+            var targetScreen = i < screenMap.length ? screenMap[i] : 3;
+            ScrollTrigger.create({
+              trigger: h,
+              start: 'top 60%',
+              onEnter: function() { showScreen(targetScreen); },
+              onEnterBack: function() {
+                var prev = i > 0 && (i - 1) < screenMap.length ? screenMap[i - 1] : 0;
+                showScreen(i === 0 ? 0 : prev);
+              }
+            });
+          });
+        }
+        initScrollScreens();
+
+        // === Settings toggle animation ===
+        var toggleEls = document.querySelectorAll('.wp-settings__toggle');
+        setInterval(function() {
+          if (currentScreen !== 1) return;
+          var pick = toggleEls[Math.floor(Math.random() * toggleEls.length)];
+          pick.classList.toggle('wp-settings__toggle--on');
+          setTimeout(function() { pick.classList.toggle('wp-settings__toggle--on'); }, 800);
+        }, 3000);
+      })();
+    </script>
+  )}
 
   <style is:global>
     .prose {
