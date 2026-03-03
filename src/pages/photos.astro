@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
-function getPhotos(dir: string, urlBase: string) {
+function getPhotos(dir: string) {
   const fullPath = path.join(process.cwd(), 'public', 'photos', dir);
   try {
     return fs.readdirSync(fullPath)
@@ -13,53 +13,42 @@ function getPhotos(dir: string, urlBase: string) {
 }
 
 const collections = [
-  { id: 'alaska', name: 'Alaska', photos: getPhotos('alaska', '/photos/alaska') },
-  { id: 'ecuador', name: 'Ecuador', photos: getPhotos('ecuador', '/photos/ecuador') },
-  { id: 'bw', name: 'Black & White', photos: getPhotos('bw', '/photos/bw') },
+  { id: 'alaska', name: 'Alaska', photos: getPhotos('alaska') },
+  { id: 'ecuador', name: 'Ecuador', photos: getPhotos('ecuador') },
+  { id: 'bw', name: 'Black & White', photos: getPhotos('bw') },
 ];
 
 const allPhotos = collections.flatMap(c => c.photos);
 ---
 
 <BaseLayout title="Photos — Jake Davis" description="Photography from Alaska, Ecuador, and more.">
-  <section class="pt-32 pb-12 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="reveal mb-8">
-        <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--accent);">Photography</p>
-        <h1 class="text-4xl md:text-5xl font-bold tracking-tight" style="color: var(--text);">
-          Through the lens<span style="color: var(--accent);">.</span>
-        </h1>
-      </div>
-
-      <!-- Filter tabs -->
-      <div class="flex gap-3 mb-10 flex-wrap reveal">
-        <button class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all" data-filter="all">
-          All ({allPhotos.length})
-        </button>
-        {collections.map(c => (
-          <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all" data-filter={c.id}>
-            {c.name} ({c.photos.length})
-          </button>
-        ))}
-      </div>
-    </div>
+  <section class="photos-hero js-in">
+    <h1>Through<br/>the lens</h1>
   </section>
 
-  <!-- Gallery -->
-  <section class="px-4 pb-24">
-    <div class="max-w-7xl mx-auto columns-2 md:columns-3 lg:columns-4 gap-3" id="gallery">
+  <div class="filter-bar js-in">
+    <button class="filter-btn active" data-filter="all">
+      All ({allPhotos.length})
+    </button>
+    {collections.map(c => (
+      <button class="filter-btn" data-filter={c.id}>
+        {c.name} ({c.photos.length})
+      </button>
+    ))}
+  </div>
+
+  <section class="js-in" style="padding-bottom: clamp(4rem, 8vw, 8rem);">
+    <div class="photo-grid" id="photo-grid">
       {collections.map(c =>
         c.photos.map(photo => (
-          <div class="gallery-item break-inside-avoid mb-3" data-collection={c.id}>
-            <div class="relative overflow-hidden rounded-lg cursor-pointer group" onclick={`openLightbox('${photo}')`}>
-              <img 
-                src={photo} 
-                alt="" 
-                loading="lazy"
-                class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-            </div>
+          <div class="photo-grid__item" data-collection={c.id}>
+            <img
+              src={photo}
+              alt=""
+              loading="lazy"
+              onclick={`openLightbox('${photo}')`}
+              style="cursor: pointer;"
+            />
           </div>
         ))
       )}
@@ -67,45 +56,48 @@ const allPhotos = collections.flatMap(c => c.photos);
   </section>
 
   <!-- Lightbox -->
-  <div id="lightbox" class="fixed inset-0 z-[300] hidden items-center justify-center" style="background: rgba(0,0,0,0.95);">
-    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors z-10">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
-    <button onclick="prevPhoto()" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-10 p-2">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <button onclick="nextPhoto()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-10 p-2">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-    <img id="lightbox-img" src="" alt="" class="max-w-[90vw] max-h-[90vh] object-contain" />
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" onclick="closeLightbox()">Close</button>
+    <button class="lightbox__nav lightbox__nav--prev" onclick="prevPhoto()">&#8592;</button>
+    <button class="lightbox__nav lightbox__nav--next" onclick="nextPhoto()">&#8594;</button>
+    <img id="lightbox-img" src="" alt="" />
   </div>
 
-  <style>
-    .filter-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text-2);
-    }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--accent-bg);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .gallery-item {
-      animation: fadeUp 0.4s ease both;
-    }
-    .gallery-item.hidden-item {
-      display: none;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-footer__outro">
+      <div>
+        <div>
+          <a href="https://github.com/quakeob" class="site-footer__social" target="_blank">GH</a>
+          <a href="https://x.com/Jak3dev" class="site-footer__social" target="_blank">X</a>
+          <a href="https://instagram.com/jjakedavis" class="site-footer__social" target="_blank">IG</a>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <span class="site-footer__email" id="email-copy" onclick="copyEmail()">
+          jake@bryt.works
+          <span class="email-copied" id="email-msg">copied!</span>
+        </span>
+      </div>
+      <div style="text-align: right;">
+        <div>
+          <a href="https://astro.build" class="site-footer__social" target="_blank">Astro</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script is:inline define:vars={{ allPhotos: JSON.stringify(allPhotos) }}>
     let photos = JSON.parse(allPhotos);
     let currentIndex = 0;
+
+    // Copy email
+    window.copyEmail = function() {
+      navigator.clipboard.writeText('jake@bryt.works');
+      const msg = document.getElementById('email-msg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 1500);
+    };
 
     // Filter
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -113,12 +105,8 @@ const allPhotos = collections.flatMap(c => c.photos);
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const filter = btn.dataset.filter;
-        document.querySelectorAll('.gallery-item').forEach(item => {
-          if (filter === 'all' || item.dataset.collection === filter) {
-            item.classList.remove('hidden-item');
-          } else {
-            item.classList.add('hidden-item');
-          }
+        document.querySelectorAll('.photo-grid__item').forEach(item => {
+          item.style.display = (filter === 'all' || item.dataset.collection === filter) ? '' : 'none';
         });
       });
     });
@@ -127,16 +115,12 @@ const allPhotos = collections.flatMap(c => c.photos);
     window.openLightbox = function(src) {
       currentIndex = photos.indexOf(src);
       document.getElementById('lightbox-img').src = src;
-      const lb = document.getElementById('lightbox');
-      lb.classList.remove('hidden');
-      lb.classList.add('flex');
+      document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     };
 
     window.closeLightbox = function() {
-      const lb = document.getElementById('lightbox');
-      lb.classList.add('hidden');
-      lb.classList.remove('flex');
+      document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     };
 
@@ -150,10 +134,8 @@ const allPhotos = collections.flatMap(c => c.photos);
       document.getElementById('lightbox-img').src = photos[currentIndex];
     };
 
-    // Keyboard
     document.addEventListener('keydown', (e) => {
-      const lb = document.getElementById('lightbox');
-      if (!lb.classList.contains('hidden')) {
+      if (document.getElementById('lightbox').classList.contains('open')) {
         if (e.key === 'Escape') closeLightbox();
         if (e.key === 'ArrowRight') nextPhoto();
         if (e.key === 'ArrowLeft') prevPhoto();

@@ -8,30 +8,30 @@ const posts = (await getCollection('blog'))
 ---
 
 <BaseLayout title="Writing — Jake Davis" description="Thoughts on AI, neuroscience, and building things.">
-  <section class="pt-32 pb-24 px-6">
-    <div class="max-w-3xl mx-auto">
-      <div class="reveal mb-16">
-        <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--accent);">Writing</p>
-        <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4" style="color: var(--text);">Thoughts & Technical Notes<span style="color: var(--accent);">.</span></h1>
-        <p class="text-lg" style="color: var(--text-2);">On AI, neuroscience, web dev, and whatever else I'm building.</p>
+  <section style="padding: clamp(8rem, 12vh, 12rem) 30px clamp(4rem, 8vh, 8rem);">
+    <div style="max-width: 700px;">
+      <div class="js-in" style="margin-bottom: clamp(3rem, 5vw, 5rem);">
+        <h1 class="display display--2">Thoughts &<br/>Technical Notes</h1>
       </div>
 
-      <div class="space-y-2">
-        {posts.map((post) => (
-          <a href={`/writing/${post.id}`} class="block card p-6 reveal group">
-            <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
-              <h2 class="text-lg font-bold group-hover:translate-x-1 transition-transform" style="color: var(--text);">
+      <div class="js-in">
+        {posts.map((post, i) => (
+          <a href={`/writing/${post.id}`} style="display: block; padding: 1.5rem 0; border-top: 1px solid var(--border); text-decoration: none; transition: all 0.3s;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.5rem;">
+              <h2 class="lead" style="font-size: 13px; font-weight: 700; color: var(--text);">
                 {post.data.title}
               </h2>
-              <time class="text-sm shrink-0" style="color: var(--text-3);">
-                {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              <time class="lead" style="font-size: 11px; color: var(--grey); flex-shrink: 0;">
+                {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
               </time>
             </div>
-            <p class="text-sm leading-relaxed mb-3" style="color: var(--text-2);">{post.data.description}</p>
+            <p class="lead" style="font-size: 12px; text-transform: none; color: var(--text-2); line-height: 1.6;">
+              {post.data.description}
+            </p>
             {post.data.tags && (
-              <div class="flex flex-wrap gap-2">
+              <div style="display: flex; gap: 1em; margin-top: 0.5rem;">
                 {post.data.tags.map((tag: string) => (
-                  <span class="text-xs px-2 py-0.5 rounded-md" style="background: var(--bg-3); color: var(--text-3);">{tag}</span>
+                  <span class="lead" style="font-size: 10px; color: var(--grey);">{tag}</span>
                 ))}
               </div>
             )}
@@ -40,4 +40,25 @@ const posts = (await getCollection('blog'))
       </div>
     </div>
   </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-footer__outro">
+      <div>
+        <div>
+          <a href="https://github.com/quakeob" class="site-footer__social" target="_blank">GH</a>
+          <a href="https://x.com/Jak3dev" class="site-footer__social" target="_blank">X</a>
+          <a href="https://instagram.com/jjakedavis" class="site-footer__social" target="_blank">IG</a>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <span class="site-footer__email">jake@bryt.works</span>
+      </div>
+      <div style="text-align: right;">
+        <div>
+          <a href="https://astro.build" class="site-footer__social" target="_blank">Astro</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 </BaseLayout>

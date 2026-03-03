@@ -15,21 +15,20 @@ const { Content } = await render(post);
 ---
 
 <BaseLayout title={`${post.data.title} — Jake Davis`} description={post.data.description}>
-  <article class="pt-32 pb-24 px-6">
-    <div class="max-w-[700px] mx-auto">
-      <a href="/writing" class="inline-flex items-center gap-1 text-sm mb-8 transition-colors hover:opacity-80" style="color: var(--accent);">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back to Writing
+  <article style="padding: clamp(8rem, 12vh, 12rem) 30px clamp(4rem, 8vh, 8rem);">
+    <div style="max-width: 700px;">
+      <a href="/writing" class="lead" style="display: inline-block; margin-bottom: 3rem; color: var(--grey);">
+        ← Back to Writing
       </a>
 
-      <header class="mb-12">
-        <time class="text-sm font-medium" style="color: var(--text-3);">
+      <header style="margin-bottom: 3rem;">
+        <div class="lead" style="margin-bottom: 8px; color: var(--grey);">
           {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-        </time>
+        </div>
         {post.data.tags && (
-          <div class="flex flex-wrap gap-2 mt-3">
+          <div style="display: flex; gap: 1em; margin-top: 0.5rem; margin-bottom: 1rem;">
             {post.data.tags.map((tag: string) => (
-              <span class="text-xs px-2 py-0.5 rounded-md" style="background: var(--accent-bg); color: var(--accent);">{tag}</span>
+              <span class="lead" style="font-size: 10px; color: var(--grey);">{tag}</span>
             ))}
           </div>
         )}
@@ -44,29 +43,36 @@ const { Content } = await render(post);
   <style is:global>
     .prose {
       color: var(--text-2);
-      line-height: 1.75;
-      font-size: 1.0625rem;
+      line-height: 1.8;
+      font-size: 14px;
+      font-family: var(--font-mono);
+      text-transform: none;
     }
     .prose h1 {
+      font-family: var(--font-display);
       color: var(--text);
-      font-size: 2rem;
-      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      text-transform: uppercase;
       margin-bottom: 1.5rem;
-      line-height: 1.2;
+      line-height: 0.9;
       letter-spacing: -0.02em;
     }
     .prose h2 {
+      font-family: var(--font-display);
       color: var(--text);
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-top: 2.5rem;
+      font-size: 1.8rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      margin-top: 3rem;
       margin-bottom: 1rem;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
     .prose h3 {
       color: var(--text);
-      font-size: 1.25rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
       margin-top: 2rem;
       margin-bottom: 0.75rem;
     }
@@ -74,13 +80,13 @@ const { Content } = await render(post);
       margin-bottom: 1.25rem;
     }
     .prose a {
-      color: var(--accent);
+      color: var(--green);
       text-decoration: underline;
       text-underline-offset: 3px;
     }
     .prose strong {
       color: var(--text);
-      font-weight: 600;
+      font-weight: 700;
     }
     .prose ul, .prose ol {
       margin-bottom: 1.25rem;
@@ -92,35 +98,30 @@ const { Content } = await render(post);
     .prose ul li { list-style-type: disc; }
     .prose ol li { list-style-type: decimal; }
     .prose blockquote {
-      border-left: 3px solid var(--accent);
+      border-left: 2px solid var(--text);
       padding-left: 1rem;
       margin: 1.5rem 0;
       font-style: italic;
-      color: var(--text-3);
+      color: var(--grey);
     }
     .prose code {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.875em;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: #f0f0f0;
       padding: 0.15em 0.4em;
-      border-radius: 4px;
-      color: var(--accent);
+      color: var(--text);
     }
     .prose pre {
-      background: var(--surface);
+      background: #f8f8f8;
       border: 1px solid var(--border);
-      border-radius: var(--radius, 8px);
       padding: 1.25rem;
       margin: 1.5rem 0;
       overflow-x: auto;
     }
     .prose pre code {
       background: none;
-      border: none;
       padding: 0;
       font-size: 0.85rem;
-      color: var(--text-2);
     }
     .prose hr {
       border: none;

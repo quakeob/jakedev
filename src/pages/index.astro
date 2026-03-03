@@ -1,347 +1,518 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import GitHubActivity from '../components/GitHubActivity.astro';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const projects = [
   {
     title: 'Fuel',
     desc: 'Calorie tracker with NLP food input, macro tracking, and barcode scanning. Built as a PWA, heading to the App Store.',
-    tags: ['JavaScript', 'PWA', 'NLP', 'OpenFoodFacts API'],
+    tags: ['JavaScript', 'PWA', 'NLP'],
     link: '/projects/fuel',
-    github: 'https://github.com/quakeob/fuel-app',
     status: 'Live',
-    emoji: '🔥',
   },
   {
     title: 'Yerb',
-    desc: 'Personal AI assistant running 24/7 on a Mac Mini. Manages calendar, automates coursework, runs autonomous builds overnight, and ghostwrites content.',
-    tags: ['OpenClaw', 'Python', 'Anthropic', 'Automation'],
+    desc: 'Personal AI assistant running 24/7 on a Mac Mini. Manages calendar, automates coursework, runs autonomous builds overnight.',
+    tags: ['Python', 'Anthropic', 'Automation'],
     link: '/projects/yerb',
     status: 'Active',
-    emoji: '🤖',
   },
   {
     title: 'Marketplace Scraper',
-    desc: 'Automated vehicle deal finder for Toyota Tacoma & 4Runner. Scrapes Craigslist, scores deals, alerts on finds.',
-    tags: ['Python', 'SQLite', 'Web Scraping', 'Telegram'],
+    desc: 'Automated vehicle deal finder for Toyota Tacoma & 4Runner. Scrapes listings, scores deals, sends alerts.',
+    tags: ['Python', 'SQLite', 'Telegram'],
     link: '/projects/marketplace-scraper',
     status: 'Active',
-    emoji: '🔍',
   },
   {
-    title: 'Neural Networks from Scratch',
-    desc: 'Custom neural network library in Python — backpropagation, multiple activation functions, convolutional layers — no TensorFlow or PyTorch.',
-    tags: ['Python', 'NumPy', 'Machine Learning'],
+    title: 'Neural Networks',
+    desc: 'Custom neural network library — backpropagation, activation functions, convolutional layers — no frameworks.',
+    tags: ['Python', 'NumPy', 'ML'],
     link: '/projects/neural-networks',
-    github: 'https://github.com/quakeob/neural-networks',
     status: 'In Progress',
-    emoji: '🧠',
   },
   {
     title: 'Vault Keeper',
-    desc: 'AI-powered accountability system built on Obsidian. Reads your journals, detects patterns, and generates accountability briefs.',
-    tags: ['Obsidian', 'Python', 'AI', 'PKM'],
+    desc: 'AI-powered accountability system built on Obsidian. Reads journals, detects behavioral patterns, generates briefs.',
+    tags: ['Obsidian', 'Python', 'AI'],
     link: '/projects/vault-keeper',
-    github: 'https://github.com/quakeob/ObsidianVaultkeeper',
     status: 'Legacy',
-    emoji: '🏛️',
   },
   {
-    title: 'Time Audit',
-    desc: 'macOS screen time tracker — logs active applications every 30s, generates daily usage reports. Runs as a background launchd service.',
-    tags: ['Python', 'macOS', 'AppleScript', 'launchd'],
+    title: 'Token Tracker',
+    desc: 'Native macOS widget tracking Claude Code usage in real-time. Parses sessions, shows per-model breakdowns and costs.',
+    tags: ['Swift', 'SwiftUI', 'macOS'],
     link: '/projects/time-audit',
     status: 'Active',
-    emoji: '⏱️',
   },
 ];
 
-const skills = [
-  { category: 'Languages', items: ['Python', 'JavaScript/TypeScript', 'HTML/CSS', 'SQL', 'AppleScript'] },
-  { category: 'AI/ML', items: ['LLMs', 'Prompt Engineering', 'Neural Networks', 'NLP', 'Anthropic API'] },
-  { category: 'Frameworks', items: ['Astro', 'React', 'Node.js', 'Tailwind', 'Flask'] },
-  { category: 'Tools', items: ['Git', 'Docker', 'macOS Automation', 'Web Scraping', 'Obsidian'] },
-  { category: 'Data', items: ['SQLite', 'PostgreSQL', 'REST APIs', 'Canvas API'] },
+// Get all B&W photos for slideshow
+const bwDir = path.join(process.cwd(), 'public', 'photos', 'bw');
+const bwPhotos = fs.readdirSync(bwDir)
+  .filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f))
+  .map(f => `/photos/bw/${f}`);
+
+const galleryPhotos = [
+  { src: '/photos/bw/DSCF4108.jpg', credit: 'Black & White' },
+  { src: '/photos/bw/DSCF3767.jpg', credit: 'Black & White' },
+  { src: '/photos/bw/DSCF7488.jpg', credit: 'Black & White' },
+  { src: '/photos/alaska/DSCF6443.jpg', credit: 'Glacier Bay' },
+  { src: '/photos/alaska/DSCF6545.jpg', credit: 'Kenai Fjords' },
+  { src: '/photos/alaska/DSCF6450.jpg', credit: 'Alaska' },
+  { src: '/photos/ecuador/IMG_3640.JPG', credit: 'Ecuador' },
+  { src: '/photos/ecuador/IMG_4688.JPG', credit: 'Ecuador' },
 ];
 ---
 
 <BaseLayout>
-  <!-- HERO — All background canvases (only active one renders) -->
-  <section class="min-h-screen flex items-center px-6 pt-20 relative overflow-hidden">
-    <canvas id="neural-canvas" class="theme-canvas" data-for-theme="default"></canvas>
-    <canvas id="bg-minimal-canvas" class="theme-canvas" data-for-theme="minimal"></canvas>
-    <canvas id="bg-terminal-canvas" class="theme-canvas" data-for-theme="terminal"></canvas>
-    <canvas id="bg-glass-canvas" class="theme-canvas" data-for-theme="glass"></canvas>
-    <canvas id="bg-brutalist-canvas" class="theme-canvas" data-for-theme="brutalist"></canvas>
-    <canvas id="bg-neon-canvas" class="theme-canvas" data-for-theme="neon"></canvas>
-    <canvas id="bg-paper-canvas" class="theme-canvas" data-for-theme="paper"></canvas>
-    <canvas id="bg-og-canvas" class="theme-canvas" data-for-theme="og"></canvas>
-
-    <!-- LAYOUT: Default / Neural — left aligned -->
-    <div class="hero-layout hero-default max-w-6xl mx-auto w-full relative" style="z-index: 1;">
-      <div class="reveal max-w-3xl">
-        <p class="text-sm font-medium tracking-widest uppercase mb-6" style="color: var(--accent);">AI Systems Builder</p>
-        <h1 class="hero-title font-bold tracking-tight leading-[0.95] mb-8" style="color: var(--text);">Jake<br/>Davis<span style="color: var(--accent);">.</span></h1>
-        <p class="text-lg md:text-xl max-w-xl leading-relaxed mb-10" style="color: var(--text-2);">I build AI systems that actually do things. Neuroscience student at BYU, programmer at BrytWorks, and the kind of person who builds an AI assistant that works while he sleeps.</p>
-        <div class="flex flex-wrap gap-4">
-          <a href="/#work" class="hero-btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-105" style="background: var(--accent); color: var(--bg);">View Work <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          <a href="/#contact" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-105" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Get in Touch</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- LAYOUT: Minimal — centered, massive type -->
-    <div class="hero-layout hero-minimal max-w-4xl mx-auto w-full relative text-center" style="z-index: 1;">
-      <div class="reveal">
-        <p class="text-sm tracking-widest uppercase mb-8" style="color: var(--text-3);">AI Systems Builder</p>
-        <h1 class="hero-title tracking-tight leading-[0.9] mb-10" style="color: var(--text);">Jake Davis<span style="color: var(--accent);">.</span></h1>
-        <p class="text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed mb-12" style="color: var(--text-2);">Building AI systems that do real work — from personal assistants to production data pipelines.</p>
-        <div class="flex justify-center gap-6">
-          <a href="/#work" class="text-sm font-medium underline underline-offset-4" style="color: var(--text);">View Work ↓</a>
-          <a href="/#contact" class="text-sm font-medium underline underline-offset-4" style="color: var(--text-3);">Contact</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- LAYOUT: Terminal — command prompt style -->
-    <div class="hero-layout hero-terminal max-w-4xl mx-auto w-full relative" style="z-index: 1;">
-      <div class="reveal" style="font-family: var(--font-mono);">
-        <div class="mb-4 text-xs" style="color: var(--text-3);">jake@portfolio ~ $</div>
-        <div class="mb-2"><span style="color: var(--text-3);">$ </span><span style="color: var(--accent);">whoami</span></div>
-        <h1 class="hero-title tracking-tight leading-[0.95] mb-4" style="color: var(--text);">JAKE DAVIS</h1>
-        <div class="mb-2"><span style="color: var(--text-3);">$ </span><span style="color: var(--accent);">cat about.txt</span></div>
-        <p class="max-w-2xl leading-relaxed mb-6" style="color: var(--text-2);">AI systems builder. Neuroscience student @ BYU. The kind of person who builds an AI assistant that works while he sleeps.</p>
-        <div class="mb-2"><span style="color: var(--text-3);">$ </span><span style="color: var(--accent);">ls projects/</span></div>
-        <p class="mb-8" style="color: var(--text-2);">fuel/  yerb/  marketplace-scraper/  neural-nets/  vault-keeper/</p>
-        <div><span style="color: var(--text-3);">$ </span><a href="/#work" style="color: var(--accent);">cd projects/<span class="cursor-blink"></span></a></div>
-      </div>
-    </div>
-
-    <!-- LAYOUT: Glass — centered with floating feel -->
-    <div class="hero-layout hero-glass max-w-4xl mx-auto w-full relative text-center" style="z-index: 1;">
-      <div class="reveal">
-        <div class="inline-block px-4 py-1.5 rounded-full text-xs font-medium mb-8" style="background: var(--accent-bg); border: 1px solid rgba(167,139,250,0.2); color: var(--accent);">AI Systems Builder</div>
-        <h1 class="hero-title tracking-tight leading-[0.95] mb-8" style="color: var(--text);">Jake<br/>Davis<span style="color: var(--accent);">.</span></h1>
-        <p class="text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-10" style="color: var(--text-2);">Building intelligent systems at the intersection of neuroscience and AI.</p>
-        <div class="flex justify-center gap-4">
-          <a href="/#work" class="inline-flex items-center gap-2 px-8 py-3 rounded-2xl text-sm font-semibold transition-all hover:scale-105" style="background: var(--accent); color: #fff; box-shadow: 0 4px 20px rgba(167,139,250,0.3);">Explore Work</a>
-          <a href="/#contact" class="inline-flex items-center gap-2 px-8 py-3 rounded-2xl text-sm font-semibold transition-all hover:scale-105" style="background: var(--surface); border: 1px solid var(--border); color: var(--text); backdrop-filter: blur(8px);">Say Hello</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- LAYOUT: Brutalist — massive, raw, asymmetric -->
-    <div class="hero-layout hero-brutalist max-w-6xl mx-auto w-full relative" style="z-index: 1;">
-      <div class="reveal">
-        <h1 class="hero-title tracking-tighter leading-[0.85] mb-4" style="color: var(--text); text-transform: uppercase; font-weight: 900;">JAKE<br/>DAVIS<span style="color: var(--accent);">.</span></h1>
-        <div class="flex items-start gap-8 mt-8">
-          <div class="w-1 self-stretch" style="background: var(--accent);"></div>
-          <div>
-            <p class="text-lg max-w-lg leading-snug mb-6" style="color: var(--text-2);">AI systems builder. Neuroscience student. I make machines do useful things.</p>
-            <a href="/#work" class="inline-block px-8 py-4 text-sm font-bold uppercase tracking-wider" style="background: var(--accent); color: #fff; border: 3px solid var(--text);">See Work →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- LAYOUT: Neon — cyberpunk centered glow -->
-    <div class="hero-layout hero-noir max-w-5xl mx-auto w-full relative text-center" style="z-index: 1;">
-      <div class="reveal">
-        <p class="text-xs font-bold uppercase tracking-[0.3em] mb-6" style="color: #00f0ff; text-shadow: 0 0 10px rgba(0,240,255,0.5);">AI Systems Builder</p>
-        <h1 class="hero-title tracking-tight leading-[0.9] mb-6" style="font-weight: 900; text-transform: uppercase; background: linear-gradient(180deg, #ff2d95 0%, #00f0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 30px rgba(255,45,149,0.3));">Jake<br/>Davis<span style="-webkit-text-fill-color: #ff2d95;">.</span></h1>
-        <p class="text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-10" style="color: var(--text-2);">Neuroscience student building AI that works while I sleep.</p>
-        <div class="flex justify-center gap-4">
-          <a href="/#work" class="inline-flex items-center gap-2 px-8 py-3 text-sm font-bold uppercase tracking-wider transition-all hover:scale-105" style="background: linear-gradient(135deg, #ff2d95, #cc2277); color: #fff; box-shadow: 0 0 20px rgba(255,45,149,0.3); border-radius: 4px;">View Work</a>
-          <a href="/#contact" class="inline-flex items-center gap-2 px-8 py-3 text-sm font-bold uppercase tracking-wider transition-all hover:scale-105" style="border: 1px solid rgba(0,240,255,0.3); color: #00f0ff; border-radius: 4px; text-shadow: 0 0 8px rgba(0,240,255,0.3);">Contact</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- LAYOUT: OG — file-system explorer, the original -->
-    <div class="hero-layout hero-og w-full relative flex items-center" style="z-index: 1; min-height: 100vh;">
-      <div class="og-filesystem">
-        <div class="og-path"><a href="/#work">/home/jake/projects</a></div>
-        <div class="og-path"><a href="/#about">/home/jake/about.txt</a></div>
-        <div class="og-path"><a href="/#contact">/home/jake/contact</a></div>
-        <div class="og-path"><a href="/photos">/home/jake/photos</a></div>
-        <div class="og-path"><a href="https://github.com/quakeob" target="_blank">/home/jake/.git</a></div>
-        <div class="og-path"><a href="https://x.com/Jak3dev" target="_blank">/var/log/thoughts</a></div>
-      </div>
-    </div>
-
-    <!-- LAYOUT: Paper — newspaper masthead -->
-    <div class="hero-layout hero-retro max-w-4xl mx-auto w-full relative text-center flex flex-col items-center justify-center" style="z-index: 1;">
-      <div class="reveal">
-        <div class="w-full h-px mb-8" style="background: #1a1a1a;"></div>
-        <p class="text-xs uppercase tracking-[0.4em] mb-4" style="color: var(--text-3); font-family: Georgia, serif;">The Portfolio of</p>
-        <h1 class="hero-title tracking-tight leading-[1] mb-4" style="color: var(--text); text-transform: uppercase; font-weight: 700; font-family: Georgia, serif; letter-spacing: -0.02em;">Jake Davis</h1>
-        <div class="w-32 mx-auto mb-4" style="border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 2px 0;">
-          <div class="w-full" style="border-top: 1px solid #1a1a1a;"></div>
-        </div>
-        <p class="text-sm tracking-[0.15em] mb-3" style="color: var(--text-2); font-family: Georgia, serif;">AI Systems Builder&ensp;·&ensp;Neuroscience&ensp;·&ensp;BYU</p>
-        <p class="text-xs italic mb-8" style="color: var(--text-3); font-family: Georgia, serif;">Est. 2026</p>
-        <div class="w-full h-px mb-8" style="background: #1a1a1a;"></div>
-        <a href="/#work" class="text-sm tracking-[0.1em] pb-1 transition-colors" style="color: var(--accent); font-family: Georgia, serif; text-decoration: underline; text-underline-offset: 4px;">Read More ↓</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- WORK -->
-  <section id="work" class="py-24 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="reveal mb-16">
-        <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--accent);">Selected Work</p>
-        <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color: var(--text);">Things I've built<span style="color: var(--accent);">.</span></h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {projects.map((project, i) => (
-          <div data-href={project.link}
-            class="card p-6 md:p-8 reveal group cursor-pointer block"
-            style={`animation-delay: ${i * 0.1}s`}
-            onclick={`window.location.href='${project.link}'`}>
-            <div class="flex items-start justify-between mb-4">
-              <span class="text-2xl">{project.emoji}</span>
-              <div class="flex items-center gap-2">
-                {project.github && (
-                  <a href={project.github} target="_blank" class="opacity-50 hover:opacity-100 transition-opacity" onclick="event.stopPropagation();">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: var(--text-3);"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                  </a>
-                )}
-                <span class="text-xs font-medium px-2 py-1 rounded-full" style={`background: var(--accent-bg); color: var(--accent);`}>
-                  {project.status}
-                </span>
-              </div>
-            </div>
-            <h3 class="text-xl font-bold mb-2 group-hover:translate-x-1 transition-transform" style="color: var(--text);">
-              {project.title}
-              <svg class="inline-block w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-            </h3>
-            <p class="text-sm leading-relaxed mb-4" style="color: var(--text-2);">{project.desc}</p>
-            <div class="flex flex-wrap gap-2">
-              {project.tags.map(tag => (
-                <span class="text-xs px-2 py-1 rounded-md" style="background: var(--bg-3); color: var(--text-3);">{tag}</span>
-              ))}
-            </div>
-          </div>
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="home-hero" style="position: relative;">
+    <div class="hero-overlap">
+      <div class="hero-slideshow" id="hero-slideshow">
+        {bwPhotos.slice(0, 12).map((src, i) => (
+          <img
+            src={src}
+            alt=""
+            class={`hero-slideshow__img ${i === 0 ? 'is-active' : ''}`}
+            loading={i < 2 ? 'eager' : 'lazy'}
+          />
         ))}
       </div>
+      <div class="hero-overlap__text">
+        <span class="display display--1">Jake</span>
+        <span class="display display--1">Davis</span>
+      </div>
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="py-24 px-6" style="background: var(--bg-2);">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-        <div class="reveal">
-          <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--accent);">About</p>
-          <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-6" style="color: var(--text);">
-            Building at the intersection of AI and everything else<span style="color: var(--accent);">.</span>
-          </h2>
-          <div class="space-y-4 text-base leading-relaxed" style="color: var(--text-2);">
-            <p>I'm a neuroscience student at BYU who spends more time building AI systems than studying for exams. I work as a programmer at BrytWorks, where I build automation tools and web applications.</p>
-            <p>My AI assistant, Yerb, runs 24/7 on a Mac Mini — managing my schedule, automating coursework, scraping deals on vehicles, and building projects while I sleep. It's not a demo. It's my actual workflow.</p>
-            <p>I think the most interesting problems sit at the edge of neuroscience and AI — how brains actually work versus how we simulate intelligence. When I'm not coding, I'm skiing, wrenching on my 4Runner, or 3D printing something functional.</p>
+  <!-- ═══════════ ABOUT ═══════════ -->
+  <section id="about" class="js-in" style="padding: clamp(4rem, 8vw, 10rem) 30px;">
+    <div class="about-grid">
+      <div>
+        <div class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2);">
+          <p style="margin-bottom: 1.5em;">Software developer. Photographer. Neuroscience student. Creator.</p>
+          <p style="margin-bottom: 1.5em;">I build AI systems and automation tools — agents that run autonomously, software that removes me from the loop.</p>
+          <p style="margin-bottom: 1.5em;">Right now: a multi-agent system on a Mac Mini that manages my schedule, trades crypto and prediction markets, and ships code on its own. The commit history doesn't sleep.</p>
+          <p style="margin-bottom: 1.5em;">I shoot photos. Mostly outdoors, mostly film.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 2rem; font-size: 10px; color: var(--grey); letter-spacing: 0.05em;">
+          <div>
+            <div class="lead" style="font-size: 10px;">Python · JavaScript · TypeScript · Swift · SQL · Bash · AppleScript</div>
+          </div>
+          <div>
+            <div class="lead" style="font-size: 10px;">Astro · React · Node.js · SQLite · Docker · Git</div>
+          </div>
+          <div>
+            <div class="lead" style="font-size: 10px;">Claude API · OpenAI API · Canvas API · Brave Search API · ElevenLabs API · Telegram API · Polymarket API · Tailscale · Linux · macOS</div>
+          </div>
+          <div>
+            <div class="lead" style="font-size: 10px;">AI/ML · Agent Architecture · Automation · Web Dev · Systems Design · Market Analysis</div>
           </div>
         </div>
-        <div class="reveal">
-          <div class="space-y-6">
-            {skills.map(group => (
-              <div>
-                <h4 class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--text-3);">{group.category}</h4>
-                <div class="flex flex-wrap gap-2">
-                  {group.items.map(skill => (
-                    <span class="text-sm px-3 py-1.5 rounded-lg" style="background: var(--surface); border: 1px solid var(--border); color: var(--text-2);">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
+      </div>
+      <div class="agent-terminal js-in" id="agent-terminal">
+        <div class="agent-terminal__header">
+          <span class="agent-terminal__dot" style="background: #ff5f57;"></span>
+          <span class="agent-terminal__dot" style="background: #febc2e;"></span>
+          <span class="agent-terminal__dot" style="background: #28c840;"></span>
+          <span class="agent-terminal__title">yerb — mac mini</span>
+        </div>
+        <div class="agent-terminal__body" id="agent-terminal-body"></div>
+        <div class="agent-terminal__status">
+          <div class="term-status__left">
+            <span class="term-status__badge term-status__badge--auto">> auto-accept</span>
+            <span class="term-status__item">Yerb 2.8</span>
+          </div>
+          <div class="term-status__right">
+            <span class="term-status__item" id="term-tokens">0 tokens</span>
+            <span class="term-status__ctx">
+              <span class="term-ctx-bar"><span class="term-ctx-fill" id="term-ctx-fill"></span></span>
+              <span id="term-ctx-pct">0%</span>
+            </span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <GitHubActivity />
+  <!-- ═══════════ WORK ═══════════ -->
+  <section class="projects-section js-in" id="work">
+    <div style="margin-bottom: clamp(2rem, 4vw, 4rem);">
+      <h2 class="display display--2">Projects</h2>
+    </div>
+    <div class="project-list">
+      {projects.map((project, i) => (
+        <a href={project.link} class="project-card js-in" style={`animation-delay: ${i * 0.05}s`}>
+          <div class="project-card__index lead">
+            {String(i + 1).padStart(2, '0')}
+          </div>
+          <div class="project-card__content">
+            <h3>{project.title}</h3>
+            <p class="project-card__desc">{project.desc}</p>
+            <div class="project-card__credits lead">
+              <span>Status</span>
+              <span class="u-g">{project.status}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="py-24 px-6">
-    <div class="max-w-6xl mx-auto text-center">
-      <div class="reveal max-w-2xl mx-auto">
-        <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--accent);">Contact</p>
-        <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6" style="color: var(--text);">
-          Let's build something<span style="color: var(--accent);">.</span>
-        </h2>
-        <p class="text-lg mb-10" style="color: var(--text-2);">
-          Always interested in new projects, collaborations, or just talking about AI and neuroscience.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="mailto:jake@bryt.works" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all hover:scale-105" style="background: var(--accent); color: var(--bg);">
-            jake@bryt.works
-          </a>
-          <a href="https://github.com/quakeob" target="_blank" class="card inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold" style="color: var(--text);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-          <a href="https://x.com/Jak3dev" target="_blank" class="card inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold" style="color: var(--text);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            @Jak3dev
-          </a>
+  <!-- ═══════════ PHOTO GALLERY ═══════════ -->
+  <section class="gallery-section js-in" id="gallery">
+    <div class="gallery-track" id="gallery-track">
+      {galleryPhotos.map((photo) => (
+        <div class="gallery-item">
+          <img src={photo.src} alt={photo.credit} loading="lazy" />
+          <div class="gallery-item__caption lead">
+            <span class="project-card__credits">
+              <span>Project</span>
+              <span class="u-g">{photo.credit}</span>
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="gallery-counter lead">
+      <span class="u-g"><span id="gallery-current">1</span> / {galleryPhotos.length}</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="site-footer" id="contact">
+    <div class="gallery-section" style="margin-bottom: 0;">
+      <div class="gallery-track" style="height: 30vh;" id="footer-gallery">
+        <div class="gallery-item">
+          <img src="/photos/bw/DSCF3289.jpg" alt="" loading="lazy" />
+          <div class="gallery-item__caption lead">
+            <span class="project-card__credits">
+              <span>Series</span>
+              <span class="u-g">Black & White</span>
+            </span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/photos/bw/DSCF4278.jpg" alt="" loading="lazy" />
+          <div class="gallery-item__caption lead">
+            <span class="project-card__credits">
+              <span>Series</span>
+              <span class="u-g">Portraits</span>
+            </span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/photos/bw/DSCF3554.jpg" alt="" loading="lazy" />
+          <div class="gallery-item__caption lead">
+            <span class="project-card__credits">
+              <span>Series</span>
+              <span class="u-g">Black & White</span>
+            </span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/photos/alaska/IMG_9262.jpeg" alt="" loading="lazy" />
+          <div class="gallery-item__caption lead">
+            <span class="project-card__credits">
+              <span>Location</span>
+              <span class="u-g">Alaska</span>
+            </span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/photos/ecuador/IMG_2945.JPG" alt="" loading="lazy" />
+          <div class="gallery-item__caption lead">
+            <span class="project-card__credits">
+              <span>Location</span>
+              <span class="u-g">Ecuador</span>
+            </span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/photos/alaska/IMG_9184.jpeg" alt="" loading="lazy" />
+          <div class="gallery-item__caption lead">
+            <span class="project-card__credits">
+              <span>Location</span>
+              <span class="u-g">Alaska</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </section>
-  <script is:inline src="/neural.js"></script>
-  <script is:inline src="/bg-minimal.js"></script>
-  <script is:inline src="/bg-terminal.js"></script>
-  <script is:inline src="/bg-glass.js"></script>
-  <script is:inline src="/bg-brutalist.js"></script>
-  <script is:inline src="/bg-neon.js"></script>
-  <script is:inline src="/bg-paper.js"></script>
-  <script is:inline src="/bg-og.js"></script>
 
-  <style is:global>
-    /* Canvas and layout visibility per theme */
-    .theme-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      display: none;
+    <div class="site-footer__outro">
+      <div>
+        <div>
+          <a href="https://github.com/quakeob" class="site-footer__social" target="_blank">GH</a>
+          <a href="https://x.com/Jak3dev" class="site-footer__social" target="_blank">X</a>
+          <a href="https://instagram.com/jjakedavis" class="site-footer__social" target="_blank">IG</a>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <span class="site-footer__email" id="email-copy" onclick="copyEmail()">
+          jake@bryt.works
+          <span class="email-copied" id="email-msg">copied!</span>
+        </span>
+      </div>
+      <div style="text-align: right;">
+        <div>
+          <a href="https://astro.build" class="site-footer__social" target="_blank">Astro</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    // ═══════════ HERO SLIDESHOW ═══════════
+    (function() {
+      const imgs = document.querySelectorAll('.hero-slideshow__img');
+      if (!imgs.length) return;
+      let current = 0;
+      setInterval(() => {
+        imgs[current].classList.remove('is-active');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('is-active');
+      }, 500);
+    })();
+
+    // ═══════════ COPY EMAIL ═══════════
+    window.copyEmail = function() {
+      navigator.clipboard.writeText('jake@bryt.works');
+      const msg = document.getElementById('email-msg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 1500);
+    };
+
+    // ═══════════ GALLERY DRAG-TO-SCROLL ═══════════
+    function initDragScroll(el) {
+      if (!el) return;
+      let isDown = false, startX, scrollLeft;
+      el.addEventListener('mousedown', (e) => {
+        isDown = true;
+        el.style.cursor = 'grabbing';
+        startX = e.pageX - el.offsetLeft;
+        scrollLeft = el.scrollLeft;
+      });
+      el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = 'grab'; });
+      el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = 'grab'; });
+      el.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - el.offsetLeft;
+        el.scrollLeft = scrollLeft - (x - startX) * 1.5;
+      });
     }
-    /* Default theme shows neural canvas */
-    :root:not([data-theme]) .theme-canvas[data-for-theme="default"],
-    [data-theme="default"] .theme-canvas[data-for-theme="default"] { display: block; }
-    [data-theme="minimal"] .theme-canvas[data-for-theme="minimal"] { display: block; }
-    [data-theme="terminal"] .theme-canvas[data-for-theme="terminal"] { display: block; }
-    [data-theme="glass"] .theme-canvas[data-for-theme="glass"] { display: block; }
-    [data-theme="brutalist"] .theme-canvas[data-for-theme="brutalist"] { display: block; }
-    [data-theme="noir"] .theme-canvas[data-for-theme="neon"] { display: block; }
-    [data-theme="retro"] .theme-canvas[data-for-theme="paper"] { display: block; }
-    [data-theme="og"] .theme-canvas[data-for-theme="og"] { display: block; }
 
-    /* Hide all hero layouts by default */
-    .hero-layout { display: none; }
-    /* Show matching layout */
-    :root:not([data-theme]) .hero-default,
-    [data-theme="default"] .hero-default { display: block; }
-    [data-theme="minimal"] .hero-minimal { display: block; }
-    [data-theme="terminal"] .hero-terminal { display: block; }
-    [data-theme="glass"] .hero-glass { display: block; }
-    [data-theme="brutalist"] .hero-brutalist { display: block; }
-    [data-theme="noir"] .hero-noir { display: block; }
-    [data-theme="retro"] .hero-retro { display: block; }
-    [data-theme="og"] .hero-og { display: block; }
+    const mainGallery = document.getElementById('gallery-track');
+    const footerGallery = document.getElementById('footer-gallery');
+    initDragScroll(mainGallery);
+    initDragScroll(footerGallery);
 
-    /* Terminal cursor blink */
-    .cursor-blink::after {
-      content: '█';
-      animation: blink 1s step-end infinite;
+    // Gallery counter
+    if (mainGallery) {
+      mainGallery.addEventListener('scroll', () => {
+        const items = mainGallery.querySelectorAll('.gallery-item');
+        const scrollPos = mainGallery.scrollLeft + mainGallery.clientWidth / 2;
+        let current = 1;
+        items.forEach((item, i) => {
+          if (item.offsetLeft < scrollPos) current = i + 1;
+        });
+        const counter = document.getElementById('gallery-current');
+        if (counter) counter.textContent = current;
+      });
     }
-    @keyframes blink { 50% { opacity: 0; } }
-  </style>
+
+    // ═══════════ AGENT TERMINAL ═══════════
+    (function() {
+      const body = document.getElementById('agent-terminal-body');
+      if (!body) return;
+
+      const bootLines = [
+        { text: 'yerb', cls: 'boot-title' },
+        { text: 'v3.1 · mac mini m2 · 4 agents', cls: 'boot-sub' },
+        { text: '', cls: 'dim' },
+        { text: 'scheduler', cls: 'boot-agent', delay: 400 },
+        { text: 'market', cls: 'boot-agent', delay: 350 },
+        { text: 'scraper', cls: 'boot-agent', delay: 300 },
+        { text: 'builder', cls: 'boot-agent', delay: 350 },
+        { text: '', cls: 'dim' },
+        { text: '', cls: 'boot-bar' },
+        { text: '', cls: 'dim' },
+        { text: 'all systems online · uptime 847h', cls: 'boot-ready' },
+      ];
+
+      const lines = [
+        { text: '[scheduler] syncing calendar — 3 events today', cls: 'blue' },
+        { text: '[market] scanning polymarket positions', cls: 'dim' },
+        { text: '[market] BTC > $94k — holding', cls: 'yellow' },
+        { text: '[scraper] 2 new listings found', cls: 'accent' },
+        { text: '[builder] running test suite — 47/47 passed', cls: 'green' },
+        { text: '> order sushi', cls: 'user' },
+        { text: '[scheduler] placing order — spicy tuna, salmon nigiri', cls: 'blue' },
+        { text: '[scheduler] order confirmed — eta 35min', cls: 'green' },
+        { text: '[market] ETH position +4.2% — no action', cls: 'yellow' },
+        { text: '> deploy site', cls: 'user' },
+        { text: '[builder] building jakedev.org...', cls: 'dim' },
+        { text: '[builder] deploying jakedev.org — done', cls: 'green' },
+        { text: '[builder] pushed 3 commits to main', cls: 'blue' },
+        { text: '> dinner reservation friday 7pm', cls: 'user' },
+        { text: '[scheduler] booking — party of 2, friday 7pm', cls: 'blue' },
+        { text: '[scheduler] confirmed — HSK italian', cls: 'green' },
+        { text: '[market] polymarket: recalculating edge', cls: 'dim' },
+        { text: '> market positions', cls: 'user' },
+        { text: '[market] portfolio +2.8% — 3 positions open', cls: 'green' },
+        { text: '[market] opened position — 0.12 ETH', cls: 'yellow' },
+        { text: '> email client re: timeline', cls: 'user' },
+        { text: '[scheduler] drafting email — project timeline update', cls: 'blue' },
+        { text: '[scheduler] sent to alex@brytwks.com', cls: 'green' },
+        { text: '[scraper] no new matches since 14:30', cls: 'dim' },
+        { text: '[builder] lint pass — 0 warnings', cls: 'green' },
+        { text: '> queue fuel build', cls: 'user' },
+        { text: '[builder] queued overnight build — fuel v2.1', cls: 'blue' },
+        { text: '[yerb] all agents nominal', cls: 'accent' },
+        { text: '[scheduler] sleep mode in 45m', cls: 'dim' },
+      ];
+
+      let i = 0;
+      let bootIndex = 0;
+      const maxLines = 14;
+      let speed = 500;
+      let booting = true;
+
+      function renderLine(line) {
+        const el = document.createElement('div');
+        el.className = 'agent-terminal__line agent-terminal__line--' + line.cls;
+        el.textContent = line.text;
+        body.appendChild(el);
+        if (body.children.length > maxLines) {
+          body.removeChild(body.firstChild);
+        }
+      }
+
+      function bootSequence() {
+        if (bootIndex >= bootLines.length) {
+          booting = false;
+          setTimeout(addLine, 600);
+          return;
+        }
+        const bl = bootLines[bootIndex];
+        if (bl.cls === 'boot-bar') {
+          const el = document.createElement('div');
+          el.className = 'agent-terminal__line agent-terminal__line--boot-bar';
+          const barWidth = 20;
+          let filled = 0;
+          const barSpan = document.createElement('span');
+          barSpan.className = 'term-bar';
+          barSpan.textContent = '░'.repeat(barWidth);
+          el.appendChild(barSpan);
+          const pct = document.createElement('span');
+          pct.className = 'term-bar-pct';
+          pct.textContent = '  0%';
+          el.appendChild(pct);
+          body.appendChild(el);
+          if (body.children.length > maxLines) body.removeChild(body.firstChild);
+          const barInt = setInterval(() => {
+            filled++;
+            barSpan.textContent = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+            pct.textContent = '  ' + Math.round((filled / barWidth) * 100) + '%';
+            if (filled >= barWidth) {
+              clearInterval(barInt);
+              bootIndex++;
+              setTimeout(bootSequence, 200);
+            }
+          }, 40);
+          return;
+        } else if (bl.cls === 'boot-agent') {
+          // Show agent name with spinner, then resolve
+          const el = document.createElement('div');
+          el.className = 'agent-terminal__line agent-terminal__line--boot-agent';
+          const spinChars = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+          let si = 0;
+          const sp = document.createElement('span');
+          sp.className = 'term-spinner';
+          sp.textContent = spinChars[0];
+          el.appendChild(sp);
+          el.appendChild(document.createTextNode(' ' + bl.text));
+          body.appendChild(el);
+          if (body.children.length > maxLines) body.removeChild(body.firstChild);
+          const spinInt = setInterval(() => { si=(si+1)%spinChars.length; sp.textContent=spinChars[si]; }, 60);
+          setTimeout(() => {
+            clearInterval(spinInt);
+            el.innerHTML = '<span class="term-check">✓</span> ' + bl.text;
+            el.classList.add('agent-terminal__line--resolved');
+            bootIndex++;
+            setTimeout(bootSequence, 150);
+          }, bl.delay || 300);
+        } else {
+          renderLine(bl);
+          bootIndex++;
+          setTimeout(bootSequence, bl.cls === 'boot-title' ? 200 : 100);
+        }
+      }
+
+      const tokensEl = document.getElementById('term-tokens');
+      const ctxFill = document.getElementById('term-ctx-fill');
+      const ctxPct = document.getElementById('term-ctx-pct');
+      let tokenCount = 0;
+      const maxCtx = 200000;
+
+      function updateStats() {
+        const add = Math.floor(800 + Math.random() * 2400);
+        tokenCount = Math.min(tokenCount + add, maxCtx);
+        const pct = Math.round((tokenCount / maxCtx) * 100);
+        if (tokensEl) tokensEl.textContent = tokenCount.toLocaleString() + ' tokens';
+        if (ctxFill) ctxFill.style.width = pct + '%';
+        if (ctxPct) ctxPct.textContent = pct + '%';
+        // Reset at ~85% to simulate new conversation
+        if (pct > 85) tokenCount = Math.floor(Math.random() * 8000);
+      }
+
+      function addLine() {
+        // Remove previous thinking indicator
+        const prev = body.querySelector('.term-thinking');
+        if (prev) prev.remove();
+
+        renderLine(lines[i % lines.length]);
+        i++;
+        updateStats();
+
+        // Add thinking indicator
+        const thinking = document.createElement('div');
+        thinking.className = 'agent-terminal__line term-thinking';
+        thinking.innerHTML = '<span class="term-dots"><span>·</span><span>·</span><span>·</span></span>';
+        body.appendChild(thinking);
+        if (body.children.length > maxLines) body.removeChild(body.firstChild);
+
+        setTimeout(addLine, speed + Math.random() * (speed * 0.6));
+      }
+
+      // Start boot when terminal scrolls into view
+      const termEl = document.getElementById('agent-terminal');
+      const termObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          termObs.disconnect();
+          setTimeout(bootSequence, 400);
+        }
+      }, { threshold: 0.3 });
+      termObs.observe(termEl);
+
+      // Speed up on scroll, ease back gradually
+      let scrollTimeout;
+      let easeInterval;
+      window.addEventListener('scroll', () => {
+        speed = 80;
+        clearTimeout(scrollTimeout);
+        clearInterval(easeInterval);
+        scrollTimeout = setTimeout(() => {
+          easeInterval = setInterval(() => {
+            speed = Math.min(speed + 50, 500);
+            if (speed >= 500) clearInterval(easeInterval);
+          }, 150);
+        }, 300);
+      });
+    })();
+
+  </script>
 </BaseLayout>

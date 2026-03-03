@@ -20,46 +20,33 @@ const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentI
 ---
 
 <BaseLayout title={`${project.data.title} — Jake Davis`} description={project.data.description}>
-  <article class="pt-28 pb-24 px-6">
-    <div class="max-w-3xl mx-auto">
+  <article style="padding: clamp(8rem, 12vh, 12rem) 30px clamp(4rem, 8vh, 8rem);">
+    <div style="max-width: 700px;">
       <!-- Back link -->
-      <a href="/#work" class="inline-flex items-center gap-2 text-sm font-medium mb-12 transition-colors hover:opacity-80" style="color: var(--accent);">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back to work
+      <a href="/#work" class="lead" style="display: inline-block; margin-bottom: 3rem; color: var(--grey);">
+        ← Back to work
       </a>
 
       <!-- Hero -->
-      <header class="mb-16">
-        <div class="flex items-center gap-4 mb-6">
-          <span class="text-4xl">{project.data.emoji}</span>
-          <span class="text-xs font-medium px-3 py-1 rounded-full" style="background: var(--accent-bg); color: var(--accent);">
-            {project.data.status}
-          </span>
-        </div>
-        <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4" style="color: var(--text);">
-          {project.data.title}<span style="color: var(--accent);">.</span>
+      <header style="margin-bottom: 3rem;">
+        <h1 class="display display--2" style="margin-bottom: 1rem;">
+          {project.data.title}
         </h1>
-        <p class="text-lg md:text-xl leading-relaxed mb-8" style="color: var(--text-2);">
+        <p class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2); margin-bottom: 1.5rem;">
           {project.data.description}
         </p>
-        <div class="flex flex-wrap gap-2 mb-6">
+        <div style="display: flex; flex-wrap: wrap; gap: 1em; margin-bottom: 1.5rem;">
           {project.data.tags.map((tag: string) => (
-            <span class="text-xs px-3 py-1.5 rounded-md" style="background: var(--bg-3); color: var(--text-3);">{tag}</span>
+            <span class="lead" style="font-size: 11px; color: var(--grey);">{tag}</span>
           ))}
         </div>
         {(project.data.github || project.data.live) && (
-          <div class="flex flex-wrap gap-3">
+          <div style="display: flex; gap: 1.5em;">
             {project.data.github && (
-              <a href={project.data.github} target="_blank" class="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all hover:scale-105" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                GitHub
-              </a>
+              <a href={project.data.github} target="_blank" class="lead u-g">GitHub →</a>
             )}
             {project.data.live && (
-              <a href={project.data.live} target="_blank" class="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all hover:scale-105" style="background: var(--accent); color: var(--bg);">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-                Live Demo
-              </a>
+              <a href={project.data.live} target="_blank" class="lead u-g">Live Demo →</a>
             )}
           </div>
         )}
@@ -71,20 +58,20 @@ const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentI
       </div>
 
       <!-- Navigation -->
-      <nav class="mt-20 pt-10 grid grid-cols-1 sm:grid-cols-2 gap-4" style="border-top: 1px solid var(--border);">
+      <nav style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
         {prevProject ? (
-          <a href={`/projects/${prevProject.id}`} class="card p-5 group block">
-            <span class="text-xs font-medium" style="color: var(--text-3);">← Previous</span>
-            <span class="block text-base font-semibold mt-1 group-hover:translate-x-1 transition-transform" style="color: var(--text);">
-              {prevProject.data.emoji} {prevProject.data.title}
+          <a href={`/projects/${prevProject.id}`} style="text-decoration: none;">
+            <span class="lead" style="font-size: 11px; color: var(--grey);">← Previous</span>
+            <span class="lead u-g" style="display: block; margin-top: 4px;">
+              {prevProject.data.title}
             </span>
           </a>
         ) : <div />}
         {nextProject && (
-          <a href={`/projects/${nextProject.id}`} class="card p-5 group block text-right">
-            <span class="text-xs font-medium" style="color: var(--text-3);">Next →</span>
-            <span class="block text-base font-semibold mt-1 group-hover:-translate-x-1 transition-transform" style="color: var(--text);">
-              {nextProject.data.title} {nextProject.data.emoji}
+          <a href={`/projects/${nextProject.id}`} style="text-align: right; text-decoration: none;">
+            <span class="lead" style="font-size: 11px; color: var(--grey);">Next →</span>
+            <span class="lead u-g" style="display: block; margin-top: 4px;">
+              {nextProject.data.title}
             </span>
           </a>
         )}
@@ -96,20 +83,25 @@ const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentI
     .prose {
       color: var(--text-2);
       line-height: 1.8;
-      font-size: 1.0625rem;
+      font-size: 14px;
+      font-family: var(--font-mono);
+      text-transform: none;
     }
     .prose h2 {
+      font-family: var(--font-display);
       color: var(--text);
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.8rem;
+      font-weight: 400;
+      text-transform: uppercase;
       margin-top: 3rem;
       margin-bottom: 1rem;
       letter-spacing: -0.02em;
     }
     .prose h3 {
       color: var(--text);
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
       margin-top: 2rem;
       margin-bottom: 0.75rem;
     }
@@ -118,28 +110,26 @@ const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentI
     }
     .prose strong {
       color: var(--text);
-      font-weight: 600;
+      font-weight: 700;
     }
     .prose a {
-      color: var(--accent);
+      color: var(--green);
       text-decoration: underline;
       text-underline-offset: 3px;
     }
     .prose a:hover {
-      opacity: 0.8;
+      opacity: 0.6;
     }
     .prose code {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.875em;
       padding: 0.15em 0.4em;
-      border-radius: 4px;
-      background: var(--bg-3);
-      color: var(--accent);
+      background: var(--border);
+      color: var(--text);
     }
     .prose pre {
-      background: var(--surface);
+      background: var(--border);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
       padding: 1.25rem;
       overflow-x: auto;
       margin: 1.5rem 0;
@@ -149,7 +139,6 @@ const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentI
     .prose pre code {
       background: none;
       padding: 0;
-      color: var(--text-2);
     }
     .prose ul, .prose ol {
       margin: 1rem 0;
@@ -158,15 +147,12 @@ const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentI
     .prose li {
       margin-bottom: 0.5rem;
     }
-    .prose ul li::marker {
-      color: var(--accent);
-    }
     .prose blockquote {
-      border-left: 3px solid var(--accent);
+      border-left: 2px solid var(--text);
       padding-left: 1rem;
       margin: 1.5rem 0;
       font-style: italic;
-      color: var(--text-3);
+      color: var(--grey);
     }
     .prose hr {
       border: none;
