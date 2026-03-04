@@ -117,7 +117,7 @@ const galleryPhotos = [
             <span class="agent-terminal__dot" style="background: #ff5f57;"></span>
             <span class="agent-terminal__dot" style="background: #febc2e;"></span>
             <span class="agent-terminal__dot" style="background: #28c840;"></span>
-            <span class="agent-terminal__title">yerb — mac mini</span>
+            <span class="agent-terminal__title">yerb &mdash; mac mini</span>
           </div>
           <div class="agent-terminal__body" id="agent-terminal-body"></div>
           <div class="agent-terminal__status">
@@ -509,78 +509,538 @@ const galleryPhotos = [
   <!-- ═══════════ BUILD ═══════════ -->
   <section class="build-section js-in" id="build">
     <div class="build-section__grid">
-      <!-- Visual: Browser mockup with code editor -->
-      <div class="build-browser">
-        <div class="build-browser__bar">
-          <span class="build-browser__dot" style="background:#ff5f57;"></span>
-          <span class="build-browser__dot" style="background:#febc2e;"></span>
-          <span class="build-browser__dot" style="background:#28c840;"></span>
-          <span class="build-browser__url">
-            <span class="build-browser__lock">
-              <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-9H9V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2z"/></svg>
-            </span>
-            yoursite.com
-          </span>
-        </div>
-        <div class="build-browser__body">
-          <div class="build-browser__site">
-            <!-- Mini site wireframe -->
-            <div class="build-wire__nav">
-              <div class="build-wire__logo"></div>
-              <div class="build-wire__nav-links">
-                <div class="build-wire__nav-link"></div>
-                <div class="build-wire__nav-link"></div>
-                <div class="build-wire__nav-link"></div>
+      <!-- Visual: Cycling build visuals -->
+      <div class="build-visual" id="build-visual">
+        <!-- 0: site — Miniature Website Preview -->
+        <div class="build-vis build-vis--active" data-vis="site">
+          <div class="vis-site__chrome">
+            <div class="vis-site__dots">
+              <span class="vis-site__dot" style="background:#ff5f57;"></span>
+              <span class="vis-site__dot" style="background:#febc2e;"></span>
+              <span class="vis-site__dot" style="background:#28c840;"></span>
+            </div>
+            <div class="vis-site__url-bar">
+              <svg class="vis-site__lock" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-9H9V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2z"/></svg>
+              <span class="vis-site__url-text">yoursite.com</span>
+            </div>
+          </div>
+          <div class="vis-site__page">
+            <div class="vis-site__nav">
+              <span class="vis-site__nav-logo">acme</span>
+              <div class="vis-site__nav-links">
+                <span class="vis-site__nav-link">Home</span>
+                <span class="vis-site__nav-link">Pricing</span>
+                <span class="vis-site__nav-link">Blog</span>
+              </div>
+              <span class="vis-site__nav-cta">Sign up</span>
+            </div>
+            <div class="vis-site__hero">
+              <span class="vis-site__hero-badge">&#9679; Now in beta</span>
+              <div class="vis-site__hero-h1">Ship faster.</div>
+              <div class="vis-site__hero-h1 vis-site__hero-h1--accent">Build smarter.</div>
+              <p class="vis-site__hero-sub">The modern platform for teams who want to move fast without breaking things.</p>
+              <div class="vis-site__hero-actions">
+                <span class="vis-site__btn vis-site__btn--primary">Get started</span>
+                <span class="vis-site__btn vis-site__btn--ghost">View docs &#8594;</span>
               </div>
             </div>
-            <div class="build-wire__hero">
-              <div class="build-wire__hero-text">
-                <div class="build-wire__line build-wire__line--lg"></div>
-                <div class="build-wire__line build-wire__line--lg" style="width: 65%;"></div>
-                <div class="build-wire__line build-wire__line--sm" style="margin-top: 12px;"></div>
-                <div class="build-wire__line build-wire__line--sm" style="width: 80%;"></div>
-                <div class="build-wire__cta"></div>
+            <div class="vis-site__stats-row">
+              <div class="vis-site__stat-block">
+                <span class="vis-site__stat-num">99.9%</span>
+                <span class="vis-site__stat-desc">Uptime</span>
+              </div>
+              <div class="vis-site__stat-block">
+                <span class="vis-site__stat-num">2.4M</span>
+                <span class="vis-site__stat-desc">Requests/day</span>
+              </div>
+              <div class="vis-site__stat-block">
+                <span class="vis-site__stat-num">&lt;50ms</span>
+                <span class="vis-site__stat-desc">Avg latency</span>
               </div>
             </div>
-            <div class="build-wire__cards">
-              <div class="build-wire__card"></div>
-              <div class="build-wire__card"></div>
-              <div class="build-wire__card"></div>
+          </div>
+          <div class="vis-site__lighthouse">
+            <div class="vis-site__lh-score">
+              <span class="vis-site__lh-val build-browser__stat-val--green">100</span>
+              <span class="vis-site__lh-label">Performance</span>
+            </div>
+            <div class="vis-site__lh-score">
+              <span class="vis-site__lh-val build-browser__stat-val--green">100</span>
+              <span class="vis-site__lh-label">Accessibility</span>
+            </div>
+            <div class="vis-site__lh-score">
+              <span class="vis-site__lh-val build-browser__stat-val--green">100</span>
+              <span class="vis-site__lh-label">SEO</span>
+            </div>
+            <div class="vis-site__lh-score">
+              <span class="vis-site__lh-val">0.4s</span>
+              <span class="vis-site__lh-label">Load</span>
             </div>
           </div>
         </div>
-        <div class="build-browser__stats">
-          <div class="build-browser__stat">
-            <span class="build-browser__stat-val build-browser__stat-val--green">100</span>
-            <span class="build-browser__stat-label">Performance</span>
+
+        <!-- 1: app — Fuel Calorie Tracker -->
+        <div class="build-vis" data-vis="app">
+          <div class="vis-app__phone">
+            <div class="vis-app__device">
+              <div class="vis-app__status-bar">
+                <span class="vis-app__time">9:41</span>
+                <div class="vis-app__status-icons">
+                  <svg class="vis-app__icon-signal" viewBox="0 0 16 12" fill="rgba(255,255,255,0.5)">
+                    <rect x="0" y="9" width="3" height="3" rx="0.5"/>
+                    <rect x="4.5" y="6" width="3" height="6" rx="0.5"/>
+                    <rect x="9" y="3" width="3" height="9" rx="0.5"/>
+                    <rect x="13.5" y="0" width="3" height="12" rx="0.5" fill-opacity="0.3"/>
+                  </svg>
+                  <svg class="vis-app__icon-battery" viewBox="0 0 28 13" fill="none">
+                    <rect x="0.5" y="0.5" width="23" height="12" rx="2.5" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                    <rect x="25" y="4" width="2.5" height="5" rx="1" fill="rgba(255,255,255,0.25)"/>
+                    <rect x="2" y="2" width="16" height="9" rx="1.5" fill="rgba(52,199,89,0.7)"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="vis-app__island"></div>
+              <div class="vis-app__screen">
+                <div class="vis-app__header">
+                  <span class="vis-app__header-title">Today</span>
+                  <span class="vis-app__header-date">Mar 4</span>
+                </div>
+                <div class="vis-app__ring-section">
+                  <div class="vis-app__ring-container">
+                    <svg class="vis-app__ring-svg" viewBox="0 0 80 80">
+                      <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+                      <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(52,199,89,0.75)" stroke-width="6" stroke-dasharray="201" stroke-dashoffset="54" stroke-linecap="round" transform="rotate(-90 40 40)"/>
+                    </svg>
+                    <div class="vis-app__ring-label">
+                      <span class="vis-app__ring-cal">1,847</span>
+                      <span class="vis-app__ring-unit">kcal</span>
+                    </div>
+                  </div>
+                  <div class="vis-app__ring-meta">
+                    <span class="vis-app__ring-goal">of 2,400 goal</span>
+                    <span class="vis-app__ring-remaining">553 remaining</span>
+                  </div>
+                </div>
+                <div class="vis-app__macros">
+                  <div class="vis-app__macro">
+                    <div class="vis-app__macro-top">
+                      <span class="vis-app__macro-name">Protein</span>
+                      <span class="vis-app__macro-val">142g</span>
+                    </div>
+                    <div class="vis-app__macro-track"><div class="vis-app__macro-fill vis-app__macro-fill--protein"></div></div>
+                  </div>
+                  <div class="vis-app__macro">
+                    <div class="vis-app__macro-top">
+                      <span class="vis-app__macro-name">Carbs</span>
+                      <span class="vis-app__macro-val">186g</span>
+                    </div>
+                    <div class="vis-app__macro-track"><div class="vis-app__macro-fill vis-app__macro-fill--carbs"></div></div>
+                  </div>
+                  <div class="vis-app__macro">
+                    <div class="vis-app__macro-top">
+                      <span class="vis-app__macro-name">Fat</span>
+                      <span class="vis-app__macro-val">61g</span>
+                    </div>
+                    <div class="vis-app__macro-track"><div class="vis-app__macro-fill vis-app__macro-fill--fat"></div></div>
+                  </div>
+                </div>
+                <div class="vis-app__divider"></div>
+                <div class="vis-app__meals">
+                  <div class="vis-app__meals-header">
+                    <span class="vis-app__meals-title">Meals</span>
+                    <span class="vis-app__meals-count">3 logged</span>
+                  </div>
+                  <div class="vis-app__meal">
+                    <div class="vis-app__meal-icon vis-app__meal-icon--breakfast"></div>
+                    <div class="vis-app__meal-info">
+                      <span class="vis-app__meal-name">Breakfast</span>
+                      <span class="vis-app__meal-desc">Eggs, toast, avocado</span>
+                    </div>
+                    <span class="vis-app__meal-kcal">520</span>
+                  </div>
+                  <div class="vis-app__meal">
+                    <div class="vis-app__meal-icon vis-app__meal-icon--lunch"></div>
+                    <div class="vis-app__meal-info">
+                      <span class="vis-app__meal-name">Lunch</span>
+                      <span class="vis-app__meal-desc">Chicken bowl, rice</span>
+                    </div>
+                    <span class="vis-app__meal-kcal">785</span>
+                  </div>
+                  <div class="vis-app__meal vis-app__meal--active">
+                    <div class="vis-app__meal-icon vis-app__meal-icon--snack"></div>
+                    <div class="vis-app__meal-info">
+                      <span class="vis-app__meal-name">Snack</span>
+                      <span class="vis-app__meal-desc">Protein shake</span>
+                    </div>
+                    <span class="vis-app__meal-kcal">542</span>
+                  </div>
+                </div>
+              </div>
+              <div class="vis-app__home-bar"></div>
+            </div>
           </div>
-          <div class="build-browser__stat">
-            <span class="build-browser__stat-val build-browser__stat-val--green">100</span>
-            <span class="build-browser__stat-label">Accessibility</span>
+        </div>
+
+        <!-- 2: software — CI/CD Pipeline -->
+        <div class="build-vis" data-vis="software">
+          <div class="vis-sw__bar">
+            <span class="vis-wdot" style="background:#ff5f57;"></span>
+            <span class="vis-wdot" style="background:#febc2e;"></span>
+            <span class="vis-wdot" style="background:#28c840;"></span>
+            <span class="vis-sw__title">CI / CD</span>
+            <span class="vis-sw__badge">&#9679; main</span>
           </div>
-          <div class="build-browser__stat">
-            <span class="build-browser__stat-val build-browser__stat-val--green">100</span>
-            <span class="build-browser__stat-label">SEO</span>
+          <div class="vis-sw__body">
+            <div class="vis-sw__pipeline">
+              <div class="vis-sw__stage vis-sw__stage--pass">
+                <div class="vis-sw__stage-icon">&#10004;</div>
+                <div class="vis-sw__stage-label">Build</div>
+                <div class="vis-sw__stage-time">23s</div>
+              </div>
+              <div class="vis-sw__connector vis-sw__connector--pass"></div>
+              <div class="vis-sw__stage vis-sw__stage--pass">
+                <div class="vis-sw__stage-icon">&#10004;</div>
+                <div class="vis-sw__stage-label">Test</div>
+                <div class="vis-sw__stage-time">1m 47s</div>
+              </div>
+              <div class="vis-sw__connector vis-sw__connector--pass"></div>
+              <div class="vis-sw__stage vis-sw__stage--pass">
+                <div class="vis-sw__stage-icon">&#10004;</div>
+                <div class="vis-sw__stage-label">Lint</div>
+                <div class="vis-sw__stage-time">12s</div>
+              </div>
+              <div class="vis-sw__connector vis-sw__connector--active"></div>
+              <div class="vis-sw__stage vis-sw__stage--active">
+                <div class="vis-sw__stage-icon vis-sw__spinner"></div>
+                <div class="vis-sw__stage-label">Deploy</div>
+                <div class="vis-sw__stage-time">...</div>
+              </div>
+            </div>
+            <div class="vis-sw__cols">
+              <div class="vis-sw__panel">
+                <div class="vis-sw__panel-head">Test Suites</div>
+                <div class="vis-sw__suite">
+                  <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span>
+                  <span class="vis-sw__suite-name">auth.test.ts</span>
+                  <span class="vis-sw__suite-count">24 passed</span>
+                </div>
+                <div class="vis-sw__suite">
+                  <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span>
+                  <span class="vis-sw__suite-name">api.test.ts</span>
+                  <span class="vis-sw__suite-count">61 passed</span>
+                </div>
+                <div class="vis-sw__suite">
+                  <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span>
+                  <span class="vis-sw__suite-name">db.test.ts</span>
+                  <span class="vis-sw__suite-count">38 passed</span>
+                </div>
+                <div class="vis-sw__suite">
+                  <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span>
+                  <span class="vis-sw__suite-name">utils.test.ts</span>
+                  <span class="vis-sw__suite-count">24 passed</span>
+                </div>
+                <div class="vis-sw__totals">
+                  <span class="vis-sw__totals-pass">147 passed</span>
+                  <span class="vis-sw__totals-sep">&middot;</span>
+                  <span class="vis-sw__totals-fail">0 failed</span>
+                </div>
+              </div>
+              <div class="vis-sw__panel">
+                <div class="vis-sw__panel-head">Commits</div>
+                <div class="vis-sw__commits">
+                  <div class="vis-sw__commit">
+                    <div class="vis-sw__commit-dot"></div>
+                    <div class="vis-sw__commit-line"></div>
+                    <div class="vis-sw__commit-info">
+                      <span class="vis-sw__commit-msg">feat: add rate limiting</span>
+                      <span class="vis-sw__commit-meta">a3f2c91 &middot; 4m ago</span>
+                    </div>
+                  </div>
+                  <div class="vis-sw__commit">
+                    <div class="vis-sw__commit-dot"></div>
+                    <div class="vis-sw__commit-line"></div>
+                    <div class="vis-sw__commit-info">
+                      <span class="vis-sw__commit-msg">fix: token refresh race</span>
+                      <span class="vis-sw__commit-meta">e7b1d04 &middot; 22m ago</span>
+                    </div>
+                  </div>
+                  <div class="vis-sw__commit">
+                    <div class="vis-sw__commit-dot"></div>
+                    <div class="vis-sw__commit-line"></div>
+                    <div class="vis-sw__commit-info">
+                      <span class="vis-sw__commit-msg">refactor: extract middleware</span>
+                      <span class="vis-sw__commit-meta">1c8e3fa &middot; 1h ago</span>
+                    </div>
+                  </div>
+                  <div class="vis-sw__commit">
+                    <div class="vis-sw__commit-dot vis-sw__commit-dot--merge"></div>
+                    <div class="vis-sw__commit-info">
+                      <span class="vis-sw__commit-msg">merge: feature/auth</span>
+                      <span class="vis-sw__commit-meta">9d4a2b7 &middot; 3h ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="build-browser__stat">
-            <span class="build-browser__stat-val">0.4s</span>
-            <span class="build-browser__stat-label">Load</span>
+        </div>
+
+        <!-- 3: assistant — Real Chat -->
+        <div class="build-vis" data-vis="assistant">
+          <div class="vis-chat2__bar">
+            <div class="vis-chat2__avatar"></div>
+            <span class="vis-chat2__name">Claude</span>
+            <span class="vis-chat2__online">&#9679;</span>
+          </div>
+          <div class="vis-chat2__body">
+            <div class="vis-chat2__msg vis-chat2__msg--user">Build me a dashboard</div>
+            <div class="vis-chat2__msg vis-chat2__msg--ai">I'll set up React with D3 for the charts. Adding real-time data via WebSocket and a responsive grid layout.</div>
+            <div class="vis-chat2__msg vis-chat2__msg--user">Add dark mode too</div>
+            <div class="vis-chat2__msg vis-chat2__msg--ai"><span class="vis-chat2__typing"><span></span><span></span><span></span></span></div>
+          </div>
+          <div class="vis-chat2__input">
+            <div class="vis-chat2__field"></div>
+            <div class="vis-chat2__send">&#8593;</div>
+          </div>
+        </div>
+
+        <!-- 4: AI — Model Inference -->
+        <div class="build-vis" data-vis="AI">
+          <div class="vis-ai2__bar">
+            <span class="vis-wdot" style="background:#ff5f57;"></span>
+            <span class="vis-wdot" style="background:#febc2e;"></span>
+            <span class="vis-wdot" style="background:#28c840;"></span>
+            <span class="vis-ai2__method">POST</span>
+            <span class="vis-ai2__endpoint">/v1/chat/completions</span>
+            <span class="vis-ai2__status">200</span>
+            <span class="vis-ai2__stream-badge">stream</span>
+          </div>
+          <div class="vis-ai2__body">
+            <div class="vis-ai2__section">
+              <span class="vis-ai2__section-label">request</span>
+              <pre class="vis-ai2__code">&#123;
+  <span class="vis-ai2__k">"model"</span>: <span class="vis-ai2__s">"claude-sonnet-4-20250514"</span>,
+  <span class="vis-ai2__k">"max_tokens"</span>: <span class="vis-ai2__n">1024</span>,
+  <span class="vis-ai2__k">"messages"</span>: [&#123;
+    <span class="vis-ai2__k">"role"</span>: <span class="vis-ai2__s">"user"</span>,
+    <span class="vis-ai2__k">"content"</span>: <span class="vis-ai2__s">"Analyze this dataset"</span>
+  &#125;]
+&#125;</pre>
+            </div>
+            <div class="vis-ai2__section vis-ai2__section--response">
+              <span class="vis-ai2__section-label">response <span class="vis-ai2__live-dot"></span></span>
+              <div class="vis-ai2__stream">
+                <span class="vis-ai2__token vis-ai2__token--1">I'll</span><span class="vis-ai2__token vis-ai2__token--2"> start</span><span class="vis-ai2__token vis-ai2__token--3"> by</span><span class="vis-ai2__token vis-ai2__token--4"> loading</span><span class="vis-ai2__token vis-ai2__token--5"> the</span><span class="vis-ai2__token vis-ai2__token--6"> CSV</span><span class="vis-ai2__token vis-ai2__token--7"> and</span><span class="vis-ai2__token vis-ai2__token--8"> checking</span><span class="vis-ai2__token vis-ai2__token--9"> for</span><span class="vis-ai2__token vis-ai2__token--10"> null</span><span class="vis-ai2__token vis-ai2__token--11"> values</span><span class="vis-ai2__token vis-ai2__token--12"> across</span><span class="vis-ai2__token vis-ai2__token--13"> all</span><span class="vis-ai2__token vis-ai2__token--14"> columns,</span><span class="vis-ai2__token vis-ai2__token--15"> then</span><span class="vis-ai2__token vis-ai2__token--16"> compute</span><span class="vis-ai2__token vis-ai2__token--17"> summary</span><span class="vis-ai2__token vis-ai2__token--18"> statistics</span><span class="vis-ai2__cursor"></span>
+              </div>
+            </div>
+          </div>
+          <div class="vis-ai2__footer">
+            <div class="vis-ai2__metric">
+              <span class="vis-ai2__metric-label">input</span>
+              <span class="vis-ai2__metric-value">24 tok</span>
+            </div>
+            <div class="vis-ai2__metric">
+              <span class="vis-ai2__metric-label">output</span>
+              <span class="vis-ai2__metric-value vis-ai2__metric-value--green">38 tok</span>
+            </div>
+            <div class="vis-ai2__metric">
+              <span class="vis-ai2__metric-label">latency</span>
+              <span class="vis-ai2__metric-value">TTFT 0.3s</span>
+            </div>
+            <div class="vis-ai2__metric">
+              <span class="vis-ai2__metric-label">tokens/s</span>
+              <span class="vis-ai2__metric-value vis-ai2__metric-value--green">82</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5: tool — Real Terminal -->
+        <div class="build-vis" data-vis="tool">
+          <div class="vis-term2__bar">
+            <span class="vis-wdot" style="background:#ff5f57;"></span>
+            <span class="vis-wdot" style="background:#febc2e;"></span>
+            <span class="vis-wdot" style="background:#28c840;"></span>
+            <span class="vis-term2__title">~/projects</span>
+          </div>
+          <div class="vis-term2__body">
+            <div class="vis-term2__line"><span class="vis-term2__p">$</span> npm create astro@latest</div>
+            <div class="vis-term2__line vis-term2__out">&nbsp; &#9724; tmpl &nbsp; Using: blog</div>
+            <div class="vis-term2__line vis-term2__out">&nbsp; &#9724; deps &nbsp; Installing...</div>
+            <div class="vis-term2__line vis-term2__out">&nbsp; <span class="vis-term2__g">&#10004;</span> Done</div>
+            <div class="vis-term2__line"><span class="vis-term2__p">$</span> npm run build</div>
+            <div class="vis-term2__line vis-term2__out">&nbsp; <span class="vis-term2__dim">building (SSG)...</span></div>
+            <div class="vis-term2__line vis-term2__out">&nbsp; <span class="vis-term2__g">&#10004;</span> <span class="vis-term2__w">14 pages built in 1.86s</span></div>
+            <div class="vis-term2__line"><span class="vis-term2__p">$</span> <span class="vis-term2__cursor">&#9611;</span></div>
+          </div>
+        </div>
+
+        <!-- 6: program — Real Syntax-Highlighted Code -->
+        <div class="build-vis" data-vis="program">
+          <div class="vis-code2__bar">
+            <span class="vis-wdot" style="background:#ff5f57;"></span>
+            <span class="vis-wdot" style="background:#febc2e;"></span>
+            <span class="vis-wdot" style="background:#28c840;"></span>
+            <span class="vis-code2__tab">agent.py</span>
+          </div>
+          <pre class="vis-code2__body"><span class="vis-code2__ln"> 1</span>  <span class="vis-code2__kw">import</span> anthropic
+<span class="vis-code2__ln"> 2</span>
+<span class="vis-code2__ln"> 3</span>  <span class="vis-code2__kw">async def</span> <span class="vis-code2__fn">run</span>(prompt: <span class="vis-code2__tp">str</span>) -> <span class="vis-code2__tp">str</span>:
+<span class="vis-code2__ln"> 4</span>      client = anthropic.Anthropic()
+<span class="vis-code2__ln"> 5</span>      msg = client.messages.create(
+<span class="vis-code2__ln"> 6</span>          model=<span class="vis-code2__str">"claude-sonnet-4-20250514"</span>,
+<span class="vis-code2__ln"> 7</span>          max_tokens=<span class="vis-code2__num">1024</span>,
+<span class="vis-code2__ln"> 8</span>          messages=[&#123;
+<span class="vis-code2__ln"> 9</span>              <span class="vis-code2__str">"role"</span>: <span class="vis-code2__str">"user"</span>,
+<span class="vis-code2__ln">10</span>              <span class="vis-code2__str">"content"</span>: prompt
+<span class="vis-code2__ln">11</span>          &#125;]
+<span class="vis-code2__ln">12</span>      )
+<span class="vis-code2__ln">13</span>      <span class="vis-code2__kw">return</span> msg.content[<span class="vis-code2__num">0</span>].text</pre>
+        </div>
+
+        <!-- 7: system — Layered Architecture -->
+        <div class="build-vis" data-vis="system">
+          <svg class="vis-sys2__svg" viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="sys2-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M0,0 L6,3 L0,6 Z" fill="rgba(255,255,255,0.15)"/>
+              </marker>
+              <marker id="sys2-arrow-g" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M0,0 L6,3 L0,6 Z" fill="rgba(52,199,89,0.3)"/>
+              </marker>
+            </defs>
+            <text x="12" y="36" class="vis-sys2__layer-label">EDGE</text>
+            <text x="12" y="108" class="vis-sys2__layer-label">GATEWAY</text>
+            <text x="12" y="186" class="vis-sys2__layer-label">SERVICES</text>
+            <text x="12" y="258" class="vis-sys2__layer-label">DATA</text>
+            <line x1="50" y1="62" x2="340" y2="62" class="vis-sys2__separator"/>
+            <line x1="50" y1="138" x2="340" y2="138" class="vis-sys2__separator"/>
+            <line x1="50" y1="218" x2="340" y2="218" class="vis-sys2__separator"/>
+            <path d="M180,48 L180,88" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"/>
+            <path d="M152,118 L112,158" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"/>
+            <path d="M195,118 L195,158" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"/>
+            <path d="M218,118 L272,158" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"/>
+            <path d="M98,192 L118,232" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"/>
+            <path d="M180,192 L145,232" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"/>
+            <path d="M210,192 L260,232" class="vis-sys2__conn-g" marker-end="url(#sys2-arrow-g)"/>
+            <path d="M278,192 L278,232" class="vis-sys2__conn-g" marker-end="url(#sys2-arrow-g)"/>
+            <circle r="2.5" class="vis-sys2__packet"><animateMotion dur="2s" repeatCount="indefinite" path="M180,48 L180,88"/></circle>
+            <circle r="2.5" class="vis-sys2__packet vis-sys2__packet--g"><animateMotion dur="1.8s" repeatCount="indefinite" path="M195,118 L195,158"/></circle>
+            <circle r="2" class="vis-sys2__packet"><animateMotion dur="2.4s" repeatCount="indefinite" path="M152,118 L112,158"/></circle>
+            <circle r="2" class="vis-sys2__packet"><animateMotion dur="2.6s" repeatCount="indefinite" begin="0.5s" path="M218,118 L272,158"/></circle>
+            <circle r="2" class="vis-sys2__packet vis-sys2__packet--g"><animateMotion dur="2.2s" repeatCount="indefinite" begin="0.8s" path="M180,192 L145,232"/></circle>
+            <circle r="2" class="vis-sys2__packet vis-sys2__packet--amber"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.3s" path="M210,192 L260,232"/></circle>
+            <rect x="130" y="22" width="100" height="26" rx="4" class="vis-sys2__node"/>
+            <circle cx="141" cy="35" r="3" class="vis-sys2__status vis-sys2__status--on"/>
+            <text x="150" y="39" class="vis-sys2__node-label">client:443</text>
+            <rect x="208" y="28" width="16" height="12" rx="2" class="vis-sys2__badge"/>
+            <text x="216" y="37" class="vis-sys2__badge-text">TLS</text>
+            <rect x="130" y="88" width="110" height="30" rx="4" class="vis-sys2__node vis-sys2__node--primary"/>
+            <circle cx="141" cy="103" r="3" class="vis-sys2__status vis-sys2__status--on"/>
+            <text x="150" y="107" class="vis-sys2__node-label vis-sys2__node-label--primary">nginx:80</text>
+            <text x="224" y="107" class="vis-sys2__node-meta">LB</text>
+            <rect x="60" y="158" width="90" height="34" rx="4" class="vis-sys2__node"/>
+            <circle cx="71" cy="171" r="3" class="vis-sys2__status vis-sys2__status--on"/>
+            <text x="80" y="175" class="vis-sys2__node-label">node:3000</text>
+            <text x="80" y="186" class="vis-sys2__node-sub">auth</text>
+            <rect x="155" y="158" width="90" height="34" rx="4" class="vis-sys2__node"/>
+            <circle cx="166" cy="171" r="3" class="vis-sys2__status vis-sys2__status--on"/>
+            <text x="175" y="175" class="vis-sys2__node-label">node:3001</text>
+            <text x="175" y="186" class="vis-sys2__node-sub">api</text>
+            <rect x="250" y="158" width="90" height="34" rx="4" class="vis-sys2__node"/>
+            <circle cx="261" cy="171" r="3" class="vis-sys2__status vis-sys2__status--on"/>
+            <text x="270" y="175" class="vis-sys2__node-label">node:3002</text>
+            <text x="270" y="186" class="vis-sys2__node-sub">workers</text>
+            <rect x="80" y="232" width="100" height="30" rx="4" class="vis-sys2__node vis-sys2__node--data"/>
+            <ellipse cx="94" cy="243" rx="5" ry="3" class="vis-sys2__icon-db"/>
+            <line x1="89" y1="243" x2="89" y2="250" class="vis-sys2__icon-db-line"/>
+            <line x1="99" y1="243" x2="99" y2="250" class="vis-sys2__icon-db-line"/>
+            <ellipse cx="94" cy="250" rx="5" ry="3" class="vis-sys2__icon-db"/>
+            <text x="108" y="251" class="vis-sys2__node-label">postgres:5432</text>
+            <rect x="225" y="232" width="100" height="30" rx="4" class="vis-sys2__node vis-sys2__node--cache"/>
+            <circle cx="239" cy="247" r="4" class="vis-sys2__icon-cache"/>
+            <text x="250" y="251" class="vis-sys2__node-label">redis:6379</text>
+            <text x="340" y="273" class="vis-sys2__meta" text-anchor="end">2.4k req/s</text>
+            <circle cx="306" cy="270" r="2.5" class="vis-sys2__meta-dot"/>
+          </svg>
+        </div>
+
+        <!-- 8: agent — Live Dashboard -->
+        <div class="build-vis" data-vis="agent">
+          <div class="vis-agt__bar">
+            <span class="vis-wdot" style="background:#ff5f57;"></span>
+            <span class="vis-wdot" style="background:#febc2e;"></span>
+            <span class="vis-wdot" style="background:#28c840;"></span>
+            <span class="vis-agt__live">&#9679; Active</span>
+          </div>
+          <div class="vis-agt__body">
+            <div class="vis-agt__tasks">
+              <div class="vis-agt__task">
+                <span class="vis-agt__tdot" style="background:rgba(52,199,89,0.7)"></span>
+                <span class="vis-agt__tname">Scrape listings</span>
+                <div class="vis-agt__prog"><div class="vis-agt__fill" style="width:100%"></div></div>
+              </div>
+              <div class="vis-agt__task">
+                <span class="vis-agt__tdot" style="background:rgba(254,188,46,0.7)"></span>
+                <span class="vis-agt__tname">Score deals</span>
+                <div class="vis-agt__prog"><div class="vis-agt__fill vis-agt__fill--shimmer" style="width:67%"></div></div>
+              </div>
+              <div class="vis-agt__task">
+                <span class="vis-agt__tdot" style="background:rgba(255,255,255,0.15)"></span>
+                <span class="vis-agt__tname">Send alerts</span>
+                <div class="vis-agt__prog"><div class="vis-agt__fill" style="width:0%"></div></div>
+              </div>
+            </div>
+            <div class="vis-agt__log">
+              <div class="vis-agt__ll">[14:02:31] Fetched 47 new listings</div>
+              <div class="vis-agt__ll vis-agt__ll--g">[14:02:33] Match: 2019 Tacoma &mdash; $28,400</div>
+              <div class="vis-agt__ll">[14:02:34] Scoring batch 2/3...</div>
+              <div class="vis-agt__ll">[14:02:35] <span class="vis-agt__blink">_</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9: API — Real JSON Response -->
+        <div class="build-vis" data-vis="API">
+          <div class="vis-api2__bar">
+            <span class="vis-wdot" style="background:#ff5f57;"></span>
+            <span class="vis-wdot" style="background:#febc2e;"></span>
+            <span class="vis-wdot" style="background:#28c840;"></span>
+          </div>
+          <div class="vis-api2__body">
+            <div class="vis-api2__req">
+              <span class="vis-api2__method">GET</span>
+              <span class="vis-api2__endpoint">/api/v1/projects</span>
+              <span class="vis-api2__badge">200</span>
+              <span class="vis-api2__ms">23ms</span>
+            </div>
+            <pre class="vis-api2__json">&#123;
+  <span class="vis-api2__k">"data"</span>: [
+    &#123;
+      <span class="vis-api2__k">"id"</span>: <span class="vis-api2__n">1</span>,
+      <span class="vis-api2__k">"name"</span>: <span class="vis-api2__s">"fuel-ios"</span>,
+      <span class="vis-api2__k">"status"</span>: <span class="vis-api2__s">"live"</span>,
+      <span class="vis-api2__k">"stars"</span>: <span class="vis-api2__n">128</span>
+    &#125;
+  ],
+  <span class="vis-api2__k">"total"</span>: <span class="vis-api2__n">6</span>,
+  <span class="vis-api2__k">"cached"</span>: <span class="vis-api2__b">true</span>
+&#125;</pre>
           </div>
         </div>
       </div>
 
       <!-- Text: right side -->
       <div class="build-section__text">
-        <h2 class="display display--2" style="margin-bottom: 1.5rem;">I'll build<br/>your site</h2>
+        <h2 class="display display--2" style="margin-bottom: 1.5rem;">I'll build<br/>your <span class="build-word" id="build-word">site</span></h2>
         <p class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2); margin-bottom: 2rem;">
-          I design and develop fast, custom websites — no templates, no WordPress, no bloat. Hand-coded with modern tools, deployed in days not months. If you want something that actually looks good and loads instantly, let's talk.
+          I design and develop fast, custom software — no templates, no bloat. Hand-coded with modern tools, deployed in days not months. If you want something that works and ships fast, let's talk.
         </p>
         <div class="build-section__features">
           <div class="build-section__feature">
             <span class="build-section__feature-num">01</span>
             <div>
-              <span class="build-section__feature-title">Design + Dev</span>
-              <span class="build-section__feature-desc">Full custom design and development. No templates.</span>
+              <span class="build-section__feature-title">Custom Built</span>
+              <span class="build-section__feature-desc">No templates. No boilerplate. Built to spec from scratch.</span>
             </div>
           </div>
           <div class="build-section__feature">
@@ -593,8 +1053,8 @@ const galleryPhotos = [
           <div class="build-section__feature">
             <span class="build-section__feature-num">03</span>
             <div>
-              <span class="build-section__feature-title">Modern Stack</span>
-              <span class="build-section__feature-desc">Astro, React, Tailwind — whatever fits the project.</span>
+              <span class="build-section__feature-title">Right Tool, Right Job</span>
+              <span class="build-section__feature-desc">Swift, Python, React, Astro — whatever fits the project.</span>
             </div>
           </div>
         </div>
@@ -763,6 +1223,22 @@ const galleryPhotos = [
           next();
         }
       });
+    })();
+
+    // ═══════════ BUILD WORD + VISUAL CYCLE ═══════════
+    (function() {
+      const wordEl = document.getElementById('build-word');
+      const visuals = document.querySelectorAll('.build-vis');
+      if (!wordEl || !visuals.length) return;
+      const words = ['site', 'app', 'software', 'assistant', 'AI', 'tool', 'program', 'system', 'agent', 'API'];
+      let current = 0;
+
+      setInterval(() => {
+        visuals[current].classList.remove('build-vis--active');
+        current = (current + 1) % words.length;
+        wordEl.textContent = words[current];
+        visuals[current].classList.add('build-vis--active');
+      }, 1500);
     })();
 
     // ═══════════ COPY EMAIL ═══════════
