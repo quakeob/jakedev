@@ -6,8 +6,8 @@ import path from 'node:path';
 const projects = [
   {
     title: 'Fuel',
-    desc: 'Calorie tracker with NLP food input, macro tracking, and barcode scanning. Built as a PWA, heading to the App Store.',
-    tags: ['JavaScript', 'PWA', 'NLP'],
+    desc: 'Native iOS calorie tracker with AI food parsing, barcode scanning, HealthKit sync, and Apple Watch companion.',
+    tags: ['Swift', 'SwiftUI', 'HealthKit', 'AI'],
     link: '/projects/fuel',
     status: 'Live',
   },
@@ -225,6 +225,57 @@ const galleryPhotos = [
                   <div class="project-expand__feature">
                     <span class="project-expand__feature-label">Sizes</span>
                     <span class="project-expand__feature-value">Small + Medium widget families</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {project.title === 'Fuel' && (
+            <div class="project-expand">
+              <div class="project-expand__showcase">
+                <div class="fuel-mini">
+                  <div class="fuel-mini__ring-wrap">
+                    <svg class="fuel-mini__ring" viewBox="0 0 80 80">
+                      <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                      <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(77,204,102,0.8)" stroke-width="8"
+                        stroke-dasharray="201" stroke-dashoffset="79" stroke-linecap="round"
+                        transform="rotate(-90 40 40)" class="fuel-mini__ring-fill"/>
+                    </svg>
+                    <div class="fuel-mini__ring-inner">
+                      <div class="fuel-mini__ring-cal">784</div>
+                      <div class="fuel-mini__ring-label">left</div>
+                    </div>
+                  </div>
+                  <div class="fuel-mini__macros">
+                    <div class="fuel-mini__macro">
+                      <div class="fuel-mini__macro-bar"><div class="fuel-mini__macro-fill" style="width:57%;background:rgba(64,204,255,0.65);"></div></div>
+                      <span class="fuel-mini__macro-label" style="color:rgba(64,204,255,0.75);">P 86g</span>
+                    </div>
+                    <div class="fuel-mini__macro">
+                      <div class="fuel-mini__macro-bar"><div class="fuel-mini__macro-fill" style="width:54%;background:rgba(255,140,51,0.65);"></div></div>
+                      <span class="fuel-mini__macro-label" style="color:rgba(255,140,51,0.75);">C 134g</span>
+                    </div>
+                    <div class="fuel-mini__macro">
+                      <div class="fuel-mini__macro-bar"><div class="fuel-mini__macro-fill" style="width:60%;background:rgba(153,89,230,0.65);"></div></div>
+                      <span class="fuel-mini__macro-label" style="color:rgba(153,89,230,0.75);">F 42g</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-expand__details">
+                <p class="project-expand__text">Type what you ate in plain English — AI parses it into calories, protein, carbs, and fat with confidence scores. Barcode scanning for packaged foods. HealthKit sync, Apple Watch companion, and home screen widget.</p>
+                <div class="project-expand__features">
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Stack</span>
+                    <span class="project-expand__feature-value">Swift · SwiftUI · SwiftData</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Input</span>
+                    <span class="project-expand__feature-value">AI parse · Barcode · Manual</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Sync</span>
+                    <span class="project-expand__feature-value">HealthKit · Watch · Widget</span>
                   </div>
                 </div>
               </div>

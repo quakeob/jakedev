@@ -1104,6 +1104,86 @@ img {
   font-weight: 600;
 }
 
+/* Fuel mini widget */
+.fuel-mini {
+  width: 220px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: rgba(40, 40, 44, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.fuel-mini__ring-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.fuel-mini__ring { width: 100%; height: 100%; }
+
+.fuel-mini__ring-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.fuel-mini__ring-cal {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.fuel-mini__ring-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 2px;
+}
+
+.fuel-mini__macros {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.fuel-mini__macro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fuel-mini__macro-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.fuel-mini__macro-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.fuel-mini__macro-label {
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 36px;
+  text-align: right;
+}
+
 @media (max-width: 768px) {
   .project-expand {
     grid-template-columns: 1fr;
@@ -1632,7 +1712,7 @@ img {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
-  margin: 6px 0;
+  margin: 2px 0 6px;
 }
 
 .fuel-drop {
