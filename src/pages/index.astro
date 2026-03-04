@@ -36,7 +36,6 @@ const projects = [
     title: 'Neural Networks',
     desc: 'Custom neural network library — backpropagation, activation functions, convolutional layers — no frameworks.',
     tags: ['Python', 'NumPy', 'ML'],
-    link: '/projects/neural-networks',
     status: 'In Progress',
   },
   {
@@ -144,7 +143,7 @@ const galleryPhotos = [
     </div>
     <div class="project-list">
       {projects.map((project, i) => (
-        <a href={project.link} class={`project-card js-in ${(project.title === 'Token Tracker' || project.title === 'Fuel') ? 'has-preview' : ''}`} style={`animation-delay: ${i * 0.05}s`}>
+        <a href={project.link} class={`project-card js-in has-preview`} style={`animation-delay: ${i * 0.05}s; ${!project.link ? 'cursor: default;' : ''}`}>
           <div class="project-card__index lead">
             {String(i + 1).padStart(2, '0')}
           </div>
@@ -276,6 +275,225 @@ const galleryPhotos = [
                   <div class="project-expand__feature">
                     <span class="project-expand__feature-label">Sync</span>
                     <span class="project-expand__feature-value">HealthKit · Watch · Widget</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {project.title === 'Yerb' && (
+            <div class="project-expand">
+              <div class="project-expand__showcase">
+                <div class="yerb-mini">
+                  <div class="yerb-mini__bar">
+                    <span class="yerb-mini__dot" style="background:#ff5f57;"></span>
+                    <span class="yerb-mini__dot" style="background:#febc2e;"></span>
+                    <span class="yerb-mini__dot" style="background:#28c840;"></span>
+                    <span class="yerb-mini__title">yerb</span>
+                  </div>
+                  <div class="yerb-mini__body">
+                    <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>scheduler</div>
+                    <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>market</div>
+                    <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>scraper</div>
+                    <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>builder</div>
+                    <div class="yerb-mini__uptime">847h uptime · 4 agents</div>
+                    <div class="yerb-mini__prompt">> <span class="yerb-mini__cursor"></span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="project-expand__details">
+                <p class="project-expand__text">24/7 autonomous AI assistant on a Mac Mini. Manages calendar, automates coursework, runs overnight builds, hunts vehicle deals, and drafts content — all without being asked.</p>
+                <div class="project-expand__features">
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Runtime</span>
+                    <span class="project-expand__feature-value">OpenClaw · Claude · Python</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Agents</span>
+                    <span class="project-expand__feature-value">Scheduler · Market · Scraper · Builder</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Infra</span>
+                    <span class="project-expand__feature-value">Mac Mini · Always-on · launchd</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {project.title === 'Marketplace Scraper' && (
+            <div class="project-expand">
+              <div class="project-expand__showcase">
+                <div class="scraper-mini">
+                  <div class="scraper-mini__header">
+                    <span class="scraper-mini__alert">DEAL ALERT</span>
+                    <span class="scraper-mini__score">87</span>
+                  </div>
+                  <div class="scraper-mini__vehicle">2016 4Runner SR5</div>
+                  <div class="scraper-mini__price">$24,500</div>
+                  <div class="scraper-mini__details">82k mi · 4WD · Clean title</div>
+                  <div class="scraper-mini__factors">
+                    <div class="scraper-mini__factor">
+                      <span class="scraper-mini__factor-label">Price</span>
+                      <div class="scraper-mini__factor-bar"><div class="scraper-mini__factor-fill" style="width:78%;"></div></div>
+                    </div>
+                    <div class="scraper-mini__factor">
+                      <span class="scraper-mini__factor-label">Miles</span>
+                      <div class="scraper-mini__factor-bar"><div class="scraper-mini__factor-fill" style="width:85%;"></div></div>
+                    </div>
+                    <div class="scraper-mini__factor">
+                      <span class="scraper-mini__factor-label">Year</span>
+                      <div class="scraper-mini__factor-bar"><div class="scraper-mini__factor-fill" style="width:72%;"></div></div>
+                    </div>
+                  </div>
+                  <div class="scraper-mini__via">via Telegram</div>
+                </div>
+              </div>
+              <div class="project-expand__details">
+                <p class="project-expand__text">Automated Craigslist scraper that finds Toyota Tacoma and 4Runner deals. Scores listings by price, mileage, year, and condition — sends high-scoring matches straight to Telegram.</p>
+                <div class="project-expand__features">
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Stack</span>
+                    <span class="project-expand__feature-value">Python · BeautifulSoup · SQLite</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Alerts</span>
+                    <span class="project-expand__feature-value">Telegram Bot API · Instant push</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Schedule</span>
+                    <span class="project-expand__feature-value">Cron · Integrated into Yerb</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {project.title === 'Neural Networks' && (
+            <div class="project-expand">
+              <div class="project-expand__showcase">
+                <div class="nn-mini">
+                  <div class="nn-mini__label">forward pass</div>
+                  <svg class="nn-mini__svg" viewBox="0 0 200 140">
+                    <!-- Connections layer 1→2 -->
+                    <line x1="30" y1="28" x2="80" y2="20" class="nn-mini__conn"/>
+                    <line x1="30" y1="28" x2="80" y2="47" class="nn-mini__conn"/>
+                    <line x1="30" y1="28" x2="80" y2="74" class="nn-mini__conn"/>
+                    <line x1="30" y1="28" x2="80" y2="101" class="nn-mini__conn"/>
+                    <line x1="30" y1="55" x2="80" y2="20" class="nn-mini__conn"/>
+                    <line x1="30" y1="55" x2="80" y2="47" class="nn-mini__conn"/>
+                    <line x1="30" y1="55" x2="80" y2="74" class="nn-mini__conn"/>
+                    <line x1="30" y1="55" x2="80" y2="101" class="nn-mini__conn"/>
+                    <line x1="30" y1="82" x2="80" y2="20" class="nn-mini__conn"/>
+                    <line x1="30" y1="82" x2="80" y2="47" class="nn-mini__conn"/>
+                    <line x1="30" y1="82" x2="80" y2="74" class="nn-mini__conn"/>
+                    <line x1="30" y1="82" x2="80" y2="101" class="nn-mini__conn"/>
+                    <line x1="30" y1="109" x2="80" y2="20" class="nn-mini__conn"/>
+                    <line x1="30" y1="109" x2="80" y2="47" class="nn-mini__conn"/>
+                    <line x1="30" y1="109" x2="80" y2="74" class="nn-mini__conn"/>
+                    <line x1="30" y1="109" x2="80" y2="101" class="nn-mini__conn"/>
+                    <!-- Connections layer 2→3 -->
+                    <line x1="80" y1="20" x2="130" y2="35" class="nn-mini__conn"/>
+                    <line x1="80" y1="20" x2="130" y2="70" class="nn-mini__conn"/>
+                    <line x1="80" y1="20" x2="130" y2="105" class="nn-mini__conn"/>
+                    <line x1="80" y1="47" x2="130" y2="35" class="nn-mini__conn"/>
+                    <line x1="80" y1="47" x2="130" y2="70" class="nn-mini__conn"/>
+                    <line x1="80" y1="47" x2="130" y2="105" class="nn-mini__conn"/>
+                    <line x1="80" y1="74" x2="130" y2="35" class="nn-mini__conn"/>
+                    <line x1="80" y1="74" x2="130" y2="70" class="nn-mini__conn"/>
+                    <line x1="80" y1="74" x2="130" y2="105" class="nn-mini__conn"/>
+                    <line x1="80" y1="101" x2="130" y2="35" class="nn-mini__conn"/>
+                    <line x1="80" y1="101" x2="130" y2="70" class="nn-mini__conn"/>
+                    <line x1="80" y1="101" x2="130" y2="105" class="nn-mini__conn"/>
+                    <!-- Connections layer 3→4 -->
+                    <line x1="130" y1="35" x2="175" y2="55" class="nn-mini__conn"/>
+                    <line x1="130" y1="35" x2="175" y2="85" class="nn-mini__conn"/>
+                    <line x1="130" y1="70" x2="175" y2="55" class="nn-mini__conn"/>
+                    <line x1="130" y1="70" x2="175" y2="85" class="nn-mini__conn"/>
+                    <line x1="130" y1="105" x2="175" y2="55" class="nn-mini__conn"/>
+                    <line x1="130" y1="105" x2="175" y2="85" class="nn-mini__conn"/>
+                    <!-- Layer 1 nodes (input) -->
+                    <circle cx="30" cy="28" r="7" class="nn-mini__node nn-mini__node--input"/>
+                    <circle cx="30" cy="55" r="7" class="nn-mini__node nn-mini__node--input"/>
+                    <circle cx="30" cy="82" r="7" class="nn-mini__node nn-mini__node--input"/>
+                    <circle cx="30" cy="109" r="7" class="nn-mini__node nn-mini__node--input"/>
+                    <!-- Layer 2 nodes (hidden) -->
+                    <circle cx="80" cy="20" r="7" class="nn-mini__node nn-mini__node--hidden"/>
+                    <circle cx="80" cy="47" r="7" class="nn-mini__node nn-mini__node--hidden"/>
+                    <circle cx="80" cy="74" r="7" class="nn-mini__node nn-mini__node--hidden"/>
+                    <circle cx="80" cy="101" r="7" class="nn-mini__node nn-mini__node--hidden"/>
+                    <!-- Layer 3 nodes (hidden) -->
+                    <circle cx="130" cy="35" r="7" class="nn-mini__node nn-mini__node--hidden2"/>
+                    <circle cx="130" cy="70" r="7" class="nn-mini__node nn-mini__node--hidden2"/>
+                    <circle cx="130" cy="105" r="7" class="nn-mini__node nn-mini__node--hidden2"/>
+                    <!-- Layer 4 nodes (output) -->
+                    <circle cx="175" cy="55" r="7" class="nn-mini__node nn-mini__node--output"/>
+                    <circle cx="175" cy="85" r="7" class="nn-mini__node nn-mini__node--output"/>
+                  </svg>
+                  <div class="nn-mini__layers">
+                    <span>input</span><span>hidden</span><span>hidden</span><span>output</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-expand__details">
+                <p class="project-expand__text">Neural network library built from scratch with only Python and NumPy. Dense layers, conv layers, backpropagation, activation functions — every gradient computed by hand.</p>
+                <div class="project-expand__features">
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Stack</span>
+                    <span class="project-expand__feature-value">Python · NumPy · Matplotlib</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Layers</span>
+                    <span class="project-expand__feature-value">Dense · Conv2D · Activations</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Training</span>
+                    <span class="project-expand__feature-value">SGD · Momentum · LR scheduling</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {project.title === 'Vault Keeper' && (
+            <div class="project-expand">
+              <div class="project-expand__showcase">
+                <div class="vault-mini">
+                  <div class="vault-mini__header">
+                    <svg class="vault-mini__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <span class="vault-mini__title">Weekly Brief</span>
+                  </div>
+                  <div class="vault-mini__content">
+                    <div class="vault-mini__row">
+                      <span class="vault-mini__label">Commitments kept</span>
+                      <div class="vault-mini__bar-wrap"><div class="vault-mini__bar-fill" style="width:68%;"></div></div>
+                      <span class="vault-mini__val">68%</span>
+                    </div>
+                    <div class="vault-mini__row">
+                      <span class="vault-mini__label">Gym consistency</span>
+                      <div class="vault-mini__bar-wrap"><div class="vault-mini__bar-fill vault-mini__bar-fill--warn" style="width:40%;"></div></div>
+                      <span class="vault-mini__val">40%</span>
+                    </div>
+                    <div class="vault-mini__row">
+                      <span class="vault-mini__label">Deep work hours</span>
+                      <div class="vault-mini__bar-wrap"><div class="vault-mini__bar-fill vault-mini__bar-fill--good" style="width:82%;"></div></div>
+                      <span class="vault-mini__val">82%</span>
+                    </div>
+                  </div>
+                  <div class="vault-mini__pattern">Pattern: overcommit Sun → burnout Tue</div>
+                  <div class="vault-mini__tag">LEGACY → Yerb</div>
+                </div>
+              </div>
+              <div class="project-expand__details">
+                <p class="project-expand__text">AI accountability system built on Obsidian. Reads journal entries, detects behavioral patterns, and generates weekly briefs using your own words against you. Evolved into Yerb.</p>
+                <div class="project-expand__features">
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Stack</span>
+                    <span class="project-expand__feature-value">Python · Claude API · Obsidian</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Analysis</span>
+                    <span class="project-expand__feature-value">Pattern detection · Self-sabotage tracking</span>
+                  </div>
+                  <div class="project-expand__feature">
+                    <span class="project-expand__feature-label">Output</span>
+                    <span class="project-expand__feature-value">Friday briefs · Recovery plans</span>
                   </div>
                 </div>
               </div>

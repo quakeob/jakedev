@@ -1184,6 +1184,340 @@ img {
   text-align: right;
 }
 
+/* ═══════════ YERB MINI WIDGET ═══════════ */
+
+.yerb-mini {
+  width: 220px;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.yerb-mini__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.yerb-mini__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.yerb-mini__title {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-left: auto;
+}
+
+.yerb-mini__body {
+  padding: 10px 12px;
+}
+
+.yerb-mini__agent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 3px 0;
+}
+
+.yerb-mini__status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #28c840;
+  box-shadow: 0 0 6px rgba(40, 200, 64, 0.4);
+}
+
+.yerb-mini__uptime {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.yerb-mini__prompt {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 6px;
+}
+
+.yerb-mini__cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ═══════════ SCRAPER MINI WIDGET ═══════════ */
+
+.scraper-mini {
+  width: 220px;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.scraper-mini__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.scraper-mini__alert {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(52, 199, 89, 0.9);
+}
+
+.scraper-mini__score {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(52, 199, 89, 0.9);
+  line-height: 1;
+}
+
+.scraper-mini__vehicle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.scraper-mini__price {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.scraper-mini__details {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 12px;
+}
+
+.scraper-mini__factors {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.scraper-mini__factor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scraper-mini__factor-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  width: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.scraper-mini__factor-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.scraper-mini__factor-fill {
+  height: 100%;
+  background: rgba(52, 199, 89, 0.6);
+  border-radius: 2px;
+}
+
+.scraper-mini__via {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: right;
+}
+
+/* ═══════════ NEURAL NETWORK MINI WIDGET ═══════════ */
+
+.nn-mini {
+  width: 220px;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px 10px 10px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.nn-mini__label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.nn-mini__svg {
+  width: 100%;
+  height: auto;
+}
+
+.nn-mini__conn {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 0.8;
+}
+
+.nn-mini__node {
+  fill: rgba(30, 30, 30, 0.95);
+  stroke-width: 1.5;
+}
+
+.nn-mini__node--input {
+  stroke: rgba(64, 204, 255, 0.6);
+  fill: rgba(64, 204, 255, 0.12);
+}
+
+.nn-mini__node--hidden {
+  stroke: rgba(153, 89, 230, 0.6);
+  fill: rgba(153, 89, 230, 0.12);
+}
+
+.nn-mini__node--hidden2 {
+  stroke: rgba(255, 140, 51, 0.6);
+  fill: rgba(255, 140, 51, 0.12);
+}
+
+.nn-mini__node--output {
+  stroke: rgba(52, 199, 89, 0.6);
+  fill: rgba(52, 199, 89, 0.12);
+}
+
+.nn-mini__layers {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 12px 0;
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ═══════════ VAULT KEEPER MINI WIDGET ═══════════ */
+
+.vault-mini {
+  width: 220px;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.vault-mini__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.vault-mini__icon {
+  width: 16px;
+  height: 16px;
+  color: rgba(136, 108, 186, 0.8);
+}
+
+.vault-mini__title {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.vault-mini__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.vault-mini__row {
+  display: grid;
+  grid-template-columns: 1fr 60px 28px;
+  align-items: center;
+  gap: 8px;
+}
+
+.vault-mini__label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vault-mini__bar-wrap {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.vault-mini__bar-fill {
+  height: 100%;
+  background: rgba(64, 204, 255, 0.5);
+  border-radius: 2px;
+}
+
+.vault-mini__bar-fill--warn {
+  background: rgba(255, 149, 0, 0.6);
+}
+
+.vault-mini__bar-fill--good {
+  background: rgba(52, 199, 89, 0.6);
+}
+
+.vault-mini__val {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: right;
+}
+
+.vault-mini__pattern {
+  font-size: 9px;
+  color: rgba(255, 149, 0, 0.6);
+  font-style: italic;
+  padding: 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.vault-mini__tag {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+
 @media (max-width: 768px) {
   .project-expand {
     grid-template-columns: 1fr;
