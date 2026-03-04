@@ -111,25 +111,27 @@ const galleryPhotos = [
           </div>
         </div>
       </div>
-      <div class="agent-terminal js-in" id="agent-terminal">
-        <div class="agent-terminal__header">
-          <span class="agent-terminal__dot" style="background: #ff5f57;"></span>
-          <span class="agent-terminal__dot" style="background: #febc2e;"></span>
-          <span class="agent-terminal__dot" style="background: #28c840;"></span>
-          <span class="agent-terminal__title">yerb — mac mini</span>
-        </div>
-        <div class="agent-terminal__body" id="agent-terminal-body"></div>
-        <div class="agent-terminal__status">
-          <div class="term-status__left">
-            <span class="term-status__badge term-status__badge--auto">> auto-accept</span>
-            <span class="term-status__item">Yerb 2.8</span>
+      <div>
+        <div class="agent-terminal js-in" id="agent-terminal">
+          <div class="agent-terminal__header">
+            <span class="agent-terminal__dot" style="background: #ff5f57;"></span>
+            <span class="agent-terminal__dot" style="background: #febc2e;"></span>
+            <span class="agent-terminal__dot" style="background: #28c840;"></span>
+            <span class="agent-terminal__title">yerb — mac mini</span>
           </div>
-          <div class="term-status__right">
-            <span class="term-status__item" id="term-tokens">0 tokens</span>
-            <span class="term-status__ctx">
-              <span class="term-ctx-bar"><span class="term-ctx-fill" id="term-ctx-fill"></span></span>
-              <span id="term-ctx-pct">0%</span>
-            </span>
+          <div class="agent-terminal__body" id="agent-terminal-body"></div>
+          <div class="agent-terminal__status">
+            <div class="term-status__left">
+              <span class="term-status__badge term-status__badge--auto">> auto-accept</span>
+              <span class="term-status__item">Yerb 2.8</span>
+            </div>
+            <div class="term-status__right">
+              <span class="term-status__item" id="term-tokens">0 tokens</span>
+              <span class="term-status__ctx">
+                <span class="term-ctx-bar"><span class="term-ctx-fill" id="term-ctx-fill"></span></span>
+                <span id="term-ctx-pct">0%</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -504,6 +506,131 @@ const galleryPhotos = [
     </div>
   </section>
 
+  <!-- ═══════════ BUILD ═══════════ -->
+  <section class="build-section js-in" id="build">
+    <div class="build-section__grid">
+      <!-- Visual: Browser mockup with code editor -->
+      <div class="build-browser">
+        <div class="build-browser__bar">
+          <span class="build-browser__dot" style="background:#ff5f57;"></span>
+          <span class="build-browser__dot" style="background:#febc2e;"></span>
+          <span class="build-browser__dot" style="background:#28c840;"></span>
+          <span class="build-browser__url">
+            <span class="build-browser__lock">
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-9H9V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2z"/></svg>
+            </span>
+            yoursite.com
+          </span>
+        </div>
+        <div class="build-browser__body">
+          <div class="build-browser__site">
+            <!-- Mini site wireframe -->
+            <div class="build-wire__nav">
+              <div class="build-wire__logo"></div>
+              <div class="build-wire__nav-links">
+                <div class="build-wire__nav-link"></div>
+                <div class="build-wire__nav-link"></div>
+                <div class="build-wire__nav-link"></div>
+              </div>
+            </div>
+            <div class="build-wire__hero">
+              <div class="build-wire__hero-text">
+                <div class="build-wire__line build-wire__line--lg"></div>
+                <div class="build-wire__line build-wire__line--lg" style="width: 65%;"></div>
+                <div class="build-wire__line build-wire__line--sm" style="margin-top: 12px;"></div>
+                <div class="build-wire__line build-wire__line--sm" style="width: 80%;"></div>
+                <div class="build-wire__cta"></div>
+              </div>
+            </div>
+            <div class="build-wire__cards">
+              <div class="build-wire__card"></div>
+              <div class="build-wire__card"></div>
+              <div class="build-wire__card"></div>
+            </div>
+          </div>
+        </div>
+        <div class="build-browser__stats">
+          <div class="build-browser__stat">
+            <span class="build-browser__stat-val build-browser__stat-val--green">100</span>
+            <span class="build-browser__stat-label">Performance</span>
+          </div>
+          <div class="build-browser__stat">
+            <span class="build-browser__stat-val build-browser__stat-val--green">100</span>
+            <span class="build-browser__stat-label">Accessibility</span>
+          </div>
+          <div class="build-browser__stat">
+            <span class="build-browser__stat-val build-browser__stat-val--green">100</span>
+            <span class="build-browser__stat-label">SEO</span>
+          </div>
+          <div class="build-browser__stat">
+            <span class="build-browser__stat-val">0.4s</span>
+            <span class="build-browser__stat-label">Load</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text: right side -->
+      <div class="build-section__text">
+        <h2 class="display display--2" style="margin-bottom: 1.5rem;">I'll build<br/>your site</h2>
+        <p class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2); margin-bottom: 2rem;">
+          I design and develop fast, custom websites — no templates, no WordPress, no bloat. Hand-coded with modern tools, deployed in days not months. If you want something that actually looks good and loads instantly, let's talk.
+        </p>
+        <div class="build-section__features">
+          <div class="build-section__feature">
+            <span class="build-section__feature-num">01</span>
+            <div>
+              <span class="build-section__feature-title">Design + Dev</span>
+              <span class="build-section__feature-desc">Full custom design and development. No templates.</span>
+            </div>
+          </div>
+          <div class="build-section__feature">
+            <span class="build-section__feature-num">02</span>
+            <div>
+              <span class="build-section__feature-title">Fast</span>
+              <span class="build-section__feature-desc">Sub-second load times. Lighthouse 100s across the board.</span>
+            </div>
+          </div>
+          <div class="build-section__feature">
+            <span class="build-section__feature-num">03</span>
+            <div>
+              <span class="build-section__feature-title">Modern Stack</span>
+              <span class="build-section__feature-desc">Astro, React, Tailwind — whatever fits the project.</span>
+            </div>
+          </div>
+        </div>
+        <a href="mailto:jake@bryt.works" class="build-section__cta lead u-g" style="display: inline-block; margin-top: 2rem;">
+          Start a project →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CONTACT ═══════════ -->
+  <section class="contact-section js-in" id="contact-form">
+    <div class="contact-section__inner">
+      <h2 class="display display--2" style="margin-bottom: 0.5rem;">Get in touch</h2>
+      <p class="lead" style="font-size: 12px; color: var(--grey); margin-bottom: 2.5rem; text-transform: none;">For projects, collaborations, or just to say hey.</p>
+      <div class="contact-section__grid">
+        <a href="mailto:jake@bryt.works" class="contact-card">
+          <span class="contact-card__label">Email</span>
+          <span class="contact-card__value u-g">jake@bryt.works</span>
+        </a>
+        <a href="https://x.com/Jak3dev" target="_blank" class="contact-card">
+          <span class="contact-card__label">X / Twitter</span>
+          <span class="contact-card__value u-g">@Jak3dev</span>
+        </a>
+        <a href="https://github.com/quakeob" target="_blank" class="contact-card">
+          <span class="contact-card__label">GitHub</span>
+          <span class="contact-card__value u-g">quakeob</span>
+        </a>
+        <a href="https://instagram.com/jjakedavis" target="_blank" class="contact-card">
+          <span class="contact-card__label">Instagram</span>
+          <span class="contact-card__value u-g">@jjakedavis</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════════ PHOTO GALLERY ═══════════ -->
   <section class="gallery-section js-in" id="gallery">
     <div class="gallery-track" id="gallery-track">
@@ -608,16 +735,34 @@ const galleryPhotos = [
   </footer>
 
   <script is:inline>
-    // ═══════════ HERO SLIDESHOW ═══════════
+    // ═══════════ HERO SLIDESHOW — always cycling, faster on scroll ═══════════
     (function() {
       const imgs = document.querySelectorAll('.hero-slideshow__img');
       if (!imgs.length) return;
       let current = 0;
-      setInterval(() => {
+      let lastScroll = 0;
+      let scrollCycleAcc = 0;
+      const pixelsPerCycle = 18;
+
+      function next() {
         imgs[current].classList.remove('is-active');
         current = (current + 1) % imgs.length;
         imgs[current].classList.add('is-active');
-      }, 500);
+      }
+
+      // Baseline auto-cycle
+      setInterval(next, 500);
+
+      // Also cycle rapidly on scroll
+      window.addEventListener('scroll', () => {
+        const delta = Math.abs(window.scrollY - lastScroll);
+        lastScroll = window.scrollY;
+        scrollCycleAcc += delta;
+        while (scrollCycleAcc >= pixelsPerCycle) {
+          scrollCycleAcc -= pixelsPerCycle;
+          next();
+        }
+      });
     })();
 
     // ═══════════ COPY EMAIL ═══════════
