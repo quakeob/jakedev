@@ -144,7 +144,7 @@ const galleryPhotos = [
     </div>
     <div class="project-list">
       {projects.map((project, i) => (
-        <a href={project.link} class={`project-card js-in ${project.title === 'Token Tracker' ? 'has-preview' : ''}`} style={`animation-delay: ${i * 0.05}s`}>
+        <a href={project.link} class={`project-card js-in ${(project.title === 'Token Tracker' || project.title === 'Fuel') ? 'has-preview' : ''}`} style={`animation-delay: ${i * 0.05}s`}>
           <div class="project-card__index lead">
             {String(i + 1).padStart(2, '0')}
           </div>
