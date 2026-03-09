@@ -1,0 +1,482 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="macOS screen time tracker — logs active applications every 30s, generates daily usage reports. Runs as a background launchd service."><title>Time Audit — Jake Davis</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>
+    (function() {
+      var s = localStorage.getItem('theme');
+      if (s === 'dark' || (!s && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script><link rel="stylesheet" href="/_astro/index.BjYX84az.css">
+<style>.prose{color:var(--text-2);line-height:1.8;font-size:14px;font-family:var(--font-mono);text-transform:none}.prose h2{font-family:var(--font-display);color:var(--text);font-size:1.8rem;font-weight:400;text-transform:uppercase;margin-top:3rem;margin-bottom:1rem;letter-spacing:-.02em}.prose h3{color:var(--text);font-size:1rem;font-weight:700;text-transform:uppercase;margin-top:2rem;margin-bottom:.75rem}.prose p{margin-bottom:1.25rem}.prose strong{color:var(--text);font-weight:700}.prose a{color:var(--green);text-decoration:underline;text-underline-offset:3px}.prose a:hover{opacity:.6}.prose code{font-family:var(--font-mono);font-size:.875em;padding:.15em .4em;background:var(--border);color:var(--text)}.prose pre{background:var(--border);border:1px solid var(--border);padding:1.25rem;overflow-x:auto;margin:1.5rem 0;font-size:.875rem;line-height:1.6}.prose pre code{background:none;padding:0}.prose ul,.prose ol{margin:1rem 0;padding-left:1.5rem}.prose li{margin-bottom:.5rem}.prose blockquote{border-left:2px solid var(--text);padding-left:1rem;margin:1.5rem 0;font-style:italic;color:var(--grey)}.prose hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
+</style></head> <body> <!-- Preloader --> <div class="preloader" id="preloader"> <div class="preloader__wrapper"> <div class="preloader__bar-line"> <span class="preloader__bracket">[</span><span class="preloader__fill" id="preloader-fill"></span><span class="preloader__bracket">]</span> </div> <div class="preloader__pct" id="preloader-pct">0%</div> </div> </div> <!-- Custom Cursor --> <div class="cursor" id="cursor"> <div class="cursor__dot"></div> </div> <!-- Header --> <header class="site-header" id="site-header"> <div> <a class="site-header__brand" href="/"> <span>Jake Davis</span> </a> </div> <div> <nav> <ul class="site-nav__list"> <li><a href="/photos" class="site-nav__link">Photos</a></li> <li><a href="/#work" class="site-nav__link">Work</a></li> <li><a href="/#about" class="site-nav__link">About</a></li> <li><button class="site-nav__link theme-toggle" onclick="toggleTheme()">Dark</button></li> </ul> </nav> <button class="menu-toggle" id="menu-toggle">Menu</button> </div> </header> <!-- Mobile Menu --> <div class="mobile-menu" id="mobile-menu"> <a href="/" onclick="closeMobileMenu()">Home</a> <a href="/#work" onclick="closeMobileMenu()">Work</a> <a href="/photos" onclick="closeMobileMenu()">Photos</a> <a href="/#about" onclick="closeMobileMenu()">About</a> <a href="/#contact" onclick="closeMobileMenu()">Contact</a> <button class="theme-toggle" onclick="toggleTheme()" style="background:none;border:none;color:inherit;font-family:var(--font-display);font-size:2.5rem;text-transform:uppercase;letter-spacing:-0.01em;cursor:pointer;">Dark</button> </div> <main>  <article class="project-article "> <div class="project-article__main"> <!-- Back link --> <a href="/#work" class="lead" style="display: inline-block; margin-bottom: 3rem; color: var(--grey);">
+← Back to work
+</a> <!-- Hero --> <header style="margin-bottom: 3rem;"> <h1 class="display display--2" style="margin-bottom: 1rem;"> Time Audit </h1> <p class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2); margin-bottom: 1.5rem;"> macOS screen time tracker — logs active applications every 30s, generates daily usage reports. Runs as a background launchd service. </p> <div style="display: flex; flex-wrap: wrap; gap: 1em; margin-bottom: 1.5rem;"> <span class="lead" style="font-size: 11px; color: var(--grey);">Python</span><span class="lead" style="font-size: 11px; color: var(--grey);">macOS</span><span class="lead" style="font-size: 11px; color: var(--grey);">AppleScript</span><span class="lead" style="font-size: 11px; color: var(--grey);">launchd</span> </div>  </header> <!-- Content --> <div class="prose"> <h2 id="the-problem">The Problem</h2>
+<p>macOS Screen Time is garbage. It groups everything into vague categories, doesn’t track individual app usage well, and resets data unpredictably. I wanted to know exactly how I spend my time on my computer — down to the minute, per application, with historical data I own.</p>
+<h2 id="the-approach">The Approach</h2>
+<p>A Python script that runs as a background service, polling the active application every 30 seconds and logging it to a local database. At the end of each day, it generates a usage report showing exactly where my time went.</p>
+<p>No cloud. No subscription. No “wellness” features I didn’t ask for. Just raw data.</p>
+<h2 id="architecture">Architecture</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>launchd (every 30s) → Python script → Get active app (AppleScript)</span></span>
+<span class="line"><span>                                              ↓</span></span>
+<span class="line"><span>                                        Log to SQLite</span></span>
+<span class="line"><span>                                              ↓</span></span>
+<span class="line"><span>                                    Daily report generation</span></span></code></pre>
+<p><strong>Active app detection.</strong> An AppleScript one-liner gets the frontmost application name. The Python script calls this via <code>subprocess</code>, timestamps it, and appends to the database.</p>
+<p><strong>Storage.</strong> SQLite database with a simple schema: timestamp, app name, window title (when available). Months of data in a few megabytes.</p>
+<p><strong>Reporting.</strong> A separate script queries the database and generates daily/weekly summaries. Time per app, sorted by usage. Trends over time. Comparison to previous weeks.</p>
+<p><strong>launchd integration.</strong> Runs as a proper macOS service via a <code>.plist</code> file in <code>~/Library/LaunchAgents/</code>. Starts on login, restarts on crash, no maintenance needed.</p>
+<h2 id="what-the-data-revealed">What The Data Revealed</h2>
+<p>The first week of data was humbling. I thought I was spending 6 hours a day coding. The actual number was closer to 3.5, with the rest split between Slack, email, and “research” (reading articles that went nowhere).</p>
+<p>The data also showed that my most productive hours were 9-11am and 8-10pm, with a dead zone between 2-4pm. I restructured my day around these findings — deep work in the mornings, meetings and admin in the afternoon dead zone, and a second coding session at night.</p>
+<h2 id="key-design-choices">Key Design Choices</h2>
+<p><strong>30-second polling vs. event-driven.</strong> I could have used macOS accessibility APIs to detect app switches in real time. But polling every 30 seconds is simpler, uses negligible resources, and is accurate enough. The 30-second granularity means I’m at most 30 seconds off — which doesn’t matter when you’re looking at hours.</p>
+<p><strong>Local-only.</strong> I don’t want my screen time data on someone else’s server. The database lives on my machine. If I want to analyze it, I write a SQL query.</p>
+<p><strong>No judgments.</strong> The tool doesn’t tell me I’m spending “too much” time on anything. It just reports facts. I make my own decisions about what to change.</p>
+<h2 id="stack">Stack</h2>
+<ul>
+<li><strong>Language:</strong> Python</li>
+<li><strong>System Integration:</strong> AppleScript, launchd</li>
+<li><strong>Database:</strong> SQLite</li>
+<li><strong>OS:</strong> macOS</li>
+</ul> </div> <!-- Navigation --> <nav style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;"> <a href="/projects/vault-keeper" style="text-decoration: none;"> <span class="lead" style="font-size: 11px; color: var(--grey);">← Previous</span> <span class="lead u-g" style="display: block; margin-top: 4px;"> Vault Keeper </span> </a>  </nav> </div>       </article>   </main> <!-- GSAP + ScrollTrigger + Lenis --> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script> <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script> <script>
+    // ═══════════════════════════════════════
+    // LENIS SMOOTH SCROLL
+    // ═══════════════════════════════════════
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // ═══════════════════════════════════════
+    // PRELOADER — ASCII PROGRESS BAR
+    // ═══════════════════════════════════════
+    (function() {
+      const fillEl = document.getElementById('preloader-fill');
+      const pctEl = document.getElementById('preloader-pct');
+      const preloader = document.getElementById('preloader');
+      const barWidth = 30;
+
+      function render(progress) {
+        const filled = Math.round((progress / 100) * barWidth);
+        fillEl.textContent = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+        pctEl.textContent = Math.round(progress) + '%';
+      }
+
+      render(0);
+
+      window.addEventListener('load', () => {
+        render(100);
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.4,
+          delay: 0.1,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            preloader.style.display = 'none';
+            lenis.start();
+            animateHero();
+          }
+        });
+      });
+    })();
+
+    // ═══════════════════════════════════════
+    // CUSTOM CURSOR
+    // ═══════════════════════════════════════
+    const cursor = document.getElementById('cursor');
+    if (cursor && window.matchMedia('(pointer: fine)').matches) {
+      let cx = 0, cy = 0, tx = 0, ty = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+      });
+
+      function updateCursor() {
+        cx += (tx - cx) * 0.15;
+        cy += (ty - cy) * 0.15;
+        cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+        requestAnimationFrame(updateCursor);
+      }
+      updateCursor();
+      cursor.style.opacity = '1';
+
+      // Scale up on links/buttons
+      document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('cursor--active'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--active'));
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // HERO ANIMATION — Staggered text reveal
+    // ═══════════════════════════════════════
+    function animateHero() {
+      gsap.fromTo('.hero-slideshow', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4, ease: 'power4.out' });
+      gsap.fromTo('.hero-overlap__text .display', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, delay: 0.3, ease: 'power4.out' });
+
+      // Header — slide down
+      gsap.fromTo('#site-header', {
+        y: -40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: 0.8,
+        ease: 'power3.out',
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // SCROLL ANIMATIONS — GSAP ScrollTrigger
+    // ═══════════════════════════════════════
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Quote text — line-by-line reveal with parallax
+    document.querySelectorAll('.quote-text').forEach(quote => {
+      // Wrap each line in a span for animation
+      const html = quote.innerHTML;
+      const lines = html.split('<br>').map(l => l.trim()).filter(Boolean);
+      quote.innerHTML = lines.map(l =>
+        `<div class="quote-line" style="overflow:hidden;"><span class="quote-line__inner" style="display:block;">${l}</span></div>`
+      ).join('');
+
+      gsap.fromTo(quote.querySelectorAll('.quote-line__inner'), {
+        y: '110%',
+        rotateX: -20,
+      }, {
+        y: '0%',
+        rotateX: 0,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: quote,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Quote attribution — fade in
+    document.querySelectorAll('.quote-attribution').forEach(attr => {
+      gsap.fromTo(attr, {
+        opacity: 0,
+        y: 30,
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: attr,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // Photo section — scale in
+    document.querySelectorAll('.js-in:not(.hero-row)').forEach(el => {
+      // Skip hero elements (animated separately)
+      if (el.closest('.home-hero')) return;
+
+      gsap.fromTo(el, {
+        y: 60,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Hero title — split apart on scroll
+    var heroTexts = document.querySelectorAll('.hero-overlap__text .display');
+    if (heroTexts.length >= 2) {
+      gsap.to(heroTexts[0], { y: -120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to(heroTexts[1], { y: 120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to('.hero-slideshow', { scale: 0.92, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+    }
+
+    // Project cards — stagger slide up
+    document.querySelectorAll('.project-card').forEach((card, i) => {
+      gsap.fromTo(card, {
+        y: 80,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: i * 0.08,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Gallery images — parallax on scroll
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      gsap.fromTo(img, {
+        scale: 1.15,
+      }, {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.closest('.gallery-section'),
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        }
+      });
+    });
+
+    // Display headings — parallax speed difference
+    document.querySelectorAll('.display--2').forEach(heading => {
+      gsap.fromTo(heading, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // About section text — paragraph stagger
+    document.querySelectorAll('#about p').forEach((p, i) => {
+      gsap.fromTo(p, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        delay: i * 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: p,
+          start: 'top 88%',
+        }
+      });
+    });
+
+    // Footer outro — slide up
+    document.querySelectorAll('.site-footer__outro > div').forEach((col, i) => {
+      gsap.fromTo(col, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.site-footer__outro',
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Build section — browser mockup builds up, features stagger
+    var buildBrowser = document.querySelector('.build-browser');
+    if (buildBrowser) {
+      // Browser slides in from left
+      gsap.fromTo(buildBrowser, {
+        x: -60,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: buildBrowser,
+          start: 'top 85%',
+        }
+      });
+
+      // Wireframe elements build sequentially
+      var wireEls = buildBrowser.querySelectorAll('.build-wire__nav, .build-wire__line, .build-wire__cta, .build-wire__card');
+      wireEls.forEach(function(el, i) {
+        gsap.fromTo(el, {
+          opacity: 0,
+          y: 8,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          delay: 0.4 + i * 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          }
+        });
+      });
+
+      // Lighthouse scores count up
+      var scoreEls = buildBrowser.querySelectorAll('.build-browser__stat-val--green');
+      scoreEls.forEach(function(el) {
+        var target = 100;
+        var obj = { val: 0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            el.textContent = Math.round(obj.val);
+          }
+        });
+      });
+
+      // Load time counts
+      var loadEl = buildBrowser.querySelector('.build-browser__stat-val:not(.build-browser__stat-val--green)');
+      if (loadEl) {
+        var loadObj = { val: 0 };
+        gsap.to(loadObj, {
+          val: 0.4,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            loadEl.textContent = loadObj.val.toFixed(1) + 's';
+          }
+        });
+      }
+    }
+
+    // Build features — stagger from right
+    document.querySelectorAll('.build-section__feature').forEach(function(feat, i) {
+      gsap.fromTo(feat, {
+        x: 40,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: feat,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Contact cards — stagger
+    document.querySelectorAll('.contact-card').forEach(function(card, i) {
+      gsap.fromTo(card, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        delay: i * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // Photo grid items — stagger reveal
+    document.querySelectorAll('.photo-grid__item').forEach((item, i) => {
+      gsap.fromTo(item, {
+        y: 60,
+        opacity: 0,
+        scale: 0.95,
+      }, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        delay: (i % 6) * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MAGNETIC HOVER on nav links
+    // ═══════════════════════════════════════
+    document.querySelectorAll('.site-nav__link, .site-header__brand').forEach(link => {
+      link.addEventListener('mousemove', (e) => {
+        const rect = link.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(link, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+      });
+      link.addEventListener('mouseleave', () => {
+        gsap.to(link, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MOBILE MENU
+    // ═══════════════════════════════════════
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle?.addEventListener('click', () => {
+      const isOpen = mobileMenu?.classList.toggle('open');
+      menuToggle.textContent = isOpen ? 'Close' : 'Menu';
+      if (isOpen) lenis.stop(); else lenis.start();
+    });
+
+    window.closeMobileMenu = function() {
+      mobileMenu?.classList.remove('open');
+      if (menuToggle) menuToggle.textContent = 'Menu';
+      lenis.start();
+    };
+
+    // ═══════════════════════════════════════
+    // THEME TOGGLE
+    // ═══════════════════════════════════════
+    function updateToggleText() {
+      var isDark = document.documentElement.classList.contains('dark');
+      document.querySelectorAll('.theme-toggle').forEach(function(btn) {
+        btn.textContent = isDark ? 'Light' : 'Dark';
+      });
+    }
+    updateToggleText();
+
+    window.toggleTheme = function() {
+      document.documentElement.classList.toggle('dark');
+      var isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateToggleText();
+    };
+  </script> </body> </html>

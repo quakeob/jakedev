@@ -1,0 +1,874 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Developer, AI systems builder, neuroscience student at BYU."><title>Jake Davis — Developer &amp; AI Builder</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>
+    (function() {
+      var s = localStorage.getItem('theme');
+      if (s === 'dark' || (!s && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script><link rel="stylesheet" href="/_astro/index.BjYX84az.css"></head> <body> <!-- Preloader --> <div class="preloader" id="preloader"> <div class="preloader__wrapper"> <div class="preloader__bar-line"> <span class="preloader__bracket">[</span><span class="preloader__fill" id="preloader-fill"></span><span class="preloader__bracket">]</span> </div> <div class="preloader__pct" id="preloader-pct">0%</div> </div> </div> <!-- Custom Cursor --> <div class="cursor" id="cursor"> <div class="cursor__dot"></div> </div> <!-- Header --> <header class="site-header" id="site-header"> <div> <a class="site-header__brand" href="/"> <span>Jake Davis</span> </a> </div> <div> <nav> <ul class="site-nav__list"> <li><a href="/photos" class="site-nav__link">Photos</a></li> <li><a href="/#work" class="site-nav__link">Work</a></li> <li><a href="/#about" class="site-nav__link">About</a></li> <li><button class="site-nav__link theme-toggle" onclick="toggleTheme()">Dark</button></li> </ul> </nav> <button class="menu-toggle" id="menu-toggle">Menu</button> </div> </header> <!-- Mobile Menu --> <div class="mobile-menu" id="mobile-menu"> <a href="/" onclick="closeMobileMenu()">Home</a> <a href="/#work" onclick="closeMobileMenu()">Work</a> <a href="/photos" onclick="closeMobileMenu()">Photos</a> <a href="/#about" onclick="closeMobileMenu()">About</a> <a href="/#contact" onclick="closeMobileMenu()">Contact</a> <button class="theme-toggle" onclick="toggleTheme()" style="background:none;border:none;color:inherit;font-family:var(--font-display);font-size:2.5rem;text-transform:uppercase;letter-spacing:-0.01em;cursor:pointer;">Dark</button> </div> <main>   <section class="home-hero" style="position: relative;"> <div class="hero-overlap"> <div class="hero-slideshow" id="hero-slideshow"> <img src="/photos/bw/DSCF3233.jpg" alt="" class="hero-slideshow__img is-active" loading="eager"><img src="/photos/bw/DSCF3289.jpg" alt="" class="hero-slideshow__img " loading="eager"><img src="/photos/bw/DSCF3291.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF3296.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF3494.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF3495.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF3554.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF3766.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF3767.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF4073.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF4108.jpg" alt="" class="hero-slideshow__img " loading="lazy"><img src="/photos/bw/DSCF4109.jpg" alt="" class="hero-slideshow__img " loading="lazy"> </div> <div class="hero-overlap__text"> <span class="display display--1">Jake</span> <span class="display display--1">Davis</span> </div> </div> </section>  <section id="about" class="js-in" style="padding: clamp(4rem, 8vw, 10rem) 30px;"> <div class="about-grid"> <div> <div class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2);"> <p style="margin-bottom: 1.5em;">Software developer. Photographer. Neuroscience student. Creator.</p> <p style="margin-bottom: 1.5em;">I build AI systems and automation tools — agents that run autonomously, software that removes me from the loop.</p> <p style="margin-bottom: 1.5em;">Right now: a multi-agent system on a Mac Mini that manages my schedule, trades crypto and prediction markets, and ships code on its own. The commit history doesn't sleep.</p> <p style="margin-bottom: 1.5em;">I shoot photos. Mostly outdoors, mostly film.</p> </div> <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 2rem; font-size: 10px; color: var(--grey); letter-spacing: 0.05em;"> <div> <div class="lead" style="font-size: 10px;">Python · JavaScript · TypeScript · Swift · SQL · Bash · AppleScript</div> </div> <div> <div class="lead" style="font-size: 10px;">Astro · React · Node.js · SQLite · Docker · Git</div> </div> <div> <div class="lead" style="font-size: 10px;">Claude API · OpenAI API · Canvas API · Brave Search API · ElevenLabs API · Telegram API · Polymarket API · Tailscale · Linux · macOS</div> </div> <div> <div class="lead" style="font-size: 10px;">AI/ML · Agent Architecture · Automation · Web Dev · Systems Design · Market Analysis</div> </div> </div> </div> <div> <div class="agent-terminal js-in" id="agent-terminal"> <div class="agent-terminal__header"> <span class="agent-terminal__dot" style="background: #ff5f57;"></span> <span class="agent-terminal__dot" style="background: #febc2e;"></span> <span class="agent-terminal__dot" style="background: #28c840;"></span> <span class="agent-terminal__title">yerb &mdash; mac mini</span> </div> <div class="agent-terminal__body" id="agent-terminal-body"></div> <div class="agent-terminal__status"> <div class="term-status__left"> <span class="term-status__badge term-status__badge--auto">> auto-accept</span> <span class="term-status__item">Yerb 2.8</span> </div> <div class="term-status__right"> <span class="term-status__item" id="term-tokens">0 tokens</span> <span class="term-status__ctx"> <span class="term-ctx-bar"><span class="term-ctx-fill" id="term-ctx-fill"></span></span> <span id="term-ctx-pct">0%</span> </span> </div> </div> </div> </div> </div> </section>  <section class="projects-section js-in" id="work"> <div style="margin-bottom: clamp(2rem, 4vw, 4rem);"> <h2 class="display display--2">Projects</h2> </div> <div class="project-list"> <a href="/projects/fuel" class="project-card js-in has-preview" style="animation-delay: 0s; "> <div class="project-card__index lead"> 01 </div> <div class="project-card__content"> <h3>Fuel</h3> <p class="project-card__desc">Native iOS calorie tracker with AI food parsing, barcode scanning, HealthKit sync, and Apple Watch companion.</p> <div class="project-card__credits lead"> <span>Status</span> <span class="u-g">Live</span> </div> </div>  <div class="project-expand"> <div class="project-expand__showcase"> <div class="fuel-mini"> <div class="fuel-mini__ring-wrap"> <svg class="fuel-mini__ring" viewBox="0 0 80 80"> <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"></circle> <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(77,204,102,0.8)" stroke-width="8" stroke-dasharray="201" stroke-dashoffset="79" stroke-linecap="round" transform="rotate(-90 40 40)" class="fuel-mini__ring-fill"></circle> </svg> <div class="fuel-mini__ring-inner"> <div class="fuel-mini__ring-cal">784</div> <div class="fuel-mini__ring-label">left</div> </div> </div> <div class="fuel-mini__macros"> <div class="fuel-mini__macro"> <div class="fuel-mini__macro-bar"><div class="fuel-mini__macro-fill" style="width:57%;background:rgba(64,204,255,0.65);"></div></div> <span class="fuel-mini__macro-label" style="color:rgba(64,204,255,0.75);">P 86g</span> </div> <div class="fuel-mini__macro"> <div class="fuel-mini__macro-bar"><div class="fuel-mini__macro-fill" style="width:54%;background:rgba(255,140,51,0.65);"></div></div> <span class="fuel-mini__macro-label" style="color:rgba(255,140,51,0.75);">C 134g</span> </div> <div class="fuel-mini__macro"> <div class="fuel-mini__macro-bar"><div class="fuel-mini__macro-fill" style="width:60%;background:rgba(153,89,230,0.65);"></div></div> <span class="fuel-mini__macro-label" style="color:rgba(153,89,230,0.75);">F 42g</span> </div> </div> </div> </div> <div class="project-expand__details"> <p class="project-expand__text">Type what you ate in plain English — AI parses it into calories, protein, carbs, and fat with confidence scores. Barcode scanning for packaged foods. HealthKit sync, Apple Watch companion, and home screen widget.</p> <div class="project-expand__features"> <div class="project-expand__feature"> <span class="project-expand__feature-label">Stack</span> <span class="project-expand__feature-value">Swift · SwiftUI · SwiftData</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Input</span> <span class="project-expand__feature-value">AI parse · Barcode · Manual</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Sync</span> <span class="project-expand__feature-value">HealthKit · Watch · Widget</span> </div> </div> </div> </div>     </a><a href="/projects/yerb" class="project-card js-in has-preview" style="animation-delay: 0.05s; "> <div class="project-card__index lead"> 02 </div> <div class="project-card__content"> <h3>Yerb</h3> <p class="project-card__desc">Personal AI assistant running 24/7 on a Mac Mini. Manages calendar, automates coursework, runs autonomous builds overnight.</p> <div class="project-card__credits lead"> <span>Status</span> <span class="u-g">Active</span> </div> </div>   <div class="project-expand"> <div class="project-expand__showcase"> <div class="yerb-mini"> <div class="yerb-mini__bar"> <span class="yerb-mini__dot" style="background:#ff5f57;"></span> <span class="yerb-mini__dot" style="background:#febc2e;"></span> <span class="yerb-mini__dot" style="background:#28c840;"></span> <span class="yerb-mini__title">yerb</span> </div> <div class="yerb-mini__body"> <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>scheduler</div> <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>market</div> <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>scraper</div> <div class="yerb-mini__agent"><span class="yerb-mini__status"></span>builder</div> <div class="yerb-mini__uptime">847h uptime · 4 agents</div> <div class="yerb-mini__prompt">> <span class="yerb-mini__cursor"></span></div> </div> </div> </div> <div class="project-expand__details"> <p class="project-expand__text">24/7 autonomous AI assistant on a Mac Mini. Manages calendar, automates coursework, runs overnight builds, hunts vehicle deals, and drafts content — all without being asked.</p> <div class="project-expand__features"> <div class="project-expand__feature"> <span class="project-expand__feature-label">Runtime</span> <span class="project-expand__feature-value">OpenClaw · Claude · Python</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Agents</span> <span class="project-expand__feature-value">Scheduler · Market · Scraper · Builder</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Infra</span> <span class="project-expand__feature-value">Mac Mini · Always-on · launchd</span> </div> </div> </div> </div>    </a><a href="/projects/token-tracker" class="project-card js-in has-preview" style="animation-delay: 0.1s; "> <div class="project-card__index lead"> 03 </div> <div class="project-card__content"> <h3>Token Tracker</h3> <p class="project-card__desc">Native macOS widget tracking Claude Code usage in real-time. Parses sessions, shows per-model breakdowns and costs.</p> <div class="project-card__credits lead"> <span>Status</span> <span class="u-g">Active</span> </div> </div> <div class="project-expand"> <div class="project-expand__showcase"> <div class="widget-mock"> <div class="widget-mock__header"> <span class="widget-mock__icon">*</span> <span class="widget-mock__label">Claude Token Tracker</span> </div> <div class="widget-mock__body"> <div class="widget-mock__left"> <div class="widget-mock__big" id="widget-total">14.2M</div> <div class="widget-mock__sub">lifetime tokens</div> </div> <div class="widget-mock__right"> <div class="widget-mock__stat"> <span class="widget-mock__stat-label">Today</span> <span class="widget-mock__stat-value" id="widget-today">847.3K</span> </div> <div class="widget-mock__stat"> <span class="widget-mock__stat-model">Opus</span> <span class="widget-mock__stat-cost" id="widget-cost">~$142.80</span> </div> </div> </div> <div class="widget-mock__chart" id="widget-chart"> <div class="widget-mock__chart-label" id="widget-chart-label">7-day usage</div> <div class="widget-mock__bars" id="widget-bars"> <div class="widget-mock__bar" style="--h: 35%;"><span>M</span></div> <div class="widget-mock__bar" style="--h: 62%;"><span>T</span></div> <div class="widget-mock__bar" style="--h: 48%;"><span>W</span></div> <div class="widget-mock__bar widget-mock__bar--peak" style="--h: 85%;"><span>T</span></div> <div class="widget-mock__bar" style="--h: 71%;"><span>F</span></div> <div class="widget-mock__bar" style="--h: 40%;"><span>S</span></div> <div class="widget-mock__bar widget-mock__bar--today" style="--h: 55%;"><span>S</span></div> </div> </div> <div class="widget-mock__models"> <div class="widget-mock__model-row"> <span class="widget-mock__model-dot" style="background: #ff9500;"></span> <span class="widget-mock__model-name">Opus</span> <span class="widget-mock__model-val">8.4M</span> </div> <div class="widget-mock__model-row"> <span class="widget-mock__model-dot" style="background: #007aff;"></span> <span class="widget-mock__model-name">Sonnet</span> <span class="widget-mock__model-val">4.1M</span> </div> <div class="widget-mock__model-row"> <span class="widget-mock__model-dot" style="background: #34c759;"></span> <span class="widget-mock__model-name">Haiku</span> <span class="widget-mock__model-val">1.7M</span> </div> </div> </div> </div> <div class="project-expand__details"> <p class="project-expand__text">Native macOS widget that parses Claude Code session files in real-time. Tracks per-model token breakdowns across Opus, Sonnet, and Haiku with estimated cost calculations. Multi-device iCloud encrypted syncing, Discord rich presence support. Reads directly from ~/.claude — fully local, fully private.</p> <div class="project-expand__features"> <div class="project-expand__feature"> <span class="project-expand__feature-label">Stack</span> <span class="project-expand__feature-value">Swift · SwiftUI · WidgetKit</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Updates</span> <span class="project-expand__feature-value">Every 15 min via timeline provider</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Sizes</span> <span class="project-expand__feature-value">Small + Medium widget families</span> </div> </div> </div> </div>      </a><a href="/projects/marketplace-scraper" class="project-card js-in has-preview" style="animation-delay: 0.15000000000000002s; "> <div class="project-card__index lead"> 04 </div> <div class="project-card__content"> <h3>Marketplace Scraper</h3> <p class="project-card__desc">Automated vehicle deal finder for Toyota Tacoma &amp; 4Runner. Scrapes listings, scores deals, sends alerts.</p> <div class="project-card__credits lead"> <span>Status</span> <span class="u-g">Active</span> </div> </div>    <div class="project-expand"> <div class="project-expand__showcase"> <div class="scraper-mini"> <div class="scraper-mini__header"> <span class="scraper-mini__alert">DEAL ALERT</span> <span class="scraper-mini__score">87</span> </div> <div class="scraper-mini__vehicle">2016 4Runner SR5</div> <div class="scraper-mini__price">$24,500</div> <div class="scraper-mini__details">82k mi · 4WD · Clean title</div> <div class="scraper-mini__factors"> <div class="scraper-mini__factor"> <span class="scraper-mini__factor-label">Price</span> <div class="scraper-mini__factor-bar"><div class="scraper-mini__factor-fill" style="width:78%;"></div></div> </div> <div class="scraper-mini__factor"> <span class="scraper-mini__factor-label">Miles</span> <div class="scraper-mini__factor-bar"><div class="scraper-mini__factor-fill" style="width:85%;"></div></div> </div> <div class="scraper-mini__factor"> <span class="scraper-mini__factor-label">Year</span> <div class="scraper-mini__factor-bar"><div class="scraper-mini__factor-fill" style="width:72%;"></div></div> </div> </div> <div class="scraper-mini__via">via Telegram</div> </div> </div> <div class="project-expand__details"> <p class="project-expand__text">Automated Craigslist scraper that finds Toyota Tacoma and 4Runner deals. Scores listings by price, mileage, year, and condition — sends high-scoring matches straight to Telegram.</p> <div class="project-expand__features"> <div class="project-expand__feature"> <span class="project-expand__feature-label">Stack</span> <span class="project-expand__feature-value">Python · BeautifulSoup · SQLite</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Alerts</span> <span class="project-expand__feature-value">Telegram Bot API · Instant push</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Schedule</span> <span class="project-expand__feature-value">Cron · Integrated into Yerb</span> </div> </div> </div> </div>   </a><a class="project-card js-in has-preview" style="animation-delay: 0.2s; cursor: default;"> <div class="project-card__index lead"> 05 </div> <div class="project-card__content"> <h3>Neural Networks</h3> <p class="project-card__desc">Custom neural network library — backpropagation, activation functions, convolutional layers — no frameworks.</p> <div class="project-card__credits lead"> <span>Status</span> <span class="u-g">In Progress</span> </div> </div>     <div class="project-expand"> <div class="project-expand__showcase"> <div class="nn-mini"> <div class="nn-mini__label">forward pass</div> <svg class="nn-mini__svg" viewBox="0 0 200 140"> <!-- Connections layer 1→2 --> <line x1="30" y1="28" x2="80" y2="20" class="nn-mini__conn"></line> <line x1="30" y1="28" x2="80" y2="47" class="nn-mini__conn"></line> <line x1="30" y1="28" x2="80" y2="74" class="nn-mini__conn"></line> <line x1="30" y1="28" x2="80" y2="101" class="nn-mini__conn"></line> <line x1="30" y1="55" x2="80" y2="20" class="nn-mini__conn"></line> <line x1="30" y1="55" x2="80" y2="47" class="nn-mini__conn"></line> <line x1="30" y1="55" x2="80" y2="74" class="nn-mini__conn"></line> <line x1="30" y1="55" x2="80" y2="101" class="nn-mini__conn"></line> <line x1="30" y1="82" x2="80" y2="20" class="nn-mini__conn"></line> <line x1="30" y1="82" x2="80" y2="47" class="nn-mini__conn"></line> <line x1="30" y1="82" x2="80" y2="74" class="nn-mini__conn"></line> <line x1="30" y1="82" x2="80" y2="101" class="nn-mini__conn"></line> <line x1="30" y1="109" x2="80" y2="20" class="nn-mini__conn"></line> <line x1="30" y1="109" x2="80" y2="47" class="nn-mini__conn"></line> <line x1="30" y1="109" x2="80" y2="74" class="nn-mini__conn"></line> <line x1="30" y1="109" x2="80" y2="101" class="nn-mini__conn"></line> <!-- Connections layer 2→3 --> <line x1="80" y1="20" x2="130" y2="35" class="nn-mini__conn"></line> <line x1="80" y1="20" x2="130" y2="70" class="nn-mini__conn"></line> <line x1="80" y1="20" x2="130" y2="105" class="nn-mini__conn"></line> <line x1="80" y1="47" x2="130" y2="35" class="nn-mini__conn"></line> <line x1="80" y1="47" x2="130" y2="70" class="nn-mini__conn"></line> <line x1="80" y1="47" x2="130" y2="105" class="nn-mini__conn"></line> <line x1="80" y1="74" x2="130" y2="35" class="nn-mini__conn"></line> <line x1="80" y1="74" x2="130" y2="70" class="nn-mini__conn"></line> <line x1="80" y1="74" x2="130" y2="105" class="nn-mini__conn"></line> <line x1="80" y1="101" x2="130" y2="35" class="nn-mini__conn"></line> <line x1="80" y1="101" x2="130" y2="70" class="nn-mini__conn"></line> <line x1="80" y1="101" x2="130" y2="105" class="nn-mini__conn"></line> <!-- Connections layer 3→4 --> <line x1="130" y1="35" x2="175" y2="55" class="nn-mini__conn"></line> <line x1="130" y1="35" x2="175" y2="85" class="nn-mini__conn"></line> <line x1="130" y1="70" x2="175" y2="55" class="nn-mini__conn"></line> <line x1="130" y1="70" x2="175" y2="85" class="nn-mini__conn"></line> <line x1="130" y1="105" x2="175" y2="55" class="nn-mini__conn"></line> <line x1="130" y1="105" x2="175" y2="85" class="nn-mini__conn"></line> <!-- Layer 1 nodes (input) --> <circle cx="30" cy="28" r="7" class="nn-mini__node nn-mini__node--input"></circle> <circle cx="30" cy="55" r="7" class="nn-mini__node nn-mini__node--input"></circle> <circle cx="30" cy="82" r="7" class="nn-mini__node nn-mini__node--input"></circle> <circle cx="30" cy="109" r="7" class="nn-mini__node nn-mini__node--input"></circle> <!-- Layer 2 nodes (hidden) --> <circle cx="80" cy="20" r="7" class="nn-mini__node nn-mini__node--hidden"></circle> <circle cx="80" cy="47" r="7" class="nn-mini__node nn-mini__node--hidden"></circle> <circle cx="80" cy="74" r="7" class="nn-mini__node nn-mini__node--hidden"></circle> <circle cx="80" cy="101" r="7" class="nn-mini__node nn-mini__node--hidden"></circle> <!-- Layer 3 nodes (hidden) --> <circle cx="130" cy="35" r="7" class="nn-mini__node nn-mini__node--hidden2"></circle> <circle cx="130" cy="70" r="7" class="nn-mini__node nn-mini__node--hidden2"></circle> <circle cx="130" cy="105" r="7" class="nn-mini__node nn-mini__node--hidden2"></circle> <!-- Layer 4 nodes (output) --> <circle cx="175" cy="55" r="7" class="nn-mini__node nn-mini__node--output"></circle> <circle cx="175" cy="85" r="7" class="nn-mini__node nn-mini__node--output"></circle> </svg> <div class="nn-mini__layers"> <span>input</span><span>hidden</span><span>hidden</span><span>output</span> </div> </div> </div> <div class="project-expand__details"> <p class="project-expand__text">Neural network library built from scratch with only Python and NumPy. Dense layers, conv layers, backpropagation, activation functions — every gradient computed by hand.</p> <div class="project-expand__features"> <div class="project-expand__feature"> <span class="project-expand__feature-label">Stack</span> <span class="project-expand__feature-value">Python · NumPy · Matplotlib</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Layers</span> <span class="project-expand__feature-value">Dense · Conv2D · Activations</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Training</span> <span class="project-expand__feature-value">SGD · Momentum · LR scheduling</span> </div> </div> </div> </div>  </a><a href="/projects/vault-keeper" class="project-card js-in has-preview" style="animation-delay: 0.25s; "> <div class="project-card__index lead"> 06 </div> <div class="project-card__content"> <h3>Vault Keeper</h3> <p class="project-card__desc">AI-powered accountability system built on Obsidian. Reads journals, detects behavioral patterns, generates briefs.</p> <div class="project-card__credits lead"> <span>Status</span> <span class="u-g">Legacy</span> </div> </div>      <div class="project-expand"> <div class="project-expand__showcase"> <div class="vault-mini"> <div class="vault-mini__header"> <svg class="vault-mini__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg> <span class="vault-mini__title">Weekly Brief</span> </div> <div class="vault-mini__content"> <div class="vault-mini__row"> <span class="vault-mini__label">Commitments kept</span> <div class="vault-mini__bar-wrap"><div class="vault-mini__bar-fill" style="width:68%;"></div></div> <span class="vault-mini__val">68%</span> </div> <div class="vault-mini__row"> <span class="vault-mini__label">Gym consistency</span> <div class="vault-mini__bar-wrap"><div class="vault-mini__bar-fill vault-mini__bar-fill--warn" style="width:40%;"></div></div> <span class="vault-mini__val">40%</span> </div> <div class="vault-mini__row"> <span class="vault-mini__label">Deep work hours</span> <div class="vault-mini__bar-wrap"><div class="vault-mini__bar-fill vault-mini__bar-fill--good" style="width:82%;"></div></div> <span class="vault-mini__val">82%</span> </div> </div> <div class="vault-mini__pattern">Pattern: overcommit Sun → burnout Tue</div> <div class="vault-mini__tag">LEGACY → Yerb</div> </div> </div> <div class="project-expand__details"> <p class="project-expand__text">AI accountability system built on Obsidian. Reads journal entries, detects behavioral patterns, and generates weekly briefs using your own words against you. Evolved into Yerb.</p> <div class="project-expand__features"> <div class="project-expand__feature"> <span class="project-expand__feature-label">Stack</span> <span class="project-expand__feature-value">Python · Claude API · Obsidian</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Analysis</span> <span class="project-expand__feature-value">Pattern detection · Self-sabotage tracking</span> </div> <div class="project-expand__feature"> <span class="project-expand__feature-label">Output</span> <span class="project-expand__feature-value">Friday briefs · Recovery plans</span> </div> </div> </div> </div> </a> </div> </section>  <section class="build-section js-in" id="build"> <div class="build-section__grid"> <!-- Visual: Cycling build visuals --> <div class="build-visual" id="build-visual"> <!-- 0: site — Miniature Website Preview --> <div class="build-vis build-vis--active" data-vis="site"> <div class="vis-site__chrome"> <div class="vis-site__dots"> <span class="vis-site__dot" style="background:#ff5f57;"></span> <span class="vis-site__dot" style="background:#febc2e;"></span> <span class="vis-site__dot" style="background:#28c840;"></span> </div> <div class="vis-site__url-bar"> <svg class="vis-site__lock" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-9H9V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2z"></path></svg> <span class="vis-site__url-text">yoursite.com</span> </div> </div> <div class="vis-site__page"> <div class="vis-site__nav"> <span class="vis-site__nav-logo">acme</span> <div class="vis-site__nav-links"> <span class="vis-site__nav-link">Home</span> <span class="vis-site__nav-link">Pricing</span> <span class="vis-site__nav-link">Blog</span> </div> <span class="vis-site__nav-cta">Sign up</span> </div> <div class="vis-site__hero"> <span class="vis-site__hero-badge">&#9679; Now in beta</span> <div class="vis-site__hero-h1">Ship faster.</div> <div class="vis-site__hero-h1 vis-site__hero-h1--accent">Build smarter.</div> <p class="vis-site__hero-sub">The modern platform for teams who want to move fast without breaking things.</p> <div class="vis-site__hero-actions"> <span class="vis-site__btn vis-site__btn--primary">Get started</span> <span class="vis-site__btn vis-site__btn--ghost">View docs &#8594;</span> </div> </div> <div class="vis-site__stats-row"> <div class="vis-site__stat-block"> <span class="vis-site__stat-num">99.9%</span> <span class="vis-site__stat-desc">Uptime</span> </div> <div class="vis-site__stat-block"> <span class="vis-site__stat-num">2.4M</span> <span class="vis-site__stat-desc">Requests/day</span> </div> <div class="vis-site__stat-block"> <span class="vis-site__stat-num">&lt;50ms</span> <span class="vis-site__stat-desc">Avg latency</span> </div> </div> </div> <div class="vis-site__lighthouse"> <div class="vis-site__lh-score"> <span class="vis-site__lh-val build-browser__stat-val--green">100</span> <span class="vis-site__lh-label">Performance</span> </div> <div class="vis-site__lh-score"> <span class="vis-site__lh-val build-browser__stat-val--green">100</span> <span class="vis-site__lh-label">Accessibility</span> </div> <div class="vis-site__lh-score"> <span class="vis-site__lh-val build-browser__stat-val--green">100</span> <span class="vis-site__lh-label">SEO</span> </div> <div class="vis-site__lh-score"> <span class="vis-site__lh-val">0.4s</span> <span class="vis-site__lh-label">Load</span> </div> </div> </div> <!-- 1: app — Fuel Calorie Tracker --> <div class="build-vis" data-vis="app"> <div class="vis-app__phone"> <div class="vis-app__device"> <div class="vis-app__status-bar"> <span class="vis-app__time">9:41</span> <div class="vis-app__status-icons"> <svg class="vis-app__icon-signal" viewBox="0 0 16 12" fill="rgba(255,255,255,0.5)"> <rect x="0" y="9" width="3" height="3" rx="0.5"></rect> <rect x="4.5" y="6" width="3" height="6" rx="0.5"></rect> <rect x="9" y="3" width="3" height="9" rx="0.5"></rect> <rect x="13.5" y="0" width="3" height="12" rx="0.5" fill-opacity="0.3"></rect> </svg> <svg class="vis-app__icon-battery" viewBox="0 0 28 13" fill="none"> <rect x="0.5" y="0.5" width="23" height="12" rx="2.5" stroke="rgba(255,255,255,0.4)" stroke-width="1"></rect> <rect x="25" y="4" width="2.5" height="5" rx="1" fill="rgba(255,255,255,0.25)"></rect> <rect x="2" y="2" width="16" height="9" rx="1.5" fill="rgba(52,199,89,0.7)"></rect> </svg> </div> </div> <div class="vis-app__island"></div> <div class="vis-app__screen"> <div class="vis-app__header"> <span class="vis-app__header-title">Today</span> <span class="vis-app__header-date">Mar 4</span> </div> <div class="vis-app__ring-section"> <div class="vis-app__ring-container"> <svg class="vis-app__ring-svg" viewBox="0 0 80 80"> <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"></circle> <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(52,199,89,0.75)" stroke-width="6" stroke-dasharray="201" stroke-dashoffset="54" stroke-linecap="round" transform="rotate(-90 40 40)"></circle> </svg> <div class="vis-app__ring-label"> <span class="vis-app__ring-cal">1,847</span> <span class="vis-app__ring-unit">kcal</span> </div> </div> <div class="vis-app__ring-meta"> <span class="vis-app__ring-goal">of 2,400 goal</span> <span class="vis-app__ring-remaining">553 remaining</span> </div> </div> <div class="vis-app__macros"> <div class="vis-app__macro"> <div class="vis-app__macro-top"> <span class="vis-app__macro-name">Protein</span> <span class="vis-app__macro-val">142g</span> </div> <div class="vis-app__macro-track"><div class="vis-app__macro-fill vis-app__macro-fill--protein"></div></div> </div> <div class="vis-app__macro"> <div class="vis-app__macro-top"> <span class="vis-app__macro-name">Carbs</span> <span class="vis-app__macro-val">186g</span> </div> <div class="vis-app__macro-track"><div class="vis-app__macro-fill vis-app__macro-fill--carbs"></div></div> </div> <div class="vis-app__macro"> <div class="vis-app__macro-top"> <span class="vis-app__macro-name">Fat</span> <span class="vis-app__macro-val">61g</span> </div> <div class="vis-app__macro-track"><div class="vis-app__macro-fill vis-app__macro-fill--fat"></div></div> </div> </div> <div class="vis-app__divider"></div> <div class="vis-app__meals"> <div class="vis-app__meals-header"> <span class="vis-app__meals-title">Meals</span> <span class="vis-app__meals-count">3 logged</span> </div> <div class="vis-app__meal"> <div class="vis-app__meal-icon vis-app__meal-icon--breakfast"></div> <div class="vis-app__meal-info"> <span class="vis-app__meal-name">Breakfast</span> <span class="vis-app__meal-desc">Eggs, toast, avocado</span> </div> <span class="vis-app__meal-kcal">520</span> </div> <div class="vis-app__meal"> <div class="vis-app__meal-icon vis-app__meal-icon--lunch"></div> <div class="vis-app__meal-info"> <span class="vis-app__meal-name">Lunch</span> <span class="vis-app__meal-desc">Chicken bowl, rice</span> </div> <span class="vis-app__meal-kcal">785</span> </div> <div class="vis-app__meal vis-app__meal--active"> <div class="vis-app__meal-icon vis-app__meal-icon--snack"></div> <div class="vis-app__meal-info"> <span class="vis-app__meal-name">Snack</span> <span class="vis-app__meal-desc">Protein shake</span> </div> <span class="vis-app__meal-kcal">542</span> </div> </div> </div> <div class="vis-app__home-bar"></div> </div> </div> </div> <!-- 2: software — CI/CD Pipeline --> <div class="build-vis" data-vis="software"> <div class="vis-sw__bar"> <span class="vis-wdot" style="background:#ff5f57;"></span> <span class="vis-wdot" style="background:#febc2e;"></span> <span class="vis-wdot" style="background:#28c840;"></span> <span class="vis-sw__title">CI / CD</span> <span class="vis-sw__badge">&#9679; main</span> </div> <div class="vis-sw__body"> <div class="vis-sw__pipeline"> <div class="vis-sw__stage vis-sw__stage--pass"> <div class="vis-sw__stage-icon">&#10004;</div> <div class="vis-sw__stage-label">Build</div> <div class="vis-sw__stage-time">23s</div> </div> <div class="vis-sw__connector vis-sw__connector--pass"></div> <div class="vis-sw__stage vis-sw__stage--pass"> <div class="vis-sw__stage-icon">&#10004;</div> <div class="vis-sw__stage-label">Test</div> <div class="vis-sw__stage-time">1m 47s</div> </div> <div class="vis-sw__connector vis-sw__connector--pass"></div> <div class="vis-sw__stage vis-sw__stage--pass"> <div class="vis-sw__stage-icon">&#10004;</div> <div class="vis-sw__stage-label">Lint</div> <div class="vis-sw__stage-time">12s</div> </div> <div class="vis-sw__connector vis-sw__connector--active"></div> <div class="vis-sw__stage vis-sw__stage--active"> <div class="vis-sw__stage-icon vis-sw__spinner"></div> <div class="vis-sw__stage-label">Deploy</div> <div class="vis-sw__stage-time">...</div> </div> </div> <div class="vis-sw__cols"> <div class="vis-sw__panel"> <div class="vis-sw__panel-head">Test Suites</div> <div class="vis-sw__suite"> <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span> <span class="vis-sw__suite-name">auth.test.ts</span> <span class="vis-sw__suite-count">24 passed</span> </div> <div class="vis-sw__suite"> <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span> <span class="vis-sw__suite-name">api.test.ts</span> <span class="vis-sw__suite-count">61 passed</span> </div> <div class="vis-sw__suite"> <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span> <span class="vis-sw__suite-name">db.test.ts</span> <span class="vis-sw__suite-count">38 passed</span> </div> <div class="vis-sw__suite"> <span class="vis-sw__suite-icon vis-sw__suite-icon--pass">&#10004;</span> <span class="vis-sw__suite-name">utils.test.ts</span> <span class="vis-sw__suite-count">24 passed</span> </div> <div class="vis-sw__totals"> <span class="vis-sw__totals-pass">147 passed</span> <span class="vis-sw__totals-sep">&middot;</span> <span class="vis-sw__totals-fail">0 failed</span> </div> </div> <div class="vis-sw__panel"> <div class="vis-sw__panel-head">Commits</div> <div class="vis-sw__commits"> <div class="vis-sw__commit"> <div class="vis-sw__commit-dot"></div> <div class="vis-sw__commit-line"></div> <div class="vis-sw__commit-info"> <span class="vis-sw__commit-msg">feat: add rate limiting</span> <span class="vis-sw__commit-meta">a3f2c91 &middot; 4m ago</span> </div> </div> <div class="vis-sw__commit"> <div class="vis-sw__commit-dot"></div> <div class="vis-sw__commit-line"></div> <div class="vis-sw__commit-info"> <span class="vis-sw__commit-msg">fix: token refresh race</span> <span class="vis-sw__commit-meta">e7b1d04 &middot; 22m ago</span> </div> </div> <div class="vis-sw__commit"> <div class="vis-sw__commit-dot"></div> <div class="vis-sw__commit-line"></div> <div class="vis-sw__commit-info"> <span class="vis-sw__commit-msg">refactor: extract middleware</span> <span class="vis-sw__commit-meta">1c8e3fa &middot; 1h ago</span> </div> </div> <div class="vis-sw__commit"> <div class="vis-sw__commit-dot vis-sw__commit-dot--merge"></div> <div class="vis-sw__commit-info"> <span class="vis-sw__commit-msg">merge: feature/auth</span> <span class="vis-sw__commit-meta">9d4a2b7 &middot; 3h ago</span> </div> </div> </div> </div> </div> </div> </div> <!-- 3: assistant — Real Chat --> <div class="build-vis" data-vis="assistant"> <div class="vis-chat2__bar"> <div class="vis-chat2__avatar"></div> <span class="vis-chat2__name">Claude</span> <span class="vis-chat2__online">&#9679;</span> </div> <div class="vis-chat2__body"> <div class="vis-chat2__msg vis-chat2__msg--user">Build me a dashboard</div> <div class="vis-chat2__msg vis-chat2__msg--ai">I'll set up React with D3 for the charts. Adding real-time data via WebSocket and a responsive grid layout.</div> <div class="vis-chat2__msg vis-chat2__msg--user">Add dark mode too</div> <div class="vis-chat2__msg vis-chat2__msg--ai"><span class="vis-chat2__typing"><span></span><span></span><span></span></span></div> </div> <div class="vis-chat2__input"> <div class="vis-chat2__field"></div> <div class="vis-chat2__send">&#8593;</div> </div> </div> <!-- 4: AI — Model Inference --> <div class="build-vis" data-vis="AI"> <div class="vis-ai2__bar"> <span class="vis-wdot" style="background:#ff5f57;"></span> <span class="vis-wdot" style="background:#febc2e;"></span> <span class="vis-wdot" style="background:#28c840;"></span> <span class="vis-ai2__method">POST</span> <span class="vis-ai2__endpoint">/v1/chat/completions</span> <span class="vis-ai2__status">200</span> <span class="vis-ai2__stream-badge">stream</span> </div> <div class="vis-ai2__body"> <div class="vis-ai2__section"> <span class="vis-ai2__section-label">request</span> <pre class="vis-ai2__code">&#123;
+  <span class="vis-ai2__k">"model"</span>: <span class="vis-ai2__s">"claude-sonnet-4-20250514"</span>,
+  <span class="vis-ai2__k">"max_tokens"</span>: <span class="vis-ai2__n">1024</span>,
+  <span class="vis-ai2__k">"messages"</span>: [&#123;
+    <span class="vis-ai2__k">"role"</span>: <span class="vis-ai2__s">"user"</span>,
+    <span class="vis-ai2__k">"content"</span>: <span class="vis-ai2__s">"Analyze this dataset"</span>
+  &#125;]
+&#125;</pre> </div> <div class="vis-ai2__section vis-ai2__section--response"> <span class="vis-ai2__section-label">response <span class="vis-ai2__live-dot"></span></span> <div class="vis-ai2__stream"> <span class="vis-ai2__token vis-ai2__token--1">I'll</span><span class="vis-ai2__token vis-ai2__token--2"> start</span><span class="vis-ai2__token vis-ai2__token--3"> by</span><span class="vis-ai2__token vis-ai2__token--4"> loading</span><span class="vis-ai2__token vis-ai2__token--5"> the</span><span class="vis-ai2__token vis-ai2__token--6"> CSV</span><span class="vis-ai2__token vis-ai2__token--7"> and</span><span class="vis-ai2__token vis-ai2__token--8"> checking</span><span class="vis-ai2__token vis-ai2__token--9"> for</span><span class="vis-ai2__token vis-ai2__token--10"> null</span><span class="vis-ai2__token vis-ai2__token--11"> values</span><span class="vis-ai2__token vis-ai2__token--12"> across</span><span class="vis-ai2__token vis-ai2__token--13"> all</span><span class="vis-ai2__token vis-ai2__token--14"> columns,</span><span class="vis-ai2__token vis-ai2__token--15"> then</span><span class="vis-ai2__token vis-ai2__token--16"> compute</span><span class="vis-ai2__token vis-ai2__token--17"> summary</span><span class="vis-ai2__token vis-ai2__token--18"> statistics</span><span class="vis-ai2__cursor"></span> </div> </div> </div> <div class="vis-ai2__footer"> <div class="vis-ai2__metric"> <span class="vis-ai2__metric-label">input</span> <span class="vis-ai2__metric-value">24 tok</span> </div> <div class="vis-ai2__metric"> <span class="vis-ai2__metric-label">output</span> <span class="vis-ai2__metric-value vis-ai2__metric-value--green">38 tok</span> </div> <div class="vis-ai2__metric"> <span class="vis-ai2__metric-label">latency</span> <span class="vis-ai2__metric-value">TTFT 0.3s</span> </div> <div class="vis-ai2__metric"> <span class="vis-ai2__metric-label">tokens/s</span> <span class="vis-ai2__metric-value vis-ai2__metric-value--green">82</span> </div> </div> </div> <!-- 5: tool — Real Terminal --> <div class="build-vis" data-vis="tool"> <div class="vis-term2__bar"> <span class="vis-wdot" style="background:#ff5f57;"></span> <span class="vis-wdot" style="background:#febc2e;"></span> <span class="vis-wdot" style="background:#28c840;"></span> <span class="vis-term2__title">~/projects</span> </div> <div class="vis-term2__body"> <div class="vis-term2__line"><span class="vis-term2__p">$</span> npm create astro@latest</div> <div class="vis-term2__line vis-term2__out">&nbsp; &#9724; tmpl &nbsp; Using: blog</div> <div class="vis-term2__line vis-term2__out">&nbsp; &#9724; deps &nbsp; Installing...</div> <div class="vis-term2__line vis-term2__out">&nbsp; <span class="vis-term2__g">&#10004;</span> Done</div> <div class="vis-term2__line"><span class="vis-term2__p">$</span> npm run build</div> <div class="vis-term2__line vis-term2__out">&nbsp; <span class="vis-term2__dim">building (SSG)...</span></div> <div class="vis-term2__line vis-term2__out">&nbsp; <span class="vis-term2__g">&#10004;</span> <span class="vis-term2__w">14 pages built in 1.86s</span></div> <div class="vis-term2__line"><span class="vis-term2__p">$</span> <span class="vis-term2__cursor">&#9611;</span></div> </div> </div> <!-- 6: program — Real Syntax-Highlighted Code --> <div class="build-vis" data-vis="program"> <div class="vis-code2__bar"> <span class="vis-wdot" style="background:#ff5f57;"></span> <span class="vis-wdot" style="background:#febc2e;"></span> <span class="vis-wdot" style="background:#28c840;"></span> <span class="vis-code2__tab">agent.py</span> </div> <pre class="vis-code2__body"><span class="vis-code2__ln"> 1</span>  <span class="vis-code2__kw">import</span> anthropic
+<span class="vis-code2__ln"> 2</span>
+<span class="vis-code2__ln"> 3</span>  <span class="vis-code2__kw">async def</span> <span class="vis-code2__fn">run</span>(prompt: <span class="vis-code2__tp">str</span>) -> <span class="vis-code2__tp">str</span>:
+<span class="vis-code2__ln"> 4</span>      client = anthropic.Anthropic()
+<span class="vis-code2__ln"> 5</span>      msg = client.messages.create(
+<span class="vis-code2__ln"> 6</span>          model=<span class="vis-code2__str">"claude-sonnet-4-20250514"</span>,
+<span class="vis-code2__ln"> 7</span>          max_tokens=<span class="vis-code2__num">1024</span>,
+<span class="vis-code2__ln"> 8</span>          messages=[&#123;
+<span class="vis-code2__ln"> 9</span>              <span class="vis-code2__str">"role"</span>: <span class="vis-code2__str">"user"</span>,
+<span class="vis-code2__ln">10</span>              <span class="vis-code2__str">"content"</span>: prompt
+<span class="vis-code2__ln">11</span>          &#125;]
+<span class="vis-code2__ln">12</span>      )
+<span class="vis-code2__ln">13</span>      <span class="vis-code2__kw">return</span> msg.content[<span class="vis-code2__num">0</span>].text</pre> </div> <!-- 7: system — Layered Architecture --> <div class="build-vis" data-vis="system"> <svg class="vis-sys2__svg" viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg"> <defs> <marker id="sys2-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse"> <path d="M0,0 L6,3 L0,6 Z" fill="rgba(255,255,255,0.15)"></path> </marker> <marker id="sys2-arrow-g" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse"> <path d="M0,0 L6,3 L0,6 Z" fill="rgba(52,199,89,0.3)"></path> </marker> </defs> <text x="12" y="36" class="vis-sys2__layer-label">EDGE</text> <text x="12" y="108" class="vis-sys2__layer-label">GATEWAY</text> <text x="12" y="186" class="vis-sys2__layer-label">SERVICES</text> <text x="12" y="258" class="vis-sys2__layer-label">DATA</text> <line x1="50" y1="62" x2="340" y2="62" class="vis-sys2__separator"></line> <line x1="50" y1="138" x2="340" y2="138" class="vis-sys2__separator"></line> <line x1="50" y1="218" x2="340" y2="218" class="vis-sys2__separator"></line> <path d="M180,48 L180,88" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"></path> <path d="M152,118 L112,158" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"></path> <path d="M195,118 L195,158" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"></path> <path d="M218,118 L272,158" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"></path> <path d="M98,192 L118,232" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"></path> <path d="M180,192 L145,232" class="vis-sys2__conn" marker-end="url(#sys2-arrow)"></path> <path d="M210,192 L260,232" class="vis-sys2__conn-g" marker-end="url(#sys2-arrow-g)"></path> <path d="M278,192 L278,232" class="vis-sys2__conn-g" marker-end="url(#sys2-arrow-g)"></path> <circle r="2.5" class="vis-sys2__packet"><animateMotion dur="2s" repeatCount="indefinite" path="M180,48 L180,88"></animateMotion></circle> <circle r="2.5" class="vis-sys2__packet vis-sys2__packet--g"><animateMotion dur="1.8s" repeatCount="indefinite" path="M195,118 L195,158"></animateMotion></circle> <circle r="2" class="vis-sys2__packet"><animateMotion dur="2.4s" repeatCount="indefinite" path="M152,118 L112,158"></animateMotion></circle> <circle r="2" class="vis-sys2__packet"><animateMotion dur="2.6s" repeatCount="indefinite" begin="0.5s" path="M218,118 L272,158"></animateMotion></circle> <circle r="2" class="vis-sys2__packet vis-sys2__packet--g"><animateMotion dur="2.2s" repeatCount="indefinite" begin="0.8s" path="M180,192 L145,232"></animateMotion></circle> <circle r="2" class="vis-sys2__packet vis-sys2__packet--amber"><animateMotion dur="1.6s" repeatCount="indefinite" begin="0.3s" path="M210,192 L260,232"></animateMotion></circle> <rect x="130" y="22" width="100" height="26" rx="4" class="vis-sys2__node"></rect> <circle cx="141" cy="35" r="3" class="vis-sys2__status vis-sys2__status--on"></circle> <text x="150" y="39" class="vis-sys2__node-label">client:443</text> <rect x="208" y="28" width="16" height="12" rx="2" class="vis-sys2__badge"></rect> <text x="216" y="37" class="vis-sys2__badge-text">TLS</text> <rect x="130" y="88" width="110" height="30" rx="4" class="vis-sys2__node vis-sys2__node--primary"></rect> <circle cx="141" cy="103" r="3" class="vis-sys2__status vis-sys2__status--on"></circle> <text x="150" y="107" class="vis-sys2__node-label vis-sys2__node-label--primary">nginx:80</text> <text x="224" y="107" class="vis-sys2__node-meta">LB</text> <rect x="60" y="158" width="90" height="34" rx="4" class="vis-sys2__node"></rect> <circle cx="71" cy="171" r="3" class="vis-sys2__status vis-sys2__status--on"></circle> <text x="80" y="175" class="vis-sys2__node-label">node:3000</text> <text x="80" y="186" class="vis-sys2__node-sub">auth</text> <rect x="155" y="158" width="90" height="34" rx="4" class="vis-sys2__node"></rect> <circle cx="166" cy="171" r="3" class="vis-sys2__status vis-sys2__status--on"></circle> <text x="175" y="175" class="vis-sys2__node-label">node:3001</text> <text x="175" y="186" class="vis-sys2__node-sub">api</text> <rect x="250" y="158" width="90" height="34" rx="4" class="vis-sys2__node"></rect> <circle cx="261" cy="171" r="3" class="vis-sys2__status vis-sys2__status--on"></circle> <text x="270" y="175" class="vis-sys2__node-label">node:3002</text> <text x="270" y="186" class="vis-sys2__node-sub">workers</text> <rect x="80" y="232" width="100" height="30" rx="4" class="vis-sys2__node vis-sys2__node--data"></rect> <ellipse cx="94" cy="243" rx="5" ry="3" class="vis-sys2__icon-db"></ellipse> <line x1="89" y1="243" x2="89" y2="250" class="vis-sys2__icon-db-line"></line> <line x1="99" y1="243" x2="99" y2="250" class="vis-sys2__icon-db-line"></line> <ellipse cx="94" cy="250" rx="5" ry="3" class="vis-sys2__icon-db"></ellipse> <text x="108" y="251" class="vis-sys2__node-label">postgres:5432</text> <rect x="225" y="232" width="100" height="30" rx="4" class="vis-sys2__node vis-sys2__node--cache"></rect> <circle cx="239" cy="247" r="4" class="vis-sys2__icon-cache"></circle> <text x="250" y="251" class="vis-sys2__node-label">redis:6379</text> <text x="340" y="273" class="vis-sys2__meta" text-anchor="end">2.4k req/s</text> <circle cx="306" cy="270" r="2.5" class="vis-sys2__meta-dot"></circle> </svg> </div> <!-- 8: agent — Live Dashboard --> <div class="build-vis" data-vis="agent"> <div class="vis-agt__bar"> <span class="vis-wdot" style="background:#ff5f57;"></span> <span class="vis-wdot" style="background:#febc2e;"></span> <span class="vis-wdot" style="background:#28c840;"></span> <span class="vis-agt__live">&#9679; Active</span> </div> <div class="vis-agt__body"> <div class="vis-agt__tasks"> <div class="vis-agt__task"> <span class="vis-agt__tdot" style="background:rgba(52,199,89,0.7)"></span> <span class="vis-agt__tname">Scrape listings</span> <div class="vis-agt__prog"><div class="vis-agt__fill" style="width:100%"></div></div> </div> <div class="vis-agt__task"> <span class="vis-agt__tdot" style="background:rgba(254,188,46,0.7)"></span> <span class="vis-agt__tname">Score deals</span> <div class="vis-agt__prog"><div class="vis-agt__fill vis-agt__fill--shimmer" style="width:67%"></div></div> </div> <div class="vis-agt__task"> <span class="vis-agt__tdot" style="background:rgba(255,255,255,0.15)"></span> <span class="vis-agt__tname">Send alerts</span> <div class="vis-agt__prog"><div class="vis-agt__fill" style="width:0%"></div></div> </div> </div> <div class="vis-agt__log"> <div class="vis-agt__ll">[14:02:31] Fetched 47 new listings</div> <div class="vis-agt__ll vis-agt__ll--g">[14:02:33] Match: 2019 Tacoma &mdash; $28,400</div> <div class="vis-agt__ll">[14:02:34] Scoring batch 2/3...</div> <div class="vis-agt__ll">[14:02:35] <span class="vis-agt__blink">_</span></div> </div> </div> </div> <!-- 9: API — Real JSON Response --> <div class="build-vis" data-vis="API"> <div class="vis-api2__bar"> <span class="vis-wdot" style="background:#ff5f57;"></span> <span class="vis-wdot" style="background:#febc2e;"></span> <span class="vis-wdot" style="background:#28c840;"></span> </div> <div class="vis-api2__body"> <div class="vis-api2__req"> <span class="vis-api2__method">GET</span> <span class="vis-api2__endpoint">/api/v1/projects</span> <span class="vis-api2__badge">200</span> <span class="vis-api2__ms">23ms</span> </div> <pre class="vis-api2__json">&#123;
+  <span class="vis-api2__k">"data"</span>: [
+    &#123;
+      <span class="vis-api2__k">"id"</span>: <span class="vis-api2__n">1</span>,
+      <span class="vis-api2__k">"name"</span>: <span class="vis-api2__s">"fuel-ios"</span>,
+      <span class="vis-api2__k">"status"</span>: <span class="vis-api2__s">"live"</span>,
+      <span class="vis-api2__k">"stars"</span>: <span class="vis-api2__n">128</span>
+    &#125;
+  ],
+  <span class="vis-api2__k">"total"</span>: <span class="vis-api2__n">6</span>,
+  <span class="vis-api2__k">"cached"</span>: <span class="vis-api2__b">true</span>
+&#125;</pre> </div> </div> </div> <!-- Text: right side --> <div class="build-section__text"> <h2 class="display display--2" style="margin-bottom: 1.5rem;">I'll build<br>your <span class="build-word" id="build-word">site</span></h2> <p class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2); margin-bottom: 2rem;">
+I design and develop fast, custom software — no templates, no bloat. Hand-coded with modern tools, deployed in days not months. If you want something that works and ships fast, let's talk.
+</p> <div class="build-section__features"> <div class="build-section__feature"> <span class="build-section__feature-num">01</span> <div> <span class="build-section__feature-title">Custom Built</span> <span class="build-section__feature-desc">No templates. No boilerplate. Built to spec from scratch.</span> </div> </div> <div class="build-section__feature"> <span class="build-section__feature-num">02</span> <div> <span class="build-section__feature-title">Fast</span> <span class="build-section__feature-desc">Sub-second load times. Lighthouse 100s across the board.</span> </div> </div> <div class="build-section__feature"> <span class="build-section__feature-num">03</span> <div> <span class="build-section__feature-title">Right Tool, Right Job</span> <span class="build-section__feature-desc">Swift, Python, React, Astro — whatever fits the project.</span> </div> </div> </div> <a href="mailto:jake@bryt.works" class="build-section__cta lead u-g" style="display: inline-block; margin-top: 2rem;">
+Start a project →
+</a> </div> </div> </section>  <section class="contact-section js-in" id="contact-form"> <div class="contact-section__inner"> <h2 class="display display--2" style="margin-bottom: 0.5rem;">Get in touch</h2> <p class="lead" style="font-size: 12px; color: var(--grey); margin-bottom: 2.5rem; text-transform: none;">For projects, collaborations, or just to say hey.</p> <div class="contact-section__grid"> <a href="mailto:jake@bryt.works" class="contact-card"> <span class="contact-card__label">Email</span> <span class="contact-card__value u-g">jake@bryt.works</span> </a> <a href="https://x.com/Jak3dev" target="_blank" class="contact-card"> <span class="contact-card__label">X / Twitter</span> <span class="contact-card__value u-g">@Jak3dev</span> </a> <a href="https://github.com/quakeob" target="_blank" class="contact-card"> <span class="contact-card__label">GitHub</span> <span class="contact-card__value u-g">quakeob</span> </a> <a href="https://instagram.com/jjakedavis" target="_blank" class="contact-card"> <span class="contact-card__label">Instagram</span> <span class="contact-card__value u-g">@jjakedavis</span> </a> </div> </div> </section>  <section class="gallery-section js-in" id="gallery"> <div class="gallery-track" id="gallery-track"> <div class="gallery-item"> <img src="/photos/bw/DSCF4108.jpg" alt="Black &#38; White" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Black &amp; White</span> </span> </div> </div><div class="gallery-item"> <img src="/photos/bw/DSCF3767.jpg" alt="Black &#38; White" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Black &amp; White</span> </span> </div> </div><div class="gallery-item"> <img src="/photos/bw/DSCF7488.jpg" alt="Black &#38; White" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Black &amp; White</span> </span> </div> </div><div class="gallery-item"> <img src="/photos/alaska/DSCF6443.jpg" alt="Glacier Bay" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Glacier Bay</span> </span> </div> </div><div class="gallery-item"> <img src="/photos/alaska/DSCF6545.jpg" alt="Kenai Fjords" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Kenai Fjords</span> </span> </div> </div><div class="gallery-item"> <img src="/photos/alaska/DSCF6450.jpg" alt="Alaska" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Alaska</span> </span> </div> </div><div class="gallery-item"> <img src="/photos/ecuador/IMG_3640.JPG" alt="Ecuador" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Ecuador</span> </span> </div> </div><div class="gallery-item"> <img src="/photos/ecuador/IMG_4688.JPG" alt="Ecuador" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Project</span> <span class="u-g">Ecuador</span> </span> </div> </div> </div> <div class="gallery-counter lead"> <span class="u-g"><span id="gallery-current">1</span> / 8</span> </div> </section>  <footer class="site-footer" id="contact"> <div class="gallery-section" style="margin-bottom: 0;"> <div class="gallery-track" style="height: 30vh;" id="footer-gallery"> <div class="gallery-item"> <img src="/photos/bw/DSCF3289.jpg" alt="" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Series</span> <span class="u-g">Black & White</span> </span> </div> </div> <div class="gallery-item"> <img src="/photos/bw/DSCF4278.jpg" alt="" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Series</span> <span class="u-g">Portraits</span> </span> </div> </div> <div class="gallery-item"> <img src="/photos/bw/DSCF3554.jpg" alt="" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Series</span> <span class="u-g">Black & White</span> </span> </div> </div> <div class="gallery-item"> <img src="/photos/alaska/IMG_9262.jpeg" alt="" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Location</span> <span class="u-g">Alaska</span> </span> </div> </div> <div class="gallery-item"> <img src="/photos/ecuador/IMG_2945.JPG" alt="" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Location</span> <span class="u-g">Ecuador</span> </span> </div> </div> <div class="gallery-item"> <img src="/photos/alaska/IMG_9184.jpeg" alt="" loading="lazy"> <div class="gallery-item__caption lead"> <span class="project-card__credits"> <span>Location</span> <span class="u-g">Alaska</span> </span> </div> </div> </div> </div> <div class="site-footer__outro"> <div> <div> <a href="https://github.com/quakeob" class="site-footer__social" target="_blank">GH</a> <a href="https://x.com/Jak3dev" class="site-footer__social" target="_blank">X</a> <a href="https://instagram.com/jjakedavis" class="site-footer__social" target="_blank">IG</a> </div> </div> <div style="text-align: center;"> <span class="site-footer__email" id="email-copy" onclick="copyEmail()">
+jake@bryt.works
+<span class="email-copied" id="email-msg">copied!</span> </span> </div> <div style="text-align: right;"> <div> <a href="https://astro.build" class="site-footer__social" target="_blank">Astro</a> </div> </div> </div> </footer> <script>
+    // ═══════════ HERO SLIDESHOW — always cycling, faster on scroll ═══════════
+    (function() {
+      const imgs = document.querySelectorAll('.hero-slideshow__img');
+      if (!imgs.length) return;
+      let current = 0;
+      let lastScroll = 0;
+      let scrollCycleAcc = 0;
+      const pixelsPerCycle = 18;
+
+      function next() {
+        imgs[current].classList.remove('is-active');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('is-active');
+      }
+
+      // Baseline auto-cycle
+      setInterval(next, 500);
+
+      // Also cycle rapidly on scroll
+      window.addEventListener('scroll', () => {
+        const delta = Math.abs(window.scrollY - lastScroll);
+        lastScroll = window.scrollY;
+        scrollCycleAcc += delta;
+        while (scrollCycleAcc >= pixelsPerCycle) {
+          scrollCycleAcc -= pixelsPerCycle;
+          next();
+        }
+      });
+    })();
+
+    // ═══════════ BUILD WORD + VISUAL CYCLE ═══════════
+    (function() {
+      const wordEl = document.getElementById('build-word');
+      const visuals = document.querySelectorAll('.build-vis');
+      if (!wordEl || !visuals.length) return;
+      const words = ['site', 'app', 'software', 'assistant', 'AI', 'tool', 'program', 'system', 'agent', 'API'];
+      let current = 0;
+
+      setInterval(() => {
+        visuals[current].classList.remove('build-vis--active');
+        current = (current + 1) % words.length;
+        wordEl.textContent = words[current];
+        visuals[current].classList.add('build-vis--active');
+      }, 1500);
+    })();
+
+    // ═══════════ COPY EMAIL ═══════════
+    window.copyEmail = function() {
+      navigator.clipboard.writeText('jake@bryt.works');
+      const msg = document.getElementById('email-msg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 1500);
+    };
+
+    // ═══════════ GALLERY DRAG-TO-SCROLL ═══════════
+    function initDragScroll(el) {
+      if (!el) return;
+      let isDown = false, startX, scrollLeft;
+      el.addEventListener('mousedown', (e) => {
+        isDown = true;
+        el.style.cursor = 'grabbing';
+        startX = e.pageX - el.offsetLeft;
+        scrollLeft = el.scrollLeft;
+      });
+      el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = 'grab'; });
+      el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = 'grab'; });
+      el.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - el.offsetLeft;
+        el.scrollLeft = scrollLeft - (x - startX) * 1.5;
+      });
+    }
+
+    const mainGallery = document.getElementById('gallery-track');
+    const footerGallery = document.getElementById('footer-gallery');
+    initDragScroll(mainGallery);
+    initDragScroll(footerGallery);
+
+    // Gallery counter
+    if (mainGallery) {
+      mainGallery.addEventListener('scroll', () => {
+        const items = mainGallery.querySelectorAll('.gallery-item');
+        const scrollPos = mainGallery.scrollLeft + mainGallery.clientWidth / 2;
+        let current = 1;
+        items.forEach((item, i) => {
+          if (item.offsetLeft < scrollPos) current = i + 1;
+        });
+        const counter = document.getElementById('gallery-current');
+        if (counter) counter.textContent = current;
+      });
+    }
+
+    // ═══════════ AGENT TERMINAL ═══════════
+    (function() {
+      const body = document.getElementById('agent-terminal-body');
+      if (!body) return;
+
+      const bootLines = [
+        { text: 'yerb', cls: 'boot-title' },
+        { text: 'v3.1 · mac mini m2 · 4 agents', cls: 'boot-sub' },
+        { text: '', cls: 'dim' },
+        { text: 'scheduler', cls: 'boot-agent', delay: 400 },
+        { text: 'market', cls: 'boot-agent', delay: 350 },
+        { text: 'scraper', cls: 'boot-agent', delay: 300 },
+        { text: 'builder', cls: 'boot-agent', delay: 350 },
+        { text: '', cls: 'dim' },
+        { text: '', cls: 'boot-bar' },
+        { text: '', cls: 'dim' },
+        { text: 'all systems online · uptime 847h', cls: 'boot-ready' },
+      ];
+
+      const lines = [
+        { text: '[scheduler] syncing calendar — 3 events today', cls: 'blue' },
+        { text: '[market] scanning polymarket positions', cls: 'dim' },
+        { text: '[market] BTC > $94k — holding', cls: 'yellow' },
+        { text: '[scraper] 2 new listings found', cls: 'accent' },
+        { text: '[builder] running test suite — 47/47 passed', cls: 'green' },
+        { text: '> order sushi', cls: 'user' },
+        { text: '[scheduler] placing order — spicy tuna, salmon nigiri', cls: 'blue' },
+        { text: '[scheduler] order confirmed — eta 35min', cls: 'green' },
+        { text: '[market] ETH position +4.2% — no action', cls: 'yellow' },
+        { text: '> deploy site', cls: 'user' },
+        { text: '[builder] building jakedev.org...', cls: 'dim' },
+        { text: '[builder] deploying jakedev.org — done', cls: 'green' },
+        { text: '[builder] pushed 3 commits to main', cls: 'blue' },
+        { text: '> dinner reservation friday 7pm', cls: 'user' },
+        { text: '[scheduler] booking — party of 2, friday 7pm', cls: 'blue' },
+        { text: '[scheduler] confirmed — HSK italian', cls: 'green' },
+        { text: '[market] polymarket: recalculating edge', cls: 'dim' },
+        { text: '> market positions', cls: 'user' },
+        { text: '[market] portfolio +2.8% — 3 positions open', cls: 'green' },
+        { text: '[market] opened position — 0.12 ETH', cls: 'yellow' },
+        { text: '> email client re: timeline', cls: 'user' },
+        { text: '[scheduler] drafting email — project timeline update', cls: 'blue' },
+        { text: '[scheduler] sent to alex@brytwks.com', cls: 'green' },
+        { text: '[scraper] no new matches since 14:30', cls: 'dim' },
+        { text: '[builder] lint pass — 0 warnings', cls: 'green' },
+        { text: '> queue fuel build', cls: 'user' },
+        { text: '[builder] queued overnight build — fuel v2.1', cls: 'blue' },
+        { text: '[yerb] all agents nominal', cls: 'accent' },
+        { text: '[scheduler] sleep mode in 45m', cls: 'dim' },
+      ];
+
+      let i = 0;
+      let bootIndex = 0;
+      const maxLines = 14;
+      let speed = 500;
+      let booting = true;
+
+      function renderLine(line) {
+        const el = document.createElement('div');
+        el.className = 'agent-terminal__line agent-terminal__line--' + line.cls;
+        el.textContent = line.text;
+        body.appendChild(el);
+        if (body.children.length > maxLines) {
+          body.removeChild(body.firstChild);
+        }
+      }
+
+      function bootSequence() {
+        if (bootIndex >= bootLines.length) {
+          booting = false;
+          setTimeout(addLine, 600);
+          return;
+        }
+        const bl = bootLines[bootIndex];
+        if (bl.cls === 'boot-bar') {
+          const el = document.createElement('div');
+          el.className = 'agent-terminal__line agent-terminal__line--boot-bar';
+          const barWidth = 20;
+          let filled = 0;
+          const barSpan = document.createElement('span');
+          barSpan.className = 'term-bar';
+          barSpan.textContent = '░'.repeat(barWidth);
+          el.appendChild(barSpan);
+          const pct = document.createElement('span');
+          pct.className = 'term-bar-pct';
+          pct.textContent = '  0%';
+          el.appendChild(pct);
+          body.appendChild(el);
+          if (body.children.length > maxLines) body.removeChild(body.firstChild);
+          const barInt = setInterval(() => {
+            filled++;
+            barSpan.textContent = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+            pct.textContent = '  ' + Math.round((filled / barWidth) * 100) + '%';
+            if (filled >= barWidth) {
+              clearInterval(barInt);
+              bootIndex++;
+              setTimeout(bootSequence, 200);
+            }
+          }, 40);
+          return;
+        } else if (bl.cls === 'boot-agent') {
+          // Show agent name with spinner, then resolve
+          const el = document.createElement('div');
+          el.className = 'agent-terminal__line agent-terminal__line--boot-agent';
+          const spinChars = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+          let si = 0;
+          const sp = document.createElement('span');
+          sp.className = 'term-spinner';
+          sp.textContent = spinChars[0];
+          el.appendChild(sp);
+          el.appendChild(document.createTextNode(' ' + bl.text));
+          body.appendChild(el);
+          if (body.children.length > maxLines) body.removeChild(body.firstChild);
+          const spinInt = setInterval(() => { si=(si+1)%spinChars.length; sp.textContent=spinChars[si]; }, 60);
+          setTimeout(() => {
+            clearInterval(spinInt);
+            el.innerHTML = '<span class="term-check">✓</span> ' + bl.text;
+            el.classList.add('agent-terminal__line--resolved');
+            bootIndex++;
+            setTimeout(bootSequence, 150);
+          }, bl.delay || 300);
+        } else {
+          renderLine(bl);
+          bootIndex++;
+          setTimeout(bootSequence, bl.cls === 'boot-title' ? 200 : 100);
+        }
+      }
+
+      const tokensEl = document.getElementById('term-tokens');
+      const ctxFill = document.getElementById('term-ctx-fill');
+      const ctxPct = document.getElementById('term-ctx-pct');
+      let tokenCount = 0;
+      const maxCtx = 200000;
+
+      function updateStats() {
+        const add = Math.floor(800 + Math.random() * 2400);
+        tokenCount = Math.min(tokenCount + add, maxCtx);
+        const pct = Math.round((tokenCount / maxCtx) * 100);
+        if (tokensEl) tokensEl.textContent = tokenCount.toLocaleString() + ' tokens';
+        if (ctxFill) ctxFill.style.width = pct + '%';
+        if (ctxPct) ctxPct.textContent = pct + '%';
+        // Reset at ~85% to simulate new conversation
+        if (pct > 85) tokenCount = Math.floor(Math.random() * 8000);
+      }
+
+      function addLine() {
+        // Remove previous thinking indicator
+        const prev = body.querySelector('.term-thinking');
+        if (prev) prev.remove();
+
+        renderLine(lines[i % lines.length]);
+        i++;
+        updateStats();
+
+        // Add thinking indicator
+        const thinking = document.createElement('div');
+        thinking.className = 'agent-terminal__line term-thinking';
+        thinking.innerHTML = '<span class="term-dots"><span>·</span><span>·</span><span>·</span></span>';
+        body.appendChild(thinking);
+        if (body.children.length > maxLines) body.removeChild(body.firstChild);
+
+        setTimeout(addLine, speed + Math.random() * (speed * 0.6));
+      }
+
+      // Start boot when terminal scrolls into view
+      const termEl = document.getElementById('agent-terminal');
+      const termObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          termObs.disconnect();
+          setTimeout(bootSequence, 400);
+        }
+      }, { threshold: 0.3 });
+      termObs.observe(termEl);
+
+      // Speed up on scroll, ease back gradually
+      let scrollTimeout;
+      let easeInterval;
+      window.addEventListener('scroll', () => {
+        speed = 80;
+        clearTimeout(scrollTimeout);
+        clearInterval(easeInterval);
+        scrollTimeout = setTimeout(() => {
+          easeInterval = setInterval(() => {
+            speed = Math.min(speed + 50, 500);
+            if (speed >= 500) clearInterval(easeInterval);
+          }, 150);
+        }, 300);
+      });
+    })();
+
+    // ═══════════ WIDGET PREVIEW ANIMATION ═══════════
+    (function() {
+      const card = document.querySelector('.has-preview');
+      if (!card) return;
+
+      const totalEl = document.getElementById('widget-total');
+      const todayEl = document.getElementById('widget-today');
+      const costEl = document.getElementById('widget-cost');
+      const barsEl = document.getElementById('widget-bars');
+      const labelEl = document.getElementById('widget-chart-label');
+
+      let total = 14.2, today = 847.3, cost = 142.80;
+      let tickInt;
+
+      function fmt(n) { return n >= 1000 ? (n/1000).toFixed(1) + 'M' : n.toFixed(1) + 'K'; }
+
+      const chartViews = [
+        {
+          label: 'Hourly',
+          bars: [
+            { h: 20, l: '6a' }, { h: 45, l: '8a' }, { h: 78, l: '10a' },
+            { h: 55, l: '12p' }, { h: 30, l: '2p' }, { h: 65, l: '4p' },
+            { h: 88, l: '6p' }, { h: 72, l: '8p' }, { h: 40, l: '10p' },
+          ],
+          peak: 6, today: null,
+        },
+        {
+          label: '7-day',
+          bars: [
+            { h: 35, l: 'M' }, { h: 62, l: 'T' }, { h: 48, l: 'W' },
+            { h: 85, l: 'T' }, { h: 71, l: 'F' }, { h: 40, l: 'S' },
+            { h: 55, l: 'S' },
+          ],
+          peak: 3, today: 6,
+        },
+        {
+          label: 'Monthly',
+          bars: [
+            { h: 30, l: 'Sep' }, { h: 52, l: 'Oct' }, { h: 68, l: 'Nov' },
+            { h: 45, l: 'Dec' }, { h: 74, l: 'Jan' }, { h: 90, l: 'Feb' },
+            { h: 58, l: 'Mar' },
+          ],
+          peak: 5, today: 6,
+        },
+      ];
+
+      let viewIndex = 0;
+      let cycleInt;
+
+      function renderBars(view) {
+        // Fade out
+        barsEl.style.opacity = '0';
+        barsEl.style.transform = 'translateY(4px)';
+        labelEl.style.opacity = '0';
+
+        setTimeout(() => {
+          labelEl.textContent = view.label + ' usage';
+          barsEl.innerHTML = view.bars.map((b, i) => {
+            let cls = 'widget-mock__bar';
+            if (i === view.peak) cls += ' widget-mock__bar--peak';
+            else if (i === view.today) cls += ' widget-mock__bar--today';
+            return '<div class="' + cls + '" style="--h: ' + b.h + '%;"><span>' + b.l + '</span></div>';
+          }).join('');
+
+          // Fade in
+          requestAnimationFrame(() => {
+            barsEl.style.opacity = '1';
+            barsEl.style.transform = 'translateY(0)';
+            labelEl.style.opacity = '1';
+          });
+        }, 250);
+      }
+
+      function cycleChart() {
+        viewIndex = (viewIndex + 1) % chartViews.length;
+        renderBars(chartViews[viewIndex]);
+      }
+
+      // Start cycling when card is visible
+      const chartObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          cycleInt = setInterval(cycleChart, 3000);
+        } else {
+          clearInterval(cycleInt);
+        }
+      }, { threshold: 0.2 });
+      chartObs.observe(card);
+
+      card.addEventListener('mouseenter', () => {
+        tickInt = setInterval(() => {
+          total += 0.8 + Math.random() * 2.4;
+          today += 0.3 + Math.random() * 1.2;
+          cost += 0.01 + Math.random() * 0.08;
+          if (totalEl) totalEl.textContent = total >= 1000 ? (total/1000).toFixed(1) + 'B' : total.toFixed(1) + 'M';
+          if (todayEl) todayEl.textContent = fmt(today);
+          if (costEl) costEl.textContent = '~$' + cost.toFixed(2);
+        }, 800);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        clearInterval(tickInt);
+      });
+    })();
+
+  </script>  </main> <!-- GSAP + ScrollTrigger + Lenis --> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script> <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script> <script>
+    // ═══════════════════════════════════════
+    // LENIS SMOOTH SCROLL
+    // ═══════════════════════════════════════
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // ═══════════════════════════════════════
+    // PRELOADER — ASCII PROGRESS BAR
+    // ═══════════════════════════════════════
+    (function() {
+      const fillEl = document.getElementById('preloader-fill');
+      const pctEl = document.getElementById('preloader-pct');
+      const preloader = document.getElementById('preloader');
+      const barWidth = 30;
+
+      function render(progress) {
+        const filled = Math.round((progress / 100) * barWidth);
+        fillEl.textContent = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+        pctEl.textContent = Math.round(progress) + '%';
+      }
+
+      render(0);
+
+      window.addEventListener('load', () => {
+        render(100);
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.4,
+          delay: 0.1,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            preloader.style.display = 'none';
+            lenis.start();
+            animateHero();
+          }
+        });
+      });
+    })();
+
+    // ═══════════════════════════════════════
+    // CUSTOM CURSOR
+    // ═══════════════════════════════════════
+    const cursor = document.getElementById('cursor');
+    if (cursor && window.matchMedia('(pointer: fine)').matches) {
+      let cx = 0, cy = 0, tx = 0, ty = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+      });
+
+      function updateCursor() {
+        cx += (tx - cx) * 0.15;
+        cy += (ty - cy) * 0.15;
+        cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+        requestAnimationFrame(updateCursor);
+      }
+      updateCursor();
+      cursor.style.opacity = '1';
+
+      // Scale up on links/buttons
+      document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('cursor--active'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--active'));
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // HERO ANIMATION — Staggered text reveal
+    // ═══════════════════════════════════════
+    function animateHero() {
+      gsap.fromTo('.hero-slideshow', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4, ease: 'power4.out' });
+      gsap.fromTo('.hero-overlap__text .display', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, delay: 0.3, ease: 'power4.out' });
+
+      // Header — slide down
+      gsap.fromTo('#site-header', {
+        y: -40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: 0.8,
+        ease: 'power3.out',
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // SCROLL ANIMATIONS — GSAP ScrollTrigger
+    // ═══════════════════════════════════════
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Quote text — line-by-line reveal with parallax
+    document.querySelectorAll('.quote-text').forEach(quote => {
+      // Wrap each line in a span for animation
+      const html = quote.innerHTML;
+      const lines = html.split('<br>').map(l => l.trim()).filter(Boolean);
+      quote.innerHTML = lines.map(l =>
+        `<div class="quote-line" style="overflow:hidden;"><span class="quote-line__inner" style="display:block;">${l}</span></div>`
+      ).join('');
+
+      gsap.fromTo(quote.querySelectorAll('.quote-line__inner'), {
+        y: '110%',
+        rotateX: -20,
+      }, {
+        y: '0%',
+        rotateX: 0,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: quote,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Quote attribution — fade in
+    document.querySelectorAll('.quote-attribution').forEach(attr => {
+      gsap.fromTo(attr, {
+        opacity: 0,
+        y: 30,
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: attr,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // Photo section — scale in
+    document.querySelectorAll('.js-in:not(.hero-row)').forEach(el => {
+      // Skip hero elements (animated separately)
+      if (el.closest('.home-hero')) return;
+
+      gsap.fromTo(el, {
+        y: 60,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Hero title — split apart on scroll
+    var heroTexts = document.querySelectorAll('.hero-overlap__text .display');
+    if (heroTexts.length >= 2) {
+      gsap.to(heroTexts[0], { y: -120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to(heroTexts[1], { y: 120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to('.hero-slideshow', { scale: 0.92, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+    }
+
+    // Project cards — stagger slide up
+    document.querySelectorAll('.project-card').forEach((card, i) => {
+      gsap.fromTo(card, {
+        y: 80,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: i * 0.08,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Gallery images — parallax on scroll
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      gsap.fromTo(img, {
+        scale: 1.15,
+      }, {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.closest('.gallery-section'),
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        }
+      });
+    });
+
+    // Display headings — parallax speed difference
+    document.querySelectorAll('.display--2').forEach(heading => {
+      gsap.fromTo(heading, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // About section text — paragraph stagger
+    document.querySelectorAll('#about p').forEach((p, i) => {
+      gsap.fromTo(p, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        delay: i * 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: p,
+          start: 'top 88%',
+        }
+      });
+    });
+
+    // Footer outro — slide up
+    document.querySelectorAll('.site-footer__outro > div').forEach((col, i) => {
+      gsap.fromTo(col, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.site-footer__outro',
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Build section — browser mockup builds up, features stagger
+    var buildBrowser = document.querySelector('.build-browser');
+    if (buildBrowser) {
+      // Browser slides in from left
+      gsap.fromTo(buildBrowser, {
+        x: -60,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: buildBrowser,
+          start: 'top 85%',
+        }
+      });
+
+      // Wireframe elements build sequentially
+      var wireEls = buildBrowser.querySelectorAll('.build-wire__nav, .build-wire__line, .build-wire__cta, .build-wire__card');
+      wireEls.forEach(function(el, i) {
+        gsap.fromTo(el, {
+          opacity: 0,
+          y: 8,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          delay: 0.4 + i * 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          }
+        });
+      });
+
+      // Lighthouse scores count up
+      var scoreEls = buildBrowser.querySelectorAll('.build-browser__stat-val--green');
+      scoreEls.forEach(function(el) {
+        var target = 100;
+        var obj = { val: 0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            el.textContent = Math.round(obj.val);
+          }
+        });
+      });
+
+      // Load time counts
+      var loadEl = buildBrowser.querySelector('.build-browser__stat-val:not(.build-browser__stat-val--green)');
+      if (loadEl) {
+        var loadObj = { val: 0 };
+        gsap.to(loadObj, {
+          val: 0.4,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            loadEl.textContent = loadObj.val.toFixed(1) + 's';
+          }
+        });
+      }
+    }
+
+    // Build features — stagger from right
+    document.querySelectorAll('.build-section__feature').forEach(function(feat, i) {
+      gsap.fromTo(feat, {
+        x: 40,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: feat,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Contact cards — stagger
+    document.querySelectorAll('.contact-card').forEach(function(card, i) {
+      gsap.fromTo(card, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        delay: i * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // Photo grid items — stagger reveal
+    document.querySelectorAll('.photo-grid__item').forEach((item, i) => {
+      gsap.fromTo(item, {
+        y: 60,
+        opacity: 0,
+        scale: 0.95,
+      }, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        delay: (i % 6) * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MAGNETIC HOVER on nav links
+    // ═══════════════════════════════════════
+    document.querySelectorAll('.site-nav__link, .site-header__brand').forEach(link => {
+      link.addEventListener('mousemove', (e) => {
+        const rect = link.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(link, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+      });
+      link.addEventListener('mouseleave', () => {
+        gsap.to(link, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MOBILE MENU
+    // ═══════════════════════════════════════
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle?.addEventListener('click', () => {
+      const isOpen = mobileMenu?.classList.toggle('open');
+      menuToggle.textContent = isOpen ? 'Close' : 'Menu';
+      if (isOpen) lenis.stop(); else lenis.start();
+    });
+
+    window.closeMobileMenu = function() {
+      mobileMenu?.classList.remove('open');
+      if (menuToggle) menuToggle.textContent = 'Menu';
+      lenis.start();
+    };
+
+    // ═══════════════════════════════════════
+    // THEME TOGGLE
+    // ═══════════════════════════════════════
+    function updateToggleText() {
+      var isDark = document.documentElement.classList.contains('dark');
+      document.querySelectorAll('.theme-toggle').forEach(function(btn) {
+        btn.textContent = isDark ? 'Light' : 'Dark';
+      });
+    }
+    updateToggleText();
+
+    window.toggleTheme = function() {
+      document.documentElement.classList.toggle('dark');
+      var isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateToggleText();
+    };
+  </script> </body> </html>

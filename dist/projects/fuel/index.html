@@ -1,0 +1,637 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Native iOS calorie tracker with AI food parsing, barcode scanning, HealthKit sync, and Apple Watch companion. Type what you ate in plain English — AI handles the rest."><title>Fuel — Jake Davis</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>
+    (function() {
+      var s = localStorage.getItem('theme');
+      if (s === 'dark' || (!s && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script><link rel="stylesheet" href="/_astro/index.BjYX84az.css">
+<style>.prose{color:var(--text-2);line-height:1.8;font-size:14px;font-family:var(--font-mono);text-transform:none}.prose h2{font-family:var(--font-display);color:var(--text);font-size:1.8rem;font-weight:400;text-transform:uppercase;margin-top:3rem;margin-bottom:1rem;letter-spacing:-.02em}.prose h3{color:var(--text);font-size:1rem;font-weight:700;text-transform:uppercase;margin-top:2rem;margin-bottom:.75rem}.prose p{margin-bottom:1.25rem}.prose strong{color:var(--text);font-weight:700}.prose a{color:var(--green);text-decoration:underline;text-underline-offset:3px}.prose a:hover{opacity:.6}.prose code{font-family:var(--font-mono);font-size:.875em;padding:.15em .4em;background:var(--border);color:var(--text)}.prose pre{background:var(--border);border:1px solid var(--border);padding:1.25rem;overflow-x:auto;margin:1.5rem 0;font-size:.875rem;line-height:1.6}.prose pre code{background:none;padding:0}.prose ul,.prose ol{margin:1rem 0;padding-left:1.5rem}.prose li{margin-bottom:.5rem}.prose blockquote{border-left:2px solid var(--text);padding-left:1rem;margin:1.5rem 0;font-style:italic;color:var(--grey)}.prose hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
+</style></head> <body> <!-- Preloader --> <div class="preloader" id="preloader"> <div class="preloader__wrapper"> <div class="preloader__bar-line"> <span class="preloader__bracket">[</span><span class="preloader__fill" id="preloader-fill"></span><span class="preloader__bracket">]</span> </div> <div class="preloader__pct" id="preloader-pct">0%</div> </div> </div> <!-- Custom Cursor --> <div class="cursor" id="cursor"> <div class="cursor__dot"></div> </div> <!-- Header --> <header class="site-header" id="site-header"> <div> <a class="site-header__brand" href="/"> <span>Jake Davis</span> </a> </div> <div> <nav> <ul class="site-nav__list"> <li><a href="/photos" class="site-nav__link">Photos</a></li> <li><a href="/#work" class="site-nav__link">Work</a></li> <li><a href="/#about" class="site-nav__link">About</a></li> <li><button class="site-nav__link theme-toggle" onclick="toggleTheme()">Dark</button></li> </ul> </nav> <button class="menu-toggle" id="menu-toggle">Menu</button> </div> </header> <!-- Mobile Menu --> <div class="mobile-menu" id="mobile-menu"> <a href="/" onclick="closeMobileMenu()">Home</a> <a href="/#work" onclick="closeMobileMenu()">Work</a> <a href="/photos" onclick="closeMobileMenu()">Photos</a> <a href="/#about" onclick="closeMobileMenu()">About</a> <a href="/#contact" onclick="closeMobileMenu()">Contact</a> <button class="theme-toggle" onclick="toggleTheme()" style="background:none;border:none;color:inherit;font-family:var(--font-display);font-size:2.5rem;text-transform:uppercase;letter-spacing:-0.01em;cursor:pointer;">Dark</button> </div> <main>  <article class="project-article project-article--has-sidebar"> <div class="project-article__main"> <!-- Back link --> <a href="/#work" class="lead" style="display: inline-block; margin-bottom: 3rem; color: var(--grey);">
+← Back to work
+</a> <!-- Hero --> <header style="margin-bottom: 3rem;"> <h1 class="display display--2" style="margin-bottom: 1rem;"> Fuel </h1> <p class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2); margin-bottom: 1.5rem;"> Native iOS calorie tracker with AI food parsing, barcode scanning, HealthKit sync, and Apple Watch companion. Type what you ate in plain English — AI handles the rest. </p> <div style="display: flex; flex-wrap: wrap; gap: 1em; margin-bottom: 1.5rem;"> <span class="lead" style="font-size: 11px; color: var(--grey);">Swift</span><span class="lead" style="font-size: 11px; color: var(--grey);">SwiftUI</span><span class="lead" style="font-size: 11px; color: var(--grey);">SwiftData</span><span class="lead" style="font-size: 11px; color: var(--grey);">HealthKit</span><span class="lead" style="font-size: 11px; color: var(--grey);">AI</span> </div> <div style="display: flex; gap: 1.5em;"> <a href="https://github.com/quakeob/fuel-ios" target="_blank" class="lead u-g">GitHub →</a>  </div> </header> <!-- Content --> <div class="prose"> <h2 id="the-problem">The Problem</h2>
+<p>Every calorie tracker makes the same mistake: they assume I want to scroll through a database of 10,000 foods to log “2 eggs and toast.” That’s not tracking — that’s data entry. And data entry is why people quit on day three.</p>
+<h2 id="the-approach">The Approach</h2>
+<p>Type what you ate in plain English. “2 eggs, slice of sourdough with butter, black coffee.” An LLM parses it into calories, protein, carbs, fat, and fiber with confidence scores. For packaged foods, scan the barcode with the camera. Between AI and barcodes, you can log a full day of eating in under 60 seconds.</p>
+<h2 id="architecture">Architecture</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User Input (text / barcode / template)</span></span>
+<span class="line"><span>              ↓</span></span>
+<span class="line"><span>     ┌────────┴────────┐</span></span>
+<span class="line"><span>     │                 │</span></span>
+<span class="line"><span>  LLM API        Vision Framework</span></span>
+<span class="line"><span>(NLP parse)     (barcode scan)</span></span>
+<span class="line"><span>     │                 │</span></span>
+<span class="line"><span>     └────────┬────────┘</span></span>
+<span class="line"><span>              ↓</span></span>
+<span class="line"><span>        SwiftData</span></span>
+<span class="line"><span>     (FoodEntry model)</span></span>
+<span class="line"><span>              ↓</span></span>
+<span class="line"><span>    ┌─────────┼─────────┐</span></span>
+<span class="line"><span>    │         │         │</span></span>
+<span class="line"><span>Dashboard  HealthKit  Watch App</span></span></code></pre>
+<p><strong>AI parsing.</strong> An LLM takes raw text and returns structured nutrition JSON — food name, calories, macros, serving size, and a confidence score (0–1). Low temperature for deterministic results. Retry logic with backoff for rate limits. Supports any OpenAI-compatible API.</p>
+<p><strong>Offline fallback.</strong> A local SQLite database of USDA foods handles parsing when the API is unavailable. Plus an in-memory cache of 200 recently parsed foods to minimize API calls.</p>
+<p><strong>Data layer.</strong> SwiftData with <code>FoodEntry</code>, <code>DailyLog</code>, <code>UserGoals</code>, and <code>WeightEntry</code> models. Cascade deletes, computed properties for daily totals, date-keyed lookups.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>AI food parsing with confidence scoring</li>
+<li>Barcode scanning via Vision framework</li>
+<li>Animated calorie ring with overage visualization (150%+)</li>
+<li>Per-macro progress bars (protein, carbs, fat, fiber)</li>
+<li>Meal categories — breakfast, lunch, dinner, snacks</li>
+<li>Quick-add templates with usage tracking</li>
+<li>Water intake tracking (glass-by-glass)</li>
+<li>Weight logging with HealthKit read/write</li>
+<li>Daily streak system</li>
+<li>Apple Watch companion app</li>
+<li>Home screen widget via WidgetKit</li>
+</ul>
+<h2 id="key-decisions">Key Decisions</h2>
+<p><strong>Native over PWA.</strong> The original Fuel was a vanilla JS PWA. Rebuilding in SwiftUI unlocked HealthKit, barcode scanning via Vision, Apple Watch, and widgets — things that aren’t possible or are deeply compromised on the web.</p>
+<p><strong>LLM over custom NLP.</strong> The PWA version used hand-rolled pattern matching. It worked for “2 eggs” but fell apart on “leftover pad thai, maybe half a serving.” An LLM handles ambiguity, estimates portions, and assigns confidence scores so users know when to double-check.</p>
+<p><strong>SwiftData over Core Data.</strong> Modern, declarative, and plays well with SwiftUI’s observation system. No NSFetchedResultsController boilerplate.</p>
+<p><strong>No accounts.</strong> Your food data stays on your device. HealthKit integration is opt-in. The only network call is to the AI API for parsing.</p>
+<h2 id="stack">Stack</h2>
+<ul>
+<li><strong>Framework:</strong> SwiftUI (iOS 17.0+, watchOS 10.0+)</li>
+<li><strong>Data:</strong> SwiftData, SQLite3 (offline USDA foods)</li>
+<li><strong>AI:</strong> OpenAI-compatible LLM API</li>
+<li><strong>Health:</strong> HealthKit.framework</li>
+<li><strong>Scanning:</strong> Vision Framework</li>
+<li><strong>Watch:</strong> watchOS companion with WatchConnectivity</li>
+<li><strong>Widgets:</strong> WidgetKit</li>
+</ul> </div> <!-- Navigation --> <nav style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;"> <div></div> <a href="/projects/yerb" style="text-align: right; text-decoration: none;"> <span class="lead" style="font-size: 11px; color: var(--grey);">Next →</span> <span class="lead u-g" style="display: block; margin-top: 4px;"> Yerb </span> </a> </nav> </div>  <aside class="project-sidebar" id="project-sidebar"> <div class="project-sidebar__sticky"> <div class="fuel-phone" id="fuel-phone"> <div class="fuel-phone__notch"></div> <!-- SCREEN 0: Dashboard --> <div class="fuel-screen fuel-screen--active" data-screen="0"> <div class="fuel-dash"> <div class="fuel-dash__nav"> <span class="fuel-dash__nav-btn">‹</span> <span class="fuel-dash__nav-title">Today</span> <span class="fuel-dash__add-btn">+</span> </div> <div class="fuel-card"> <div class="fuel-dash__ring-wrap"> <svg class="fuel-dash__ring" viewBox="0 0 140 140"> <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"></circle> <circle cx="70" cy="70" r="58" fill="none" stroke="#4DCC66" stroke-width="14" stroke-dasharray="364" stroke-dashoffset="143" stroke-linecap="round" transform="rotate(-90 70 70)" id="fuel-ring" class="fuel-dash__ring-fill"></circle> </svg> <div class="fuel-dash__ring-inner"> <div class="fuel-dash__ring-cal" id="fuel-cal-left">784</div> <div class="fuel-dash__ring-label">remaining</div> <div class="fuel-dash__ring-unit">cal</div> </div> </div> <div class="fuel-dash__stats"> <div class="fuel-dash__stat"> <div class="fuel-dash__stat-val fuel-dash__stat-val--green" id="fuel-eaten">1,216</div> <div class="fuel-dash__stat-label">Eaten</div> </div> <div class="fuel-dash__stat"> <div class="fuel-dash__stat-val fuel-dash__stat-val--primary" id="fuel-remaining-stat">784</div> <div class="fuel-dash__stat-label">Remaining</div> </div> <div class="fuel-dash__stat"> <div class="fuel-dash__stat-val fuel-dash__stat-val--secondary">2,000</div> <div class="fuel-dash__stat-label">Target</div> </div> </div> </div> <div class="fuel-card"> <div class="fuel-section-header"> <svg class="fuel-section-header__svg" width="14" height="14" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"></path></svg> <span class="fuel-section-header__title">Macros</span> </div> <div class="fuel-dash__macros"> <div class="fuel-macro"> <div class="fuel-macro__header"> <span class="fuel-macro__name">Protein</span> <span class="fuel-macro__val fuel-macro__val--protein" id="fuel-protein">86 / 150g</span> </div> <div class="fuel-macro__track"><div class="fuel-macro__fill fuel-macro__fill--protein" id="fuel-protein-bar" style="width: 57%;"></div></div> </div> <div class="fuel-macro"> <div class="fuel-macro__header"> <span class="fuel-macro__name">Carbs</span> <span class="fuel-macro__val fuel-macro__val--carbs" id="fuel-carbs">134 / 250g</span> </div> <div class="fuel-macro__track"><div class="fuel-macro__fill fuel-macro__fill--carbs" id="fuel-carbs-bar" style="width: 54%;"></div></div> </div> <div class="fuel-macro"> <div class="fuel-macro__header"> <span class="fuel-macro__name">Fat</span> <span class="fuel-macro__val fuel-macro__val--fat" id="fuel-fat">42 / 70g</span> </div> <div class="fuel-macro__track"><div class="fuel-macro__fill fuel-macro__fill--fat" id="fuel-fat-bar" style="width: 60%;"></div></div> </div> <div class="fuel-macro-split"> <div class="fuel-macro-split__seg" style="width:33%;background:#40CCFF;"></div> <div class="fuel-macro-split__seg" style="width:41%;background:#FF8C33;"></div> <div class="fuel-macro-split__seg" style="width:26%;background:#9959E6;"></div> </div> </div> </div> <div class="fuel-card"> <div class="fuel-section-header" style="margin-bottom:6px;"> <svg width="14" height="14" viewBox="0 0 24 24" fill="#4DA6FF"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <span class="fuel-section-header__title">Water</span> <span style="margin-left:auto;" class="fuel-water-count">5/8</span> </div> <div class="fuel-dash__water-drops"> <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <svg class="fuel-drop fuel-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <svg class="fuel-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <svg class="fuel-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> <svg class="fuel-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"></path></svg> </div> <div class="fuel-water-bar"><div class="fuel-water-bar__fill" style="width:62.5%;"></div></div> </div> </div> </div> <!-- SCREEN 1: AI Input — matches AddFoodSheet > NLPInputView > ParsedFoodConfirmView --> <div class="fuel-screen" data-screen="1"> <div class="fuel-ai"> <div class="fuel-ai__navbar"> <span class="fuel-ai__navbar-btn">Cancel</span> <span class="fuel-ai__navbar-title">Add Food</span> <span></span> </div> <div class="fuel-card"> <div class="fuel-ai__icon"> <svg width="28" height="28" viewBox="0 0 24 24" fill="none"> <path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z" fill="#4DCC66"></path> </svg> </div> <div class="fuel-ai__heading">Describe what you ate</div> <div class="fuel-ai__subheading">AI will estimate the nutrition info</div> <div class="fuel-input__field" id="fuel-input-field"> <span class="fuel-input__cursor">|</span> </div> <div class="fuel-ai__examples"> <span class="fuel-ai__chip">2 eggs and toast</span> <span class="fuel-ai__chip">chicken caesar salad</span> <span class="fuel-ai__chip">grande latte with oat milk</span> </div> <div class="fuel-ai__btn"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"> <path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z" fill="white"></path> </svg>
+Parse Food
+</div> </div> <div class="fuel-input__result" id="fuel-parse-result"> <div class="fuel-input__parsing" id="fuel-parsing"> <span class="fuel-input__spinner"></span> <span>Analyzing with AI...</span> </div> <div class="fuel-input__foods" id="fuel-foods" style="display:none;"> <div class="fuel-ai__confirm-header"> <div class="fuel-ai__confirm-count">4 items found</div> <div class="fuel-ai__confirm-cal">376 cal total</div> </div> <div class="fuel-card fuel-ai__food-card"> <div class="fuel-ai__food-row"> <span class="fuel-ai__food-emoji">🥚</span> <div class="fuel-ai__food-info"> <div class="fuel-ai__food-name">Eggs (2 large)</div> <div class="fuel-ai__food-serving">2 large eggs, scrambled</div> </div> <div class="fuel-ai__food-cals"> <span class="fuel-ai__food-cal-num">144</span> <span class="fuel-ai__food-cal-unit">cal</span> </div> </div> <div class="fuel-ai__food-chips"> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 12g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 1g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 10g</span> </div> </div> <div class="fuel-card fuel-ai__food-card"> <div class="fuel-ai__food-row"> <span class="fuel-ai__food-emoji">🍞</span> <div class="fuel-ai__food-info"> <div class="fuel-ai__food-name">Sourdough Toast</div> <div class="fuel-ai__food-serving">1 slice</div> </div> <div class="fuel-ai__food-cals"> <span class="fuel-ai__food-cal-num">128</span> <span class="fuel-ai__food-cal-unit">cal</span> </div> </div> <div class="fuel-ai__food-chips"> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 4g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 25g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 1g</span> </div> </div> <div class="fuel-card fuel-ai__food-card"> <div class="fuel-ai__food-row"> <span class="fuel-ai__food-emoji">🧈</span> <div class="fuel-ai__food-info"> <div class="fuel-ai__food-name">Butter</div> <div class="fuel-ai__food-serving">1 tbsp</div> </div> <div class="fuel-ai__food-cals"> <span class="fuel-ai__food-cal-num">102</span> <span class="fuel-ai__food-cal-unit">cal</span> </div> </div> <div class="fuel-ai__food-chips"> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 0g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 0g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 12g</span> </div> </div> <div class="fuel-card fuel-ai__food-card"> <div class="fuel-ai__food-row"> <span class="fuel-ai__food-emoji">☕</span> <div class="fuel-ai__food-info"> <div class="fuel-ai__food-name">Black Coffee</div> <div class="fuel-ai__food-serving">1 cup</div> </div> <div class="fuel-ai__food-cals"> <span class="fuel-ai__food-cal-num">2</span> <span class="fuel-ai__food-cal-unit">cal</span> </div> </div> <div class="fuel-ai__food-chips"> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--p">P 0g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--c">C 0g</span> <span class="fuel-ai__macro-chip fuel-ai__macro-chip--f">F 0g</span> </div> </div> <div class="fuel-ai__log-btn">Log All</div> </div> </div> </div> </div> <!-- SCREEN 2: Meals — matches DashboardView scrolled to MealSectionViews --> <div class="fuel-screen" data-screen="2"> <div class="fuel-meals"> <div class="fuel-meals__nav"> <span class="fuel-dash__nav-btn">‹</span> <span class="fuel-dash__nav-title" style="font-size:17px;">Today</span> <span class="fuel-dash__add-btn">+</span> </div> <div class="fuel-card"> <div class="fuel-meal__head"> <span class="fuel-meal__emoji">🌅</span> <span class="fuel-meal__name">Breakfast</span> <span class="fuel-meal__cal">376 cal</span> <span class="fuel-meal__plus">+</span> </div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">🥚</span> <span class="fuel-meal__item-name">Scrambled Eggs</span> <span class="fuel-meal__item-cal">144</span> </div> <div class="fuel-meal__divider"></div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">🍞</span> <span class="fuel-meal__item-name">Toast with Butter</span> <span class="fuel-meal__item-cal">230</span> </div> <div class="fuel-meal__divider"></div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">☕</span> <span class="fuel-meal__item-name">Black Coffee</span> <span class="fuel-meal__item-cal">2</span> </div> </div> <div class="fuel-card"> <div class="fuel-meal__head"> <span class="fuel-meal__emoji">☀️</span> <span class="fuel-meal__name">Lunch</span> <span class="fuel-meal__cal">520 cal</span> <span class="fuel-meal__plus">+</span> </div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">🥗</span> <span class="fuel-meal__item-name">Chicken Caesar Salad</span> <span class="fuel-meal__item-cal">380</span> </div> <div class="fuel-meal__divider"></div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">🍎</span> <span class="fuel-meal__item-name">Apple</span> <span class="fuel-meal__item-cal">95</span> </div> <div class="fuel-meal__divider"></div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">🥜</span> <span class="fuel-meal__item-name">Almonds</span> <span class="fuel-meal__item-cal">45</span> </div> </div> <div class="fuel-card"> <div class="fuel-meal__head"> <span class="fuel-meal__emoji">🌙</span> <span class="fuel-meal__name">Dinner</span> <span class="fuel-meal__cal">320 cal</span> <span class="fuel-meal__plus">+</span> </div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">🍣</span> <span class="fuel-meal__item-name">Grilled Salmon</span> <span class="fuel-meal__item-cal">234</span> </div> <div class="fuel-meal__divider"></div> <div class="fuel-meal__item"> <span class="fuel-meal__item-emoji">🥦</span> <span class="fuel-meal__item-name">Steamed Broccoli</span> <span class="fuel-meal__item-cal">86</span> </div> </div> <div class="fuel-card"> <div class="fuel-meal__head"> <span class="fuel-meal__emoji">🍿</span> <span class="fuel-meal__name">Snacks</span> <span class="fuel-meal__cal"></span> <span class="fuel-meal__plus">+</span> </div> <div class="fuel-meal__empty">No foods logged</div> </div> </div> </div> <!-- SCREEN 3: Integrations — matches Settings/Integration features --> <div class="fuel-screen" data-screen="3"> <div class="fuel-integrations"> <div class="fuel-integrations__nav"> <span class="fuel-dash__nav-btn">‹</span> <span class="fuel-dash__nav-title" style="font-size:17px;">Settings</span> <span></span> </div> <div class="fuel-int__section-label">INTEGRATIONS</div> <div class="fuel-card"> <div class="fuel-int__row"> <div class="fuel-int__icon fuel-int__icon--blue"> <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"></path></svg> </div> <div class="fuel-int__info"> <div class="fuel-int__name">Apple Watch</div> <div class="fuel-int__desc">Quick log from your wrist</div> </div> <div class="fuel-int__badge">Connected</div> </div> </div> <div class="fuel-card"> <div class="fuel-int__row"> <div class="fuel-int__icon fuel-int__icon--red"> <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg> </div> <div class="fuel-int__info"> <div class="fuel-int__name">Apple Health</div> <div class="fuel-int__desc">Syncs calories, macros & weight</div> </div> <div class="fuel-int__toggle fuel-int__toggle--on"></div> </div> </div> <div class="fuel-card"> <div class="fuel-int__row"> <div class="fuel-int__icon fuel-int__icon--orange"> <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg> </div> <div class="fuel-int__info"> <div class="fuel-int__name">Barcode Scanner</div> <div class="fuel-int__desc">Scan UPC for instant nutrition</div> </div> <span class="fuel-int__chevron">›</span> </div> </div> <div class="fuel-int__section-label">WIDGETS</div> <div class="fuel-card"> <div class="fuel-int__row"> <div class="fuel-int__icon fuel-int__icon--green"> <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"></path><path d="M7 12h4v5H7zm6-5h4v10h-4z"></path></svg> </div> <div class="fuel-int__info"> <div class="fuel-int__name">Home Screen Widget</div> <div class="fuel-int__desc">Calories & macros at a glance</div> </div> <span class="fuel-int__chevron">›</span> </div> </div> <div class="fuel-int__section-label">AI</div> <div class="fuel-card"> <div class="fuel-int__row"> <div class="fuel-int__icon fuel-int__icon--purple"> <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z"></path></svg> </div> <div class="fuel-int__info"> <div class="fuel-int__name">AI Parsing</div> <div class="fuel-int__desc">LLM-powered food recognition</div> </div> <div class="fuel-int__badge fuel-int__badge--active">Active</div> </div> </div> <div class="fuel-card"> <div class="fuel-int__row"> <div class="fuel-int__icon fuel-int__icon--teal"> <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"></path></svg> </div> <div class="fuel-int__info"> <div class="fuel-int__name">iCloud Sync</div> <div class="fuel-int__desc">Cross-device data sync</div> </div> <div class="fuel-int__toggle fuel-int__toggle--on"></div> </div> </div> </div> </div> <div class="fuel-phone__home-bar"></div> </div> <div class="widget-page__scroll-hint lead">( scroll )</div> </div> </aside>     </article> <script>
+      (function() {
+        // === Typing animation for AI input screen ===
+        var inputField = document.getElementById('fuel-input-field');
+        var parsingEl = document.getElementById('fuel-parsing');
+        var foodsEl = document.getElementById('fuel-foods');
+        var text = '2 eggs, sourdough toast with butter, black coffee';
+        var typed = '';
+        var charIdx = 0;
+        var typingDone = false;
+        var showingResults = false;
+
+        function typeLoop() {
+          if (charIdx < text.length) {
+            typed += text[charIdx];
+            charIdx++;
+            inputField.innerHTML = typed + '<span class="fuel-input__cursor">|</span>';
+            setTimeout(typeLoop, 40 + Math.random() * 60);
+          } else if (!typingDone) {
+            typingDone = true;
+            // Show parsing state
+            parsingEl.style.display = 'flex';
+            foodsEl.style.display = 'none';
+            setTimeout(function() {
+              parsingEl.style.display = 'none';
+              foodsEl.style.display = 'block';
+              showingResults = true;
+              // Reset after a while
+              setTimeout(resetTyping, 6000);
+            }, 1800);
+          }
+        }
+
+        function resetTyping() {
+          typed = '';
+          charIdx = 0;
+          typingDone = false;
+          showingResults = false;
+          inputField.innerHTML = '<span class="fuel-input__cursor">|</span>';
+          parsingEl.style.display = 'none';
+          foodsEl.style.display = 'none';
+          setTimeout(typeLoop, 1500);
+        }
+
+        // Start typing when AI screen becomes visible
+        var aiStarted = false;
+
+        // === Scroll-driven screen switching ===
+        var screens = document.querySelectorAll('.fuel-screen');
+        var currentScreen = 0;
+
+        function showFuelScreen(idx) {
+          if (idx === currentScreen) return;
+          currentScreen = idx;
+          screens.forEach(function(s) { s.classList.remove('fuel-screen--active'); });
+          screens[idx].classList.add('fuel-screen--active');
+          // Start typing animation when AI input screen appears
+          if (idx === 1 && !aiStarted) {
+            aiStarted = true;
+            setTimeout(typeLoop, 600);
+          }
+        }
+
+        function initFuelScroll() {
+          if (typeof ScrollTrigger === 'undefined') {
+            setTimeout(initFuelScroll, 100);
+            return;
+          }
+          var proseEl = document.querySelector('.project-article--has-sidebar .prose');
+          if (!proseEl) return;
+          var headings = proseEl.querySelectorAll('h2');
+          // The Problem, The Approach → 0 (Dashboard)
+          // Architecture, Features → 1 (AI Input)
+          // Key Decisions → 2 (Meals)
+          // Stack → 3 (Integrations)
+          var screenMap = [0, 0, 1, 1, 2, 3];
+
+          headings.forEach(function(h, i) {
+            var target = i < screenMap.length ? screenMap[i] : 3;
+            ScrollTrigger.create({
+              trigger: h,
+              start: 'top 60%',
+              onEnter: function() { showFuelScreen(target); },
+              onEnterBack: function() {
+                var prev = i > 0 && (i - 1) < screenMap.length ? screenMap[i - 1] : 0;
+                showFuelScreen(i === 0 ? 0 : prev);
+              }
+            });
+          });
+        }
+        initFuelScroll();
+
+        // === Dashboard number ticking ===
+        var eaten = 1216, protein = 86, carbs = 134, fat = 42;
+        var calLeft = document.getElementById('fuel-cal-left');
+        var eatenEl = document.getElementById('fuel-eaten');
+        var remainingStatEl = document.getElementById('fuel-remaining-stat');
+        var ringEl = document.getElementById('fuel-ring');
+        var proteinEl = document.getElementById('fuel-protein');
+        var carbsEl = document.getElementById('fuel-carbs');
+        var fatEl = document.getElementById('fuel-fat');
+        var proteinBar = document.getElementById('fuel-protein-bar');
+        var carbsBar = document.getElementById('fuel-carbs-bar');
+        var fatBar = document.getElementById('fuel-fat-bar');
+
+        setInterval(function() {
+          var add = Math.floor(2 + Math.random() * 8);
+          eaten = Math.min(eaten + add, 2000);
+          protein = Math.min(protein + Math.floor(Math.random() * 2), 150);
+          carbs = Math.min(carbs + Math.floor(Math.random() * 3), 250);
+          fat = Math.min(fat + Math.floor(Math.random() * 2), 70);
+
+          var remaining = Math.max(2000 - eaten, 0);
+          var pct = eaten / 2000;
+          var dashoffset = 327 - (327 * Math.min(pct, 1));
+
+          if (calLeft) calLeft.textContent = remaining;
+          if (eatenEl) eatenEl.textContent = eaten.toLocaleString();
+          if (remainingStatEl) remainingStatEl.textContent = remaining.toLocaleString();
+          if (ringEl) ringEl.setAttribute('stroke-dashoffset', dashoffset);
+          if (proteinEl) proteinEl.textContent = protein + ' / 150g';
+          if (carbsEl) carbsEl.textContent = carbs + ' / 250g';
+          if (fatEl) fatEl.textContent = fat + ' / 70g';
+          if (proteinBar) proteinBar.style.width = Math.min((protein / 150) * 100, 100) + '%';
+          if (carbsBar) carbsBar.style.width = Math.min((carbs / 250) * 100, 100) + '%';
+          if (fatBar) fatBar.style.width = Math.min((fat / 70) * 100, 100) + '%';
+
+          if (pct >= 1 && ringEl) ringEl.setAttribute('stroke', '#E64D4D');
+        }, 1500);
+      })();
+    </script>  </main> <!-- GSAP + ScrollTrigger + Lenis --> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script> <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script> <script>
+    // ═══════════════════════════════════════
+    // LENIS SMOOTH SCROLL
+    // ═══════════════════════════════════════
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // ═══════════════════════════════════════
+    // PRELOADER — ASCII PROGRESS BAR
+    // ═══════════════════════════════════════
+    (function() {
+      const fillEl = document.getElementById('preloader-fill');
+      const pctEl = document.getElementById('preloader-pct');
+      const preloader = document.getElementById('preloader');
+      const barWidth = 30;
+
+      function render(progress) {
+        const filled = Math.round((progress / 100) * barWidth);
+        fillEl.textContent = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+        pctEl.textContent = Math.round(progress) + '%';
+      }
+
+      render(0);
+
+      window.addEventListener('load', () => {
+        render(100);
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.4,
+          delay: 0.1,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            preloader.style.display = 'none';
+            lenis.start();
+            animateHero();
+          }
+        });
+      });
+    })();
+
+    // ═══════════════════════════════════════
+    // CUSTOM CURSOR
+    // ═══════════════════════════════════════
+    const cursor = document.getElementById('cursor');
+    if (cursor && window.matchMedia('(pointer: fine)').matches) {
+      let cx = 0, cy = 0, tx = 0, ty = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+      });
+
+      function updateCursor() {
+        cx += (tx - cx) * 0.15;
+        cy += (ty - cy) * 0.15;
+        cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+        requestAnimationFrame(updateCursor);
+      }
+      updateCursor();
+      cursor.style.opacity = '1';
+
+      // Scale up on links/buttons
+      document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('cursor--active'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--active'));
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // HERO ANIMATION — Staggered text reveal
+    // ═══════════════════════════════════════
+    function animateHero() {
+      gsap.fromTo('.hero-slideshow', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4, ease: 'power4.out' });
+      gsap.fromTo('.hero-overlap__text .display', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, delay: 0.3, ease: 'power4.out' });
+
+      // Header — slide down
+      gsap.fromTo('#site-header', {
+        y: -40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: 0.8,
+        ease: 'power3.out',
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // SCROLL ANIMATIONS — GSAP ScrollTrigger
+    // ═══════════════════════════════════════
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Quote text — line-by-line reveal with parallax
+    document.querySelectorAll('.quote-text').forEach(quote => {
+      // Wrap each line in a span for animation
+      const html = quote.innerHTML;
+      const lines = html.split('<br>').map(l => l.trim()).filter(Boolean);
+      quote.innerHTML = lines.map(l =>
+        `<div class="quote-line" style="overflow:hidden;"><span class="quote-line__inner" style="display:block;">${l}</span></div>`
+      ).join('');
+
+      gsap.fromTo(quote.querySelectorAll('.quote-line__inner'), {
+        y: '110%',
+        rotateX: -20,
+      }, {
+        y: '0%',
+        rotateX: 0,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: quote,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Quote attribution — fade in
+    document.querySelectorAll('.quote-attribution').forEach(attr => {
+      gsap.fromTo(attr, {
+        opacity: 0,
+        y: 30,
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: attr,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // Photo section — scale in
+    document.querySelectorAll('.js-in:not(.hero-row)').forEach(el => {
+      // Skip hero elements (animated separately)
+      if (el.closest('.home-hero')) return;
+
+      gsap.fromTo(el, {
+        y: 60,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Hero title — split apart on scroll
+    var heroTexts = document.querySelectorAll('.hero-overlap__text .display');
+    if (heroTexts.length >= 2) {
+      gsap.to(heroTexts[0], { y: -120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to(heroTexts[1], { y: 120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to('.hero-slideshow', { scale: 0.92, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+    }
+
+    // Project cards — stagger slide up
+    document.querySelectorAll('.project-card').forEach((card, i) => {
+      gsap.fromTo(card, {
+        y: 80,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: i * 0.08,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Gallery images — parallax on scroll
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      gsap.fromTo(img, {
+        scale: 1.15,
+      }, {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.closest('.gallery-section'),
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        }
+      });
+    });
+
+    // Display headings — parallax speed difference
+    document.querySelectorAll('.display--2').forEach(heading => {
+      gsap.fromTo(heading, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // About section text — paragraph stagger
+    document.querySelectorAll('#about p').forEach((p, i) => {
+      gsap.fromTo(p, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        delay: i * 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: p,
+          start: 'top 88%',
+        }
+      });
+    });
+
+    // Footer outro — slide up
+    document.querySelectorAll('.site-footer__outro > div').forEach((col, i) => {
+      gsap.fromTo(col, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.site-footer__outro',
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Build section — browser mockup builds up, features stagger
+    var buildBrowser = document.querySelector('.build-browser');
+    if (buildBrowser) {
+      // Browser slides in from left
+      gsap.fromTo(buildBrowser, {
+        x: -60,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: buildBrowser,
+          start: 'top 85%',
+        }
+      });
+
+      // Wireframe elements build sequentially
+      var wireEls = buildBrowser.querySelectorAll('.build-wire__nav, .build-wire__line, .build-wire__cta, .build-wire__card');
+      wireEls.forEach(function(el, i) {
+        gsap.fromTo(el, {
+          opacity: 0,
+          y: 8,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          delay: 0.4 + i * 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          }
+        });
+      });
+
+      // Lighthouse scores count up
+      var scoreEls = buildBrowser.querySelectorAll('.build-browser__stat-val--green');
+      scoreEls.forEach(function(el) {
+        var target = 100;
+        var obj = { val: 0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            el.textContent = Math.round(obj.val);
+          }
+        });
+      });
+
+      // Load time counts
+      var loadEl = buildBrowser.querySelector('.build-browser__stat-val:not(.build-browser__stat-val--green)');
+      if (loadEl) {
+        var loadObj = { val: 0 };
+        gsap.to(loadObj, {
+          val: 0.4,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            loadEl.textContent = loadObj.val.toFixed(1) + 's';
+          }
+        });
+      }
+    }
+
+    // Build features — stagger from right
+    document.querySelectorAll('.build-section__feature').forEach(function(feat, i) {
+      gsap.fromTo(feat, {
+        x: 40,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: feat,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Contact cards — stagger
+    document.querySelectorAll('.contact-card').forEach(function(card, i) {
+      gsap.fromTo(card, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        delay: i * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // Photo grid items — stagger reveal
+    document.querySelectorAll('.photo-grid__item').forEach((item, i) => {
+      gsap.fromTo(item, {
+        y: 60,
+        opacity: 0,
+        scale: 0.95,
+      }, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        delay: (i % 6) * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MAGNETIC HOVER on nav links
+    // ═══════════════════════════════════════
+    document.querySelectorAll('.site-nav__link, .site-header__brand').forEach(link => {
+      link.addEventListener('mousemove', (e) => {
+        const rect = link.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(link, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+      });
+      link.addEventListener('mouseleave', () => {
+        gsap.to(link, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MOBILE MENU
+    // ═══════════════════════════════════════
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle?.addEventListener('click', () => {
+      const isOpen = mobileMenu?.classList.toggle('open');
+      menuToggle.textContent = isOpen ? 'Close' : 'Menu';
+      if (isOpen) lenis.stop(); else lenis.start();
+    });
+
+    window.closeMobileMenu = function() {
+      mobileMenu?.classList.remove('open');
+      if (menuToggle) menuToggle.textContent = 'Menu';
+      lenis.start();
+    };
+
+    // ═══════════════════════════════════════
+    // THEME TOGGLE
+    // ═══════════════════════════════════════
+    function updateToggleText() {
+      var isDark = document.documentElement.classList.contains('dark');
+      document.querySelectorAll('.theme-toggle').forEach(function(btn) {
+        btn.textContent = isDark ? 'Light' : 'Dark';
+      });
+    }
+    updateToggleText();
+
+    window.toggleTheme = function() {
+      document.documentElement.classList.toggle('dark');
+      var isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateToggleText();
+    };
+  </script> </body> </html>

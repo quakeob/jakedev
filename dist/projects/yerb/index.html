@@ -1,0 +1,710 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Personal AI assistant running 24/7 on a Mac Mini. Manages calendar, automates coursework, runs autonomous builds overnight, and ghostwrites content."><title>Yerb — Jake Davis</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>
+    (function() {
+      var s = localStorage.getItem('theme');
+      if (s === 'dark' || (!s && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script><link rel="stylesheet" href="/_astro/index.BjYX84az.css">
+<style>.prose{color:var(--text-2);line-height:1.8;font-size:14px;font-family:var(--font-mono);text-transform:none}.prose h2{font-family:var(--font-display);color:var(--text);font-size:1.8rem;font-weight:400;text-transform:uppercase;margin-top:3rem;margin-bottom:1rem;letter-spacing:-.02em}.prose h3{color:var(--text);font-size:1rem;font-weight:700;text-transform:uppercase;margin-top:2rem;margin-bottom:.75rem}.prose p{margin-bottom:1.25rem}.prose strong{color:var(--text);font-weight:700}.prose a{color:var(--green);text-decoration:underline;text-underline-offset:3px}.prose a:hover{opacity:.6}.prose code{font-family:var(--font-mono);font-size:.875em;padding:.15em .4em;background:var(--border);color:var(--text)}.prose pre{background:var(--border);border:1px solid var(--border);padding:1.25rem;overflow-x:auto;margin:1.5rem 0;font-size:.875rem;line-height:1.6}.prose pre code{background:none;padding:0}.prose ul,.prose ol{margin:1rem 0;padding-left:1.5rem}.prose li{margin-bottom:.5rem}.prose blockquote{border-left:2px solid var(--text);padding-left:1rem;margin:1.5rem 0;font-style:italic;color:var(--grey)}.prose hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
+</style></head> <body> <!-- Preloader --> <div class="preloader" id="preloader"> <div class="preloader__wrapper"> <div class="preloader__bar-line"> <span class="preloader__bracket">[</span><span class="preloader__fill" id="preloader-fill"></span><span class="preloader__bracket">]</span> </div> <div class="preloader__pct" id="preloader-pct">0%</div> </div> </div> <!-- Custom Cursor --> <div class="cursor" id="cursor"> <div class="cursor__dot"></div> </div> <!-- Header --> <header class="site-header" id="site-header"> <div> <a class="site-header__brand" href="/"> <span>Jake Davis</span> </a> </div> <div> <nav> <ul class="site-nav__list"> <li><a href="/photos" class="site-nav__link">Photos</a></li> <li><a href="/#work" class="site-nav__link">Work</a></li> <li><a href="/#about" class="site-nav__link">About</a></li> <li><button class="site-nav__link theme-toggle" onclick="toggleTheme()">Dark</button></li> </ul> </nav> <button class="menu-toggle" id="menu-toggle">Menu</button> </div> </header> <!-- Mobile Menu --> <div class="mobile-menu" id="mobile-menu"> <a href="/" onclick="closeMobileMenu()">Home</a> <a href="/#work" onclick="closeMobileMenu()">Work</a> <a href="/photos" onclick="closeMobileMenu()">Photos</a> <a href="/#about" onclick="closeMobileMenu()">About</a> <a href="/#contact" onclick="closeMobileMenu()">Contact</a> <button class="theme-toggle" onclick="toggleTheme()" style="background:none;border:none;color:inherit;font-family:var(--font-display);font-size:2.5rem;text-transform:uppercase;letter-spacing:-0.01em;cursor:pointer;">Dark</button> </div> <main>  <article class="project-article project-article--has-sidebar"> <div class="project-article__main"> <!-- Back link --> <a href="/#work" class="lead" style="display: inline-block; margin-bottom: 3rem; color: var(--grey);">
+← Back to work
+</a> <!-- Hero --> <header style="margin-bottom: 3rem;"> <h1 class="display display--2" style="margin-bottom: 1rem;"> Yerb </h1> <p class="lead" style="font-size: 13px; line-height: 1.8; text-transform: none; color: var(--text-2); margin-bottom: 1.5rem;"> Personal AI assistant running 24/7 on a Mac Mini. Manages calendar, automates coursework, runs autonomous builds overnight, and ghostwrites content. </p> <div style="display: flex; flex-wrap: wrap; gap: 1em; margin-bottom: 1.5rem;"> <span class="lead" style="font-size: 11px; color: var(--grey);">OpenClaw</span><span class="lead" style="font-size: 11px; color: var(--grey);">Python</span><span class="lead" style="font-size: 11px; color: var(--grey);">Anthropic</span><span class="lead" style="font-size: 11px; color: var(--grey);">Automation</span> </div>  </header> <!-- Content --> <div class="prose"> <h2 id="the-problem">The Problem</h2>
+<p>Every AI demo I saw was the same thing: a chatbot. You type a question, it types an answer, and that’s it. Cool for five minutes, useless for real life.</p>
+<p>I didn’t want an AI I could <em>talk to</em>. I wanted an AI that could <em>do things</em>. Check my calendar, submit my homework, scrape Craigslist for 4Runner deals, draft tweets, commit code — all without me asking.</p>
+<h2 id="the-approach">The Approach</h2>
+<p>Yerb is a 24/7 autonomous AI assistant running on a Mac Mini in my apartment. It’s built on <a href="https://openclaw.com">OpenClaw</a>, which provides the gateway layer between Claude and a full suite of tools: Calendar, Canvas API (BYU’s LMS), GitHub, Telegram, browser automation, file system access, and more.</p>
+<p>It’s not a chatbot. It’s an operating system for my life.</p>
+<h2 id="what-it-actually-does">What It Actually Does</h2>
+<p><strong>Calendar management.</strong> Yerb reads my calendar, sends me morning briefs, and alerts me before meetings. It knows my schedule better than I do.</p>
+<p><strong>Coursework automation.</strong> It connects to BYU’s Canvas API, checks for upcoming assignments, reads rubrics, and helps me stay on top of deadlines. It’s pulled assignment details, submission requirements, and grades — all programmatically.</p>
+<p><strong>Nightly builds.</strong> While I sleep, Yerb runs builds on my projects, checks for errors, and commits fixes. I wake up to a summary of what happened overnight.</p>
+<p><strong>Content ghostwriting.</strong> It drafts X (Twitter) posts based on what I’m working on, matching my voice and tone. I review and post — or sometimes it posts autonomously.</p>
+<p><strong>Vehicle deal hunting.</strong> Yerb runs my marketplace scraper, filters results, scores deals, and sends me Telegram alerts when something good shows up.</p>
+<p><strong>Knowledge management.</strong> It manages my Obsidian vault — organizing notes, generating summaries, and connecting ideas across documents.</p>
+<h2 id="architecture">Architecture</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Me (Telegram/Web) → OpenClaw Gateway → Claude → Tools</span></span>
+<span class="line"><span>                                                  ├── Calendar API</span></span>
+<span class="line"><span>                                                  ├── Canvas API (BYU)</span></span>
+<span class="line"><span>                                                  ├── GitHub</span></span>
+<span class="line"><span>                                                  ├── Browser Automation</span></span>
+<span class="line"><span>                                                  ├── File System</span></span>
+<span class="line"><span>                                                  ├── Shell Commands</span></span>
+<span class="line"><span>                                                  └── Telegram Bot</span></span></code></pre>
+<p>The OpenClaw gateway handles session management, tool orchestration, and persistent memory. Claude is the reasoning layer. The tools are the hands.</p>
+<p>The key insight is that this isn’t a single script — it’s an always-on agent with context about my life. It remembers conversations from yesterday. It knows what projects I’m working on. It has opinions about my schedule.</p>
+<h2 id="the-key-insight">The Key Insight</h2>
+<p><strong>My AI assistant isn’t a demo. It’s my actual workflow.</strong></p>
+<p>Most people building with AI are making toys. Proof of concepts. Things that work in a demo but fall apart in daily use. Yerb has been running for months. It’s battle-tested against the messiness of real life — schedule changes, API rate limits, edge cases in assignment parsing, and the fact that sometimes I just don’t want to be productive.</p>
+<p>The difference between a demo and a tool is reliability. Yerb handles errors gracefully, retries failed API calls, and tells me when something breaks instead of silently failing.</p>
+<h2 id="stack">Stack</h2>
+<ul>
+<li><strong>Runtime:</strong> OpenClaw (gateway + agent framework)</li>
+<li><strong>AI:</strong> Anthropic Claude (Opus/Sonnet)</li>
+<li><strong>Language:</strong> Python, Shell</li>
+<li><strong>APIs:</strong> Google Calendar, Canvas LMS, GitHub, Telegram, OpenFoodFacts</li>
+<li><strong>Infrastructure:</strong> Mac Mini (always-on), macOS automation, launchd</li>
+</ul> </div> <!-- Navigation --> <nav style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;"> <a href="/projects/fuel" style="text-decoration: none;"> <span class="lead" style="font-size: 11px; color: var(--grey);">← Previous</span> <span class="lead u-g" style="display: block; margin-top: 4px;"> Fuel </span> </a> <a href="/projects/marketplace-scraper" style="text-align: right; text-decoration: none;"> <span class="lead" style="font-size: 11px; color: var(--grey);">Next →</span> <span class="lead u-g" style="display: block; margin-top: 4px;"> Marketplace Scraper </span> </a> </nav> </div>   <aside class="project-sidebar" id="project-sidebar"> <div class="project-sidebar__sticky"> <div class="yerb-term" id="yerb-term"> <!-- Title bar --> <div class="yerb-term__titlebar"> <div class="yerb-term__traffic"> <span class="yerb-term__light yerb-term__light--red"></span> <span class="yerb-term__light yerb-term__light--yellow"></span> <span class="yerb-term__light yerb-term__light--green"></span> </div> <div class="yerb-term__title">yerb — mini</div> </div> <!-- SCREEN 0: Boot Sequence --> <div class="yerb-term__screen yerb-term__screen--active" data-screen="0"> <div class="yerb-term__body" id="yerb-boot-body"> <!-- Boot lines injected by JS --> </div> </div> <!-- SCREEN 1: Live Activity --> <div class="yerb-term__screen" data-screen="1"> <div class="yerb-term__body" id="yerb-live-body"> <!-- Live terminal lines injected by JS --> </div> </div> <!-- SCREEN 2: Agent Dashboard --> <div class="yerb-term__screen" data-screen="2"> <div class="yerb-term__body yerb-term__body--dashboard"> <div class="yerb-term__dash-title">AGENT STATUS</div> <div class="yerb-term__dash-grid"> <div class="yerb-term__dash-card"> <div class="yerb-term__dash-card-header"> <span class="yerb-term__dash-dot yerb-term__dash-dot--active"></span> <span class="yerb-term__dash-name">scheduler</span> </div> <div class="yerb-term__dash-action" id="yerb-dash-scheduler">calendar synced</div> <div class="yerb-term__dash-time">2m ago</div> </div> <div class="yerb-term__dash-card"> <div class="yerb-term__dash-card-header"> <span class="yerb-term__dash-dot yerb-term__dash-dot--active"></span> <span class="yerb-term__dash-name">market</span> </div> <div class="yerb-term__dash-action" id="yerb-dash-market">scanning positions</div> <div class="yerb-term__dash-time">14s ago</div> </div> <div class="yerb-term__dash-card"> <div class="yerb-term__dash-card-header"> <span class="yerb-term__dash-dot yerb-term__dash-dot--active"></span> <span class="yerb-term__dash-name">scraper</span> </div> <div class="yerb-term__dash-action" id="yerb-dash-scraper">2 new listings</div> <div class="yerb-term__dash-time">47s ago</div> </div> <div class="yerb-term__dash-card"> <div class="yerb-term__dash-card-header"> <span class="yerb-term__dash-dot yerb-term__dash-dot--active"></span> <span class="yerb-term__dash-name">builder</span> </div> <div class="yerb-term__dash-action" id="yerb-dash-builder">tests passed 47/47</div> <div class="yerb-term__dash-time">5m ago</div> </div> </div> </div> </div> <!-- SCREEN 3: Daily Summary --> <div class="yerb-term__screen" data-screen="3"> <div class="yerb-term__body yerb-term__body--summary"> <div class="yerb-term__summary-header">DAILY SUMMARY — Mar 3, 2026</div> <div class="yerb-term__summary-divider"></div> <div class="yerb-term__summary-stats"> <div class="yerb-term__summary-row"> <span class="yerb-term__summary-label">tasks completed</span> <span class="yerb-term__summary-val" id="yerb-sum-tasks">14</span> </div> <div class="yerb-term__summary-row"> <span class="yerb-term__summary-label">api calls</span> <span class="yerb-term__summary-val" id="yerb-sum-api">847</span> </div> <div class="yerb-term__summary-row"> <span class="yerb-term__summary-label">uptime</span> <span class="yerb-term__summary-val">847h 23m</span> </div> <div class="yerb-term__summary-row"> <span class="yerb-term__summary-label">errors</span> <span class="yerb-term__summary-val yerb-term__summary-val--green">0</span> </div> </div> <div class="yerb-term__summary-divider"></div> <div class="yerb-term__summary-chart-label">ACTIVITY BY HOUR</div> <div class="yerb-term__summary-chart" id="yerb-summary-chart"> <div class="yerb-term__summary-bar" style="--h: 20%"><span>0</span></div> <div class="yerb-term__summary-bar" style="--h: 8%"><span>2</span></div> <div class="yerb-term__summary-bar" style="--h: 5%"><span>4</span></div> <div class="yerb-term__summary-bar" style="--h: 12%"><span>6</span></div> <div class="yerb-term__summary-bar" style="--h: 45%"><span>8</span></div> <div class="yerb-term__summary-bar yerb-term__summary-bar--peak" style="--h: 88%"><span>10</span></div> <div class="yerb-term__summary-bar" style="--h: 72%"><span>12</span></div> <div class="yerb-term__summary-bar" style="--h: 55%"><span>14</span></div> <div class="yerb-term__summary-bar" style="--h: 78%"><span>16</span></div> <div class="yerb-term__summary-bar" style="--h: 65%"><span>18</span></div> <div class="yerb-term__summary-bar" style="--h: 40%"><span>20</span></div> <div class="yerb-term__summary-bar" style="--h: 25%"><span>22</span></div> </div> </div> </div> <!-- Status bar (always visible) --> <div class="yerb-term__statusbar"> <div class="yerb-term__statusbar-top"> <div class="yerb-term__statusbar-left"> <span class="yerb-term__badge">&#x25B8; auto-accept</span> <span class="yerb-term__version">yerb 3.1</span> </div> <div class="yerb-term__statusbar-right"> <span class="yerb-term__uptime" id="yerb-uptime">847h</span> </div> </div> <div class="yerb-term__statusbar-bottom"> <div class="yerb-term__ctx-bar"> <div class="yerb-term__ctx-fill" id="yerb-ctx-fill" style="width: 67%;"></div> </div> <span class="yerb-term__tokens" id="yerb-tokens">14.2K tokens</span> <span class="yerb-term__ctx-pct" id="yerb-ctx-pct">67%</span> </div> </div> </div> <div class="widget-page__scroll-hint lead">( scroll )</div> </div> </aside>    </article> <script>
+      (function() {
+        var screens = document.querySelectorAll('.yerb-term__screen');
+        var currentScreen = 0;
+        var liveInterval = null;
+
+        function showYerbScreen(idx) {
+          if (idx === currentScreen && idx !== 0) return;
+          currentScreen = idx;
+          screens.forEach(function(s) { s.classList.remove('yerb-term__screen--active'); });
+          if (screens[idx]) screens[idx].classList.add('yerb-term__screen--active');
+          if (idx === 1 && !liveInterval) startLiveActivity();
+        }
+
+        // === Boot Sequence ===
+        var bootBody = document.getElementById('yerb-boot-body');
+        var bootAgents = [
+          { name: 'scheduler', label: 'loading scheduler agent' },
+          { name: 'market', label: 'loading market agent' },
+          { name: 'scraper', label: 'loading scraper agent' },
+          { name: 'builder', label: 'loading builder agent' }
+        ];
+
+        function runBoot() {
+          if (!bootBody) return;
+          bootBody.innerHTML = '';
+          addBootLine('YERB v3.1', 'yerb-term__line--boot-title');
+          addBootLine('autonomous agent framework', 'yerb-term__line--boot-sub');
+          addBootLine('', 'yerb-term__line--spacer');
+
+          var delay = 600;
+          bootAgents.forEach(function(agent, i) {
+            setTimeout(function() {
+              var lineEl = addBootLine('', 'yerb-term__line--boot-agent');
+              lineEl.innerHTML = '<span class="yerb-term__spinner"></span> ' + agent.label + '...';
+              setTimeout(function() {
+                lineEl.innerHTML = '<span class="yerb-term__check">&#10003;</span> ' + agent.label + ' \u2014 ready';
+                lineEl.className = 'yerb-term__line yerb-term__line--resolved';
+                if (i === bootAgents.length - 1) {
+                  setTimeout(function() {
+                    addBootLine('', 'yerb-term__line--spacer');
+                    addBootLine('all systems online', 'yerb-term__line--boot-ready');
+                    addBootLine('4 agents active \u00b7 0 errors', 'yerb-term__line--boot-sub');
+                    setTimeout(function() { showYerbScreen(1); }, 1800);
+                  }, 400);
+                }
+              }, 500 + Math.random() * 400);
+            }, delay);
+            delay += 700 + Math.random() * 300;
+          });
+        }
+
+        function addBootLine(text, cls) {
+          var line = document.createElement('div');
+          line.className = 'yerb-term__line ' + (cls || '');
+          line.textContent = text;
+          bootBody.appendChild(line);
+          return line;
+        }
+
+        // === Live Activity ===
+        var liveBody = document.getElementById('yerb-live-body');
+        var maxLines = 16;
+        var liveLines = [
+          { agent: 'scheduler', text: 'calendar synced \u2014 3 events today', type: 'scheduler' },
+          { agent: 'scheduler', text: 'reminder: dentist at 2pm', type: 'scheduler' },
+          { agent: 'market', text: 'scanning positions...', type: 'market' },
+          { agent: 'market', text: 'ETH +2.3% \u2014 holding', type: 'market' },
+          { agent: 'market', text: 'polymarket: checked 4 contracts', type: 'market' },
+          { agent: 'scraper', text: '2 new listings found', type: 'scraper' },
+          { agent: 'scraper', text: 'deal alert: 2019 GT3 $142k', type: 'scraper' },
+          { agent: 'scraper', text: 'monitoring 12 active searches', type: 'scraper' },
+          { agent: 'builder', text: 'tests passed 47/47', type: 'builder' },
+          { agent: 'builder', text: 'deploying jakedev.org...', type: 'builder' },
+          { agent: 'builder', text: 'jakedev.org \u2014 done', type: 'builder' },
+          { agent: 'builder', text: 'lint check passed', type: 'builder' },
+          { agent: null, text: 'deploy site', type: 'user' },
+          { agent: null, text: 'market positions', type: 'user' },
+          { agent: null, text: 'check listings', type: 'user' },
+          { agent: 'scheduler', text: 'daily standup in 30m', type: 'scheduler' },
+          { agent: 'market', text: 'BTC sideways \u2014 no action', type: 'market' },
+          { agent: 'scraper', text: 'price drop: 2020 Cayman $58k', type: 'scraper' },
+          { agent: 'builder', text: 'pushing commit a3f29d1', type: 'builder' },
+          { agent: null, text: 'status', type: 'user' },
+          { agent: 'scheduler', text: 'next event: call with dan 4pm', type: 'scheduler' },
+          { agent: 'market', text: 'SOL alert: breakout above $185', type: 'market' },
+          { agent: 'scraper', text: 'new match: 997.2 GT3 Cup', type: 'scraper' },
+          { agent: 'builder', text: 'build succeeded in 4.2s', type: 'builder' }
+        ];
+        var liveIdx = 0;
+        var visibleLines = [];
+
+        function startLiveActivity() {
+          if (!liveBody) return;
+          liveBody.innerHTML = '';
+          visibleLines = [];
+          liveIdx = 0;
+          addLiveLine();
+          liveInterval = setInterval(function() {
+            if (currentScreen !== 1) return;
+            if (Math.random() < 0.2 && visibleLines.length > 0) {
+              addThinkingDots();
+              setTimeout(function() {
+                removeThinkingDots();
+                addLiveLine();
+              }, 600 + Math.random() * 500);
+            } else {
+              addLiveLine();
+            }
+          }, 800 + Math.random() * 700);
+        }
+
+        function addLiveLine() {
+          if (!liveBody) return;
+          var data = liveLines[liveIdx % liveLines.length];
+          liveIdx++;
+          var line = document.createElement('div');
+          line.className = 'yerb-term__line yerb-term__line--' + data.type;
+          if (data.type === 'user') {
+            line.innerHTML = '<span class="yerb-term__prompt-char">&gt;</span> ' + data.text;
+          } else {
+            line.innerHTML = '<span class="yerb-term__agent-tag">[' + data.agent + ']</span> ' + data.text;
+          }
+          liveBody.appendChild(line);
+          visibleLines.push(line);
+          while (visibleLines.length > maxLines) {
+            var old = visibleLines.shift();
+            if (old && old.parentNode) {
+              old.style.opacity = '0';
+              old.style.transform = 'translateY(-4px)';
+              (function(el) {
+                setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 200);
+              })(old);
+            }
+          }
+          liveBody.scrollTop = liveBody.scrollHeight;
+        }
+
+        function addThinkingDots() {
+          if (!liveBody) return;
+          var dots = document.createElement('div');
+          dots.className = 'yerb-term__line yerb-term__thinking';
+          dots.id = 'yerb-thinking';
+          dots.innerHTML = '<span class="yerb-term__dots"><span>.</span><span>.</span><span>.</span></span>';
+          liveBody.appendChild(dots);
+          liveBody.scrollTop = liveBody.scrollHeight;
+        }
+
+        function removeThinkingDots() {
+          var el = document.getElementById('yerb-thinking');
+          if (el && el.parentNode) el.parentNode.removeChild(el);
+        }
+
+        // === Status bar ticking ===
+        var tokensEl = document.getElementById('yerb-tokens');
+        var ctxPctEl = document.getElementById('yerb-ctx-pct');
+        var ctxFillEl = document.getElementById('yerb-ctx-fill');
+        var tokenCount = 14200;
+        var ctxPct = 67;
+
+        setInterval(function() {
+          tokenCount += Math.floor(10 + Math.random() * 40);
+          ctxPct = Math.min(ctxPct + 0.08 + Math.random() * 0.15, 98);
+          if (tokensEl) tokensEl.textContent = (tokenCount / 1000).toFixed(1) + 'K tokens';
+          if (ctxPctEl) ctxPctEl.textContent = Math.round(ctxPct) + '%';
+          if (ctxFillEl) {
+            ctxFillEl.style.width = ctxPct + '%';
+            if (ctxPct > 85) ctxFillEl.style.background = 'rgba(255, 69, 58, 0.7)';
+            else if (ctxPct > 70) ctxFillEl.style.background = 'rgba(255, 149, 0, 0.6)';
+          }
+        }, 1200);
+
+        // === Scroll-driven screen switching ===
+        function initYerbScroll() {
+          if (typeof ScrollTrigger === 'undefined') {
+            setTimeout(initYerbScroll, 100);
+            return;
+          }
+          var proseEl = document.querySelector('.project-article--has-sidebar .prose');
+          if (!proseEl) return;
+          var headings = proseEl.querySelectorAll('h2');
+          var screenMap = [0, 0, 1, 1, 2, 3];
+          headings.forEach(function(h, i) {
+            var targetScreen = i < screenMap.length ? screenMap[i] : 3;
+            ScrollTrigger.create({
+              trigger: h,
+              start: 'top 60%',
+              onEnter: function() { showYerbScreen(targetScreen); },
+              onEnterBack: function() {
+                var prev = i > 0 && (i - 1) < screenMap.length ? screenMap[i - 1] : 0;
+                showYerbScreen(i === 0 ? 0 : prev);
+              }
+            });
+          });
+        }
+        initYerbScroll();
+
+        // === Dashboard card cycling ===
+        var dashActions = {
+          scheduler: ['calendar synced', 'reminders sent', 'checking events', 'standup in 30m'],
+          market: ['scanning positions', 'ETH +2.3%', 'checking alerts', 'portfolio rebalanced'],
+          scraper: ['2 new listings', 'monitoring 12 searches', 'price alert sent', '3 matches found'],
+          builder: ['tests passed 47/47', 'deployed jakedev.org', 'lint check passed', 'build succeeded']
+        };
+        setInterval(function() {
+          if (currentScreen !== 2) return;
+          var agents = ['scheduler', 'market', 'scraper', 'builder'];
+          var pick = agents[Math.floor(Math.random() * agents.length)];
+          var el = document.getElementById('yerb-dash-' + pick);
+          var actions = dashActions[pick];
+          if (el && actions) {
+            el.style.opacity = '0';
+            setTimeout(function() {
+              el.textContent = actions[Math.floor(Math.random() * actions.length)];
+              el.style.opacity = '1';
+            }, 200);
+          }
+        }, 2000);
+
+        runBoot();
+      })();
+    </script>  </main> <!-- GSAP + ScrollTrigger + Lenis --> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script> <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script> <script>
+    // ═══════════════════════════════════════
+    // LENIS SMOOTH SCROLL
+    // ═══════════════════════════════════════
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // ═══════════════════════════════════════
+    // PRELOADER — ASCII PROGRESS BAR
+    // ═══════════════════════════════════════
+    (function() {
+      const fillEl = document.getElementById('preloader-fill');
+      const pctEl = document.getElementById('preloader-pct');
+      const preloader = document.getElementById('preloader');
+      const barWidth = 30;
+
+      function render(progress) {
+        const filled = Math.round((progress / 100) * barWidth);
+        fillEl.textContent = '█'.repeat(filled) + '░'.repeat(barWidth - filled);
+        pctEl.textContent = Math.round(progress) + '%';
+      }
+
+      render(0);
+
+      window.addEventListener('load', () => {
+        render(100);
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.4,
+          delay: 0.1,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            preloader.style.display = 'none';
+            lenis.start();
+            animateHero();
+          }
+        });
+      });
+    })();
+
+    // ═══════════════════════════════════════
+    // CUSTOM CURSOR
+    // ═══════════════════════════════════════
+    const cursor = document.getElementById('cursor');
+    if (cursor && window.matchMedia('(pointer: fine)').matches) {
+      let cx = 0, cy = 0, tx = 0, ty = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+      });
+
+      function updateCursor() {
+        cx += (tx - cx) * 0.15;
+        cy += (ty - cy) * 0.15;
+        cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+        requestAnimationFrame(updateCursor);
+      }
+      updateCursor();
+      cursor.style.opacity = '1';
+
+      // Scale up on links/buttons
+      document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('cursor--active'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--active'));
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // HERO ANIMATION — Staggered text reveal
+    // ═══════════════════════════════════════
+    function animateHero() {
+      gsap.fromTo('.hero-slideshow', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4, ease: 'power4.out' });
+      gsap.fromTo('.hero-overlap__text .display', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, delay: 0.3, ease: 'power4.out' });
+
+      // Header — slide down
+      gsap.fromTo('#site-header', {
+        y: -40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: 0.8,
+        ease: 'power3.out',
+      });
+    }
+
+    // ═══════════════════════════════════════
+    // SCROLL ANIMATIONS — GSAP ScrollTrigger
+    // ═══════════════════════════════════════
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Quote text — line-by-line reveal with parallax
+    document.querySelectorAll('.quote-text').forEach(quote => {
+      // Wrap each line in a span for animation
+      const html = quote.innerHTML;
+      const lines = html.split('<br>').map(l => l.trim()).filter(Boolean);
+      quote.innerHTML = lines.map(l =>
+        `<div class="quote-line" style="overflow:hidden;"><span class="quote-line__inner" style="display:block;">${l}</span></div>`
+      ).join('');
+
+      gsap.fromTo(quote.querySelectorAll('.quote-line__inner'), {
+        y: '110%',
+        rotateX: -20,
+      }, {
+        y: '0%',
+        rotateX: 0,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: quote,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Quote attribution — fade in
+    document.querySelectorAll('.quote-attribution').forEach(attr => {
+      gsap.fromTo(attr, {
+        opacity: 0,
+        y: 30,
+      }, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: attr,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // Photo section — scale in
+    document.querySelectorAll('.js-in:not(.hero-row)').forEach(el => {
+      // Skip hero elements (animated separately)
+      if (el.closest('.home-hero')) return;
+
+      gsap.fromTo(el, {
+        y: 60,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+
+    // Hero title — split apart on scroll
+    var heroTexts = document.querySelectorAll('.hero-overlap__text .display');
+    if (heroTexts.length >= 2) {
+      gsap.to(heroTexts[0], { y: -120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to(heroTexts[1], { y: 120, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+      gsap.to('.hero-slideshow', { scale: 0.92, ease: 'none', scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 1 } });
+    }
+
+    // Project cards — stagger slide up
+    document.querySelectorAll('.project-card').forEach((card, i) => {
+      gsap.fromTo(card, {
+        y: 80,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        delay: i * 0.08,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Gallery images — parallax on scroll
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      gsap.fromTo(img, {
+        scale: 1.15,
+      }, {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.closest('.gallery-section'),
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        }
+      });
+    });
+
+    // Display headings — parallax speed difference
+    document.querySelectorAll('.display--2').forEach(heading => {
+      gsap.fromTo(heading, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: heading,
+          start: 'top 85%',
+        }
+      });
+    });
+
+    // About section text — paragraph stagger
+    document.querySelectorAll('#about p').forEach((p, i) => {
+      gsap.fromTo(p, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        delay: i * 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: p,
+          start: 'top 88%',
+        }
+      });
+    });
+
+    // Footer outro — slide up
+    document.querySelectorAll('.site-footer__outro > div').forEach((col, i) => {
+      gsap.fromTo(col, {
+        y: 40,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.site-footer__outro',
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Build section — browser mockup builds up, features stagger
+    var buildBrowser = document.querySelector('.build-browser');
+    if (buildBrowser) {
+      // Browser slides in from left
+      gsap.fromTo(buildBrowser, {
+        x: -60,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: buildBrowser,
+          start: 'top 85%',
+        }
+      });
+
+      // Wireframe elements build sequentially
+      var wireEls = buildBrowser.querySelectorAll('.build-wire__nav, .build-wire__line, .build-wire__cta, .build-wire__card');
+      wireEls.forEach(function(el, i) {
+        gsap.fromTo(el, {
+          opacity: 0,
+          y: 8,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          delay: 0.4 + i * 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          }
+        });
+      });
+
+      // Lighthouse scores count up
+      var scoreEls = buildBrowser.querySelectorAll('.build-browser__stat-val--green');
+      scoreEls.forEach(function(el) {
+        var target = 100;
+        var obj = { val: 0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            el.textContent = Math.round(obj.val);
+          }
+        });
+      });
+
+      // Load time counts
+      var loadEl = buildBrowser.querySelector('.build-browser__stat-val:not(.build-browser__stat-val--green)');
+      if (loadEl) {
+        var loadObj = { val: 0 };
+        gsap.to(loadObj, {
+          val: 0.4,
+          duration: 1.5,
+          delay: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: buildBrowser,
+            start: 'top 85%',
+          },
+          onUpdate: function() {
+            loadEl.textContent = loadObj.val.toFixed(1) + 's';
+          }
+        });
+      }
+    }
+
+    // Build features — stagger from right
+    document.querySelectorAll('.build-section__feature').forEach(function(feat, i) {
+      gsap.fromTo(feat, {
+        x: 40,
+        opacity: 0,
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: feat,
+          start: 'top 90%',
+        }
+      });
+    });
+
+    // Contact cards — stagger
+    document.querySelectorAll('.contact-card').forEach(function(card, i) {
+      gsap.fromTo(card, {
+        y: 30,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        delay: i * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // Photo grid items — stagger reveal
+    document.querySelectorAll('.photo-grid__item').forEach((item, i) => {
+      gsap.fromTo(item, {
+        y: 60,
+        opacity: 0,
+        scale: 0.95,
+      }, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        delay: (i % 6) * 0.08,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 92%',
+        }
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MAGNETIC HOVER on nav links
+    // ═══════════════════════════════════════
+    document.querySelectorAll('.site-nav__link, .site-header__brand').forEach(link => {
+      link.addEventListener('mousemove', (e) => {
+        const rect = link.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(link, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+      });
+      link.addEventListener('mouseleave', () => {
+        gsap.to(link, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+
+    // ═══════════════════════════════════════
+    // MOBILE MENU
+    // ═══════════════════════════════════════
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle?.addEventListener('click', () => {
+      const isOpen = mobileMenu?.classList.toggle('open');
+      menuToggle.textContent = isOpen ? 'Close' : 'Menu';
+      if (isOpen) lenis.stop(); else lenis.start();
+    });
+
+    window.closeMobileMenu = function() {
+      mobileMenu?.classList.remove('open');
+      if (menuToggle) menuToggle.textContent = 'Menu';
+      lenis.start();
+    };
+
+    // ═══════════════════════════════════════
+    // THEME TOGGLE
+    // ═══════════════════════════════════════
+    function updateToggleText() {
+      var isDark = document.documentElement.classList.contains('dark');
+      document.querySelectorAll('.theme-toggle').forEach(function(btn) {
+        btn.textContent = isDark ? 'Light' : 'Dark';
+      });
+    }
+    updateToggleText();
+
+    window.toggleTheme = function() {
+      document.documentElement.classList.toggle('dark');
+      var isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateToggleText();
+    };
+  </script> </body> </html>
