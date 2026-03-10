@@ -137,8 +137,9 @@ const galleryPhotos = [
 
   <!-- ═══════════ WORK ═══════════ -->
   <section class="projects-section js-in" id="work">
-    <div style="margin-bottom: clamp(2rem, 4vw, 4rem);">
+    <div class="projects-header">
       <h2 class="display display--2">Projects</h2>
+      <span class="projects-header__hint lead">(hover)</span>
     </div>
     <div class="project-list">
       {projects.map((project, i) => (
@@ -1560,6 +1561,17 @@ const galleryPhotos = [
         clearInterval(tickInt);
       });
     })();
+
+    // Mobile: auto-expand project cards on scroll
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      const cards = document.querySelectorAll('.project-card.has-preview');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          e.target.classList.toggle('in-view', e.isIntersecting);
+        });
+      }, { threshold: 0.3 });
+      cards.forEach(c => io.observe(c));
+    }
 
   </script>
 </BaseLayout>
