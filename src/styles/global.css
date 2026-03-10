@@ -4631,10 +4631,27 @@ img {
 .vis-api2__b { color: rgba(254,188,46,0.6); }
 
 
-/* Mobile */
+/* Build section mobile */
 @media (max-width: 768px) {
-  .build-visual { height: 300px; }
-  .build-visual { order: 2; }
+  .build-section__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .build-visual {
+    height: 260px;
+    order: -1;
+  }
+  .build-section__text {
+    max-width: 100%;
+  }
+  .build-vis { border-radius: 8px; }
+
+  /* Scale down dense visuals */
+  .vis-site__wrap,
+  .vis-app__frame,
+  .vis-sw__wrap,
+  .vis-ai2__wrap,
+  .vis-sys2__layers { font-size: 0.85em; }
 }
 
 
