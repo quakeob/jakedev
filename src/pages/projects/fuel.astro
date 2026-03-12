@@ -1,0 +1,1327 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Fuel — Calorie Tracker for iOS" description="Native iOS calorie tracker with AI food parsing. Type what you ate in plain English. Barcode scanning, HealthKit sync, Apple Watch companion.">
+
+  <section class="fuel-landing">
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <div class="fuel-hero">
+      <div class="fuel-hero__content">
+        <div class="fuel-hero__badge">
+          <span class="fuel-hero__badge-dot"></span>
+          Available on iOS
+        </div>
+        <h1 class="fuel-hero__title display">Fuel</h1>
+        <p class="fuel-hero__subtitle">
+          Calorie tracking that doesn't feel like data entry.<br/>
+          Type what you ate. AI handles the rest.
+        </p>
+        <div class="fuel-hero__actions">
+          <a href="https://github.com/quakeob/fuel-ios" target="_blank" class="fuel-hero__cta fuel-hero__cta--primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download on the App Store
+          </a>
+          <a href="https://github.com/quakeob/fuel-ios" target="_blank" class="fuel-hero__cta fuel-hero__cta--secondary">
+            View Source
+          </a>
+        </div>
+      </div>
+
+      <div class="fuel-hero__phone-wrap">
+        <div class="fuel-hero__phone" id="fuel-hero-phone">
+          <div class="fuel-hero__phone-notch"></div>
+          <div class="fuel-hero__phone-screen">
+            <!-- Dashboard mockup -->
+            <div class="flp-dash">
+              <div class="flp-nav">
+                <span class="flp-nav__btn">&#8249;</span>
+                <span class="flp-nav__title">Today</span>
+                <span class="flp-nav__btn">+</span>
+              </div>
+              <div class="flp-card">
+                <div class="flp-ring-wrap">
+                  <svg class="flp-ring" viewBox="0 0 140 140">
+                    <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+                    <circle class="flp-ring__fill" cx="70" cy="70" r="58" fill="none" stroke="#4DCC66" stroke-width="14"
+                      stroke-dasharray="364" stroke-dashoffset="143" stroke-linecap="round"
+                      transform="rotate(-90 70 70)"/>
+                  </svg>
+                  <div class="flp-ring__inner">
+                    <div class="flp-ring__cal">784</div>
+                    <div class="flp-ring__label">remaining</div>
+                  </div>
+                </div>
+                <div class="flp-stats">
+                  <div class="flp-stat">
+                    <div class="flp-stat__val flp-stat__val--green">1,216</div>
+                    <div class="flp-stat__label">Eaten</div>
+                  </div>
+                  <div class="flp-stat">
+                    <div class="flp-stat__val flp-stat__val--blue">784</div>
+                    <div class="flp-stat__label">Remaining</div>
+                  </div>
+                  <div class="flp-stat">
+                    <div class="flp-stat__val">2,000</div>
+                    <div class="flp-stat__label">Target</div>
+                  </div>
+                </div>
+              </div>
+              <div class="flp-card">
+                <div class="flp-section-title">Macros</div>
+                <div class="flp-macro">
+                  <div class="flp-macro__row"><span>Protein</span><span class="flp-macro__val--p">86 / 150g</span></div>
+                  <div class="flp-macro__track"><div class="flp-macro__fill flp-macro__fill--p" style="width:57%"></div></div>
+                </div>
+                <div class="flp-macro">
+                  <div class="flp-macro__row"><span>Carbs</span><span class="flp-macro__val--c">134 / 250g</span></div>
+                  <div class="flp-macro__track"><div class="flp-macro__fill flp-macro__fill--c" style="width:54%"></div></div>
+                </div>
+                <div class="flp-macro">
+                  <div class="flp-macro__row"><span>Fat</span><span class="flp-macro__val--f">42 / 70g</span></div>
+                  <div class="flp-macro__track"><div class="flp-macro__fill flp-macro__fill--f" style="width:60%"></div></div>
+                </div>
+              </div>
+              <div class="flp-card">
+                <div class="flp-section-title">Water</div>
+                <div class="flp-water">
+                  <svg class="flp-drop flp-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                  <svg class="flp-drop flp-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                  <svg class="flp-drop flp-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                  <svg class="flp-drop flp-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                  <svg class="flp-drop flp-drop--filled" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                  <svg class="flp-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                  <svg class="flp-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                  <svg class="flp-drop" viewBox="0 0 24 24"><path d="M12 2c-5.33 8.33-8 12.67-8 16 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.33-2.67-7.67-8-16z"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="fuel-hero__phone-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+    <div class="fuel-section fuel-how">
+      <div class="fuel-section__header">
+        <span class="fuel-section__label lead">How it works</span>
+        <h2 class="fuel-section__title display display--2">Three steps.<br/>Under 10 seconds.</h2>
+      </div>
+      <div class="fuel-steps">
+        <div class="fuel-step js-in">
+          <div class="fuel-step__number">01</div>
+          <div class="fuel-step__content">
+            <h3 class="fuel-step__title">Type what you ate</h3>
+            <p class="fuel-step__desc">Plain English. "2 eggs, sourdough toast, black coffee." No searching through databases. No measuring cups.</p>
+          </div>
+        </div>
+        <div class="fuel-step js-in">
+          <div class="fuel-step__number">02</div>
+          <div class="fuel-step__content">
+            <h3 class="fuel-step__title">AI parses it</h3>
+            <p class="fuel-step__desc">An LLM breaks down your text into individual foods with calories, protein, carbs, and fat. Confidence scores let you know when to double-check.</p>
+          </div>
+        </div>
+        <div class="fuel-step js-in">
+          <div class="fuel-step__number">03</div>
+          <div class="fuel-step__content">
+            <h3 class="fuel-step__title">Confirm and log</h3>
+            <p class="fuel-step__desc">Review the parsed items, adjust if needed, and log. Your macros, ring chart, and daily totals update instantly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ AI PARSING DEMO ═══════════════ -->
+    <div class="fuel-section fuel-demo">
+      <div class="fuel-demo__layout">
+        <div class="fuel-demo__phone-wrap">
+          <div class="fuel-hero__phone fuel-hero__phone--small" id="fuel-demo-phone">
+            <div class="fuel-hero__phone-notch"></div>
+            <div class="fuel-hero__phone-screen">
+              <div class="flp-ai">
+                <div class="flp-ai__navbar">
+                  <span class="flp-ai__navbar-btn">Cancel</span>
+                  <span class="flp-ai__navbar-title">Add Food</span>
+                  <span></span>
+                </div>
+                <div class="flp-card">
+                  <div class="flp-ai__icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z" fill="#4DCC66"/>
+                    </svg>
+                  </div>
+                  <div class="flp-ai__heading">Describe what you ate</div>
+                  <div class="flp-ai__subheading">AI will estimate the nutrition info</div>
+                  <div class="flp-ai__input" id="flp-ai-input">
+                    <span class="flp-ai__typed" id="flp-ai-typed"></span><span class="flp-ai__cursor">|</span>
+                  </div>
+                  <div class="flp-ai__chips">
+                    <span class="flp-ai__chip">2 eggs and toast</span>
+                    <span class="flp-ai__chip">chicken caesar salad</span>
+                  </div>
+                </div>
+                <div class="flp-ai__result" id="flp-ai-result">
+                  <div class="flp-ai__parsing" id="flp-ai-parsing">
+                    <span class="flp-ai__spinner"></span>
+                    <span>Analyzing with AI...</span>
+                  </div>
+                  <div class="flp-ai__foods" id="flp-ai-foods" style="display:none;">
+                    <div class="flp-ai__confirm-header">
+                      <span>4 items found</span>
+                      <span class="flp-ai__confirm-cal">376 cal total</span>
+                    </div>
+                    <div class="flp-card flp-ai__food-card">
+                      <div class="flp-ai__food-row">
+                        <span class="flp-ai__food-emoji">&#129370;</span>
+                        <div class="flp-ai__food-info">
+                          <div class="flp-ai__food-name">Eggs (2 large)</div>
+                          <div class="flp-ai__food-meta">scrambled</div>
+                        </div>
+                        <div class="flp-ai__food-cal">144 cal</div>
+                      </div>
+                    </div>
+                    <div class="flp-card flp-ai__food-card">
+                      <div class="flp-ai__food-row">
+                        <span class="flp-ai__food-emoji">&#127838;</span>
+                        <div class="flp-ai__food-info">
+                          <div class="flp-ai__food-name">Sourdough Toast</div>
+                          <div class="flp-ai__food-meta">1 slice</div>
+                        </div>
+                        <div class="flp-ai__food-cal">128 cal</div>
+                      </div>
+                    </div>
+                    <div class="flp-card flp-ai__food-card">
+                      <div class="flp-ai__food-row">
+                        <span class="flp-ai__food-emoji">&#129480;</span>
+                        <div class="flp-ai__food-info">
+                          <div class="flp-ai__food-name">Butter</div>
+                          <div class="flp-ai__food-meta">1 tbsp</div>
+                        </div>
+                        <div class="flp-ai__food-cal">102 cal</div>
+                      </div>
+                    </div>
+                    <div class="flp-card flp-ai__food-card">
+                      <div class="flp-ai__food-row">
+                        <span class="flp-ai__food-emoji">&#9749;</span>
+                        <div class="flp-ai__food-info">
+                          <div class="flp-ai__food-name">Black Coffee</div>
+                          <div class="flp-ai__food-meta">1 cup</div>
+                        </div>
+                        <div class="flp-ai__food-cal">2 cal</div>
+                      </div>
+                    </div>
+                    <div class="flp-ai__log-btn">Log All</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="fuel-hero__phone-bar"></div>
+          </div>
+        </div>
+        <div class="fuel-demo__text">
+          <span class="fuel-section__label lead">AI-Powered</span>
+          <h2 class="fuel-section__title display display--2">Just describe<br/>your food.</h2>
+          <p class="fuel-demo__desc">
+            No scrolling through databases. No scanning nutrition labels. Type "leftover pad thai, maybe half a serving" and the AI handles the ambiguity, estimates portions, and returns structured macro data with confidence scores.
+          </p>
+          <p class="fuel-demo__desc">
+            For packaged foods, point your camera at the barcode. Between AI and barcode scanning, you can log a full day of eating in under 60 seconds.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ FEATURES GRID ═══════════════ -->
+    <div class="fuel-section fuel-features">
+      <div class="fuel-section__header">
+        <span class="fuel-section__label lead">Features</span>
+        <h2 class="fuel-section__title display display--2">Everything you need.<br/>Nothing you don't.</h2>
+      </div>
+      <div class="fuel-features__grid">
+        <div class="fuel-feature js-in">
+          <div class="fuel-feature__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L13.09 8.26L18 6L14.74 10.91L21 12L14.74 13.09L18 18L13.09 15.74L12 22L10.91 15.74L6 18L9.26 13.09L3 12L9.26 10.91L6 6L10.91 8.26L12 2Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="fuel-feature__title">AI Food Parsing</h3>
+          <p class="fuel-feature__desc">Type in plain English. The LLM returns structured nutrition data with calories, macros, and confidence scores.</p>
+        </div>
+        <div class="fuel-feature js-in">
+          <div class="fuel-feature__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+              <line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" stroke-width="2"/>
+              <line x1="8" y1="4" x2="8" y2="20" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="fuel-feature__title">Barcode Scanning</h3>
+          <p class="fuel-feature__desc">Point your camera at any UPC. Vision framework reads the barcode and pulls nutrition data instantly.</p>
+        </div>
+        <div class="fuel-feature js-in">
+          <div class="fuel-feature__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="fuel-feature__title">HealthKit Sync</h3>
+          <p class="fuel-feature__desc">Calories, macros, and weight sync directly to Apple Health. Your data flows where you need it.</p>
+        </div>
+        <div class="fuel-feature js-in">
+          <div class="fuel-feature__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="fuel-feature__title">Apple Watch</h3>
+          <p class="fuel-feature__desc">Quick-log meals from your wrist. See remaining calories and macros without pulling out your phone.</p>
+        </div>
+        <div class="fuel-feature js-in">
+          <div class="fuel-feature__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
+              <rect x="7" y="10" width="4" height="7" rx="1" fill="currentColor"/>
+              <rect x="13" y="7" width="4" height="10" rx="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="fuel-feature__title">Home Screen Widget</h3>
+          <p class="fuel-feature__desc">WidgetKit-powered glanceable view. Calories remaining and macro rings right on your home screen.</p>
+        </div>
+        <div class="fuel-feature js-in">
+          <div class="fuel-feature__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="fuel-feature__title">No Account Required</h3>
+          <p class="fuel-feature__desc">All data stays on your device. No sign-up, no cloud sync required. The only network call is to the AI parsing API.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ TECH STACK ═══════════════ -->
+    <div class="fuel-section fuel-stack">
+      <div class="fuel-section__header">
+        <span class="fuel-section__label lead">Built with</span>
+        <h2 class="fuel-section__title display display--2">Native iOS.<br/>No compromises.</h2>
+      </div>
+      <div class="fuel-stack__grid">
+        <div class="fuel-stack__item js-in">
+          <div class="fuel-stack__tag">Framework</div>
+          <div class="fuel-stack__name">SwiftUI</div>
+          <div class="fuel-stack__detail">iOS 17.0+ / watchOS 10.0+</div>
+        </div>
+        <div class="fuel-stack__item js-in">
+          <div class="fuel-stack__tag">Data</div>
+          <div class="fuel-stack__name">SwiftData</div>
+          <div class="fuel-stack__detail">+ SQLite3 offline USDA foods</div>
+        </div>
+        <div class="fuel-stack__item js-in">
+          <div class="fuel-stack__tag">AI</div>
+          <div class="fuel-stack__name">LLM API</div>
+          <div class="fuel-stack__detail">OpenAI-compatible, structured JSON</div>
+        </div>
+        <div class="fuel-stack__item js-in">
+          <div class="fuel-stack__tag">Health</div>
+          <div class="fuel-stack__name">HealthKit</div>
+          <div class="fuel-stack__detail">Calories, macros, weight sync</div>
+        </div>
+        <div class="fuel-stack__item js-in">
+          <div class="fuel-stack__tag">Vision</div>
+          <div class="fuel-stack__name">AVFoundation</div>
+          <div class="fuel-stack__detail">UPC barcode scanning</div>
+        </div>
+        <div class="fuel-stack__item js-in">
+          <div class="fuel-stack__tag">Watch</div>
+          <div class="fuel-stack__name">WatchConnectivity</div>
+          <div class="fuel-stack__detail">Companion app + complications</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ ARCHITECTURE ═══════════════ -->
+    <div class="fuel-section fuel-arch">
+      <div class="fuel-section__header">
+        <span class="fuel-section__label lead">Architecture</span>
+        <h2 class="fuel-section__title display display--2">How it all connects.</h2>
+      </div>
+      <div class="fuel-arch__diagram js-in">
+        <pre class="fuel-arch__pre"><code>User Input (text / barcode / template)
+              |
+     +--------+--------+
+     |                  |
+  LLM API         Vision Framework
+ (NLP parse)      (barcode scan)
+     |                  |
+     +--------+--------+
+              |
+         SwiftData
+      (FoodEntry model)
+              |
+    +---------+---------+
+    |         |         |
+Dashboard  HealthKit  Watch App</code></pre>
+      </div>
+    </div>
+
+    <!-- ═══════════════ CTA ═══════════════ -->
+    <div class="fuel-section fuel-cta">
+      <div class="fuel-cta__inner">
+        <h2 class="display display--2 fuel-cta__title">Track smarter.</h2>
+        <p class="fuel-cta__desc">Open source. Free. No account required.</p>
+        <div class="fuel-hero__actions">
+          <a href="https://github.com/quakeob/fuel-ios" target="_blank" class="fuel-hero__cta fuel-hero__cta--primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download on the App Store
+          </a>
+          <a href="https://github.com/quakeob/fuel-ios" target="_blank" class="fuel-hero__cta fuel-hero__cta--secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ BACK LINK ═══════════════ -->
+    <div class="fuel-section" style="text-align: center; padding-bottom: 6rem;">
+      <a href="/#work" class="lead u-g" style="font-size: 13px;">&#8592; Back to all projects</a>
+    </div>
+
+  </section>
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       FUEL LANDING PAGE
+       ═══════════════════════════════════════════════ */
+
+    .fuel-landing {
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─── */
+
+    .fuel-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6rem;
+      padding: 8rem 4rem 6rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .fuel-hero__content {
+      flex: 1;
+      max-width: 560px;
+    }
+
+    .fuel-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      margin-bottom: 2rem;
+      padding: 0.4em 1em;
+      border: 1px solid var(--green);
+      border-radius: 100px;
+    }
+
+    .fuel-hero__badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: fuel-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fuel-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .fuel-hero__title {
+      font-size: clamp(5rem, 14vw, 10rem);
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      line-height: 0.85;
+    }
+
+    .fuel-hero__subtitle {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-2);
+      margin-bottom: 2.5rem;
+      max-width: 420px;
+    }
+
+    .fuel-hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .fuel-hero__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.9em 1.6em;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s var(--ease);
+      white-space: nowrap;
+    }
+
+    .fuel-hero__cta--primary {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    .fuel-hero__cta--primary:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+
+    .fuel-hero__cta--secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .fuel-hero__cta--secondary:hover {
+      border-color: var(--text-2);
+      transform: translateY(-1px);
+    }
+
+    /* ─── PHONE MOCKUP ─── */
+
+    .fuel-hero__phone-wrap {
+      flex-shrink: 0;
+    }
+
+    .fuel-hero__phone {
+      width: 300px;
+      min-height: 620px;
+      border-radius: 44px;
+      background: linear-gradient(180deg, #000000 0%, #1c1c1e 4%);
+      border: 3px solid #3a3a3c;
+      position: relative;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', system-ui, sans-serif;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      box-shadow:
+        0 50px 100px rgba(0, 0, 0, 0.4),
+        0 20px 40px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .fuel-hero__phone--small {
+      width: 280px;
+      min-height: 580px;
+      border-radius: 40px;
+    }
+
+    .fuel-hero__phone-notch {
+      width: 80px;
+      height: 22px;
+      background: #000;
+      border-radius: 11px;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .fuel-hero__phone-screen {
+      padding: 42px 14px 6px;
+      overflow-y: auto;
+      max-height: 580px;
+    }
+
+    .fuel-hero__phone--small .fuel-hero__phone-screen {
+      max-height: 540px;
+    }
+
+    .fuel-hero__phone-bar {
+      width: 120px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 100px;
+      margin: 10px auto 7px;
+    }
+
+    /* ─── PHONE INTERNALS (FLP = Fuel Landing Phone) ─── */
+
+    .flp-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px 12px;
+    }
+
+    .flp-nav__btn {
+      font-size: 22px;
+      color: rgba(255,255,255,0.4);
+      width: 28px;
+      text-align: center;
+    }
+
+    .flp-nav__title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .flp-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    .flp-ring-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 12px;
+    }
+
+    .flp-ring {
+      width: 100%;
+      height: 100%;
+    }
+
+    .flp-ring__fill {
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .flp-ring__inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flp-ring__cal {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .flp-ring__label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .flp-stats {
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+
+    .flp-stat__val {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .flp-stat__val--green { color: #4DCC66; }
+    .flp-stat__val--blue { color: #4DA6FF; }
+
+    .flp-stat__label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    .flp-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .flp-macro {
+      margin-bottom: 8px;
+    }
+
+    .flp-macro__row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .flp-macro__val--p { color: #40CCFF; }
+    .flp-macro__val--c { color: #FF8C33; }
+    .flp-macro__val--f { color: #9959E6; }
+
+    .flp-macro__track {
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .flp-macro__fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .flp-macro__fill--p { background: #40CCFF; }
+    .flp-macro__fill--c { background: #FF8C33; }
+    .flp-macro__fill--f { background: #9959E6; }
+
+    .flp-water {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    .flp-drop {
+      width: 22px;
+      height: 22px;
+      fill: rgba(255,255,255,0.1);
+    }
+
+    .flp-drop--filled {
+      fill: #4DA6FF;
+    }
+
+    /* ─── AI SCREEN ─── */
+
+    .flp-ai__navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px 14px;
+    }
+
+    .flp-ai__navbar-btn {
+      font-size: 14px;
+      color: #4DA6FF;
+    }
+
+    .flp-ai__navbar-title {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .flp-ai__icon {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .flp-ai__heading {
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .flp-ai__subheading {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .flp-ai__input {
+      background: rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      min-height: 42px;
+      margin-bottom: 10px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .flp-ai__cursor {
+      animation: flp-blink 1s step-end infinite;
+      color: #4DCC66;
+    }
+
+    @keyframes flp-blink {
+      50% { opacity: 0; }
+    }
+
+    .flp-ai__chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .flp-ai__chip {
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+      padding: 4px 8px;
+    }
+
+    .flp-ai__result {
+      min-height: 40px;
+    }
+
+    .flp-ai__parsing {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      padding: 12px 0;
+    }
+
+    .flp-ai__spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top-color: #4DCC66;
+      border-radius: 50%;
+      animation: flp-spin 0.8s linear infinite;
+    }
+
+    @keyframes flp-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .flp-ai__confirm-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+      padding: 0 2px;
+    }
+
+    .flp-ai__confirm-cal {
+      color: #4DCC66;
+    }
+
+    .flp-ai__food-card {
+      padding: 10px 12px;
+      margin-bottom: 6px;
+    }
+
+    .flp-ai__food-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .flp-ai__food-emoji {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .flp-ai__food-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .flp-ai__food-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .flp-ai__food-meta {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .flp-ai__food-cal {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      flex-shrink: 0;
+    }
+
+    .flp-ai__foods {
+      animation: flp-slideUp 0.4s ease-out;
+    }
+
+    @keyframes flp-slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .flp-ai__log-btn {
+      background: #4DCC66;
+      color: #000;
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    /* ─── SECTIONS ─── */
+
+    .fuel-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 4rem;
+    }
+
+    .fuel-section__header {
+      margin-bottom: 4rem;
+    }
+
+    .fuel-section__label {
+      color: var(--green);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .fuel-section__title {
+      color: var(--text);
+    }
+
+    /* ─── HOW IT WORKS ─── */
+
+    .fuel-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .fuel-step {
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.3s var(--ease);
+    }
+
+    .fuel-step:hover {
+      border-color: var(--green);
+    }
+
+    .fuel-step__number {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+
+    .fuel-step__title {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .fuel-step__desc {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-2);
+    }
+
+    /* ─── AI DEMO SECTION ─── */
+
+    .fuel-demo__layout {
+      display: flex;
+      align-items: center;
+      gap: 6rem;
+    }
+
+    .fuel-demo__phone-wrap {
+      flex-shrink: 0;
+    }
+
+    .fuel-demo__text {
+      flex: 1;
+    }
+
+    .fuel-demo__desc {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-2);
+      margin-top: 1.5rem;
+      max-width: 480px;
+    }
+
+    /* ─── FEATURES GRID ─── */
+
+    .fuel-features__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .fuel-feature {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .fuel-feature:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+    }
+
+    .fuel-feature__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--green);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .fuel-feature__title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .fuel-feature__desc {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-2);
+    }
+
+    /* ─── TECH STACK ─── */
+
+    .fuel-stack__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .fuel-stack__item {
+      padding: 1.5rem 2rem;
+      border-left: 2px solid var(--green);
+      transition: all 0.3s var(--ease);
+    }
+
+    .fuel-stack__item:hover {
+      background: var(--w-bg-card);
+    }
+
+    .fuel-stack__tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .fuel-stack__name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .fuel-stack__detail {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-2);
+    }
+
+    /* ─── ARCHITECTURE ─── */
+
+    .fuel-arch__diagram {
+      background: var(--w-bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3rem;
+      overflow-x: auto;
+    }
+
+    .fuel-arch__pre {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+      margin: 0;
+      text-align: center;
+    }
+
+    .fuel-arch__pre code {
+      color: var(--text);
+    }
+
+    /* ─── CTA ─── */
+
+    .fuel-cta {
+      text-align: center;
+      padding: 8rem 4rem;
+    }
+
+    .fuel-cta__inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .fuel-cta__title {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .fuel-cta__desc {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-2);
+      margin-bottom: 2.5rem;
+    }
+
+    .fuel-cta .fuel-hero__actions {
+      justify-content: center;
+    }
+
+    /* ─── RESPONSIVE ─── */
+
+    @media (max-width: 1024px) {
+      .fuel-hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 4rem;
+        padding: 10rem 2rem 4rem;
+      }
+
+      .fuel-hero__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .fuel-hero__subtitle {
+        text-align: center;
+      }
+
+      .fuel-hero__actions {
+        justify-content: center;
+      }
+
+      .fuel-steps {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .fuel-demo__layout {
+        flex-direction: column;
+        gap: 4rem;
+      }
+
+      .fuel-demo__text {
+        text-align: center;
+      }
+
+      .fuel-demo__desc {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .fuel-features__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .fuel-stack__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .fuel-section {
+        padding: 4rem 2rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .fuel-hero {
+        padding: 8rem 1.5rem 3rem;
+      }
+
+      .fuel-hero__phone {
+        width: 260px;
+        min-height: 540px;
+        border-radius: 38px;
+      }
+
+      .fuel-hero__phone-screen {
+        padding: 38px 12px 6px;
+        max-height: 500px;
+      }
+
+      .fuel-hero__phone--small {
+        width: 240px;
+        min-height: 500px;
+        border-radius: 36px;
+      }
+
+      .fuel-hero__phone--small .fuel-hero__phone-screen {
+        max-height: 460px;
+      }
+
+      .fuel-features__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .fuel-stack__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .fuel-section {
+        padding: 3rem 1.5rem;
+      }
+
+      .fuel-hero__cta {
+        font-size: 11px;
+        padding: 0.8em 1.2em;
+      }
+
+      .fuel-arch__diagram {
+        padding: 1.5rem;
+      }
+
+      .fuel-arch__pre {
+        font-size: 10px;
+        text-align: left;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    // ═══════════════════════════════════════
+    // FUEL LANDING — AI TYPING ANIMATION
+    // ═══════════════════════════════════════
+    (function() {
+      var typed = document.getElementById('flp-ai-typed');
+      var parsing = document.getElementById('flp-ai-parsing');
+      var foods = document.getElementById('flp-ai-foods');
+      if (!typed || !parsing || !foods) return;
+
+      var text = '2 eggs, sourdough toast with butter, black coffee';
+      var i = 0;
+      var started = false;
+
+      function startTyping() {
+        if (started) return;
+        started = true;
+
+        // Small delay before typing starts
+        setTimeout(function() {
+          var interval = setInterval(function() {
+            if (i < text.length) {
+              typed.textContent += text[i];
+              i++;
+            } else {
+              clearInterval(interval);
+              // Show parsing state
+              setTimeout(function() {
+                parsing.style.display = 'flex';
+                // Show results
+                setTimeout(function() {
+                  parsing.style.display = 'none';
+                  foods.style.display = 'block';
+                }, 1800);
+              }, 400);
+            }
+          }, 45);
+        }, 600);
+      }
+
+      // Use IntersectionObserver to trigger when demo comes into view
+      var demoPhone = document.getElementById('fuel-demo-phone');
+      if (demoPhone && 'IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              startTyping();
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.4 });
+        observer.observe(demoPhone);
+      } else {
+        // Fallback: start after delay
+        setTimeout(startTyping, 2000);
+      }
+    })();
+
+    // ═══════════════════════════════════════
+    // FUEL LANDING — HERO PHONE FLOAT ANIMATION
+    // ═══════════════════════════════════════
+    (function() {
+      var phone = document.getElementById('fuel-hero-phone');
+      if (!phone || typeof gsap === 'undefined') return;
+
+      // Wait for GSAP to be available (it's loaded in BaseLayout)
+      function initFloat() {
+        // Initial entrance
+        gsap.fromTo(phone, {
+          y: 40,
+          opacity: 0,
+        }, {
+          y: 0,
+          opacity: 1,
+          duration: 1.4,
+          delay: 0.5,
+          ease: 'power4.out',
+        });
+
+        // Gentle floating
+        gsap.to(phone, {
+          y: -8,
+          duration: 3,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          delay: 2,
+        });
+      }
+
+      // GSAP is loaded via BaseLayout, but might not be ready yet
+      if (typeof gsap !== 'undefined' && gsap.to) {
+        initFloat();
+      } else {
+        window.addEventListener('load', initFloat);
+      }
+    })();
+  </script>
+
+</BaseLayout>
