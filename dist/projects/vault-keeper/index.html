@@ -150,15 +150,19 @@
     // ═══════════════════════════════════════
     // LENIS SMOOTH SCROLL
     // ═══════════════════════════════════════
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
+      smoothWheel: !isMobile,
+      smoothTouch: false,
     });
 
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
+    if (!isMobile) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
 
     // ═══════════════════════════════════════
     // PRELOADER — ASCII PROGRESS BAR
@@ -295,16 +299,16 @@
       if (el.closest('.home-hero')) return;
 
       gsap.fromTo(el, {
-        y: 60,
+        y: isMobile ? 20 : 60,
         opacity: 0,
       }, {
         y: 0,
         opacity: 1,
-        duration: 1,
+        duration: isMobile ? 0.6 : 1,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: el,
-          start: 'top 85%',
+          start: 'top 90%',
           toggleActions: 'play none none none',
         }
       });
@@ -321,17 +325,17 @@
     // Project cards — stagger slide up
     document.querySelectorAll('.project-card').forEach((card, i) => {
       gsap.fromTo(card, {
-        y: 80,
+        y: isMobile ? 20 : 80,
         opacity: 0,
       }, {
         y: 0,
         opacity: 1,
-        duration: 1,
-        delay: i * 0.08,
+        duration: isMobile ? 0.5 : 1,
+        delay: isMobile ? i * 0.03 : i * 0.08,
         ease: 'power4.out',
         scrollTrigger: {
           trigger: card,
-          start: 'top 90%',
+          start: 'top 95%',
         }
       });
     });
