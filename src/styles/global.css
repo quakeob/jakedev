@@ -786,6 +786,19 @@ img {
   opacity: 0;
 }
 
+.projects-header__expand {
+  display: none;
+  font-size: 11px;
+  color: var(--grey);
+  opacity: 0.6;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  padding: 0;
+}
+
 .project-list {
   display: flex;
   flex-direction: column;
@@ -4936,6 +4949,9 @@ img {
   }
   .projects-header__hint {
     display: none;
+  }
+  .projects-header__expand {
+    display: inline;
   }
   .project-list {
     max-height: none;

@@ -699,6 +699,7 @@ const galleryPhotos = [
     <div class="projects-header">
       <h2 class="display display--2">Projects</h2>
       <span class="projects-header__hint lead">(hover)</span>
+      <button class="projects-header__expand lead" id="projects-expand-btn">(tap to expand)</button>
     </div>
     <div class="project-list">
       {projects.map((project, i) => (
@@ -1562,15 +1563,16 @@ const galleryPhotos = [
       });
     })();
 
-    // Mobile: auto-expand project cards on scroll
+    // Mobile: tap button to expand/collapse all project cards
     if (window.matchMedia('(max-width: 768px)').matches) {
+      const btn = document.getElementById('projects-expand-btn');
       const cards = document.querySelectorAll('.project-card.has-preview');
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          e.target.classList.toggle('in-view', e.isIntersecting);
-        });
-      }, { threshold: 0.3 });
-      cards.forEach(c => io.observe(c));
+      let expanded = false;
+      btn.addEventListener('click', () => {
+        expanded = !expanded;
+        cards.forEach(c => c.classList.toggle('in-view', expanded));
+        btn.textContent = expanded ? '(tap to collapse)' : '(tap to expand)';
+      });
     }
 
   </script>
