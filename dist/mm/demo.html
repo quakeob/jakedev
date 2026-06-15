@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo — Elder Sorensen's Page · Missionary Moments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Theme: Classic Blue (default) — switched live by the theme picker */
+    --accent:#2E6DA4;
+    --accent-deep:#1B4E7E;
+    --accent-soft:#CFE2F0;
+    --accent-bg:#F8FBFD;
+    --accent-bg-deep:#EBF2F8;
+    --gold:#C9A86A;
+    --ink:#1E3A52;
+    --ink-soft:#5E7488;
+    --line:#DCE7F0;
+    --white:#FFFFFF;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Karla',sans-serif;background:var(--accent-bg);color:var(--ink);
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    transition:background .4s;
+  }
+  ::selection{background:var(--accent);color:#fff}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  /* ---------- Demo banner ---------- */
+  .demo-banner{
+    background:var(--ink);color:#fff;font-size:.88rem;
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    padding:10px 16px;flex-wrap:wrap;text-align:center;
+  }
+  .demo-banner .pill{
+    font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    background:var(--gold);color:var(--ink);border-radius:99px;padding:3px 10px;font-weight:600;
+  }
+  .demo-banner a{color:#fff;font-weight:700}
+
+  /* ---------- Theme picker ---------- */
+  .theme-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:16px 0;flex-wrap:wrap;
+  }
+  .theme-bar .label{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--ink-soft);
+  }
+  .themes{display:flex;gap:10px;flex-wrap:wrap}
+  .theme-btn{
+    font:inherit;font-weight:700;font-size:.85rem;cursor:pointer;
+    display:flex;align-items:center;gap:8px;
+    border:1.5px solid var(--line);border-radius:99px;padding:8px 16px;
+    background:var(--white);color:var(--ink);transition:border-color .2s,box-shadow .2s;
+  }
+  .theme-btn .swatch{width:14px;height:14px;border-radius:50%;display:block}
+  .theme-btn.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+
+  /* ---------- Missionary header ---------- */
+  .mhead{
+    background:var(--white);border:1.5px solid var(--line);border-radius:20px;
+    padding:40px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;
+    position:relative;overflow:hidden;
+  }
+  .mhead::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:6px;
+    background:repeating-linear-gradient(135deg,
+      var(--accent) 0 14px, var(--white) 14px 28px, var(--gold) 28px 42px, var(--white) 42px 56px);
+    opacity:.85;
+  }
+  .avatar{
+    width:110px;height:110px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+    display:grid;place-items:center;color:#fff;
+    font-family:'Fraunces',serif;font-size:2rem;font-weight:500;
+    border:4px solid var(--accent-soft);
+  }
+  .mhead .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+  }
+  .mhead h1{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(1.7rem,3.4vw,2.4rem);letter-spacing:-.015em;line-height:1.1}
+  .mhead .sub{color:var(--ink-soft);margin-top:6px}
+  .mhead .since{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink-soft);margin-top:10px;letter-spacing:.08em}
+
+  /* ---------- Trackers ---------- */
+  .trackers{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:18px}
+  .tracker{
+    background:var(--white);border:1.5px solid var(--line);border-radius:var(--radius);
+    padding:22px 20px;text-align:center;
+  }
+  .tracker .big{
+    font-family:'Fraunces',serif;font-weight:500;font-size:2.2rem;color:var(--accent);line-height:1;
+  }
+  .tracker .lbl{
+    font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--ink-soft);margin-top:8px;
+  }
+  .progress-card{
+    background:var(--white);border:1.5px solid var(--line);border-radius:var(--radius);
+    padding:22px 26px;margin-top:16px;
+  }
+  .progress-card .row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:10px}
+  .bar{height:10px;border-radius:99px;background:var(--accent-bg-deep);overflow:hidden}
+  .bar .fill{
+    height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-deep));
+    transition:width 1.6s cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* ---------- AI summary ---------- */
+  .summary{
+    margin-top:16px;background:linear-gradient(135deg,var(--white),var(--accent-bg-deep));
+    border:1.5px solid var(--accent-soft);border-radius:var(--radius);padding:26px 28px;
+  }
+  .summary .tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:10px;
+  }
+  .summary p{font-size:1.02rem;color:var(--ink)}
+  .summary .fine{font-size:.78rem;color:var(--ink-soft);margin-top:10px}
+
+  /* ---------- Week stepper ---------- */
+  section{padding:64px 0 0}
+  .section-head{margin-bottom:30px}
+  .section-head .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:10px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .section-head .eyebrow::before{content:"";width:26px;height:1.5px;background:var(--accent)}
+  .section-head h2{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.015em}
+  .section-head p{color:var(--ink-soft);margin-top:8px;max-width:36rem}
+
+  .stepper{background:var(--white);border:1.5px solid var(--line);border-radius:20px;overflow:hidden}
+  .tabs{display:flex;border-bottom:1.5px solid var(--line)}
+  .tab{
+    flex:1;font:inherit;font-weight:700;font-size:.9rem;cursor:pointer;
+    background:none;border:none;padding:16px 10px;color:var(--ink-soft);
+    border-bottom:3px solid transparent;transition:color .2s,border-color .2s;
+  }
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .panes{position:relative;min-height:240px}
+  .pane{
+    position:absolute;inset:0;padding:32px 36px;
+    opacity:0;transform:translateX(14px);pointer-events:none;
+    transition:opacity .45s ease,transform .45s ease;
+    display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;
+  }
+  .pane.active{opacity:1;transform:none;pointer-events:auto;position:relative}
+  .pane .icon{
+    width:54px;height:54px;border-radius:14px;background:var(--accent-bg-deep);
+    display:grid;place-items:center;font-size:1.5rem;flex-shrink:0;
+  }
+  .pane h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.25rem;margin-bottom:8px}
+  .pane p{color:var(--ink-soft);font-size:.97rem;max-width:38rem}
+  .pane .mini{
+    margin-top:14px;background:var(--accent-bg);border:1px solid var(--line);
+    border-radius:10px;padding:14px 16px;font-size:.88rem;max-width:34rem;
+  }
+  .pane .mini .from{font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+  .auto-note{padding:0 36px 18px;font-size:.78rem;color:var(--ink-soft)}
+
+  /* ---------- Timeline ---------- */
+  .timeline{position:relative;margin-top:10px}
+  .timeline::before{
+    content:"";position:absolute;left:19px;top:8px;bottom:8px;width:0;
+    border-left:2px dashed var(--accent-soft);
+  }
+  .entry{position:relative;padding:0 0 36px 60px}
+  .entry .node{
+    position:absolute;left:8px;top:4px;width:24px;height:24px;border-radius:50%;
+    background:var(--white);border:2px solid var(--accent);
+    display:grid;place-items:center;font-size:.6rem;color:var(--accent);
+  }
+  .entry.mom .node{border-color:var(--gold);color:var(--gold)}
+  .entry-card{
+    background:var(--white);border:1.5px solid var(--line);border-radius:var(--radius);
+    padding:26px 28px;
+  }
+  .entry.mom .entry-card{border-color:var(--gold);background:linear-gradient(135deg,var(--white),#FBF6EC)}
+  .entry-meta{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;
+  }
+  .entry-meta .badge{background:var(--accent-bg-deep);color:var(--accent);border-radius:99px;padding:3px 10px}
+  .entry.mom .entry-meta .badge{background:#F3E8D2;color:#9A7B3F}
+  .entry h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.2rem;margin-bottom:8px}
+  .entry .prompt-q{
+    font-style:italic;color:var(--ink-soft);font-size:.92rem;margin-bottom:12px;
+    border-left:3px solid var(--accent-soft);padding-left:14px;
+  }
+  .entry p.body{font-size:.97rem;color:var(--ink)}
+  .photos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+  .photo{
+    border-radius:10px;height:120px;position:relative;overflow:hidden;
+    display:grid;place-items:center;color:#fff;font-size:1.6rem;
+  }
+  .photo small{
+    position:absolute;bottom:6px;left:8px;font-family:'IBM Plex Mono',monospace;
+    font-size:.58rem;letter-spacing:.08em;opacity:.9;
+  }
+  .photo.p1{background:linear-gradient(135deg,var(--accent),var(--accent-deep))}
+  .photo.p2{background:linear-gradient(135deg,var(--gold),#A8842C)}
+  .photo.p3{background:linear-gradient(135deg,var(--accent-soft),var(--accent));color:var(--ink)}
+  .video-ph{
+    margin-top:16px;border-radius:10px;height:170px;
+    background:linear-gradient(135deg,var(--ink),var(--accent-deep));
+    display:grid;place-items:center;position:relative;
+  }
+  .video-ph .play-lg{
+    width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.92);
+    display:grid;place-items:center;cursor:pointer;transition:transform .2s;
+  }
+  .video-ph .play-lg:hover{transform:scale(1.08)}
+  .video-ph .play-lg::after{content:"";border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent var(--accent-deep);margin-left:3px}
+  .video-ph small{position:absolute;bottom:10px;left:14px;color:#fff;opacity:.8;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em}
+  .voice{display:flex;align-items:center;gap:12px;margin-top:16px;background:var(--accent-bg);border:1px solid var(--line);border-radius:99px;padding:10px 16px;max-width:420px}
+  .voice .play{width:32px;height:32px;border-radius:50%;background:var(--accent);flex-shrink:0;display:grid;place-items:center;cursor:pointer;border:none;transition:transform .15s}
+  .voice .play:hover{transform:scale(1.08)}
+  .voice .play::after{content:"";border-style:solid;border-width:6px 0 6px 9px;border-color:transparent transparent transparent #fff;margin-left:2px}
+  .wave{display:flex;align-items:center;gap:3px;flex:1}
+  .wave span{width:3px;border-radius:2px;background:var(--accent);opacity:.6}
+  .voice.playing .wave span{animation:bounce 1s ease-in-out infinite alternate}
+  .wave span:nth-child(odd){animation-delay:.15s}
+  .wave span:nth-child(3n){animation-delay:.3s}
+  @keyframes bounce{from{transform:scaleY(.5)}to{transform:scaleY(1.4)}}
+  .voice .time{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink-soft)}
+
+  /* ---------- Family strip ---------- */
+  .family{
+    margin-top:64px;background:var(--white);border:1.5px solid var(--line);border-radius:20px;
+    padding:36px;display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center;
+  }
+  .family h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.3rem;margin-bottom:6px}
+  .family p{color:var(--ink-soft);font-size:.95rem;max-width:34rem}
+  .notif{
+    background:var(--accent-bg);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px;display:flex;gap:12px;align-items:center;min-width:280px;
+  }
+  .notif .bell{width:36px;height:36px;border-radius:10px;background:var(--accent);display:grid;place-items:center;font-size:1rem;flex-shrink:0}
+  .notif .txt{font-size:.82rem}
+  .notif .txt b{display:block;font-size:.85rem}
+  .notif .txt span{color:var(--ink-soft)}
+
+  /* ---------- Bottom CTA ---------- */
+  .bottom-cta{
+    margin:72px 0 0;background:var(--accent-deep);color:#fff;border-radius:20px;
+    padding:56px 40px;text-align:center;position:relative;overflow:hidden;
+  }
+  .bottom-cta::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:6px;
+    background:repeating-linear-gradient(135deg,
+      var(--accent-soft) 0 14px, var(--white) 14px 28px, var(--gold) 28px 42px, var(--white) 42px 56px);
+  }
+  .bottom-cta h2{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(1.6rem,3vw,2.3rem);margin-bottom:12px}
+  .bottom-cta p{opacity:.85;max-width:30rem;margin:0 auto 26px}
+  .btn-solid{
+    display:inline-block;font-weight:700;text-decoration:none;
+    background:var(--gold);color:var(--ink);border-radius:99px;padding:14px 32px;
+    transition:transform .15s,background .2s;
+  }
+  .btn-solid:hover{background:#B8924F;transform:translateY(-2px)}
+
+  footer{padding:40px 0 48px;text-align:center;color:var(--ink-soft);font-size:.85rem}
+  footer a{color:var(--accent);font-weight:700}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .bar .fill{transition:none}
+    .voice.playing .wave span{animation:none}
+    html{scroll-behavior:auto}
+  }
+
+  @media (max-width:760px){
+    .mhead{grid-template-columns:1fr;text-align:center;padding:32px 24px}
+    .avatar{margin:0 auto}
+    .trackers{grid-template-columns:1fr 1fr}
+    .pane{grid-template-columns:1fr;padding:26px 22px}
+    .auto-note{padding:0 22px 16px}
+    .family{grid-template-columns:1fr}
+    .photos{grid-template-columns:1fr 1fr}
+    .tab{font-size:.78rem;padding:13px 6px}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <span class="pill">DEMO</span>
+  <span>This is a sample Missionary Moments page — every family gets their own.</span>
+  <a href="index.html#join">Join the waitlist →</a>
+</div>
+
+<div class="wrap">
+
+  <!-- Theme picker: shows off the multiple-themes feature -->
+  <div class="theme-bar">
+    <span class="label">Mom picks the theme — try one:</span>
+    <div class="themes" role="group" aria-label="Theme picker">
+      <button class="theme-btn active" data-theme="blue"><span class="swatch" style="background:#2E6DA4"></span>Classic Blue</button>
+      <button class="theme-btn" data-theme="sage"><span class="swatch" style="background:#7C9885"></span>Soft Sage</button>
+      <button class="theme-btn" data-theme="rose"><span class="swatch" style="background:#C08E8E"></span>Dusty Rose</button>
+      <button class="theme-btn" data-theme="slate"><span class="swatch" style="background:#5E6E84"></span>Quiet Slate</button>
+    </div>
+  </div>
+
+  <!-- Missionary header -->
+  <header class="mhead reveal">
+    <div class="avatar">JS</div>
+    <div>
+      <div class="eyebrow">Serving in the Brazil Campinas Mission</div>
+      <h1>Elder Jacob Sorensen</h1>
+      <p class="sub">Follow along with Jacob's weekly letters, photos, and voice memos — updated automatically every week.</p>
+      <p class="since">SERVING SINCE · OCT 2025</p>
+    </div>
+  </header>
+
+  <!-- Trackers (mom chooses which to display) -->
+  <div class="trackers reveal">
+    <div class="tracker"><div class="big" data-count="246">0</div><div class="lbl">Days served</div></div>
+    <div class="tracker"><div class="big" data-count="484">0</div><div class="lbl">Days to go</div></div>
+    <div class="tracker"><div class="big" data-count="34">0</div><div class="lbl">Letters home</div></div>
+    <div class="tracker"><div class="big" data-count="3">0</div><div class="lbl">Areas served</div></div>
+  </div>
+
+  <div class="progress-card reveal">
+    <div class="row"><span>MISSION PROGRESS</span><span>33% · WEEK 34 OF 104</span></div>
+    <div class="bar"><div class="fill" data-fill="33%"></div></div>
+  </div>
+
+  <!-- AI summary -->
+  <div class="summary reveal">
+    <span class="tag">✨ This week at a glance</span>
+    <p>Jacob is doing wonderfully. He's settled into his new area in Campinas, his Portuguese is coming along faster than he expected, and he and Elder Lima taught four lessons this week. He sounds upbeat, well-fed (thanks to a member family's feijoada), and excited about the weeks ahead.</p>
+    <p class="fine">Written automatically from Jacob's weekly reply · Always warm, always current</p>
+  </div>
+
+  <!-- How a week works (interactive stepper) -->
+  <section>
+    <div class="section-head reveal">
+      <div class="eyebrow">Behind the scenes</div>
+      <h2>How this page builds itself, every single week</h2>
+      <p>No reminders from mom, no new apps for the missionary. Watch a week happen:</p>
+    </div>
+    <div class="stepper reveal" data-stepper>
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" data-pane="0">1 · Prompt sent</button>
+        <button class="tab" role="tab" data-pane="1">2 · Jacob replies</button>
+        <button class="tab" role="tab" data-pane="2">3 · Published</button>
+        <button class="tab" role="tab" data-pane="3">4 · Family notified</button>
+      </div>
+      <div class="panes">
+        <div class="pane active">
+          <div class="icon">✉️</div>
+          <div>
+            <h3>Monday morning, a prompt lands in Jacob's inbox</h3>
+            <p>One thoughtful question per week — text, audio, or video format. Mom can use our prompt library or write her own.</p>
+            <div class="mini">
+              <div class="from">From: Missionary Moments → Jacob</div>
+              "What's something that made you laugh this week — and what's one thing you're learning?"
+            </div>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="icon">🎙️</div>
+          <div>
+            <h3>Jacob just hits reply — from his regular email</h3>
+            <p>He can type a few paragraphs, attach photos, or record a voice memo or video. Nothing new to install, nothing to log into.</p>
+            <div class="mini">
+              <div class="from">From: Jacob → Missionary Moments</div>
+              "Ok so funny story about my first attempt at ordering pastel in Portuguese... 😂 (voice memo attached, 2:14)"
+            </div>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="icon">🌐</div>
+          <div>
+            <h3>It's published here, beautifully, within minutes</h3>
+            <p>The reply becomes a new entry on this page — photos in a gallery, audio in a player, plus the gentle weekly summary up top. Jacob gets a confirmation email so he knows it worked.</p>
+            <div class="mini">
+              <div class="from">To: Jacob</div>
+              "Your Week 34 update is live! Your family is going to love it. 💙"
+            </div>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="icon">📲</div>
+          <div>
+            <h3>Everyone who loves Jacob gets a heads-up</h3>
+            <p>Mom, Dad, Grandma, and anyone else on the list gets a text or email the moment a new entry posts. One link, no logins.</p>
+            <div class="mini">
+              <div class="from">Text to: Mom, Dad, Grandma Sue +4</div>
+              "New from Elder Sorensen 🎉 Week 34 is up — including a voice memo. Tap to listen."
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="auto-note">▶ Auto-playing the week — or tap any step above.</p>
+    </div>
+  </section>
+
+  <!-- Timeline of entries -->
+  <section>
+    <div class="section-head reveal">
+      <div class="eyebrow">The journal</div>
+      <h2>Week by week, in Jacob's own words</h2>
+      <p>Every entry is saved forever — a complete mission record building itself, ready to print as a keepsake book when he comes home.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="entry reveal">
+        <div class="node">●</div>
+        <div class="entry-card">
+          <div class="entry-meta"><span>Week 34 · June 8, 2026</span><span class="badge">Voice + Photos</span></div>
+          <h3>The Great Pastel Incident</h3>
+          <p class="prompt-q">"What's something that made you laugh this week — and what's one thing you're learning?"</p>
+          <p class="body">Okay so I tried to order pastéis for the district and accidentally asked for "twelve grandmothers" instead of "twelve pastries." The lady at the counter could NOT stop laughing. Lesson learned: vovó ≠ pastel. Other than that — we taught the Ferreira family twice this week and they came to church on Sunday!</p>
+          <button class="voice" data-voice aria-label="Play voice memo">
+            <span class="play"></span>
+            <span class="wave">
+              <span style="height:9px"></span><span style="height:16px"></span><span style="height:12px"></span><span style="height:19px"></span><span style="height:10px"></span><span style="height:15px"></span><span style="height:8px"></span><span style="height:17px"></span><span style="height:11px"></span><span style="height:14px"></span><span style="height:7px"></span><span style="height:13px"></span><span style="height:18px"></span><span style="height:9px"></span>
+            </span>
+            <span class="time">2:14</span>
+          </button>
+          <div class="photos">
+            <div class="photo p1">🥟<small>THE FAMOUS PASTÉIS</small></div>
+            <div class="photo p2">⛪<small>SUNDAY W/ THE FERREIRAS</small></div>
+            <div class="photo p3">🚲<small>P-DAY RIDE</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry mom reveal">
+        <div class="node">♥</div>
+        <div class="entry-card">
+          <div class="entry-meta"><span>June 5, 2026</span><span class="badge">Posted by Mom</span></div>
+          <h3>A package is on its way! 📦</h3>
+          <p class="body">Sent Jacob's favorite cookies and new insoles today (he's walked through two pairs already!). Also adding these photos from his farewell that I finally got from Aunt Karen. Love watching this page fill up every week. — Mom</p>
+          <div class="photos">
+            <div class="photo p2">📦<small>CARE PACKAGE #6</small></div>
+            <div class="photo p1">👨‍👩‍👧‍👦<small>FAREWELL DAY</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry reveal">
+        <div class="node">●</div>
+        <div class="entry-card">
+          <div class="entry-meta"><span>Week 33 · June 1, 2026</span><span class="badge">Video</span></div>
+          <h3>Apartment tour + transfer news</h3>
+          <p class="prompt-q">"Show us where you live! Give the family a 60-second tour."</p>
+          <p class="body">Transfer calls came — I'm staying in Campinas with Elder Lima for another six weeks! Here's the apartment tour you've all been asking for. Yes, Mom, I am making my bed. Mostly.</p>
+          <div class="video-ph">
+            <span class="play-lg" role="button" aria-label="Play video" tabindex="0"></span>
+            <small>WEEK 33 · APARTMENT TOUR · 1:02</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry reveal">
+        <div class="node">●</div>
+        <div class="entry-card">
+          <div class="entry-meta"><span>Week 32 · May 25, 2026</span><span class="badge">Text</span></div>
+          <h3>The week everything clicked</h3>
+          <p class="prompt-q">"Describe a moment this week when you felt like you were exactly where you should be."</p>
+          <p class="body">Tuesday night we visited Irmã Rosa, who's been a member for 50 years. She fed us way too much food and told us stories about the missionaries who taught her in 1976. Halfway through I realized I understood every word — in Portuguese. Six months ago I couldn't order food. It hit me how much can change when you just keep showing up.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Family strip -->
+  <div class="family reveal">
+    <div>
+      <h3>The whole family follows along</h3>
+      <p>Grandparents, siblings, cousins, friends — anyone Mom invites gets a friendly text or email when a new entry posts. One link, big text, no apps, no logins. Grandma-approved.</p>
+    </div>
+    <div class="notif">
+      <div class="bell">🔔</div>
+      <div class="txt">
+        <b>New from Elder Sorensen 🎉</b>
+        <span>Week 34 is live — incl. a voice memo. Tap to listen.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="bottom-cta reveal">
+    <h2>Imagine this page with your missionary's name on it.</h2>
+    <p>Missionary Moments is launching soon. Join the waitlist and be first to set up your missionary's page — early members get founding pricing.</p>
+    <a class="btn-solid" href="index.html#join">Join the waitlist</a>
+  </div>
+
+  <footer>
+    Demo page · <a href="index.html">← Back to Missionary Moments</a><br>
+    All names and entries shown are illustrative samples.
+  </footer>
+</div>
+
+<script>
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Theme switcher ---------- */
+  const themes = {
+    blue: {accent:'#2E6DA4',deep:'#1B4E7E',soft:'#CFE2F0',bg:'#F8FBFD',bgDeep:'#EBF2F8',gold:'#C9A86A',ink:'#1E3A52',line:'#DCE7F0'},
+    sage: {accent:'#7C9885',deep:'#54705F',soft:'#D8E4DA',bg:'#F8FBF8',bgDeep:'#ECF2EC',gold:'#C9A86A',ink:'#2A3B30',line:'#DDE7DE'},
+    rose: {accent:'#C08E8E',deep:'#96625F',soft:'#EDD9D9',bg:'#FCF9F8',bgDeep:'#F5EBEA',gold:'#C9A86A',ink:'#43332F',line:'#EADCDB'},
+    slate:{accent:'#5E6E84',deep:'#414E61',soft:'#D7DEE7',bg:'#F8FAFB',bgDeep:'#ECEFF3',gold:'#C9A86A',ink:'#27313D',line:'#DDE3EA'}
+  };
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const t = themes[btn.dataset.theme];
+      const r = document.documentElement.style;
+      r.setProperty('--accent', t.accent);
+      r.setProperty('--accent-deep', t.deep);
+      r.setProperty('--accent-soft', t.soft);
+      r.setProperty('--accent-bg', t.bg);
+      r.setProperty('--accent-bg-deep', t.bgDeep);
+      r.setProperty('--gold', t.gold);
+      r.setProperty('--ink', t.ink);
+      r.setProperty('--line', t.line);
+    });
+  });
+
+  /* ---------- Scroll reveals ---------- */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
+  }, {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ---------- Animated counters ---------- */
+  const counters = document.querySelectorAll('[data-count]');
+  const countObs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(!en.isIntersecting) return;
+      const el = en.target, target = +el.dataset.count;
+      countObs.unobserve(el);
+      if(reduced){ el.textContent = target; return; }
+      const dur = 1400, start = performance.now();
+      const tick = now => {
+        const p = Math.min((now - start) / dur, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if(p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }, {threshold:.5});
+  counters.forEach(c => countObs.observe(c));
+
+  /* ---------- Progress bar ---------- */
+  const fill = document.querySelector('[data-fill]');
+  if(fill){
+    new IntersectionObserver((ents, o) => {
+      ents.forEach(en => { if(en.isIntersecting){ fill.style.width = fill.dataset.fill; o.unobserve(fill); } });
+    }, {threshold:.5}).observe(fill);
+  }
+
+  /* ---------- Week stepper (auto-advances, tap to control) ---------- */
+  const stepper = document.querySelector('[data-stepper]');
+  if(stepper){
+    const tabs = stepper.querySelectorAll('.tab');
+    const panes = stepper.querySelectorAll('.pane');
+    let idx = 0, timer;
+    const show = i => {
+      idx = i;
+      tabs.forEach((t,j) => t.classList.toggle('active', j === i));
+      panes.forEach((p,j) => p.classList.toggle('active', j === i));
+    };
+    const startAuto = () => {
+      if(reduced) return;
+      timer = setInterval(() => show((idx + 1) % panes.length), 4500);
+    };
+    tabs.forEach((t,i) => t.addEventListener('click', () => {
+      clearInterval(timer);
+      show(i);
+      startAuto();
+    }));
+    new IntersectionObserver((ents, o) => {
+      ents.forEach(en => { if(en.isIntersecting){ startAuto(); o.unobserve(stepper); } });
+    }, {threshold:.4}).observe(stepper);
+  }
+
+  /* ---------- Voice memo play toggle (visual demo) ---------- */
+  document.querySelectorAll('[data-voice]').forEach(v => {
+    v.addEventListener('click', () => v.classList.toggle('playing'));
+  });
+</script>
+</body>
+</html>

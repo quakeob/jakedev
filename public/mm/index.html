@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Missionary Moments — Every week of their mission, beautifully kept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F8FBFD;
+    --paper-deep:#EBF2F8;
+    --ink:#1E3A52;
+    --ink-soft:#5E7488;
+    --blue:#2E6DA4;        /* soft mormon blue */
+    --blue-deep:#1B4E7E;
+    --sky:#CFE2F0;
+    --gold:#C9A86A;
+    --line:#DCE7F0;
+    --white:#FFFFFF;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Karla',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--blue);color:#fff}
+
+  /* Soft airmail stripe — signature */
+  .airmail{
+    height:6px;
+    background:repeating-linear-gradient(135deg,
+      var(--blue) 0 14px, var(--white) 14px 28px, var(--gold) 28px 42px, var(--white) 42px 56px);
+    opacity:.85;
+  }
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* ---------- Nav ---------- */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+  .logo{
+    font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;letter-spacing:-.01em;
+    display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;
+  }
+  .logo .stamp{
+    width:32px;height:32px;border:1.5px solid var(--blue);border-radius:7px;
+    display:grid;place-items:center;font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+    background:var(--white);color:var(--blue);
+  }
+  .nav-links{display:flex;align-items:center;gap:22px}
+  .nav-links a.text{color:var(--ink-soft);text-decoration:none;font-weight:600;font-size:.92rem}
+  .nav-links a.text:hover{color:var(--blue)}
+  .nav-cta{
+    font-weight:700;font-size:.9rem;color:var(--white);text-decoration:none;
+    background:var(--blue);border-radius:99px;padding:10px 22px;
+    transition:background .2s;
+  }
+  .nav-cta:hover{background:var(--blue-deep)}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+  /* ---------- Hero ---------- */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding:56px 0 88px}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:.75rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--blue);margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:28px;height:1.5px;background:var(--blue)}
+  h1{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(2.4rem,4.6vw,3.7rem);line-height:1.08;letter-spacing:-.02em;margin-bottom:22px;
+  }
+  h1 em{font-style:italic;color:var(--blue)}
+  .hero p.lede{font-size:1.13rem;color:var(--ink-soft);max-width:34rem;margin-bottom:34px}
+
+  .hero-actions{display:flex;flex-direction:column;gap:14px}
+  .signup{display:flex;gap:10px;max-width:30rem;flex-wrap:wrap}
+  .signup input{
+    flex:1;min-width:220px;font:inherit;font-size:1rem;padding:15px 18px;
+    border:1.5px solid var(--line);border-radius:var(--radius);background:var(--white);color:var(--ink);
+  }
+  .signup input::placeholder{color:#9DB0C0}
+  .signup button{
+    font:inherit;font-weight:700;font-size:1rem;cursor:pointer;
+    padding:15px 26px;border:none;border-radius:var(--radius);
+    background:var(--blue);color:var(--white);transition:background .2s,transform .15s;
+  }
+  .signup button:hover{background:var(--blue-deep)}
+  .signup button:active{transform:scale(.98)}
+  .demo-link{
+    align-self:flex-start;font-weight:700;font-size:.95rem;color:var(--blue);text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .demo-link:hover{text-decoration:underline}
+  .demo-link::after{content:"→";transition:transform .2s}
+  .demo-link:hover::after{transform:translateX(3px)}
+  .form-note{font-size:.85rem;color:var(--ink-soft)}
+  .success{
+    display:none;align-items:center;gap:12px;max-width:30rem;
+    background:var(--white);border:1.5px solid var(--blue);border-radius:var(--radius);
+    padding:16px 20px;font-weight:600;
+  }
+  .success .check{
+    width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;
+    display:grid;place-items:center;font-size:.85rem;flex-shrink:0;
+  }
+
+  /* ---------- Hero visual ---------- */
+  .route{position:relative;padding:10px 0}
+  .route svg.path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+  .card{
+    position:relative;z-index:1;background:var(--white);border:1.5px solid var(--line);
+    border-radius:var(--radius);padding:18px 20px;box-shadow:0 10px 28px rgba(30,58,82,.08);max-width:330px;
+  }
+  .card + .card{margin-top:26px}
+  .card.reply{margin-left:auto;margin-right:8px}
+  .card.site{margin-left:18px}
+  .card-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .card-tag .dot{width:8px;height:8px;border-radius:50%}
+  .card h4{font-family:'Fraunces',serif;font-weight:500;font-size:1.02rem;margin-bottom:4px}
+  .card p{font-size:.88rem;color:var(--ink-soft)}
+  .voice{display:flex;align-items:center;gap:10px;margin-top:10px;background:var(--paper-deep);border-radius:99px;padding:8px 14px}
+  .voice .play{width:26px;height:26px;border-radius:50%;background:var(--blue);flex-shrink:0;display:grid;place-items:center}
+  .voice .play::after{content:"";border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent #fff;margin-left:2px}
+  .wave{display:flex;align-items:center;gap:3px;flex:1}
+  .wave span{width:3px;border-radius:2px;background:var(--blue);opacity:.6}
+  .voice .time{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink-soft)}
+  .site-preview{margin-top:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .site-bar{background:var(--paper-deep);padding:6px 10px;display:flex;gap:5px}
+  .site-bar i{width:7px;height:7px;border-radius:50%;background:#C3D4E2;display:block}
+  .site-body{padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .ph{border-radius:6px;height:44px}
+  .ph.a{background:var(--blue);opacity:.8}
+  .ph.b{background:var(--gold);opacity:.6}
+  .ph.c{background:var(--sky)}
+  .site-stats{padding:0 12px 12px;display:flex;gap:14px;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--ink-soft)}
+  .postmark{position:absolute;top:-22px;right:-6px;z-index:2;width:96px;height:96px;transform:rotate(10deg);opacity:.9;pointer-events:none}
+
+  /* ---------- Sections ---------- */
+  section{padding:84px 0}
+  .section-head{max-width:38rem;margin-bottom:54px}
+  .section-head h2{
+    font-family:'Fraunces',serif;font-weight:500;font-size:clamp(1.8rem,3vw,2.5rem);
+    letter-spacing:-.015em;line-height:1.15;margin-bottom:14px;
+  }
+  .section-head p{color:var(--ink-soft);font-size:1.05rem}
+
+  /* ---------- How it works (animated) ---------- */
+  .flight{position:relative;height:54px;margin-bottom:8px}
+  .flight .track{
+    position:absolute;left:4%;right:4%;top:50%;height:0;
+    border-top:2px dashed var(--sky);
+  }
+  .flight .env{
+    position:absolute;top:50%;left:4%;transform:translate(-50%,-50%);
+    width:42px;height:42px;border-radius:50%;background:var(--white);
+    border:1.5px solid var(--line);display:grid;place-items:center;font-size:1.05rem;
+    box-shadow:0 6px 16px rgba(30,58,82,.12);
+  }
+  .flight.fly .env{animation:fly 6s ease-in-out infinite}
+  @keyframes fly{
+    0%{left:4%}
+    22%{left:34%}
+    30%{left:34%}
+    52%{left:64%}
+    60%{left:64%}
+    88%{left:96%}
+    100%{left:96%}
+  }
+  .flight .pin{
+    position:absolute;top:50%;width:10px;height:10px;border-radius:50%;
+    background:var(--sky);transform:translate(-50%,-50%);
+  }
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5px;background:var(--line);border:1.5px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .step{background:var(--white);padding:30px 26px;transition:background .5s}
+  .step.lit{background:#F2F8FD}
+  .step .num{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--blue);
+    letter-spacing:.12em;margin-bottom:14px;display:inline-block;
+    border:1px solid var(--sky);border-radius:99px;padding:3px 10px;background:var(--white);
+    transition:background .4s,color .4s;
+  }
+  .step.lit .num{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .step h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.15rem;margin-bottom:8px}
+  .step p{font-size:.92rem;color:var(--ink-soft)}
+  /* staggered entrance */
+  .step{opacity:0;transform:translateY(18px)}
+  .steps.in .step{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease,background .5s}
+  .steps.in .step:nth-child(1){transition-delay:.05s}
+  .steps.in .step:nth-child(2){transition-delay:.2s}
+  .steps.in .step:nth-child(3){transition-delay:.35s}
+  .steps.in .step:nth-child(4){transition-delay:.5s}
+  .how-cta{margin-top:34px;text-align:center}
+  .btn-outline{
+    display:inline-block;font-weight:700;font-size:.95rem;color:var(--blue);text-decoration:none;
+    border:1.5px solid var(--blue);border-radius:99px;padding:12px 28px;transition:background .2s,color .2s;
+  }
+  .btn-outline:hover{background:var(--blue);color:#fff}
+
+  /* Features */
+  .features-section{background:var(--paper-deep)}
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .feature{background:var(--white);border:1.5px solid var(--line);border-radius:var(--radius);padding:28px 26px;transition:transform .25s,box-shadow .25s}
+  .feature:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(30,58,82,.1)}
+  .feature .icon{
+    width:42px;height:42px;border-radius:10px;display:grid;place-items:center;margin-bottom:16px;
+    background:var(--paper);border:1.5px solid var(--line);font-size:1.1rem;
+  }
+  .feature h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.12rem;margin-bottom:6px}
+  .feature p{font-size:.93rem;color:var(--ink-soft)}
+
+  /* Audience */
+  .audience{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .aud{border-left:3px solid var(--blue);padding:6px 0 6px 22px}
+  .aud:nth-child(2){border-color:var(--gold)}
+  .aud:nth-child(3){border-color:var(--sky)}
+  .aud h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.15rem;margin-bottom:6px}
+  .aud p{font-size:.93rem;color:var(--ink-soft)}
+
+  /* Final CTA */
+  .final{
+    background:var(--blue-deep);color:var(--paper);border-radius:20px;
+    padding:72px 56px;text-align:center;position:relative;overflow:hidden;
+  }
+  .final::before,.final::after{
+    content:"";position:absolute;left:0;right:0;height:6px;
+    background:repeating-linear-gradient(135deg,
+      var(--sky) 0 14px, var(--white) 14px 28px, var(--gold) 28px 42px, var(--white) 42px 56px);
+    opacity:.9;
+  }
+  .final::before{top:0}.final::after{bottom:0}
+  .final h2{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(1.9rem,3.4vw,2.7rem);letter-spacing:-.015em;margin-bottom:14px}
+  .final h2 em{font-style:italic;color:#A9CBE8}
+  .final p{color:#BBD2E6;max-width:32rem;margin:0 auto 32px;font-size:1.05rem}
+  .final .signup{margin:0 auto;justify-content:center}
+  .final .signup input{border-color:transparent}
+  .final .signup button{background:var(--gold);color:var(--blue-deep)}
+  .final .signup button:hover{background:#B8924F}
+  .final .form-note{color:#8FB0CC;margin-top:12px}
+  .final .success{margin:0 auto;background:rgba(255,255,255,.08);border-color:#A9CBE8;color:var(--paper)}
+
+  footer{padding:40px 0 48px;display:flex;align-items:center;justify-content:space-between;color:var(--ink-soft);font-size:.88rem;flex-wrap:wrap;gap:12px}
+  footer .logo{font-size:1.05rem}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal,.step{opacity:1;transform:none;transition:none}
+    .flight.fly .env{animation:none;left:50%}
+    html{scroll-behavior:auto}
+  }
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;gap:56px;padding:40px 0 64px}
+    .route{max-width:420px;margin:0 auto;width:100%}
+    .steps{grid-template-columns:1fr 1fr}
+    .features{grid-template-columns:1fr 1fr}
+    .audience{grid-template-columns:1fr;gap:28px}
+    .nav-links a.text{display:none}
+  }
+  @media (max-width:560px){
+    .steps{grid-template-columns:1fr}
+    .features{grid-template-columns:1fr}
+    .final{padding:56px 24px}
+    section{padding:64px 0}
+    .card.reply{margin-right:0}
+    .card.site{margin-left:0}
+    .flight{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="airmail"></div>
+
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#"><span class="stamp">M·M</span>Missionary Moments</a>
+    <div class="nav-links">
+      <a class="text" href="#how">How it works</a>
+      <a class="text" href="demo.html">Live demo</a>
+      <a class="nav-cta" href="#join">Join the waitlist</a>
+    </div>
+  </nav>
+</div>
+
+<header class="wrap">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">For missionary moms &amp; families</div>
+      <h1>Every week of their mission, <em>beautifully kept.</em></h1>
+      <p class="lede">Missionary Moments emails your missionary a weekly prompt. They reply with a note, voice memo, or video — and it lands on a beautiful personal website the whole family can follow. No nagging, no scattered emails, no scrapbook guilt.</p>
+      <div class="hero-actions">
+        <form class="signup" data-signup>
+          <input type="email" name="email" placeholder="Your email address" required aria-label="Email address">
+          <button type="submit">Join the waitlist</button>
+        </form>
+        <div class="success" role="status">
+          <span class="check">✓</span>
+          <span>You're on the list! We'll email you when Missionary Moments opens.</span>
+        </div>
+        <a class="demo-link" href="demo.html">See a real missionary page in action</a>
+        <p class="form-note">Be first in line when we launch. No spam — ever.</p>
+      </div>
+    </div>
+
+    <div class="route" aria-hidden="true">
+      <svg class="path" viewBox="0 0 400 480" preserveAspectRatio="none" fill="none">
+        <path d="M70 90 C 320 120, 340 180, 250 230 C 160 280, 60 320, 110 400"
+              stroke="#2E6DA4" stroke-width="1.5" stroke-dasharray="2 7" stroke-linecap="round" opacity=".5"/>
+      </svg>
+
+      <svg class="postmark" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#C9A86A" stroke-width="1.5" opacity=".8"/>
+        <circle cx="50" cy="50" r="34" fill="none" stroke="#C9A86A" stroke-width="1" opacity=".55"/>
+        <path id="pmArc" d="M50 12 a38 38 0 0 1 0 76 a38 38 0 0 1 0 -76" fill="none"/>
+        <text font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#C9A86A" letter-spacing="2.5" opacity=".9">
+          <textPath href="#pmArc">WEEK 34 · SENT WITH LOVE ·</textPath>
+        </text>
+      </svg>
+
+      <div class="card prompt">
+        <div class="card-tag"><span>Monday · From Missionary Moments</span><span class="dot" style="background:#2E6DA4"></span></div>
+        <h4>This week's prompt</h4>
+        <p>"What's something that made you laugh this week — and what's one thing you're learning?"</p>
+      </div>
+
+      <div class="card reply">
+        <div class="card-tag"><span>Reply · Elder Sorensen</span><span class="dot" style="background:#C9A86A"></span></div>
+        <h4>Voice memo from the field</h4>
+        <div class="voice">
+          <span class="play"></span>
+          <span class="wave">
+            <span style="height:8px"></span><span style="height:15px"></span><span style="height:11px"></span><span style="height:18px"></span><span style="height:9px"></span><span style="height:14px"></span><span style="height:7px"></span><span style="height:16px"></span><span style="height:10px"></span><span style="height:13px"></span><span style="height:6px"></span><span style="height:12px"></span>
+          </span>
+          <span class="time">2:14</span>
+        </div>
+      </div>
+
+      <div class="card site">
+        <div class="card-tag"><span>elder-sorensen.missionarymoments.co</span><span class="dot" style="background:#CFE2F0"></span></div>
+        <h4>Published to his page</h4>
+        <div class="site-preview">
+          <div class="site-bar"><i></i><i></i><i></i></div>
+          <div class="site-body"><span class="ph a"></span><span class="ph b"></span><span class="ph c"></span></div>
+          <div class="site-stats"><span>418 DAYS LEFT</span><span>34 LETTERS</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap" id="how">
+    <div class="section-head reveal">
+      <div class="eyebrow">How it works</div>
+      <h2>From inbox to keepsake, automatically.</h2>
+      <p>You set it up once. After that, Missionary Moments does the remembering.</p>
+    </div>
+
+    <div class="flight" data-flight aria-hidden="true">
+      <div class="track"></div>
+      <span class="pin" style="left:4%"></span>
+      <span class="pin" style="left:34%"></span>
+      <span class="pin" style="left:64%"></span>
+      <span class="pin" style="left:96%"></span>
+      <div class="env">✉️</div>
+    </div>
+
+    <div class="steps" data-steps>
+      <div class="step">
+        <span class="num">STEP 01</span>
+        <h3>Mom sets it up</h3>
+        <p>Pick a theme, add your missionary's email, and invite family members who want updates by text or email.</p>
+      </div>
+      <div class="step">
+        <span class="num">STEP 02</span>
+        <h3>We send the prompt</h3>
+        <p>Each week your missionary gets one thoughtful question — answerable by email, voice recording, or video.</p>
+      </div>
+      <div class="step">
+        <span class="num">STEP 03</span>
+        <h3>They just hit reply</h3>
+        <p>Their answer is published straight to their personal website. They get a confirmation; you get a notification.</p>
+      </div>
+      <div class="step">
+        <span class="num">STEP 04</span>
+        <h3>The family follows along</h3>
+        <p>Grandparents, siblings, and friends visit one beautiful page — photos, voice memos, videos, and milestones.</p>
+      </div>
+    </div>
+
+    <div class="how-cta reveal">
+      <a class="btn-outline" href="demo.html">Explore the full interactive demo →</a>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">What's inside</div>
+        <h2>Polished enough to share. Simple enough for Grandma.</h2>
+        <p>Clean, modern design that you'd proudly link in your bio — with navigation anyone can figure out on the first visit.</p>
+      </div>
+      <div class="features reveal">
+        <div class="feature">
+          <div class="icon">✉️</div>
+          <h3>Weekly prompts, zero nagging</h3>
+          <p>Text, audio, or video prompts go out automatically. Your missionary replies from their regular email — nothing new to learn.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">🎙️</div>
+          <h3>Photos, voice &amp; video</h3>
+          <p>Every reply is organized on their page. Hear their voice on a Tuesday, not just read a paragraph on P-day.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">✨</div>
+          <h3>A gentle weekly summary</h3>
+          <p>A warm, AI-written recap of how they're doing — woven in quietly, so the page always feels current and reassuring.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">📍</div>
+          <h3>Mission trackers</h3>
+          <p>Days left, letters sent, areas served, companions — you choose which counters appear on the page.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">🎨</div>
+          <h3>Themes that aren't cheesy</h3>
+          <p>Multiple clean, professional looks. Put-together and personal — never clip-art-and-comic-sans.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">📲</div>
+          <h3>Family notifications</h3>
+          <p>When a new update posts, everyone you've added gets a text or email. Mom can add her own photos and notes anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Made for the whole family</div>
+      <h2>One page, three happy audiences.</h2>
+    </div>
+    <div class="audience reveal">
+      <div class="aud">
+        <h3>For Mom</h3>
+        <p>A complete, organized record of the mission — building itself week by week. Share the link with pride.</p>
+      </div>
+      <div class="aud">
+        <h3>For Grandma</h3>
+        <p>One link, big text, no logins or apps. Open it, see the latest, feel close.</p>
+      </div>
+      <div class="aud">
+        <h3>For the missionary</h3>
+        <p>One easy reply a week. No platform to manage, no journal guilt — and a finished keepsake waiting when they come home.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="join">
+    <div class="final reveal">
+      <h2>Their mission is happening <em>right now.</em></h2>
+      <p>Don't let two of the most important years live scattered across an inbox. Join the waitlist and be first to set up your missionary's page.</p>
+      <form class="signup" data-signup>
+        <input type="email" name="email" placeholder="Your email address" required aria-label="Email address">
+        <button type="submit">Join the waitlist</button>
+      </form>
+      <div class="success" role="status">
+        <span class="check">✓</span>
+        <span>You're on the list! We'll be in touch soon.</span>
+      </div>
+      <p class="form-note">Launching soon · Early waitlist members get founding pricing.</p>
+    </div>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer>
+    <a class="logo" href="#"><span class="stamp">M·M</span>Missionary Moments</a>
+    <span>© 2026 Missionary Moments · Made with love for missionary families</span>
+  </footer>
+</div>
+
+<div class="airmail"></div>
+
+<script>
+  // Waitlist form: front-end only — connect to your email service later
+  document.querySelectorAll('[data-signup]').forEach(form => {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = form.querySelector('input[name=email]').value.trim();
+      if(!email) return;
+      form.style.display = 'none';
+      const success = form.parentElement.querySelector('.success');
+      if(success) success.style.display = 'flex';
+    });
+  });
+
+  // Scroll reveals
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // How-it-works: staggered steps + flying envelope + sequential highlight
+  const steps = document.querySelector('[data-steps]');
+  const flight = document.querySelector('[data-flight]');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(steps){
+    const stepEls = steps.querySelectorAll('.step');
+    let lightTimer;
+    const stepObs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if(en.isIntersecting){
+          steps.classList.add('in');
+          if(flight && !reduced) flight.classList.add('fly');
+          if(!reduced){
+            // sequentially light up steps in sync with the envelope (6s loop)
+            let i = 0;
+            const cycle = () => {
+              stepEls.forEach(s => s.classList.remove('lit'));
+              stepEls[i].classList.add('lit');
+              i = (i + 1) % stepEls.length;
+            };
+            cycle();
+            lightTimer = setInterval(cycle, 1500);
+          } else {
+            stepEls.forEach(s => s.classList.add('lit'));
+          }
+          stepObs.unobserve(steps);
+        }
+      });
+    }, {threshold:.3});
+    stepObs.observe(steps);
+  }
+</script>
+</body>
+</html>
