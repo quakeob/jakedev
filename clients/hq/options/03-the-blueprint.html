@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HQ — The Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dft:#1a1810;   /* drafting paper dark */
+    --dft2:#22201a;
+    --line:#ddd4b8;  /* cream linework */
+    --line2:#b8ae96;
+    --dim:#c8aa6e;   /* dimension annotation amber */
+    --accent:#9dc4a8;/* soft sage — a breath of nature */
+    --mono:"IBM Plex Mono",monospace;
+    --serif:"IBM Plex Serif",Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--dft);color:var(--line);font-family:var(--mono);
+       -webkit-font-smoothing:antialiased;}
+
+  /* drawing sheet border */
+  body::before{content:"";position:fixed;inset:10px;border:1px solid rgba(221,212,184,.25);
+               pointer-events:none;z-index:100;}
+
+  @keyframes draw{from{opacity:0;}to{opacity:1;}}
+  .dr{opacity:0;animation:draw 1.4s ease forwards;}
+  .dd1{animation-delay:.1s;}.dd2{animation-delay:.4s;}.dd3{animation-delay:.7s;}
+  .dd4{animation-delay:1s;}.dd5{animation-delay:1.3s;}
+
+  /* ---- title block (bottom-right on real drawings, top here) ---- */
+  .title-block{display:grid;grid-template-columns:1fr auto;align-items:stretch;
+               border-bottom:1px solid rgba(221,212,184,.3);padding:0 clamp(28px,5vw,70px);}
+  .tb-left{padding:20px 0;border-right:1px solid rgba(221,212,184,.3);}
+  .tb-project{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+  .tb-name{font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:.04em;}
+  .tb-address{font-size:10px;color:var(--line2);margin-top:6px;letter-spacing:.12em;}
+  .tb-right{display:grid;grid-template-rows:1fr 1fr;padding:0 0 0 32px;}
+  .tb-cell{padding:10px 0;font-size:10px;color:var(--line2);letter-spacing:.14em;}
+  .tb-cell:first-child{border-bottom:1px solid rgba(221,212,184,.2);}
+  .tb-cell strong{display:block;font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+                  color:var(--dim);margin-bottom:3px;}
+  nav{display:flex;gap:0;align-items:stretch;border-left:1px solid rgba(221,212,184,.3);}
+  nav a{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--line2);
+        text-decoration:none;padding:0 18px;display:flex;align-items:center;
+        border-right:1px solid rgba(221,212,184,.2);}
+  nav a:last-child{color:var(--accent);}
+
+  /* ---- hero / floor plan zone ---- */
+  .hero-zone{display:grid;grid-template-columns:1fr 340px;min-height:520px;
+             border-bottom:1px solid rgba(221,212,184,.3);}
+  .hero-main{position:relative;padding:clamp(40px,7vh,90px) clamp(28px,5vw,70px);
+             border-right:1px solid rgba(221,212,184,.3);}
+
+  /* grid lines */
+  .hero-main::before{content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(221,212,184,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(221,212,184,.05) 1px,transparent 1px);
+    background-size:40px 40px;}
+
+  .sheet-no{font-size:10px;letter-spacing:.28em;color:var(--dim);margin-bottom:32px;position:relative;}
+  .hero h1{font-family:var(--serif);font-weight:300;font-size:clamp(38px,7vw,88px);line-height:.96;
+           letter-spacing:-.01em;font-style:italic;position:relative;}
+  .hero h1 span{font-style:normal;font-size:.52em;display:block;letter-spacing:.08em;
+                color:var(--dim);margin-bottom:12px;font-family:var(--mono);}
+  .hero-rule{width:60px;height:1px;background:var(--dim);margin:28px 0;position:relative;}
+  .hero p{font-size:clamp(13px,1.3vw,15px);line-height:1.8;color:var(--line2);
+          max-width:52ch;position:relative;}
+  .hero-cta{margin-top:32px;position:relative;}
+  .hero-cta a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);
+              text-decoration:none;border:1px solid var(--accent);padding:12px 22px;}
+
+  /* annotation panel */
+  .annot{padding:clamp(28px,4vh,50px) 28px;display:flex;flex-direction:column;gap:0;}
+  .annot-head{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);
+              padding-bottom:14px;border-bottom:1px solid rgba(221,212,184,.2);margin-bottom:0;}
+  .ann-row{padding:18px 0;border-bottom:1px solid rgba(221,212,184,.12);display:flex;flex-direction:column;gap:5px;}
+  .ann-row:last-child{border-bottom:none;}
+  .ann-label{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);}
+  .ann-val{font-size:13px;color:var(--line);letter-spacing:.04em;}
+  .ann-sub{font-size:10px;color:var(--line2);line-height:1.5;}
+
+  /* ---- rooms / pillars as annotated plan ---- */
+  .rooms-zone{padding:0 clamp(28px,5vw,70px);border-bottom:1px solid rgba(221,212,184,.3);}
+  .rooms-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);
+               padding:24px 0 20px;border-bottom:1px solid rgba(221,212,184,.2);}
+  .rooms{display:grid;grid-template-columns:repeat(4,1fr);}
+  .room{padding:32px 0 32px;border-right:1px solid rgba(221,212,184,.15);padding-right:24px;margin-right:24px;}
+  .room:last-child{border-right:none;margin-right:0;}
+  .room .r-num{font-size:9px;letter-spacing:.28em;color:var(--dim);margin-bottom:12px;}
+  .room .r-name{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);font-style:italic;
+                font-weight:300;margin-bottom:14px;line-height:1.1;}
+  .room .r-tag{display:inline-block;border:1px solid rgba(221,212,184,.3);padding:4px 8px;
+               font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--line2);margin-bottom:12px;}
+  .room .r-desc{font-size:12px;line-height:1.7;color:var(--line2);}
+
+  /* ---- photo plate ---- */
+  .photo-zone{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(221,212,184,.3);}
+  .photo-zone img{width:100%;height:100%;object-fit:cover;object-position:center;
+                  filter:sepia(.28) contrast(1.05) brightness(.88);display:block;}
+  .photo-text{padding:clamp(40px,6vh,72px) clamp(28px,4vw,56px);display:flex;
+              flex-direction:column;justify-content:center;gap:20px;}
+  .photo-text .p-sheet{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);}
+  .photo-text h2{font-family:var(--serif);font-weight:300;font-size:clamp(24px,2.8vw,38px);
+                 line-height:1.14;font-style:italic;}
+  .photo-text h2 b{font-style:normal;font-weight:400;color:var(--dim);}
+  .photo-text p{font-size:13px;line-height:1.75;color:var(--line2);}
+
+  /* ---- closing stamp ---- */
+  .close{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:30px;
+         padding:clamp(50px,8vh,100px) clamp(28px,5vw,70px);}
+  .close h2{font-family:var(--serif);font-style:italic;font-weight:300;
+            font-size:clamp(30px,4.5vw,60px);line-height:1.04;max-width:18ch;}
+  .close h2 em{font-style:normal;color:var(--dim);}
+  .stamp{border:1px solid var(--dim);padding:24px 32px;text-align:center;min-width:200px;}
+  .stamp .s1{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;}
+  .stamp .s2{font-size:22px;font-family:var(--serif);font-style:italic;color:var(--line);}
+  .stamp .s3{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--line2);margin-top:8px;}
+
+  .cta-row{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+  .cta-row a{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);
+             text-decoration:none;border:1px solid var(--accent);padding:12px 22px;}
+  .cta-row span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--line2);}
+
+  /* ---- footer / title block bottom ---- */
+  footer{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(221,212,184,.3);}
+  .f-cell{padding:14px clamp(16px,2vw,28px);border-right:1px solid rgba(221,212,184,.2);
+          font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--line2);}
+  .f-cell:last-child{border-right:none;}
+  .f-cell strong{display:block;color:var(--dim);margin-bottom:4px;}
+
+  @media(max-width:900px){
+    .hero-zone,.rooms,.photo-zone{grid-template-columns:1fr;}
+    .photo-zone img{height:260px;}
+    footer{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- TITLE BLOCK -->
+<header class="title-block dr dd1">
+  <div class="tb-left">
+    <div class="tb-project">Project</div>
+    <div class="tb-name">HQ · Southworth Block</div>
+    <div class="tb-address">104 W Center Street · Provo, Utah · Est. 1900</div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-cell"><strong>Sheet</strong>A-01 · Website</div>
+    <div class="tb-cell"><strong>Status</strong>For Review</div>
+  </div>
+  <nav>
+    <a>The House</a>
+    <a>The Experience</a>
+    <a>Membership</a>
+    <a>Request an Invitation</a>
+  </nav>
+</header>
+
+<!-- HERO ZONE -->
+<div class="hero-zone dr dd2">
+  <div class="hero-main">
+    <div class="sheet-no">SHEET A-01 &nbsp;/&nbsp; PUBLIC ENTRY</div>
+    <div class="hero">
+      <h1><span>HQ · Provo, Utah</span>Stop looking for<br>the right room.</h1>
+      <div class="hero-rule"></div>
+      <p>A private professional &amp; social sanctuary in the historic Southworth Block — built on substance over spectacle. Invite-only. Membership capped at 400.</p>
+      <div class="hero-cta"><a href="#">// Request an Invitation</a></div>
+    </div>
+  </div>
+  <div class="annot dr dd3">
+    <div class="annot-head">Annotations</div>
+    <div class="ann-row">
+      <div class="ann-label">Membership</div>
+      <div class="ann-val">Capped · 400</div>
+      <div class="ann-sub">Referral or vetted application. Board approval required.</div>
+    </div>
+    <div class="ann-row">
+      <div class="ann-label">Privacy Protocol</div>
+      <div class="ann-val">No-Photo Policy</div>
+      <div class="ann-sub">Absolute. Sitewide. Enforced.</div>
+    </div>
+    <div class="ann-row">
+      <div class="ann-label">Location</div>
+      <div class="ann-val">104 W Center</div>
+      <div class="ann-sub">Provo, Utah · 5 min I-15</div>
+    </div>
+    <div class="ann-row">
+      <div class="ann-label">Hours</div>
+      <div class="ann-val">Mon–Sat</div>
+      <div class="ann-sub">8:00 AM – 10:00 PM</div>
+    </div>
+    <div class="ann-row">
+      <div class="ann-label">Est.</div>
+      <div class="ann-val">1900</div>
+      <div class="ann-sub">Henry L. Southworth building, Provo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ROOMS / PILLARS -->
+<div class="rooms-zone dr dd4">
+  <div class="rooms-label">Program · Four Operating Pillars</div>
+  <div class="rooms">
+    <div class="room">
+      <div class="r-num">ROOM 01</div>
+      <div class="r-name">Gather</div>
+      <div class="r-tag">Lounge · Bar · Entry</div>
+      <div class="r-desc">"A bundle of matches is harder to break." A vetted room of local leaders in spaces designed for serendipity.</div>
+    </div>
+    <div class="room">
+      <div class="r-num">ROOM 02</div>
+      <div class="r-name">Reflect</div>
+      <div class="r-tag">No-Photo · Privacy</div>
+      <div class="r-desc">"In order to do good, we must be aware of who we are." Drop the public persona. Think deeply. Recharge.</div>
+    </div>
+    <div class="room">
+      <div class="r-num">ROOM 03</div>
+      <div class="r-name">Create</div>
+      <div class="r-tag">Smart Rooms · Collab</div>
+      <div class="r-desc">"We are responsible for what we build." The designated engine room for your life's work.</div>
+    </div>
+    <div class="room">
+      <div class="r-num">ROOM 04</div>
+      <div class="r-name">Renew</div>
+      <div class="r-tag">Barber · Massage · Gaming</div>
+      <div class="r-desc">"We must renew ourselves emotionally, spiritually, mentally, intellectually."</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO PLATE -->
+<div class="photo-zone dr dd5">
+  <img src="../hero.jpg" alt="The Lounge">
+  <div class="photo-text">
+    <div class="p-sheet">DETAIL · THE LOUNGE</div>
+    <h2>A historic 1900 brownstone,<br><b>reimagined</b> as Utah Valley's<br>most private address.</h2>
+    <p>Exposed brick, dark wood, structural steel, warm amber light. Built by Henry L. Southworth. Reborn as the gathering place for the valley's most intentional builders.</p>
+  </div>
+</div>
+
+<!-- CLOSE -->
+<div class="close">
+  <div>
+    <h2>The door is closed to the public.<br>It is open to <em>you.</em></h2>
+    <div class="cta-row" style="margin-top:30px">
+      <a href="#">// Request an Invitation</a>
+      <span>Membership · By referral only</span>
+    </div>
+  </div>
+  <div class="stamp">
+    <div class="s1">Membership Cap</div>
+    <div class="s2">400</div>
+    <div class="s3">Provo · Utah</div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-cell"><strong>Project</strong>HQ Provo</div>
+  <div class="f-cell"><strong>Address</strong>104 W Center St</div>
+  <div class="f-cell"><strong>Sheet</strong>A-01</div>
+  <div class="f-cell"><strong>Status</strong>For Client Review</div>
+</footer>
+
+</body>
+</html>
