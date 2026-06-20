@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HQ — The Charter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #f5f0e8;
+    --ivory-2: #ede6d6;
+    --ink: #1e1810;
+    --muted: #6b5e4a;
+    --rule: #c8b898;
+    --gold: #8b6a1a;
+    --serif: 'Libre Baskerville', 'Garamond', Georgia, serif;
+    --sans: 'Outfit', -apple-system, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+  body{background:var(--ivory);color:var(--ink);font-family:var(--serif);line-height:1.6;}
+  ::selection{background:var(--gold);color:var(--ivory);}
+  a{color:inherit;text-decoration:none;}
+
+  /* entrance */
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .rise{opacity:0;animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards;}
+  .d1{animation-delay:.1s;}.d2{animation-delay:.25s;}.d3{animation-delay:.4s;}.d4{animation-delay:.6s;}
+
+  /* header */
+  header{display:flex;align-items:center;justify-content:space-between;
+         padding:28px clamp(24px,6vw,80px);border-bottom:1px solid var(--rule);}
+  .logo{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:.08em;
+        text-transform:uppercase;}
+  .logo span{color:var(--gold);}
+  nav{display:flex;gap:32px;}
+  nav a{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.18em;
+        text-transform:uppercase;color:var(--muted);transition:color .2s;}
+  nav a:hover{color:var(--ink);}
+  .nav-cta{color:var(--gold) !important;}
+
+  /* rule line */
+  .rule{border:none;border-top:1px solid var(--rule);margin:0;}
+  .rule--gold{border-color:var(--gold);}
+  .rule--double{border-bottom:1px solid var(--rule);padding-top:3px;}
+
+  /* hero — charter document opening */
+  .charter-hero{padding:clamp(80px,14vh,160px) clamp(24px,6vw,80px) clamp(60px,10vh,120px);
+                text-align:center;position:relative;}
+  .charter-hero::before{content:'Est. 1900';font-family:var(--sans);font-size:10px;
+                         letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+                         display:block;margin-bottom:2rem;}
+  .charter-hero h1{font-family:var(--serif);font-size:clamp(40px,7vw,90px);font-weight:700;
+                   line-height:.95;letter-spacing:-.01em;margin-bottom:1.5rem;}
+  .charter-hero h1 em{font-weight:400;font-style:italic;color:var(--gold);}
+  .charter-hero .sub{font-family:var(--sans);font-size:clamp(13px,1.3vw,16px);
+                     color:var(--muted);letter-spacing:.06em;text-transform:uppercase;
+                     max-width:48ch;margin:0 auto 3rem;}
+  .charter-hero .seal{display:inline-flex;align-items:center;gap:20px;
+                      border:1px solid var(--rule);padding:14px 28px;}
+  .charter-seal-line{font-family:var(--sans);font-size:10px;letter-spacing:.2em;
+                     text-transform:uppercase;color:var(--muted);}
+
+  /* preamble */
+  .preamble{max-width:820px;margin:0 auto;padding:clamp(60px,8vw,100px) clamp(24px,6vw,80px);}
+  .preamble .section-mark{font-family:var(--sans);font-size:10px;letter-spacing:.28em;
+                           text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;
+                           display:flex;align-items:center;gap:1rem;}
+  .preamble .section-mark::after{content:'';flex:1;height:1px;background:var(--rule);}
+  .preamble p{font-size:clamp(18px,2vw,24px);line-height:1.6;letter-spacing:.002em;
+              color:var(--ink);}
+  .preamble p span{color:var(--muted);}
+
+  /* pillars — numbered charter articles */
+  .articles{padding:0 clamp(24px,6vw,80px) clamp(60px,8vw,100px);max-width:960px;margin:0 auto;}
+  .articles-head{font-family:var(--sans);font-size:10px;letter-spacing:.28em;
+                 text-transform:uppercase;color:var(--gold);padding-bottom:2rem;
+                 border-bottom:1px solid var(--rule);margin-bottom:0;}
+  .article{display:grid;grid-template-columns:80px 1fr;gap:2rem;
+           padding:2.5rem 0;border-bottom:1px solid var(--rule);}
+  .article__num{font-family:var(--serif);font-style:italic;font-size:clamp(28px,3vw,42px);
+                color:var(--gold);line-height:1;padding-top:.1rem;}
+  .article__body h3{font-family:var(--serif);font-size:clamp(22px,2.8vw,34px);
+                     font-weight:700;letter-spacing:-.01em;line-height:1.1;margin-bottom:.75rem;}
+  .article__body .doctrine{font-family:var(--serif);font-style:italic;
+                            font-size:clamp(14px,1.5vw,17px);color:var(--gold);
+                            margin-bottom:.75rem;}
+  .article__body p{font-family:var(--sans);font-size:14px;color:var(--muted);
+                   line-height:1.7;max-width:56ch;}
+  .article__body .amenities{font-family:var(--sans);font-size:11px;letter-spacing:.16em;
+                              text-transform:uppercase;color:var(--rule);margin-top:.75rem;}
+  .article:hover .article__num{color:var(--ink);transition:color .3s;}
+
+  /* membership */
+  .membership{background:var(--ivory-2);padding:clamp(60px,10vw,120px) clamp(24px,6vw,80px);
+              text-align:center;border-top:1px solid var(--rule);}
+  .membership .pre{font-family:var(--sans);font-size:10px;letter-spacing:.28em;
+                   text-transform:uppercase;color:var(--gold);margin-bottom:2rem;}
+  .membership h2{font-family:var(--serif);font-size:clamp(32px,5vw,64px);font-weight:700;
+                 letter-spacing:-.01em;line-height:1;margin-bottom:1.5rem;}
+  .membership h2 em{font-style:italic;font-weight:400;color:var(--gold);}
+  .membership .tiers{display:flex;justify-content:center;gap:clamp(20px,4vw,60px);
+                     flex-wrap:wrap;margin:3rem 0;}
+  .tier{text-align:center;padding:2rem 2.5rem;border:1px solid var(--rule);min-width:160px;}
+  .tier__name{font-family:var(--sans);font-size:10px;letter-spacing:.24em;
+              text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;}
+  .tier__price{font-family:var(--serif);font-size:clamp(28px,3vw,40px);font-weight:700;}
+  .tier__sub{font-family:var(--sans);font-size:11px;color:var(--muted);margin-top:.25rem;}
+  .cta-link{font-family:var(--sans);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+            color:var(--ink);border-bottom:1px solid var(--gold);padding-bottom:4px;
+            transition:color .2s,letter-spacing .2s;}
+  .cta-link:hover{color:var(--gold);letter-spacing:.28em;}
+
+  /* building */
+  .building{display:grid;grid-template-columns:1fr 1fr;gap:0;
+            border-top:1px solid var(--rule);}
+  .building__img{overflow:hidden;height:clamp(300px,40vw,500px);}
+  .building__img img{width:100%;height:100%;object-fit:cover;
+                     filter:sepia(.25) brightness(.92);
+                     transition:transform .6s ease;}
+  .building:hover .building__img img{transform:scale(1.03);}
+  .building__text{padding:clamp(40px,6vw,80px);display:flex;flex-direction:column;
+                  justify-content:center;background:var(--ivory-2);}
+  .building__text .pre{font-family:var(--sans);font-size:10px;letter-spacing:.28em;
+                        text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;}
+  .building__text h3{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:700;
+                      line-height:1.1;letter-spacing:-.01em;margin-bottom:1.2rem;}
+  .building__text h3 em{font-style:italic;font-weight:400;}
+  .building__text p{font-family:var(--sans);font-size:14px;color:var(--muted);line-height:1.7;}
+  .building__text .address{font-family:var(--sans);font-size:11px;letter-spacing:.16em;
+                            text-transform:uppercase;color:var(--rule);margin-top:1.5rem;}
+
+  footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+         padding:28px clamp(24px,6vw,80px);border-top:1px solid var(--rule);}
+  footer span{font-family:var(--sans);font-size:10px;letter-spacing:.2em;
+              text-transform:uppercase;color:var(--muted);}
+
+  @media(max-width:760px){
+    .building{grid-template-columns:1fr;}
+    .article{grid-template-columns:48px 1fr;}
+    .membership .tiers{gap:1rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="rise d1">
+  <div class="logo">H<span>Q</span></div>
+  <nav>
+    <a href="#">The House</a>
+    <a href="#">The Experience</a>
+    <a href="#">Membership</a>
+    <a class="nav-cta" href="#">Request an Invitation</a>
+  </nav>
+</header>
+
+<div class="charter-hero rise d2">
+  <h1>A Private<br><em>Sanctuary</em><br>for Provo.</h1>
+  <p class="sub">Professionals, builders, and legacy-makers — gathered under one roof, by invitation only.</p>
+  <div class="seal rise d3">
+    <span class="charter-seal-line">No-Photo Policy</span>
+    <span style="color:var(--rule);">|</span>
+    <span class="charter-seal-line">Capped at 400</span>
+    <span style="color:var(--rule);">|</span>
+    <span class="charter-seal-line">By Referral Only</span>
+  </div>
+</div>
+
+<hr class="rule rule--double">
+
+<section class="preamble rise d3">
+  <div class="section-mark">The Standard</div>
+  <p>We gather to exchange signal, cultivate judgment, and support meaningful work. <span>We are not building a crowd. We are protecting a standard.</span> The quality of the room is the product.</p>
+</section>
+
+<section class="articles">
+  <div class="articles-head">Articles of the House — The Four Pillars</div>
+  <div class="article">
+    <div class="article__num">I</div>
+    <div class="article__body">
+      <h3>Gather</h3>
+      <div class="doctrine">"A bundle of matches is harder to break."</div>
+      <p>A vetted room of local leaders — executives, athletes, innovators — in spaces built for serendipity and authentic connection.</p>
+      <div class="amenities">Lounge · Bar · Private Entry</div>
+    </div>
+  </div>
+  <div class="article">
+    <div class="article__num">II</div>
+    <div class="article__body">
+      <h3>Reflect</h3>
+      <div class="doctrine">"In order to do good, we must be aware of who we are."</div>
+      <p>An absolute no-photo sanctuary. The rare freedom to drop the public persona and think deeply, without performance.</p>
+      <div class="amenities">Discretion · Privacy · No-Photo Policy</div>
+    </div>
+  </div>
+  <div class="article">
+    <div class="article__num">III</div>
+    <div class="article__body">
+      <h3>Create</h3>
+      <div class="doctrine">"We are responsible for what we build."</div>
+      <p>High-performance rooms for builders and operators. The designated engine room for your life's work — equipped and distraction-free.</p>
+      <div class="amenities">Smart Rooms · High-Speed Wi-Fi · Collab Tech</div>
+    </div>
+  </div>
+  <div class="article">
+    <div class="article__num">IV</div>
+    <div class="article__body">
+      <h3>Renew</h3>
+      <div class="doctrine">"We must renew ourselves emotionally, spiritually, mentally."</div>
+      <p>You cannot pour from an empty cup. Premium grooming, relaxation, and recreation — woven into your working day, not separate from it.</p>
+      <div class="amenities">Barbershop · Shoe Shine · Massage · Gaming</div>
+    </div>
+  </div>
+</section>
+
+<div class="building">
+  <div class="building__img">
+    <img src="../hero.jpg" alt="HQ Lounge">
+  </div>
+  <div class="building__text">
+    <div class="pre">The Building</div>
+    <h3>A historic 1900 brownstone, <em>reimagined</em> as Utah Valley's most private address.</h3>
+    <p>Exposed brick, dark wood, structural steel, warm amber light. The Southworth Block — five minutes from the I-15 corridor and steps from the valley's institutional anchors.</p>
+    <div class="address">104 W Center Street · Provo, Utah · Mon–Sat, 8–10pm</div>
+  </div>
+</div>
+
+<section class="membership">
+  <div class="pre">Membership</div>
+  <h2>The door is closed to the public.<br>It is open to <em>you.</em></h2>
+  <div class="tiers">
+    <div class="tier">
+      <div class="tier__name">Pillar</div>
+      <div class="tier__price">$499</div>
+      <div class="tier__sub">per month</div>
+    </div>
+    <div class="tier" style="border-color:var(--gold);">
+      <div class="tier__name" style="color:var(--gold);">Executive</div>
+      <div class="tier__price">$699</div>
+      <div class="tier__sub">per month</div>
+    </div>
+    <div class="tier">
+      <div class="tier__name">Corporate</div>
+      <div class="tier__price">$999</div>
+      <div class="tier__sub">per month</div>
+    </div>
+  </div>
+  <p style="font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:2rem;">$1,000 initiation · Referral & vetted application only</p>
+  <a class="cta-link" href="#">Request an Invitation</a>
+</section>
+
+<footer>
+  <span>HQ — A Private Sanctuary</span>
+  <span>Provo, Utah · Est. 1900</span>
+  <span>Referral &amp; vetted application only</span>
+</footer>
+
+</body>
+</html>
