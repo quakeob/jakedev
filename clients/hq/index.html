@@ -1,191 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HQ — Design Options · Jake Davis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,400&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+  (function(){
+    var s=localStorage.getItem('theme');
+    if(s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme:dark)').matches)){
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
 <style>
   :root {
-    --paper: #f6f2ea;
-    --ink: #1c1714;
-    --muted: #73695c;
-    --hair: #d8cfbd;
-    --accent: #9a6238;
-    --serif: "Fraunces", Georgia, serif;
-    --sans: "Hanken Grotesk", -apple-system, sans-serif;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --text-2: #666666;
+    --grey: #999999;
+    --accent: #1a1a1a;
+    --green: #2d6a4f;
+    --border: rgba(0,0,0,.08);
+    --font-display: 'Playfair Display','Georgia','Times New Roman',serif;
+    --font-mono: 'Space Mono','SF Mono','Consolas',monospace;
+    --ease: cubic-bezier(.4,0,.2,1);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--paper); color: var(--ink); font-family: var(--sans);
-         -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  :root.dark {
+    --bg: #0a0a0a;
+    --text: #e5e5e5;
+    --text-2: #999999;
+    --grey: #666666;
+    --accent: #e5e5e5;
+    --green: #5a9a7a;
+    --border: rgba(255,255,255,.08);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-font-smoothing:antialiased;}
+  body{font-family:var(--font-mono);font-size:13px;font-weight:400;line-height:1.6;
+       background:var(--bg);color:var(--text);text-transform:uppercase;letter-spacing:.02em;
+       overflow-x:hidden;transition:background .3s var(--ease),color .3s var(--ease);}
+  ::selection{background:var(--text);color:var(--bg);}
+  a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
+  img{max-width:100%;height:auto;}
 
-  /* ---- top bar ---- */
-  .topbar { display: flex; align-items: center; justify-content: space-between;
-            padding: 22px 48px; border-bottom: 1px solid var(--hair); }
-  .topbar-left { display: flex; align-items: center; gap: 18px; }
-  .topbar-left a { font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-                   color: var(--muted); text-decoration: none; }
-  .topbar-left a:hover { color: var(--accent); }
-  .divider { color: var(--hair); }
-  .topbar-right { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  /* ---- preloader ---- */
+  .preloader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;
+              align-items:center;justify-content:center;}
+  .preloader__wrapper{display:flex;flex-direction:column;align-items:center;gap:.5em;}
+  .preloader__bar-line{font-family:var(--font-mono);font-size:clamp(14px,2.5vw,20px);
+                       color:var(--text);letter-spacing:.02em;white-space:nowrap;}
+  .preloader__bracket{color:var(--grey);}
+  .preloader__fill{letter-spacing:-.05em;}
+  .preloader__pct{font-family:var(--font-mono);font-size:11px;color:var(--grey);
+                  text-transform:uppercase;letter-spacing:.1em;}
 
-  /* ---- hero block ---- */
-  .hero { padding: 64px 48px 48px; max-width: 800px; }
-  .hero .eyebrow { font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
-                   color: var(--accent); margin-bottom: 20px; }
-  .hero h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(32px, 4.5vw, 56px);
-             line-height: 1.06; letter-spacing: -.02em;
-             font-variation-settings: "opsz" 80, "SOFT" 0; }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero p { margin-top: 18px; font-size: 14px; line-height: 1.7; color: var(--muted); max-width: 56ch; }
-  .note { margin-top: 10px; font-size: 12px; color: var(--muted); }
-  .note strong { color: var(--ink); }
+  /* ---- cursor ---- */
+  .cursor{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;opacity:0;
+          mix-blend-mode:difference;transition:opacity .3s;}
+  .cursor__dot{width:12px;height:12px;background:#fff;border-radius:50%;
+               transform:translate(-50%,-50%);
+               transition:width .3s cubic-bezier(.25,1,.5,1),height .3s cubic-bezier(.25,1,.5,1);}
+  .cursor--active .cursor__dot{width:48px;height:48px;}
+  @media(pointer:coarse){.cursor{display:none;}}
+  @media(pointer:fine){*,*::before,*::after{cursor:none !important;}}
 
-  /* ---- options grid ---- */
-  .grid-wrap { padding: 0 48px 80px; }
-  .section-label { font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
-                   color: var(--muted); padding: 32px 0 24px; border-top: 1px solid var(--hair); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 32px; }
+  /* ---- header ---- */
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 30px;
+               display:flex;justify-content:space-between;align-items:center;
+               mix-blend-mode:difference;}
+  .site-header__brand{color:#fff;font-family:var(--font-mono);font-size:13px;
+                      text-transform:uppercase;letter-spacing:.02em;}
+  .site-nav__list{list-style:none;display:flex;gap:2em;}
+  .site-nav__link{color:#fff;font-family:var(--font-mono);font-size:13px;
+                  text-transform:uppercase;letter-spacing:.02em;
+                  transition:opacity .3s var(--ease);background:none;border:none;
+                  font-weight:400;line-height:inherit;}
+  .site-nav__link:hover{opacity:.5;}
 
-  /* option card */
-  .card { background: #fff; border-radius: 10px; overflow: hidden;
-          box-shadow: 0 4px 24px rgba(28,23,20,.10); transition: transform .2s, box-shadow .2s;
-          display: flex; flex-direction: column; }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(28,23,20,.18); }
-  .preview-wrap { position: relative; height: 320px; overflow: hidden; background: var(--paper); }
-  .preview-wrap iframe { width: 200%; height: 200%; transform: scale(.5); transform-origin: 0 0;
-                          border: none; pointer-events: none; }
-  .preview-label { position: absolute; top: 10px; left: 10px;
-                   background: rgba(28,23,20,.7); color: #f6f2ea;
-                   font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
-                   padding: 5px 10px; border-radius: 99px; backdrop-filter: blur(4px); }
-  .card-body { padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
-  .card-body h3 { font-family: var(--serif); font-weight: 300; font-size: 20px; letter-spacing: -.01em; }
-  .card-body p { font-size: 13px; line-height: 1.6; color: var(--muted); flex: 1; }
-  .card-footer { display: flex; gap: 10px; align-items: center; padding-top: 4px; }
-  .btn-view { display: inline-block; padding: 10px 18px; background: var(--ink); color: var(--paper);
-              font-size: 11px; letter-spacing: .18em; text-transform: uppercase; text-decoration: none;
-              border-radius: 3px; transition: background .2s; }
-  .btn-view:hover { background: var(--accent); }
-  .btn-tag { font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
-             color: var(--muted); border: 1px solid var(--hair); padding: 6px 10px; border-radius: 3px; }
+  /* ---- hero ---- */
+  .page-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+             padding:0 30px;overflow:hidden;}
+  .page-hero__eyebrow{font-size:11px;color:var(--green);margin-bottom:2rem;font-style:italic;}
+  .page-hero__title{font-family:var(--font-display);font-size:clamp(4rem,12vw,11rem);
+                    font-weight:400;line-height:.85;text-transform:uppercase;letter-spacing:-.02em;}
+  .page-hero__title em{font-style:italic;color:var(--green);}
+  .page-hero__sub{font-family:var(--font-mono);font-size:12px;color:var(--text-2);
+                  max-width:60ch;line-height:1.7;margin-top:2.5rem;}
+  .page-hero__meta{display:flex;justify-content:space-between;padding-top:2rem;
+                   margin-top:2rem;border-top:1px solid var(--border);
+                   font-size:11px;color:var(--grey);}
 
-  /* ---- coming soon placeholder ---- */
-  .placeholder { background: #fff; border-radius: 10px; border: 2px dashed var(--hair);
-                 height: 380px; display: flex; flex-direction: column; align-items: center;
-                 justify-content: center; gap: 10px; color: var(--muted); cursor: default; }
-  .placeholder span { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; }
+  /* ---- options section ---- */
+  .options-section{padding:clamp(4rem,8vw,8rem) 30px;}
+  .options-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:clamp(2rem,4vw,4rem);}
+  .options-header__title{font-family:var(--font-display);
+                          font-size:clamp(3rem,6vw,5rem);font-weight:400;
+                          text-transform:uppercase;letter-spacing:-.02em;line-height:.9;}
+  .options-header__count{font-size:11px;color:var(--grey);}
+
+  /* option as project-card style list */
+  .option-list{display:flex;flex-direction:column;gap:0;max-width:1200px;}
+  .option-card{display:grid;grid-template-columns:60px 1fr auto;gap:2rem;align-items:start;
+               padding:2rem 1.5rem;border-top:1px solid var(--border);
+               transition:background .3s var(--ease),padding .3s var(--ease);}
+  .option-card:last-child{border-bottom:1px solid var(--border);}
+  .option-card:hover{background:var(--border);padding:2rem 2.5rem;}
+  .option-card__index{font-family:var(--font-mono);font-size:12px;color:var(--grey);
+                      padding-top:.4rem;}
+  .option-card__body h3{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.8rem);
+                         font-weight:400;text-transform:uppercase;letter-spacing:-.01em;
+                         line-height:1;margin-bottom:.75rem;transition:color .3s var(--ease);}
+  .option-card:hover .option-card__body h3{color:var(--green);}
+  .option-card__desc{font-family:var(--font-mono);font-size:12px;line-height:1.6;
+                     color:var(--text-2);max-width:600px;margin-bottom:.75rem;text-transform:none;}
+  .option-card__tags{display:flex;flex-wrap:wrap;gap:.5em;}
+  .option-card__tag{font-family:var(--font-mono);font-size:10px;color:var(--grey);}
+  .option-card__action{padding-top:.4rem;white-space:nowrap;}
+  .option-card__action a{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+                          color:var(--green);border-bottom:1px solid var(--green);
+                          padding-bottom:3px;transition:opacity .2s;}
+  .option-card__action a:hover{opacity:.7;}
+
+  /* preview expand on hover */
+  .option-preview{grid-column:1/-1;max-height:0;opacity:0;overflow:hidden;
+                  transition:max-height .65s cubic-bezier(.23,1,.32,1),opacity .5s cubic-bezier(.23,1,.32,1),padding .65s cubic-bezier(.23,1,.32,1);}
+  .option-card:hover .option-preview{max-height:500px;opacity:1;padding:.5rem 0 1rem;}
+  .preview-frame{position:relative;height:360px;border-radius:6px;overflow:hidden;
+                 border:1px solid var(--border);}
+  .preview-frame iframe{width:200%;height:200%;transform:scale(.5);transform-origin:0 0;
+                         border:none;pointer-events:none;}
+  .preview-note{font-size:10px;color:var(--grey);margin-top:.75rem;font-style:italic;text-transform:none;}
 
   /* ---- footer ---- */
-  footer { padding: 24px 48px; border-top: 1px solid var(--hair);
-           display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  footer span { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
-  footer a { color: var(--accent); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
+  .site-footer{padding:40px 30px;border-top:1px solid var(--border);
+               display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+  .site-footer span{font-size:11px;color:var(--grey);}
+  .site-footer a{color:var(--green);}
+  .site-footer a:hover{opacity:.7;}
 
-  @media (max-width: 640px) {
-    .topbar, .hero, .grid-wrap, footer { padding-left: 20px; padding-right: 20px; }
-    .grid { grid-template-columns: 1fr; }
+  @media(max-width:768px){
+    .page-hero__meta{flex-direction:column;gap:.5rem;}
+    .option-card{grid-template-columns:40px 1fr;gap:1rem;}
+    .option-card__action{grid-column:2;padding-top:0;}
   }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-left">
-    <a href="https://jakedev.org">Jake Davis</a>
-    <span class="divider">·</span>
-    <a href="#">HQ — Design Options</a>
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="preloader__wrapper">
+    <div class="preloader__bar-line">
+      <span class="preloader__bracket">[</span><span class="preloader__fill" id="preloader-fill"></span><span class="preloader__bracket">]</span>
+    </div>
+    <div class="preloader__pct" id="preloader-pct">0%</div>
   </div>
-  <div class="topbar-right">Confidential · For Client Review</div>
 </div>
 
-<div class="hero">
-  <div class="eyebrow">HQ · Provo, Utah · Website Redesign</div>
-  <h1>Design options<br>for your <em>review.</em></h1>
-  <p>Each direction below represents a distinct visual identity and page flow. Click "View Full Design" on any card to explore it in detail. Share your feedback on what resonates.</p>
-  <p class="note"><strong>How to use:</strong> Open each option, scroll through the full page, and note what you like or want to change. There are no wrong answers — this is the exploration phase.</p>
+<!-- CURSOR -->
+<div class="cursor" id="cursor"><div class="cursor__dot"></div></div>
+
+<!-- HEADER -->
+<header class="site-header" id="site-header">
+  <div><a class="site-header__brand" href="https://jakedev.org">Jake Davis</a></div>
+  <div>
+    <nav>
+      <ul class="site-nav__list">
+        <li><a href="https://jakedev.org" class="site-nav__link">Home</a></li>
+        <li><a href="https://jakedev.org/#work" class="site-nav__link">Work</a></li>
+        <li><button class="site-nav__link theme-toggle" onclick="toggleTheme()">Dark</button></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="page-hero" id="hero">
+  <div class="page-hero__eyebrow js-in">Client Work — HQ Provo · Confidential</div>
+  <h1 class="page-hero__title js-in">
+    Design<br>Options<br>for <em>Review.</em>
+  </h1>
+  <p class="page-hero__sub js-in">
+    Each direction below represents a distinct visual identity and page flow for the HQ website rebuild.
+    Hover any option to preview it, or open it in full. No wrong answers — this is the exploration phase.
+  </p>
+  <div class="page-hero__meta js-in">
+    <span>HQ · Provo, Utah · Website Redesign</span>
+    <span>Confidential · For Client Review</span>
+    <span>Scroll ↓</span>
+  </div>
 </div>
 
-<div class="grid-wrap">
-  <div class="section-label">Directions · Phase 1 Exploration</div>
-  <div class="grid">
+<!-- OPTIONS -->
+<section class="options-section">
+  <div class="options-header">
+    <h2 class="options-header__title">Directions</h2>
+    <span class="options-header__count">04 options</span>
+  </div>
 
-    <!-- OPTION 01 -->
-    <div class="card">
-      <div class="preview-wrap">
-        <iframe src="options/01-quiet-bright.html" title="Option 01 — Quiet & Bright" loading="lazy"></iframe>
-        <span class="preview-label">01</span>
-      </div>
-      <div class="card-body">
+  <div class="option-list">
+
+    <div class="option-card">
+      <div class="option-card__index">01</div>
+      <div class="option-card__body">
         <h3>Quiet &amp; Bright</h3>
-        <p>Gallery-white, vast negative space, type as the hero. Fraunces display serif + a single restrained cognac accent. Calm, modern, expensive — confidence through emptiness.</p>
-        <div class="card-footer">
-          <a class="btn-view" href="options/01-quiet-bright.html" target="_blank">View Full Design</a>
-          <span class="btn-tag">Minimal · Editorial</span>
+        <p class="option-card__desc">Gallery-white, vast negative space, type as the hero. Fraunces display serif + a single restrained cognac accent. Calm, modern, expensive — confidence through emptiness. Aesop / Hermès energy.</p>
+        <div class="option-card__tags">
+          <span class="option-card__tag">Minimal ·</span>
+          <span class="option-card__tag">Editorial ·</span>
+          <span class="option-card__tag">Light-dominant ·</span>
+          <span class="option-card__tag">Fraunces + Hanken Grotesk</span>
         </div>
+        <div class="option-preview">
+          <div class="preview-frame">
+            <iframe src="options/01-quiet-bright.html" title="Option 01" loading="lazy"></iframe>
+          </div>
+          <p class="preview-note">↑ Scroll preview — click "Open Full Design" to explore</p>
+        </div>
+      </div>
+      <div class="option-card__action">
+        <a href="options/01-quiet-bright.html" target="_blank">Open Full Design ↗</a>
       </div>
     </div>
 
-    <!-- OPTION 02 -->
-    <div class="card">
-      <div class="preview-wrap">
-        <iframe src="options/02-the-manifesto.html" title="Option 02 — The Manifesto" loading="lazy"></iframe>
-        <span class="preview-label">02</span>
-      </div>
-      <div class="card-body">
+    <div class="option-card">
+      <div class="option-card__index">02</div>
+      <div class="option-card__body">
         <h3>The Manifesto</h3>
-        <p>Cream newsprint, heavy editorial serif, type as the only visual. The No-Photo Policy IS the design. Cormorant Garamond headlines at full scale — literary, confident, and anti-spectacle.</p>
-        <div class="card-footer">
-          <a class="btn-view" href="options/02-the-manifesto.html" target="_blank">View Full Design</a>
-          <span class="btn-tag">Editorial · Literary</span>
+        <p class="option-card__desc">Cream newsprint, heavy editorial serif, type as the only visual. The No-Photo Policy IS the design. Cormorant Garamond at full scale — literary, confident, anti-spectacle. Declares before it sells.</p>
+        <div class="option-card__tags">
+          <span class="option-card__tag">Editorial ·</span>
+          <span class="option-card__tag">Literary ·</span>
+          <span class="option-card__tag">Type-driven ·</span>
+          <span class="option-card__tag">Cormorant Garamond</span>
         </div>
+        <div class="option-preview">
+          <div class="preview-frame">
+            <iframe src="options/02-the-manifesto.html" title="Option 02" loading="lazy"></iframe>
+          </div>
+          <p class="preview-note">↑ Scroll preview — click "Open Full Design" to explore</p>
+        </div>
+      </div>
+      <div class="option-card__action">
+        <a href="options/02-the-manifesto.html" target="_blank">Open Full Design ↗</a>
       </div>
     </div>
 
-    <!-- OPTION 03 -->
-    <div class="card">
-      <div class="preview-wrap">
-        <iframe src="options/03-the-blueprint.html" title="Option 03 — The Blueprint" loading="lazy"></iframe>
-        <span class="preview-label">03</span>
-      </div>
-      <div class="card-body">
+    <div class="option-card">
+      <div class="option-card__index">03</div>
+      <div class="option-card__body">
         <h3>The Blueprint</h3>
-        <p>The site is an architect's schematic drawing set — IBM Plex Mono, dimension annotations, grid coordinates, title blocks. The 1900 building is the protagonist. Precise and completely singular.</p>
-        <div class="card-footer">
-          <a class="btn-view" href="options/03-the-blueprint.html" target="_blank">View Full Design</a>
-          <span class="btn-tag">Architectural · Structural</span>
+        <p class="option-card__desc">The entire site is an architect's schematic drawing set — IBM Plex Mono, dimension annotations, grid coordinates, title blocks. The 1900 Southworth building is the protagonist. Completely singular.</p>
+        <div class="option-card__tags">
+          <span class="option-card__tag">Architectural ·</span>
+          <span class="option-card__tag">Technical ·</span>
+          <span class="option-card__tag">Dark ·</span>
+          <span class="option-card__tag">IBM Plex Mono + Serif</span>
         </div>
+        <div class="option-preview">
+          <div class="preview-frame">
+            <iframe src="options/03-the-blueprint.html" title="Option 03" loading="lazy"></iframe>
+          </div>
+          <p class="preview-note">↑ Scroll preview — click "Open Full Design" to explore</p>
+        </div>
+      </div>
+      <div class="option-card__action">
+        <a href="options/03-the-blueprint.html" target="_blank">Open Full Design ↗</a>
       </div>
     </div>
 
-    <!-- OPTION 04 -->
-    <div class="card">
-      <div class="preview-wrap">
-        <iframe src="options/04-dark-editorial.html" title="Option 04 — Dark Editorial" loading="lazy"></iframe>
-        <span class="preview-label">04</span>
-      </div>
-      <div class="card-body">
+    <div class="option-card">
+      <div class="option-card__index">04</div>
+      <div class="option-card__body">
         <h3>Dark Editorial</h3>
-        <p>Cinematic full-bleed hero, near-void black, Bodoni Moda high-contrast serif, warm gold accent. Luxury editorial — Soho House confidence, not nightclub. The richest, most atmospheric direction.</p>
-        <div class="card-footer">
-          <a class="btn-view" href="options/04-dark-editorial.html" target="_blank">View Full Design</a>
-          <span class="btn-tag">Cinematic · Luxury</span>
+        <p class="option-card__desc">Cinematic full-bleed hero, near-void black, Bodoni Moda high-contrast serif, warm gold accent. Luxury editorial — Soho House confidence, not nightclub. The richest, most atmospheric direction.</p>
+        <div class="option-card__tags">
+          <span class="option-card__tag">Cinematic ·</span>
+          <span class="option-card__tag">Luxury ·</span>
+          <span class="option-card__tag">Dark-dominant ·</span>
+          <span class="option-card__tag">Bodoni Moda + Outfit</span>
         </div>
+        <div class="option-preview">
+          <div class="preview-frame">
+            <iframe src="options/04-dark-editorial.html" title="Option 04" loading="lazy"></iframe>
+          </div>
+          <p class="preview-note">↑ Scroll preview — click "Open Full Design" to explore</p>
+        </div>
+      </div>
+      <div class="option-card__action">
+        <a href="options/04-dark-editorial.html" target="_blank">Open Full Design ↗</a>
       </div>
     </div>
 
   </div>
-</div>
+</section>
 
-<footer>
+<footer class="site-footer">
   <span>Designed by <a href="https://jakedev.org">Jake Davis</a></span>
-  <span>HQ · Confidential</span>
-  <span>For review purposes only</span>
+  <span>HQ · Confidential · For review only</span>
+  <span>© 2026</span>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script>
+  // ── PRELOADER ──
+  (function(){
+    var fillEl=document.getElementById('preloader-fill');
+    var pctEl=document.getElementById('preloader-pct');
+    var preloader=document.getElementById('preloader');
+    var barWidth=30;
+    function render(p){
+      var f=Math.round((p/100)*barWidth);
+      fillEl.textContent='█'.repeat(f)+'░'.repeat(barWidth-f);
+      pctEl.textContent=Math.round(p)+'%';
+    }
+    render(0);
+    window.addEventListener('load',function(){
+      render(100);
+      gsap.to(preloader,{opacity:0,duration:.4,delay:.1,ease:'power2.inOut',
+        onComplete:function(){
+          preloader.style.display='none';
+          // stagger in hero
+          gsap.fromTo('#site-header',{y:-40,opacity:0},{y:0,opacity:1,duration:1,delay:.1,ease:'power3.out'});
+          gsap.fromTo('.js-in',{y:50,opacity:0},{y:0,opacity:1,duration:1,stagger:.15,delay:.2,ease:'power4.out'});
+        }
+      });
+    });
+  })();
+
+  // ── CURSOR ──
+  var cursor=document.getElementById('cursor');
+  if(cursor&&window.matchMedia('(pointer:fine)').matches){
+    var cx=0,cy=0,tx=0,ty=0;
+    document.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;});
+    (function tick(){cx+=(tx-cx)*.15;cy+=(ty-cy)*.15;
+      cursor.style.transform='translate3d('+cx+'px,'+cy+'px,0)';
+      requestAnimationFrame(tick);})();
+    cursor.style.opacity='1';
+    document.querySelectorAll('a,button,.option-card').forEach(function(el){
+      el.addEventListener('mouseenter',function(){cursor.classList.add('cursor--active');});
+      el.addEventListener('mouseleave',function(){cursor.classList.remove('cursor--active');});
+    });
+  }
+
+  // ── THEME ──
+  function updateToggleText(){
+    var isDark=document.documentElement.classList.contains('dark');
+    document.querySelectorAll('.theme-toggle').forEach(function(b){b.textContent=isDark?'Light':'Dark';});
+  }
+  updateToggleText();
+  window.toggleTheme=function(){
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme',document.documentElement.classList.contains('dark')?'dark':'light');
+    updateToggleText();
+  };
+
+  // ── OPTION CARD scroll animations ──
+  window.addEventListener('load',function(){
+    document.querySelectorAll('.option-card').forEach(function(card,i){
+      gsap.fromTo(card,{y:60,opacity:0},{y:0,opacity:1,duration:.9,delay:i*.1,ease:'power4.out',
+        scrollTrigger:{trigger:card,start:'top 90%'}});
+    });
+  });
+</script>
 
 </body>
 </html>
