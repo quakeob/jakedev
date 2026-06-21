@@ -3,338 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HQ — Design Options · Jake Davis</title>
+<title>HQ — Design Review · Jake Davis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
 <script>
-(function(){
-  var s=localStorage.getItem('theme');
-  if(s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme:dark)').matches)){
-    document.documentElement.classList.add('dark');
-  }
-})();
+(function(){var s=localStorage.getItem('theme');if(s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');})();
 </script>
 <style>
-:root {
-  --bg: #ffffff;
-  --text: #1a1a1a;
-  --text-2: #666666;
-  --grey: #999999;
-  --accent: #1a1a1a;
-  --green: #2d6a4f;
-  --border: rgba(0,0,0,.08);
-  --font-display: 'Playfair Display','Georgia','Times New Roman',serif;
-  --font-mono: 'Space Mono','SF Mono','Consolas',monospace;
-  --font-body: 'Space Mono','SF Mono','Consolas',monospace;
-  --ease: cubic-bezier(.4,0,.2,1);
-}
-:root.dark {
-  --bg: #0a0a0a;
-  --text: #e5e5e5;
-  --text-2: #999999;
-  --grey: #666666;
-  --accent: #e5e5e5;
-  --green: #5a9a7a;
-  --border: rgba(255,255,255,.08);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-body{font-family:var(--font-body);font-size:13px;font-weight:400;line-height:1.6;
-     background:var(--bg);color:var(--text);text-transform:uppercase;letter-spacing:.02em;
-     overflow-x:hidden;transition:background .3s var(--ease),color .3s var(--ease);}
+:root{--bg:#fff;--text:#1a1a1a;--text-2:#666;--grey:#999;--green:#2d6a4f;--border:rgba(0,0,0,.08);--mono:'Space Mono','SF Mono',monospace;--serif:'Playfair Display',Georgia,serif;}
+:root.dark{--bg:#0a0a0a;--text:#e5e5e5;--text-2:#999;--grey:#555;--green:#5a9a7a;--border:rgba(255,255,255,.08);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;}
+body{font-family:var(--mono);font-size:12px;background:var(--bg);color:var(--text);text-transform:uppercase;letter-spacing:.04em;transition:background .2s,color .2s;}
 ::selection{background:var(--text);color:var(--bg);}
-a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
-img{max-width:100%;height:auto;}
+a{color:inherit;text-decoration:none;}
 
-/* ---- preloader ---- */
-.preloader{position:fixed;inset:0;z-index:9999;background:var(--bg);
-           display:flex;align-items:center;justify-content:center;}
-.preloader__wrapper{display:flex;flex-direction:column;align-items:center;gap:.5em;}
-.preloader__bar-line{font-family:var(--font-mono);font-size:clamp(14px,2.5vw,20px);
-                     color:var(--text);letter-spacing:.02em;white-space:nowrap;}
-.preloader__bracket{color:var(--grey);}
-.preloader__fill{letter-spacing:-.05em;}
-.preloader__pct{font-family:var(--font-mono);font-size:11px;color:var(--grey);
-                text-transform:uppercase;letter-spacing:.1em;}
+/* header */
+.hdr{display:flex;justify-content:space-between;align-items:center;
+     padding:18px 24px;border-bottom:1px solid var(--border);
+     position:sticky;top:0;background:var(--bg);z-index:10;}
+.hdr a{font-size:12px;color:var(--grey);}
+.hdr a:hover{color:var(--text);}
+.hdr__title{font-family:var(--serif);font-size:15px;text-transform:none;letter-spacing:0;font-style:italic;}
+.hdr__right{display:flex;gap:1.5rem;align-items:center;}
+.theme-btn{background:none;border:none;font-family:var(--mono);font-size:12px;
+           text-transform:uppercase;letter-spacing:.04em;color:var(--grey);cursor:pointer;}
+.theme-btn:hover{color:var(--text);}
 
-/* ---- cursor ---- */
-.cursor{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;opacity:0;
-        mix-blend-mode:difference;transition:opacity .3s;}
-.cursor__dot{width:12px;height:12px;background:#fff;border-radius:50%;
-             transform:translate(-50%,-50%);
-             transition:width .3s cubic-bezier(.25,1,.5,1),height .3s cubic-bezier(.25,1,.5,1);}
-.cursor--active .cursor__dot{width:48px;height:48px;}
-@media(pointer:coarse){.cursor{display:none;}}
-@media(pointer:fine){*,*::before,*::after{cursor:none !important;}}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+      background:var(--border);}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.grid{grid-template-columns:1fr;}}
 
-/* ---- header ---- */
-.site-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 30px;
-             display:flex;justify-content:space-between;align-items:center;
-             mix-blend-mode:difference;}
-.site-header__brand{color:#fff;font-family:var(--font-mono);font-size:13px;
-                    text-transform:uppercase;letter-spacing:.02em;}
-.site-nav__list{list-style:none;display:flex;gap:2em;margin:0;padding:0;}
-.site-nav__link{color:#fff;font-family:var(--font-mono);font-size:13px;
-                text-transform:uppercase;letter-spacing:.02em;
-                transition:opacity .3s var(--ease);background:none;border:none;
-                font-weight:400;line-height:inherit;}
-.site-nav__link:hover{opacity:.5;}
+/* card */
+.card{background:var(--bg);display:flex;flex-direction:column;}
+.card__preview{position:relative;height:260px;overflow:hidden;background:#111;}
+.card__preview iframe{width:200%;height:200%;transform:scale(.5);transform-origin:0 0;
+                       border:none;pointer-events:none;}
+.card__preview::after{content:'';position:absolute;inset:0;} /* blocks hover bleed */
+.card__meta{padding:14px 16px;display:flex;justify-content:space-between;align-items:baseline;
+            border-top:1px solid var(--border);}
+.card__name{font-family:var(--serif);font-size:14px;text-transform:none;
+            letter-spacing:0;font-weight:400;}
+.card__num{font-size:10px;color:var(--grey);}
+.card__open{display:block;padding:10px 16px;font-size:10px;color:var(--green);
+            font-style:italic;border-top:1px solid var(--border);
+            transition:background .15s;}
+.card__open:hover{background:var(--border);}
 
-/* ---- typography ---- */
-.display{font-family:var(--font-display);font-weight:400;line-height:.85;
-         text-transform:uppercase;letter-spacing:-.02em;}
-.display--1{font-size:clamp(4rem,12vw,11rem);}
-.display--2{font-size:clamp(3rem,8vw,7rem);}
-.lead{font-family:var(--font-mono);font-size:13px;font-weight:400;
-      text-transform:uppercase;letter-spacing:.02em;line-height:1.5;}
-.u-g{color:var(--green);font-style:italic;}
-
-/* ---- hero ---- */
-.home-hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
-           padding:0 30px;overflow:visible;}
-.hero-overlap{position:relative;width:fit-content;margin:0 auto;}
-.hero-image{position:relative;width:clamp(260px,40vw,500px);height:clamp(190px,28vw,380px);
-            overflow:hidden;flex-shrink:0;}
-.hero-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);}
-.hero-overlap__text{position:absolute;inset:0;display:flex;flex-direction:column;
-                    align-items:center;justify-content:center;z-index:2;
-                    mix-blend-mode:difference;color:#fff;pointer-events:none;}
-
-/* ---- about strip ---- */
-.about-strip{padding:clamp(4rem,8vw,10rem) 30px;}
-.about-strip p{font-size:13px;line-height:1.8;text-transform:none;
-               color:var(--text-2);max-width:520px;}
-.about-strip p+p{margin-top:1.5em;}
-.about-strip__meta{display:flex;flex-wrap:wrap;gap:2rem;margin-top:2rem;
-                   font-size:11px;color:var(--grey);}
-
-/* ---- projects / options section ---- */
-.projects-section{padding:clamp(4rem,8vw,10rem) 30px;cursor:default;}
-.projects-header{display:flex;align-items:baseline;gap:1rem;
-                 margin-bottom:clamp(2rem,4vw,4rem);}
-.projects-header__hint{font-size:11px;color:var(--grey);opacity:.5;
-                        transition:opacity .3s var(--ease);}
-.projects-section:hover .projects-header__hint{opacity:0;}
-
-.project-list{display:flex;flex-direction:column;gap:clamp(3rem,5vw,6rem);
-              max-width:900px;max-height:0;overflow:hidden;opacity:0;
-              transition:max-height .8s cubic-bezier(.23,1,.32,1),
-                         opacity .5s cubic-bezier(.23,1,.32,1);}
-.projects-section:hover .project-list{max-height:4000px;opacity:1;}
-
-.project-card{display:grid;grid-template-columns:auto 1fr;gap:2rem;padding:1.5rem;
-              border-top:1px solid var(--border);
-              transition:transform .4s var(--ease),padding .4s var(--ease),
-                         background .4s var(--ease);}
-.project-card:hover{transform:scale(1.03);background:var(--border);padding:1.5rem 2rem;}
-.project-card__index{font-family:var(--font-mono);font-size:12px;color:var(--grey);}
-.project-card__content h3{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.8rem);
-                            font-weight:400;text-transform:uppercase;letter-spacing:-.01em;
-                            line-height:1;margin-bottom:.75rem;transition:color .3s var(--ease);}
-.project-card:hover .project-card__content h3{color:var(--green);}
-.project-card__desc{font-family:var(--font-mono);font-size:12px;line-height:1.6;
-                    color:var(--text-2);max-width:500px;margin-bottom:.75rem;text-transform:none;}
-.project-card__credits{font-family:var(--font-mono);font-size:11px;display:flex;gap:1em;}
-.project-card__credits span:first-child{color:var(--grey);}
-.project-card__link{font-family:var(--font-mono);font-size:11px;color:var(--green);
-                    font-style:italic;margin-top:.5rem;display:inline-block;}
-
-/* ---- footer ---- */
-.site-footer{padding:40px 30px;border-top:1px solid var(--border);
-             display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
-.site-footer span{font-size:11px;color:var(--grey);}
-.site-footer a{color:var(--green);font-style:italic;}
+/* footer */
+.ftr{padding:16px 24px;border-top:1px solid var(--border);
+     display:flex;justify-content:space-between;font-size:10px;color:var(--grey);}
 </style>
 </head>
 <body>
 
-<!-- PRELOADER -->
-<div class="preloader" id="preloader">
-  <div class="preloader__wrapper">
-    <div class="preloader__bar-line">
-      <span class="preloader__bracket">[</span><span class="preloader__fill" id="preloader-fill"></span><span class="preloader__bracket">]</span>
-    </div>
-    <div class="preloader__pct" id="preloader-pct">0%</div>
+<header class="hdr">
+  <a href="https://jakedev.org">Jake Davis</a>
+  <span class="hdr__title">HQ — Design Review</span>
+  <div class="hdr__right">
+    <a href="https://jakedev.org/#work">Work</a>
+    <button class="theme-btn" id="tbtn" onclick="toggleTheme()">Dark</button>
   </div>
-</div>
-
-<!-- CURSOR -->
-<div class="cursor" id="cursor"><div class="cursor__dot"></div></div>
-
-<!-- HEADER -->
-<header class="site-header">
-  <a class="site-header__brand" href="https://jakedev.org">Jake Davis</a>
-  <nav>
-    <ul class="site-nav__list">
-      <li><a href="https://jakedev.org" class="site-nav__link">Home</a></li>
-      <li><a href="https://jakedev.org/#work" class="site-nav__link">Work</a></li>
-      <li><button class="site-nav__link" onclick="toggleTheme()" id="theme-btn">Dark</button></li>
-    </ul>
-  </nav>
 </header>
 
-<!-- HERO — photo + "HQ" overlaid, same pattern as jakedev.org -->
-<section class="home-hero">
-  <div class="hero-overlap">
-    <div class="hero-image">
-      <img src="hero.jpg" alt="">
+<div class="grid">
+
+  <div class="card">
+    <div class="card__preview">
+      <iframe src="options/01-quiet-bright.html" loading="lazy" title="Quiet & Bright"></iframe>
     </div>
-    <div class="hero-overlap__text">
-      <span class="display display--2">Review</span>
+    <div class="card__meta">
+      <span class="card__name">Quiet &amp; Bright</span>
+      <span class="card__num">01</span>
     </div>
+    <a class="card__open" href="options/01-quiet-bright.html" target="_blank">Open full design →</a>
   </div>
-</section>
 
-<!-- OPTIONS — hover-to-reveal, same interaction as jakedev.org projects -->
-<section class="projects-section js-in">
-  <div class="projects-header">
-    <h2 class="display display--2">Options</h2>
-    <span class="projects-header__hint lead">(hover)</span>
+  <div class="card">
+    <div class="card__preview">
+      <iframe src="options/02-the-manifesto.html" loading="lazy" title="The Manifesto"></iframe>
+    </div>
+    <div class="card__meta">
+      <span class="card__name">The Manifesto</span>
+      <span class="card__num">02</span>
+    </div>
+    <a class="card__open" href="options/02-the-manifesto.html" target="_blank">Open full design →</a>
   </div>
-  <div class="project-list">
 
-    <a href="options/01-quiet-bright.html" target="_blank" class="project-card">
-      <div class="project-card__index lead">01</div>
-      <div class="project-card__content">
-        <h3>Quiet &amp; Bright</h3>
-        <p class="project-card__desc">Gallery-white, vast negative space, type as the hero. Fraunces optical serif with a single cognac accent. Calm, modern, expensive — confidence through emptiness. Aesop / Hermès energy.</p>
-        <div class="project-card__credits lead">
-          <span>Feel</span>
-          <span class="u-g">Minimal · Light-dominant</span>
-        </div>
-        <span class="project-card__link">View full design →</span>
-      </div>
-    </a>
-
-    <a href="options/02-the-manifesto.html" target="_blank" class="project-card">
-      <div class="project-card__index lead">02</div>
-      <div class="project-card__content">
-        <h3>The Manifesto</h3>
-        <p class="project-card__desc">Cream newsprint, Cormorant Garamond at full scale, type as the only visual. The No-Photo Policy IS the design. Literary, confident, anti-spectacle. Declares before it sells.</p>
-        <div class="project-card__credits lead">
-          <span>Feel</span>
-          <span class="u-g">Editorial · Type-driven</span>
-        </div>
-        <span class="project-card__link">View full design →</span>
-      </div>
-    </a>
-
-    <a href="options/03-the-blueprint.html" target="_blank" class="project-card">
-      <div class="project-card__index lead">03</div>
-      <div class="project-card__content">
-        <h3>The Blueprint</h3>
-        <p class="project-card__desc">The entire site is an architect's drawing set — IBM Plex Mono, dimension annotations, grid coordinates, title blocks. The 1900 Southworth building is the protagonist. Completely singular.</p>
-        <div class="project-card__credits lead">
-          <span>Feel</span>
-          <span class="u-g">Architectural · Dark</span>
-        </div>
-        <span class="project-card__link">View full design →</span>
-      </div>
-    </a>
-
-    <a href="options/04-dark-editorial.html" target="_blank" class="project-card">
-      <div class="project-card__index lead">04</div>
-      <div class="project-card__content">
-        <h3>Dark Editorial</h3>
-        <p class="project-card__desc">Cinematic full-bleed hero, near-void black, Bodoni Moda high-contrast serif, warm gold accent. Luxury editorial — Soho House confidence, not nightclub. The richest, most atmospheric direction.</p>
-        <div class="project-card__credits lead">
-          <span>Feel</span>
-          <span class="u-g">Cinematic · Luxury</span>
-        </div>
-        <span class="project-card__link">View full design →</span>
-      </div>
-    </a>
-
-    <a href="options/05-the-charter.html" target="_blank" class="project-card">
-      <div class="project-card__index lead">05</div>
-      <div class="project-card__content">
-        <h3>The Charter</h3>
-        <p class="project-card__desc">Institutional and formal — like a founding document or private bank. Libre Baskerville serif, warm ivory, aged gold. Credibility through restraint. Brooks's Club meets McKinsey.</p>
-        <div class="project-card__credits lead">
-          <span>Feel</span>
-          <span class="u-g">Institutional · Formal</span>
-        </div>
-        <span class="project-card__link">View full design →</span>
-      </div>
-    </a>
-
-    <a href="options/06-amber-room.html" target="_blank" class="project-card">
-      <div class="project-card__index lead">06</div>
-      <div class="project-card__content">
-        <h3>Amber Room</h3>
-        <p class="project-card__desc">Photography-forward with a warm amber grade. Espresso-dark background, cognac light, Cormorant Garamond display. Sensory and tactile — the feel of leather and candlelight, not a screen.</p>
-        <div class="project-card__credits lead">
-          <span>Feel</span>
-          <span class="u-g">Warm · Photographic</span>
-        </div>
-        <span class="project-card__link">View full design →</span>
-      </div>
-    </a>
-
+  <div class="card">
+    <div class="card__preview">
+      <iframe src="options/03-the-blueprint.html" loading="lazy" title="The Blueprint"></iframe>
+    </div>
+    <div class="card__meta">
+      <span class="card__name">The Blueprint</span>
+      <span class="card__num">03</span>
+    </div>
+    <a class="card__open" href="options/03-the-blueprint.html" target="_blank">Open full design →</a>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  <span>Designed by <a href="https://jakedev.org">Jake Davis</a></span>
-  <span>HQ · Confidential · For review only</span>
-  <span>© 2026</span>
+  <div class="card">
+    <div class="card__preview">
+      <iframe src="options/04-dark-editorial.html" loading="lazy" title="Dark Editorial"></iframe>
+    </div>
+    <div class="card__meta">
+      <span class="card__name">Dark Editorial</span>
+      <span class="card__num">04</span>
+    </div>
+    <a class="card__open" href="options/04-dark-editorial.html" target="_blank">Open full design →</a>
+  </div>
+
+  <div class="card">
+    <div class="card__preview">
+      <iframe src="options/05-the-charter.html" loading="lazy" title="The Charter"></iframe>
+    </div>
+    <div class="card__meta">
+      <span class="card__name">The Charter</span>
+      <span class="card__num">05</span>
+    </div>
+    <a class="card__open" href="options/05-the-charter.html" target="_blank">Open full design →</a>
+  </div>
+
+  <div class="card">
+    <div class="card__preview">
+      <iframe src="options/06-amber-room.html" loading="lazy" title="Amber Room"></iframe>
+    </div>
+    <div class="card__meta">
+      <span class="card__name">Amber Room</span>
+      <span class="card__num">06</span>
+    </div>
+    <a class="card__open" href="options/06-amber-room.html" target="_blank">Open full design →</a>
+  </div>
+
+</div>
+
+<footer class="ftr">
+  <span>Jake Davis — HQ Design Review</span>
+  <span>Confidential · For client review only</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script>
-// ── PRELOADER ──
-(function(){
-  var fill=document.getElementById('preloader-fill');
-  var pct=document.getElementById('preloader-pct');
-  var el=document.getElementById('preloader');
-  var W=30;
-  function render(p){
-    var f=Math.round(p/100*W);
-    fill.textContent='█'.repeat(f)+'░'.repeat(W-f);
-    pct.textContent=Math.round(p)+'%';
-  }
-  render(0);
-  window.addEventListener('load',function(){
-    render(100);
-    gsap.to(el,{opacity:0,duration:.4,delay:.1,ease:'power2.inOut',
-      onComplete:function(){
-        el.style.display='none';
-        gsap.fromTo('.site-header',{y:-40,opacity:0},{y:0,opacity:1,duration:1,delay:.1,ease:'power3.out'});
-        gsap.fromTo('.js-in',{y:50,opacity:0},{y:0,opacity:1,duration:1,stagger:.2,delay:.25,ease:'power4.out'});
-      }
-    });
-  });
-})();
-
-// ── CURSOR ──
-var cursor=document.getElementById('cursor');
-if(cursor&&window.matchMedia('(pointer:fine)').matches){
-  var cx=0,cy=0,tx=0,ty=0;
-  document.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;});
-  (function tick(){cx+=(tx-cx)*.15;cy+=(ty-cy)*.15;
-    cursor.style.transform='translate3d('+cx+'px,'+cy+'px,0)';
-    requestAnimationFrame(tick);})();
-  cursor.style.opacity='1';
-  document.querySelectorAll('a,button').forEach(function(el){
-    el.addEventListener('mouseenter',function(){cursor.classList.add('cursor--active');});
-    el.addEventListener('mouseleave',function(){cursor.classList.remove('cursor--active');});
-  });
-}
-
-// ── THEME ──
-function updateThemeBtn(){
-  var dark=document.documentElement.classList.contains('dark');
-  document.getElementById('theme-btn').textContent=dark?'Light':'Dark';
-}
-updateThemeBtn();
-window.toggleTheme=function(){
-  document.documentElement.classList.toggle('dark');
-  localStorage.setItem('theme',document.documentElement.classList.contains('dark')?'dark':'light');
-  updateThemeBtn();
-};
+function updateBtn(){document.getElementById('tbtn').textContent=document.documentElement.classList.contains('dark')?'Light':'Dark';}
+updateBtn();
+window.toggleTheme=function(){document.documentElement.classList.toggle('dark');localStorage.setItem('theme',document.documentElement.classList.contains('dark')?'dark':'light');updateBtn();};
 </script>
-
 </body>
 </html>
