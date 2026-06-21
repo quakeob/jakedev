@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HQ — Enhanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #0c0b09;
+  --surface: #141210;
+  --card: #1c1914;
+  --lift: #242018;
+  --cream: #e8e0d0;
+  --cream-2: #b8ad9a;
+  --gold: #c8a052;
+  --gold-2: #e8c070;
+  --rule: rgba(200,160,82,.15);
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; -webkit-font-smoothing: antialiased; }
+body { background: var(--void); color: var(--cream); font-family: var(--sans);
+       font-weight: 300; overflow-x: hidden; }
+::selection { background: var(--gold); color: var(--void); }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 clamp(24px,5vw,60px);
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+  transition: background .4s var(--ease), backdrop-filter .4s;
+}
+.nav.scrolled {
+  background: rgba(12,11,9,.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav__logo { font-family: var(--serif); font-size: 18px; font-weight: 400;
+              letter-spacing: .12em; color: var(--cream); }
+.nav__links { display: flex; gap: 2.5rem; align-items: center; }
+.nav__link { font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+              color: var(--cream-2); transition: color .25s; position: relative; }
+.nav__link::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+                    height: 1px; background: var(--gold); transform: scaleX(0);
+                    transform-origin: left; transition: transform .3s var(--ease); }
+.nav__link:hover { color: var(--cream); }
+.nav__link:hover::after, .nav__link.active::after { transform: scaleX(1); }
+.nav__link.active { color: var(--cream); }
+.nav__cta { font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+            background: transparent; border: 1px solid var(--gold);
+            color: var(--gold); padding: 8px 20px;
+            transition: background .25s, color .25s; }
+.nav__cta:hover { background: var(--gold); color: var(--void); }
+
+/* progress bar */
+.progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold);
+             width: 0%; z-index: 200; transition: width .1s linear; }
+
+/* ── HERO ── */
+.hero { position: relative; height: 100vh; min-height: 600px;
+         display: flex; flex-direction: column; justify-content: flex-end;
+         padding: 0 clamp(24px,5vw,60px) clamp(48px,8vh,80px); overflow: hidden; }
+.hero__bg { position: absolute; inset: 0; }
+.hero__bg img { width: 100%; height: 100%; object-fit: cover;
+                filter: brightness(.45) saturate(.8);
+                transform: scale(1.08); /* pulled back by parallax JS */ }
+.hero__grad { position: absolute; inset: 0;
+              background: linear-gradient(160deg,rgba(12,11,9,.1) 0%,rgba(12,11,9,.0) 40%,rgba(12,11,9,.9) 80%,var(--void) 100%); }
+.hero__label { font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+                color: var(--gold); margin-bottom: 1.5rem; opacity: 0; }
+.hero h1 { font-family: var(--serif); font-size: clamp(52px,8vw,110px);
+            font-weight: 400; line-height: .92; letter-spacing: -.01em;
+            max-width: 14ch; opacity: 0; }
+.hero h1 em { font-style: italic; color: var(--gold-2); }
+.hero__sub { font-size: clamp(13px,1.3vw,15px); color: var(--cream-2); line-height: 1.7;
+              max-width: 50ch; margin-top: 1.5rem; font-weight: 300; opacity: 0; }
+.hero__actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; opacity: 0; }
+.btn { display: inline-block; padding: 12px 28px; font-size: 11px; letter-spacing: .16em;
+       text-transform: uppercase; transition: all .3s var(--ease); font-family: var(--sans); }
+.btn--primary { background: var(--gold); color: var(--void); }
+.btn--primary:hover { background: var(--gold-2); transform: translateY(-2px);
+                       box-shadow: 0 8px 24px rgba(200,160,82,.25); }
+.btn--ghost { border: 1px solid rgba(200,160,82,.4); color: var(--cream-2); }
+.btn--ghost:hover { border-color: var(--gold); color: var(--cream); transform: translateY(-2px); }
+
+.hero__pillars { position: absolute; top: 50%; right: clamp(24px,5vw,60px);
+                  transform: translateY(-50%); display: flex; flex-direction: column;
+                  gap: 1.5rem; opacity: 0; }
+.hero__pillar-word { font-family: var(--serif); font-size: clamp(11px,1.1vw,13px);
+                      letter-spacing: .22em; text-transform: uppercase;
+                      color: var(--cream-2); writing-mode: vertical-rl;
+                      transition: color .3s; }
+.hero__pillar-word:hover { color: var(--gold); }
+
+.hero__scroll { position: absolute; bottom: clamp(24px,5vh,40px); right: clamp(24px,5vw,60px);
+                display: flex; align-items: center; gap: .75rem;
+                font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+                color: var(--cream-2); opacity: 0; }
+.hero__scroll-line { width: 32px; height: 1px; background: var(--cream-2);
+                      transform-origin: left;
+                      animation: scrollLine 2s ease-in-out infinite; }
+@keyframes scrollLine { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(.4)} }
+
+/* ── SECTIONS SHARED ── */
+section { padding: clamp(80px,12vw,160px) clamp(24px,5vw,60px); }
+.section-label { font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+                  color: var(--gold); margin-bottom: 2rem; display: flex;
+                  align-items: center; gap: 1rem; }
+.section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px;
+                          background: var(--rule); }
+.section-h2 { font-family: var(--serif); font-size: clamp(34px,5vw,68px); font-weight: 400;
+               line-height: 1.05; letter-spacing: -.01em; }
+.section-h2 em { font-style: italic; color: var(--gold-2); }
+
+/* reveal animation class (applied by JS) */
+.reveal { opacity: 0; transform: translateY(40px);
+           transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+/* ── MANIFESTO ── */
+#manifesto { background: var(--surface); }
+.manifesto-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(40px,6vw,100px); align-items: center; }
+.manifesto-quote { font-family: var(--serif); font-size: clamp(26px,3.5vw,48px);
+                    font-weight: 400; line-height: 1.2; letter-spacing: -.01em; }
+.manifesto-body p { font-size: clamp(14px,1.4vw,16px); line-height: 1.8;
+                     color: var(--cream-2); font-weight: 300; }
+.manifesto-body p + p { margin-top: 1.5em; }
+
+/* ── MEMBERSHIP ── */
+#membership { }
+.membership-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px,6vw,100px); align-items: start; }
+.membership-steps { margin-top: 2rem; }
+.step { display: grid; grid-template-columns: 48px 1fr; gap: 1rem;
+         padding: 1.5rem 0; border-top: 1px solid var(--rule);
+         transition: border-color .3s; }
+.step:last-child { border-bottom: 1px solid var(--rule); }
+.step:hover { border-top-color: var(--gold); }
+.step__num { font-family: var(--serif); font-style: italic; font-size: 24px;
+              color: var(--gold); opacity: .5; transition: opacity .3s; }
+.step:hover .step__num { opacity: 1; }
+.step__title { font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+                color: var(--cream); margin-bottom: .4rem; font-weight: 400; }
+.step__desc { font-size: 13px; color: var(--cream-2); line-height: 1.6; font-weight: 300; }
+.membership-right { position: sticky; top: 120px; }
+.membership-callout { border: 1px solid var(--rule); padding: clamp(30px,4vw,50px);
+                        background: var(--card); }
+.membership-callout h3 { font-family: var(--serif); font-size: clamp(24px,3vw,38px);
+                          font-weight: 400; line-height: 1.2; margin-bottom: 1.5rem; }
+.membership-callout p { font-size: 13px; color: var(--cream-2); line-height: 1.7;
+                          font-weight: 300; margin-bottom: 2rem; }
+
+/* ── PILLARS ── */
+#pillars { background: var(--surface); }
+.pillars-intro { max-width: 700px; margin-bottom: clamp(40px,6vw,80px); }
+.pillars-intro p { font-size: 14px; color: var(--cream-2); line-height: 1.8;
+                    margin-top: 1.5rem; font-weight: 300; }
+.pillars-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px;
+                 background: var(--rule); }
+.pillar { background: var(--card); padding: clamp(28px,3.5vw,48px) clamp(20px,2.5vw,36px);
+           position: relative; overflow: hidden;
+           transition: background .4s var(--ease); cursor: default; }
+.pillar::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+                   height: 2px; background: var(--gold);
+                   transform: scaleX(0); transform-origin: left;
+                   transition: transform .5s var(--ease); }
+.pillar:hover { background: var(--lift); }
+.pillar:hover::before { transform: scaleX(1); }
+.pillar__num { font-family: var(--serif); font-style: italic; font-size: 42px;
+                line-height: 1; color: var(--gold); opacity: .3;
+                margin-bottom: 1.5rem;
+                transition: opacity .3s; }
+.pillar:hover .pillar__num { opacity: .8; }
+.pillar__sub { font-size: 9px; letter-spacing: .28em; text-transform: uppercase;
+                color: var(--gold); margin-bottom: .75rem; opacity: .7; }
+.pillar h3 { font-family: var(--serif); font-size: clamp(22px,2.2vw,32px); font-weight: 400;
+              line-height: 1; margin-bottom: 1rem;
+              transition: transform .3s var(--ease); }
+.pillar:hover h3 { transform: translateX(4px); }
+.pillar p { font-size: 13px; color: var(--cream-2); line-height: 1.6; font-weight: 300; }
+.pillar__tag { font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+                color: var(--cream-2); margin-top: 1.5rem; opacity: 0;
+                transition: opacity .3s var(--ease); }
+.pillar:hover .pillar__tag { opacity: .5; }
+
+/* ── SPACE / RESERVATIONS ── */
+#space { }
+.space-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.space-img { position: relative; overflow: hidden;
+              height: clamp(400px,50vw,600px); }
+.space-img img { width: 100%; height: 100%; object-fit: cover;
+                  filter: brightness(.6) saturate(.7);
+                  transition: transform .9s var(--ease); }
+.space-grid:hover .space-img img { transform: scale(1.04); }
+.space-body { background: var(--card); padding: clamp(40px,5vw,72px);
+               display: flex; flex-direction: column; justify-content: center; }
+.space-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 0; }
+.space-item { padding: 1rem 0; border-bottom: 1px solid var(--rule);
+               font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+               color: var(--cream-2); display: flex; align-items: center; gap: 1rem;
+               transition: color .25s, padding-left .3s var(--ease); }
+.space-item::before { content: '—'; color: var(--gold); opacity: .4;
+                       transition: opacity .25s; }
+.space-item:hover { color: var(--cream); padding-left: 8px; }
+.space-item:hover::before { opacity: 1; }
+
+/* ── THE HOUSE ── */
+#house { background: var(--surface); }
+.house-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px,6vw,100px); align-items: center; }
+.house-points { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+.house-point { display: flex; align-items: flex-start; gap: 1rem; font-size: 14px;
+                color: var(--cream-2); line-height: 1.5; font-weight: 300;
+                transition: color .25s; }
+.house-point::before { content: '·'; color: var(--gold); font-size: 20px;
+                         line-height: 1; flex-shrink: 0; margin-top: -2px; }
+.house-point:hover { color: var(--cream); }
+.house-right { position: relative; }
+.house-card { background: var(--card); border: 1px solid var(--rule);
+               padding: clamp(32px,4vw,56px); }
+.house-card h3 { font-family: var(--serif); font-size: clamp(22px,2.5vw,34px);
+                  font-weight: 400; line-height: 1.2; margin-bottom: 1.5rem; }
+.house-card p { font-size: 13px; color: var(--cream-2); line-height: 1.8; font-weight: 300; }
+
+/* ── CLOSING ── */
+#closing { text-align: center; padding: clamp(100px,16vw,200px) clamp(24px,5vw,60px); }
+.closing-label { font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+                  color: var(--gold); margin-bottom: 2.5rem; display: block; }
+.closing-quote { font-family: var(--serif); font-size: clamp(30px,5vw,70px);
+                  font-weight: 400; line-height: 1.1; letter-spacing: -.01em;
+                  max-width: 900px; margin: 0 auto 3rem; }
+.closing-quote em { font-style: italic; color: var(--gold-2); }
+
+/* ── FOOTER ── */
+footer { padding: 32px clamp(24px,5vw,60px); border-top: 1px solid var(--rule);
+          display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+footer span { font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+               color: var(--cream-2); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav__links { gap: 1.5rem; }
+  .manifesto-grid, .membership-grid, .house-grid { grid-template-columns: 1fr; }
+  .membership-right { position: static; }
+  .pillars-grid { grid-template-columns: repeat(2,1fr); }
+  .space-grid { grid-template-columns: 1fr; }
+  .hero__pillars { display: none; }
+}
+@media (max-width: 560px) {
+  .nav__links .nav__link:not(.nav__cta) { display: none; }
+  .pillars-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- progress bar -->
+<div class="progress" id="progress"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a class="nav__logo" href="#">HQ</a>
+  <div class="nav__links">
+    <a class="nav__link" href="#manifesto" data-section="manifesto">Manifesto</a>
+    <a class="nav__link" href="#membership" data-section="membership">Membership</a>
+    <a class="nav__link" href="#pillars" data-section="pillars">Pillars</a>
+    <a class="nav__link" href="#space" data-section="space">Space</a>
+    <a class="nav__link nav__cta" href="#closing">Request Membership</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero__bg">
+    <img src="../hero.jpg" alt="" id="hero-img">
+  </div>
+  <div class="hero__grad"></div>
+
+  <div class="hero__pillars">
+    <a class="hero__pillar-word" href="#pillars">Gather</a>
+    <a class="hero__pillar-word" href="#pillars">Reflect</a>
+    <a class="hero__pillar-word" href="#pillars">Create</a>
+    <a class="hero__pillar-word" href="#pillars">Renew</a>
+  </div>
+
+  <div class="hero__label">Private Member Club</div>
+  <h1>The long game<br>has <em>a room.</em></h1>
+  <p class="hero__sub">A private, referral-first club for builders, stewards, and long-horizon thinkers who value discipline, discretion, and signal over noise.</p>
+  <div class="hero__actions">
+    <a class="btn btn--primary" href="#closing">Request Membership</a>
+    <a class="btn btn--ghost" href="#manifesto">Learn More</a>
+  </div>
+
+  <div class="hero__scroll">
+    <span class="hero__scroll-line"></span>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="section-label reveal">Manifesto</div>
+  <div class="manifesto-grid">
+    <div class="reveal">
+      <div class="manifesto-quote section-h2">A room for builders, stewards, and long-horizon thinkers.</div>
+    </div>
+    <div class="manifesto-body reveal reveal-delay-2">
+      <p>None of us choose where we begin. We are responsible for what we build. The club is a deliberate answer to noisy rooms, hurried decisions, and transactional networks.</p>
+      <p>It is a place to gather with signal, reflect with discipline, create work worth inheriting, and renew the clarity required for the next summit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section id="membership">
+  <div class="membership-grid">
+    <div>
+      <div class="section-label reveal">Membership</div>
+      <h2 class="section-h2 reveal reveal-delay-1">The front door is intentionally narrow.</h2>
+      <p style="font-size:14px;color:var(--cream-2);line-height:1.8;margin-top:1.5rem;font-weight:300;" class="reveal reveal-delay-2">Applications are built to collect the right signal: referral, professional context, intent, contribution, and signed standards.</p>
+      <div class="membership-steps">
+        <div class="step reveal reveal-delay-1">
+          <div class="step__num">01</div>
+          <div><div class="step__title">Referral</div><div class="step__desc">A current member establishes the first signal of trust.</div></div>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step__num">02</div>
+          <div><div class="step__title">Application</div><div class="step__desc">Profile, intent, contribution, and standards are reviewed together.</div></div>
+        </div>
+        <div class="step reveal reveal-delay-3">
+          <div class="step__num">03</div>
+          <div><div class="step__title">Agreement</div><div class="step__desc">Confidentiality, conduct, and member discretion are confirmed before access.</div></div>
+        </div>
+        <div class="step reveal reveal-delay-4">
+          <div class="step__num">04</div>
+          <div><div class="step__title">Access</div><div class="step__desc">Approved members enter the private portal for profile, reservations, and house standards.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="membership-right reveal reveal-delay-2">
+      <div class="membership-callout">
+        <h3>Gather with signal.<br>Reflect with discipline.<br>Create what lasts.</h3>
+        <p>The pillars are not marketing language. They are the filters for the room, the rhythm of the house, and the standard members agree to protect.</p>
+        <a class="btn btn--primary" href="#closing">Request Membership</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="pillars-intro">
+    <div class="section-label reveal">Four Pillars</div>
+    <h2 class="section-h2 reveal reveal-delay-1">The club is built around a simple operating philosophy.</h2>
+    <p class="reveal reveal-delay-2">The pillars are not marketing language. They are the filters for the room, the rhythm of the house, and the standard members agree to protect.</p>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar reveal">
+      <div class="pillar__num">I</div>
+      <div class="pillar__sub">Curated Signal</div>
+      <h3>Gather</h3>
+      <p>A smaller room, intentionally composed. Members invest in the daily fabric of one another's success.</p>
+      <div class="pillar__tag">Lounge · Bar · Private Entry</div>
+    </div>
+    <div class="pillar reveal reveal-delay-1">
+      <div class="pillar__num">II</div>
+      <div class="pillar__sub">Sanctuary with Edge</div>
+      <h3>Reflect</h3>
+      <p>The club is built for the kind of quiet that sharpens judgment and restores discipline.</p>
+      <div class="pillar__tag">Discretion · Privacy · No-Photo Policy</div>
+    </div>
+    <div class="pillar reveal reveal-delay-2">
+      <div class="pillar__num">III</div>
+      <div class="pillar__sub">Work Worth Inheriting</div>
+      <h3>Create</h3>
+      <p>Boardrooms, private pods, and an operating rhythm for people shaping work beyond the urgent.</p>
+      <div class="pillar__tag">Smart Rooms · Collab Tech</div>
+    </div>
+    <div class="pillar reveal reveal-delay-3">
+      <div class="pillar__num">IV</div>
+      <div class="pillar__sub">Clarity as Advantage</div>
+      <h3>Renew</h3>
+      <p>Recovery suites and reserved time create space to return with better focus and better standards.</p>
+      <div class="pillar__tag">Barber · Massage · Gaming</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPACE -->
+<section id="space" style="padding:0;">
+  <div class="space-grid">
+    <div class="space-img">
+      <img src="../hero.jpg" alt="HQ Space">
+    </div>
+    <div class="space-body">
+      <div class="section-label reveal">Private Reservations</div>
+      <h2 class="section-h2 reveal reveal-delay-1">Space for serious work and deliberate recovery.</h2>
+      <div class="space-list">
+        <div class="space-item reveal reveal-delay-1">Twelve-Seat Boardroom</div>
+        <div class="space-item reveal reveal-delay-2">Intimate Meeting Room</div>
+        <div class="space-item reveal reveal-delay-3">Flexible Gathering Space</div>
+        <div class="space-item reveal reveal-delay-4">Private Focus Pods</div>
+        <div class="space-item reveal" style="transition-delay:.5s">Recovery Suites</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE HOUSE -->
+<section id="house">
+  <div class="house-grid">
+    <div>
+      <div class="section-label reveal">The House</div>
+      <h2 class="section-h2 reveal reveal-delay-1">Quiet infrastructure for a high-caliber room.</h2>
+      <div class="house-points">
+        <div class="house-point reveal reveal-delay-1">Confidentiality is assumed.</div>
+        <div class="house-point reveal reveal-delay-2">Discretion governs access.</div>
+        <div class="house-point reveal reveal-delay-3">Conduct protects the room.</div>
+        <div class="house-point reveal reveal-delay-4">Management preserves the standard.</div>
+      </div>
+    </div>
+    <div class="house-right reveal reveal-delay-2">
+      <div class="house-card">
+        <h3>The member experience is not a brochure.</h3>
+        <p>It is an operating system: spaces that can be reserved, obligations that are visible, and an owner portal where the standard is actively managed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <span class="closing-label reveal">Standard</span>
+  <div class="closing-quote reveal reveal-delay-1">Clarity is the <em>ultimate competitive advantage.</em> From this vantage point, even the headwinds have purpose.</div>
+  <div class="reveal reveal-delay-2">
+    <a class="btn btn--primary" href="#">Request Membership</a>
+  </div>
+</section>
+
+<footer>
+  <span>HQ — A Private Sanctuary</span>
+  <span>Provo, Utah · Est. 1900</span>
+  <span>By Invitation Only</span>
+</footer>
+
+<script>
+// ── SCROLL PROGRESS ──
+var progressEl = document.getElementById('progress');
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+  progressEl.style.width = pct + '%';
+}, { passive: true });
+
+// ── NAV SCROLL STATE ──
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function() {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ── SMOOTH SCROLL FOR NAV LINKS ──
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var id = this.getAttribute('href');
+    if (id === '#') return;
+    var target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ── ACTIVE NAV SECTION ──
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('.nav__link[data-section]');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      navLinks.forEach(function(l) { l.classList.remove('active'); });
+      var active = document.querySelector('.nav__link[data-section="' + entry.target.id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sections.forEach(function(s) { observer.observe(s); });
+
+// ── REVEAL ON SCROLL ──
+var revealEls = document.querySelectorAll('.reveal');
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { rootMargin: '0px 0px -60px 0px' });
+revealEls.forEach(function(el) { revealObserver.observe(el); });
+
+// ── HERO ENTRANCE ──
+window.addEventListener('load', function() {
+  var label = document.querySelector('.hero__label');
+  var h1 = document.querySelector('.hero h1');
+  var sub = document.querySelector('.hero__sub');
+  var actions = document.querySelector('.hero__actions');
+  var scroll = document.querySelector('.hero__scroll');
+  var pillars = document.querySelector('.hero__pillars');
+
+  function fadeIn(el, delay) {
+    if (!el) return;
+    el.style.transition = 'opacity .9s cubic-bezier(.16,1,.3,1) ' + delay + 's, transform .9s cubic-bezier(.16,1,.3,1) ' + delay + 's';
+    el.style.transform = 'translateY(24px)';
+    setTimeout(function() {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 50);
+  }
+
+  fadeIn(label, .1);
+  fadeIn(h1, .3);
+  fadeIn(sub, .55);
+  fadeIn(actions, .75);
+  fadeIn(scroll, 1);
+  fadeIn(pillars, .9);
+});
+
+// ── HERO PARALLAX ──
+var heroImg = document.getElementById('hero-img');
+window.addEventListener('scroll', function() {
+  if (window.scrollY < window.innerHeight) {
+    heroImg.style.transform = 'scale(1.08) translateY(' + (window.scrollY * 0.25) + 'px)';
+  }
+}, { passive: true });
+</script>
+
+</body>
+</html>
