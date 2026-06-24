@@ -12,7 +12,7 @@
   --void:    #0b0907;
   --surface: #131008;
   --lift:    #1c1610;
-  --brick:   #1a1208;   /* warm wall tone for arch section */
+  --brick:   #271609;   /* warm brick wall */
   --cream:   #e8dfc8;
   --cream-2: #b0a488;
   --gold:    #c49838;
@@ -151,34 +151,34 @@ section{position:relative;}
   padding:clamp(60px,10vw,120px) clamp(24px,5vw,60px) 0;
   overflow:hidden;
 }
-/* brick mortar lines */
+/* brick mortar — horizontal courses */
 #membership::before{
   content:'';position:absolute;inset:0;pointer-events:none;
   background-image:
     repeating-linear-gradient(
       180deg,
-      transparent 0px,
-      transparent 22px,
-      rgba(255,255,255,.028) 22px,
-      rgba(255,255,255,.028) 23px
+      rgba(255,255,255,.12) 0px,
+      rgba(255,255,255,.12) 2px,
+      transparent 2px,
+      transparent 26px
     );
 }
-/* offset vertical joints every other course */
+/* brick mortar — vertical joints, running bond */
 #membership::after{
   content:'';position:absolute;inset:0;pointer-events:none;
   background-image:
     repeating-linear-gradient(
       90deg,
-      transparent 0px,transparent 59px,
-      rgba(255,255,255,.018) 59px,rgba(255,255,255,.018) 60px
+      transparent 0px, transparent 70px,
+      rgba(255,255,255,.07) 70px, rgba(255,255,255,.07) 72px
     ),
     repeating-linear-gradient(
       90deg,
-      transparent 0px,transparent 29px,
-      rgba(255,255,255,.018) 29px,rgba(255,255,255,.018) 30px
+      transparent 0px, transparent 70px,
+      rgba(255,255,255,.07) 70px, rgba(255,255,255,.07) 72px
     );
-  background-size:60px 46px, 60px 46px;
-  background-position:0 0, 0 23px;
+  background-size: 72px 56px, 72px 56px;
+  background-position: 0 0, -36px 28px;
 }
 .membership-head{position:relative;z-index:1;
   max-width:600px;margin-bottom:clamp(40px,6vw,72px);}
@@ -199,7 +199,7 @@ section{position:relative;}
   width:100%;
   height:clamp(240px,36vw,440px);
   background:#080604;
-  border-radius:50% 50% 0 0 / clamp(50px,10vw,130px) clamp(50px,10vw,130px) 0 0;
+  border-radius:50% 50% 0 0;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -212,21 +212,21 @@ section{position:relative;}
 /* ambient inner glow on hover */
 .arch__void::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%, rgba(196,152,56,.06) 0%, transparent 65%);
-  opacity:0;transition:opacity .5s;
+  background:radial-gradient(ellipse at 50% 0%, rgba(196,152,56,.22) 0%, transparent 58%);
+  opacity:.3;transition:opacity .5s;
 }
 .arch:hover .arch__void::before{opacity:1;}
 /* arch surround line — 1 thin warm stroke */
 .arch__void::after{
   content:'';position:absolute;inset:0;
   border-radius:inherit;
-  box-shadow:inset 0 0 0 1px rgba(196,152,56,.12);
+  box-shadow:inset 0 0 0 1px rgba(196,152,56,.24);
   pointer-events:none;
 }
 .arch__num{
   font-family:var(--serif);font-style:italic;
   font-size:clamp(28px,4vw,52px);
-  color:var(--gold);opacity:.25;line-height:1;
+  color:var(--gold);opacity:.4;line-height:1;
   margin-bottom:clamp(12px,1.5vw,20px);
   transition:opacity .35s,transform .5s cubic-bezier(.16,1,.3,1);
 }
@@ -333,9 +333,24 @@ section{position:relative;}
   text-align:center;overflow:hidden;}
 #closing::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background-image:repeating-linear-gradient(
-    180deg,transparent 0px,transparent 22px,
-    rgba(255,255,255,.025) 22px,rgba(255,255,255,.025) 23px);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255,255,255,.12) 0px, rgba(255,255,255,.12) 2px,
+      transparent 2px, transparent 26px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 70px,
+      rgba(255,255,255,.07) 70px, rgba(255,255,255,.07) 72px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 70px,
+      rgba(255,255,255,.07) 70px, rgba(255,255,255,.07) 72px
+    );
+  background-size: 72px 28px, 72px 56px, 72px 56px;
+  background-position: 0 0, 0 0, -36px 28px;
 }
 .closing-eyebrow{font-size:9px;letter-spacing:.28em;text-transform:uppercase;
   color:var(--gold);display:block;margin-bottom:2.5rem;
