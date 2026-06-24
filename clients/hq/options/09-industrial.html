@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HQ — Industrial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:    #0b0907;
+  --surface: #131008;
+  --lift:    #1c1610;
+  --brick:   #1a1208;   /* warm wall tone for arch section */
+  --cream:   #e8dfc8;
+  --cream-2: #b0a488;
+  --gold:    #c49838;
+  --gold-2:  #ddb850;
+  --rule:    rgba(196,152,56,.1);
+  --serif:   'Playfair Display', Georgia, serif;
+  --sans:    'DM Sans', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;}
+body{background:var(--void);color:var(--cream);font-family:var(--sans);
+  font-weight:300;overflow-x:hidden;}
+::selection{background:var(--gold);color:var(--void);}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+
+/* ══════════════════════════════════
+   LOADER
+══════════════════════════════════ */
+.loader{
+  position:fixed;inset:0;z-index:500;
+  background:var(--void);
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.loader.out{animation:loaderOut .7s cubic-bezier(.76,0,.24,1) forwards;}
+@keyframes loaderOut{to{opacity:0;}}
+.loader__logo{
+  width:clamp(80px,12vw,130px);
+  opacity:0;
+  animation:logoIn .6s cubic-bezier(.16,1,.3,1) .2s forwards;
+}
+@keyframes logoIn{from{opacity:0;transform:scale(.88);}to{opacity:1;transform:none;}}
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 clamp(24px,5vw,60px);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .5s,border-color .5s;
+}
+.nav.scrolled{
+  background:rgba(11,9,7,.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
+}
+.nav__logo{height:24px;opacity:.9;}
+.nav__links{display:flex;gap:2rem;align-items:center;}
+.nav__a{font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream-2);transition:color .2s;}
+.nav__a:hover{color:var(--cream);}
+.nav__cta{border:1px solid rgba(196,152,56,.4);color:var(--gold);
+  padding:7px 16px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  transition:background .2s,color .2s,border-color .2s;}
+.nav__cta:hover{background:var(--gold);color:var(--void);border-color:var(--gold);}
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+.hero{
+  position:relative;height:100vh;min-height:580px;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 clamp(24px,5vw,60px) clamp(52px,8vh,80px);
+}
+.hero__bg{position:absolute;inset:0;}
+.hero__bg img{width:100%;height:100%;object-fit:cover;
+  filter:brightness(.42) saturate(.75);
+  transform:scale(1.06);transition:transform 8s ease;}
+body.loaded .hero__bg img{transform:scale(1);}
+.hero__grad{position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(11,9,7,.05) 0%,rgba(11,9,7,0) 35%,
+  rgba(11,9,7,.85) 75%,var(--void) 100%);}
+.hero__label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.4rem;position:relative;z-index:1;opacity:0;}
+.hero h1{font-family:var(--serif);font-size:clamp(46px,7.5vw,100px);
+  font-weight:400;line-height:.92;letter-spacing:-.015em;
+  position:relative;z-index:1;opacity:0;}
+.hero h1 em{font-style:italic;}
+.hero__sub{font-size:clamp(13px,1.3vw,15px);color:var(--cream-2);line-height:1.7;
+  max-width:46ch;margin-top:1.4rem;position:relative;z-index:1;opacity:0;}
+.hero__actions{display:flex;gap:1rem;margin-top:2rem;
+  position:relative;z-index:1;opacity:0;flex-wrap:wrap;}
+.btn{display:inline-block;padding:11px 26px;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;font-family:var(--sans);transition:all .3s;}
+.btn--gold{background:var(--gold);color:var(--void);}
+.btn--gold:hover{background:var(--gold-2);transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(196,152,56,.22);}
+.btn--ghost{border:1px solid rgba(196,152,56,.3);color:var(--cream-2);}
+.btn--ghost:hover{border-color:var(--gold);color:var(--cream);}
+.hero__scroll{position:absolute;bottom:clamp(24px,4vh,36px);
+  right:clamp(24px,5vw,60px);z-index:1;
+  display:flex;align-items:center;gap:.6rem;font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--cream-2);opacity:0;}
+.hero__scroll-tick{width:1px;height:22px;background:var(--gold);
+  animation:tick 2s ease-in-out infinite;}
+@keyframes tick{0%,100%{opacity:1;height:22px}50%{opacity:.2;height:8px}}
+
+/* ══════════════════════════════════
+   SHARED
+══════════════════════════════════ */
+section{position:relative;}
+.eyebrow{font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+.eyebrow::after{content:'';width:28px;height:1px;background:var(--gold);opacity:.4;}
+.h2{font-family:var(--serif);font-size:clamp(30px,4.5vw,56px);
+  font-weight:400;line-height:.98;letter-spacing:-.01em;}
+.h2 em{font-style:italic;}
+.reveal{opacity:0;transform:translateY(28px);
+  transition:opacity .85s cubic-bezier(.16,1,.3,1),
+             transform .85s cubic-bezier(.16,1,.3,1);}
+.reveal.in{opacity:1;transform:none;}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ══════════════════════════════════
+   MANIFESTO
+══════════════════════════════════ */
+#manifesto{background:var(--surface);
+  padding:clamp(80px,12vw,140px) clamp(24px,5vw,60px);}
+.manifesto-grid{display:grid;grid-template-columns:1fr 1.4fr;
+  gap:clamp(40px,6vw,100px);align-items:center;}
+.manifesto-q{font-family:var(--serif);font-size:clamp(26px,3.5vw,46px);
+  font-weight:400;line-height:1.15;letter-spacing:-.008em;}
+.manifesto-q em{font-style:italic;color:var(--gold-2);}
+.manifesto-body p{font-size:clamp(14px,1.4vw,16px);line-height:1.85;
+  color:var(--cream-2);}
+.manifesto-body p+p{margin-top:1.4em;}
+
+/* ══════════════════════════════════
+   MEMBERSHIP — FOUR ARCHES
+══════════════════════════════════ */
+#membership{
+  background:var(--brick);
+  padding:clamp(60px,10vw,120px) clamp(24px,5vw,60px) 0;
+  overflow:hidden;
+}
+/* brick mortar lines */
+#membership::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 22px,
+      rgba(255,255,255,.028) 22px,
+      rgba(255,255,255,.028) 23px
+    );
+}
+/* offset vertical joints every other course */
+#membership::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,transparent 59px,
+      rgba(255,255,255,.018) 59px,rgba(255,255,255,.018) 60px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,transparent 29px,
+      rgba(255,255,255,.018) 29px,rgba(255,255,255,.018) 30px
+    );
+  background-size:60px 46px, 60px 46px;
+  background-position:0 0, 0 23px;
+}
+.membership-head{position:relative;z-index:1;
+  max-width:600px;margin-bottom:clamp(40px,6vw,72px);}
+.membership-head p{font-size:14px;color:var(--cream-2);line-height:1.8;margin-top:1.2rem;}
+
+/* ── ARCH ROW ── */
+.arches{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:clamp(8px,1.2vw,16px);
+  align-items:end;
+}
+.arch{cursor:default;}
+/* the arch opening — a tall container with rounded top */
+.arch__void{
+  position:relative;
+  width:100%;
+  height:clamp(240px,36vw,440px);
+  background:#080604;
+  border-radius:50% 50% 0 0 / clamp(50px,10vw,130px) clamp(50px,10vw,130px) 0 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  padding:0 clamp(14px,2vw,28px) clamp(24px,3vw,40px);
+  overflow:hidden;
+  transition:background .4s;
+}
+.arch:hover .arch__void{background:#0d0a07;}
+/* ambient inner glow on hover */
+.arch__void::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%, rgba(196,152,56,.06) 0%, transparent 65%);
+  opacity:0;transition:opacity .5s;
+}
+.arch:hover .arch__void::before{opacity:1;}
+/* arch surround line — 1 thin warm stroke */
+.arch__void::after{
+  content:'';position:absolute;inset:0;
+  border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(196,152,56,.12);
+  pointer-events:none;
+}
+.arch__num{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(28px,4vw,52px);
+  color:var(--gold);opacity:.25;line-height:1;
+  margin-bottom:clamp(12px,1.5vw,20px);
+  transition:opacity .35s,transform .5s cubic-bezier(.16,1,.3,1);
+}
+.arch:hover .arch__num{opacity:.75;transform:translateY(-4px);}
+.arch__name{
+  font-family:var(--serif);font-size:clamp(15px,1.8vw,22px);
+  font-weight:400;color:var(--cream);text-align:center;
+  letter-spacing:.01em;margin-bottom:.5rem;
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.arch:hover .arch__name{transform:translateY(-3px);}
+.arch__desc{
+  font-size:clamp(11px,1.1vw,13px);color:var(--cream-2);opacity:.5;
+  text-align:center;line-height:1.55;
+  transition:opacity .3s;
+}
+.arch:hover .arch__desc{opacity:.8;}
+/* base plinth under each arch */
+.arch__plinth{
+  height:clamp(24px,3vw,36px);
+  background:rgba(255,255,255,.025);
+  border-top:1px solid rgba(196,152,56,.08);
+  display:flex;align-items:center;justify-content:center;
+}
+.arch__plinth span{font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--cream-2);opacity:.3;transition:opacity .3s;}
+.arch:hover .arch__plinth span{opacity:.7;}
+
+/* ══════════════════════════════════
+   PILLARS
+══════════════════════════════════ */
+#pillars{background:var(--surface);
+  padding:clamp(80px,12vw,140px) clamp(24px,5vw,60px);}
+.pillars-intro{max-width:600px;margin-bottom:clamp(40px,6vw,72px);}
+.pillars-intro p{font-size:14px;color:var(--cream-2);line-height:1.8;margin-top:1.2rem;}
+.pillars-grid{display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--rule);}
+.pillar{background:var(--lift);padding:clamp(24px,3vw,40px) clamp(20px,2.5vw,32px);
+  position:relative;overflow:hidden;cursor:default;transition:background .35s;}
+.pillar:hover{background:var(--surface);}
+.pillar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .45s cubic-bezier(.16,1,.3,1);}
+.pillar:hover::after{transform:scaleX(1);}
+.pillar__n{font-family:var(--serif);font-style:italic;font-size:36px;
+  color:var(--gold);opacity:.22;line-height:1;margin-bottom:1.2rem;transition:opacity .3s;}
+.pillar:hover .pillar__n{opacity:.7;}
+.pillar__sub{font-size:8px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.6rem;opacity:.6;}
+.pillar h3{font-family:var(--serif);font-size:clamp(20px,2vw,28px);font-weight:400;
+  line-height:1;letter-spacing:-.01em;margin-bottom:.8rem;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);}
+.pillar:hover h3{transform:translateX(4px);}
+.pillar p{font-size:12px;color:var(--cream-2);opacity:.6;line-height:1.6;}
+
+/* ══════════════════════════════════
+   SPACE
+══════════════════════════════════ */
+#space{padding:0;}
+.space-split{display:grid;grid-template-columns:1fr 1fr;}
+.space-img{overflow:hidden;min-height:clamp(340px,38vw,500px);}
+.space-img img{width:100%;height:100%;object-fit:cover;
+  filter:brightness(.55) saturate(.75);
+  transition:transform .9s cubic-bezier(.16,1,.3,1),filter .9s;}
+.space-split:hover .space-img img{transform:scale(1.04);filter:brightness(.65) saturate(.85);}
+.space-body{background:var(--lift);padding:clamp(40px,5vw,72px);
+  display:flex;flex-direction:column;justify-content:center;}
+.space-list{margin-top:2rem;}
+.space-item{padding:.85rem 0;border-bottom:1px solid var(--rule);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream-2);display:flex;align-items:center;gap:.9rem;
+  transition:color .2s,padding-left .3s cubic-bezier(.16,1,.3,1);}
+.space-item:first-child{border-top:1px solid var(--rule);}
+.space-item::before{content:'';width:4px;height:4px;background:var(--gold);
+  opacity:.4;flex-shrink:0;transition:opacity .2s;}
+.space-item:hover{color:var(--cream);padding-left:6px;}
+.space-item:hover::before{opacity:1;}
+
+/* ══════════════════════════════════
+   THE HOUSE
+══════════════════════════════════ */
+#house{background:var(--surface);
+  padding:clamp(80px,12vw,140px) clamp(24px,5vw,60px);}
+.house-grid{display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(40px,6vw,100px);align-items:center;}
+.principles{margin-top:2rem;}
+.principle{padding:.9rem 0;border-top:1px solid var(--rule);
+  font-size:14px;color:var(--cream-2);line-height:1.5;cursor:default;
+  transition:color .2s,padding-left .3s cubic-bezier(.16,1,.3,1);}
+.principle:last-child{border-bottom:1px solid var(--rule);}
+.principle:hover{color:var(--cream);padding-left:8px;}
+.house-card{border:1px solid var(--rule);padding:clamp(28px,4vw,48px);
+  background:var(--lift);}
+.house-card h3{font-family:var(--serif);font-size:clamp(20px,2.2vw,30px);
+  font-weight:400;line-height:1.2;margin-bottom:1.2rem;letter-spacing:-.01em;}
+.house-card h3 em{font-style:italic;color:var(--gold-2);}
+.house-card p{font-size:13px;color:var(--cream-2);line-height:1.8;}
+
+/* ══════════════════════════════════
+   CLOSING
+══════════════════════════════════ */
+#closing{background:var(--brick);
+  padding:clamp(100px,16vw,180px) clamp(24px,5vw,60px);
+  text-align:center;overflow:hidden;}
+#closing::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:repeating-linear-gradient(
+    180deg,transparent 0px,transparent 22px,
+    rgba(255,255,255,.025) 22px,rgba(255,255,255,.025) 23px);
+}
+.closing-eyebrow{font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:2.5rem;
+  position:relative;z-index:1;}
+.closing-q{font-family:var(--serif);font-size:clamp(26px,4.5vw,62px);
+  font-weight:400;line-height:1.04;letter-spacing:-.01em;
+  max-width:820px;margin:0 auto 1.5rem;
+  position:relative;z-index:1;}
+.closing-q em{font-style:italic;color:var(--gold-2);}
+.closing-sub{font-family:var(--serif);font-style:italic;
+  font-size:clamp(13px,1.3vw,16px);color:var(--cream-2);opacity:.4;
+  margin-bottom:3rem;position:relative;z-index:1;}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer{padding:24px clamp(24px,5vw,60px);border-top:1px solid var(--rule);
+  background:var(--void);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+footer span{font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cream-2);opacity:.4;}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media(max-width:960px){
+  .manifesto-grid,.house-grid{grid-template-columns:1fr;}
+  .pillars-grid{grid-template-columns:repeat(2,1fr);}
+  .space-split{grid-template-columns:1fr;}
+  .arches{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:560px){
+  .nav__links .nav__a:not(.nav__cta){display:none;}
+  .pillars-grid{grid-template-columns:1fr;}
+  .arches{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <img class="loader__logo" src="../hq-logo-white.png" alt="HQ">
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <img class="nav__logo" src="../hq-logo-white.png" alt="HQ">
+  <div class="nav__links">
+    <a class="nav__a" href="#manifesto">Manifesto</a>
+    <a class="nav__a" href="#membership">Membership</a>
+    <a class="nav__a" href="#pillars">Pillars</a>
+    <a class="nav__a" href="#space">Space</a>
+    <a class="nav__a nav__cta" href="#closing">Request Membership</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero__bg">
+    <img src="../hero.jpg" alt="" id="hero-img">
+  </div>
+  <div class="hero__grad"></div>
+
+  <div class="hero__label">Private Member Club · Provo, Utah</div>
+  <h1>The long game<br>has <em>a room.</em></h1>
+  <p class="hero__sub">A private, referral-first club for builders, stewards, and long-horizon thinkers who value discipline, discretion, and signal over noise.</p>
+  <div class="hero__actions">
+    <a class="btn btn--gold" href="#closing">Request Membership</a>
+    <a class="btn btn--ghost" href="#manifesto">Learn More</a>
+  </div>
+  <div class="hero__scroll"><div class="hero__scroll-tick"></div><span>Scroll</span></div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="manifesto-grid">
+    <div>
+      <div class="eyebrow reveal">Manifesto</div>
+      <div class="manifesto-q reveal d1">A room for builders, stewards, and <em>long-horizon thinkers.</em></div>
+    </div>
+    <div class="manifesto-body">
+      <p class="reveal d2">None of us choose where we begin. We are responsible for what we build. The club is a deliberate answer to noisy rooms, hurried decisions, and transactional networks.</p>
+      <p class="reveal d3">It is a place to gather with signal, reflect with discipline, create work worth inheriting, and renew the clarity required for the next summit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP — 4 ARCHES -->
+<section id="membership">
+  <div class="membership-head">
+    <div class="eyebrow reveal">Membership</div>
+    <h2 class="h2 reveal d1">The front door is intentionally narrow.</h2>
+    <p class="reveal d2">Applications are built to collect the right signal: referral, professional context, intent, contribution, and signed standards.</p>
+  </div>
+
+  <div class="arches">
+
+    <div class="arch reveal">
+      <div class="arch__void">
+        <div class="arch__num">I</div>
+        <div class="arch__name">Referral</div>
+        <div class="arch__desc">A current member establishes the first signal of trust.</div>
+      </div>
+      <div class="arch__plinth"><span>Step One</span></div>
+    </div>
+
+    <div class="arch reveal d1">
+      <div class="arch__void">
+        <div class="arch__num">II</div>
+        <div class="arch__name">Application</div>
+        <div class="arch__desc">Profile, intent, contribution, and standards are reviewed together.</div>
+      </div>
+      <div class="arch__plinth"><span>Step Two</span></div>
+    </div>
+
+    <div class="arch reveal d2">
+      <div class="arch__void">
+        <div class="arch__num">III</div>
+        <div class="arch__name">Agreement</div>
+        <div class="arch__desc">Confidentiality, conduct, and member discretion are confirmed before access.</div>
+      </div>
+      <div class="arch__plinth"><span>Step Three</span></div>
+    </div>
+
+    <div class="arch reveal d3">
+      <div class="arch__void">
+        <div class="arch__num">IV</div>
+        <div class="arch__name">Access</div>
+        <div class="arch__desc">Approved members enter the private portal for profile, reservations, and house standards.</div>
+      </div>
+      <div class="arch__plinth"><span>Step Four</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="pillars-intro">
+    <div class="eyebrow reveal">Four Pillars</div>
+    <h2 class="h2 reveal d1">The club is built around a simple operating philosophy.</h2>
+    <p class="reveal d2">The pillars are not marketing language. They are the filters for the room, the rhythm of the house, and the standard members agree to protect.</p>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar reveal"><div class="pillar__n">I</div><div class="pillar__sub">Curated Signal</div><h3>Gather</h3><p>A smaller room, intentionally composed. Members invest in the daily fabric of one another's success.</p></div>
+    <div class="pillar reveal d1"><div class="pillar__n">II</div><div class="pillar__sub">Sanctuary with Edge</div><h3>Reflect</h3><p>The club is built for the kind of quiet that sharpens judgment and restores discipline.</p></div>
+    <div class="pillar reveal d2"><div class="pillar__n">III</div><div class="pillar__sub">Work Worth Inheriting</div><h3>Create</h3><p>Boardrooms, private pods, and an operating rhythm for people shaping work beyond the urgent.</p></div>
+    <div class="pillar reveal d3"><div class="pillar__n">IV</div><div class="pillar__sub">Clarity as Advantage</div><h3>Renew</h3><p>Recovery suites and reserved time create space to return with better focus and better standards.</p></div>
+  </div>
+</section>
+
+<!-- SPACE -->
+<section id="space">
+  <div class="space-split">
+    <div class="space-img"><img src="../hero.jpg" alt="HQ Space"></div>
+    <div class="space-body">
+      <div class="eyebrow reveal">Private Reservations</div>
+      <h2 class="h2 reveal d1">Space for serious work and deliberate recovery.</h2>
+      <div class="space-list">
+        <div class="space-item reveal d1">Twelve-Seat Boardroom</div>
+        <div class="space-item reveal d2">Intimate Meeting Room</div>
+        <div class="space-item reveal d3">Flexible Gathering Space</div>
+        <div class="space-item reveal d4">Private Focus Pods</div>
+        <div class="space-item reveal" style="transition-delay:.5s">Recovery Suites</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE HOUSE -->
+<section id="house">
+  <div class="house-grid">
+    <div>
+      <div class="eyebrow reveal">The House</div>
+      <h2 class="h2 reveal d1">Quiet infrastructure for a high-caliber room.</h2>
+      <div class="principles">
+        <div class="principle reveal d1">Confidentiality is assumed.</div>
+        <div class="principle reveal d2">Discretion governs access.</div>
+        <div class="principle reveal d3">Conduct protects the room.</div>
+        <div class="principle reveal d4">Management preserves the standard.</div>
+      </div>
+    </div>
+    <div class="house-card reveal d2">
+      <h3>The member experience is not a brochure. <em>It is an operating system.</em></h3>
+      <p>Spaces that can be reserved, obligations that are visible, and an owner portal where the standard is actively managed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <span class="closing-eyebrow reveal">Standard</span>
+  <div class="closing-q reveal d1">Clarity is the ultimate <em>competitive advantage.</em> From this vantage point, even the headwinds have purpose.</div>
+  <p class="closing-sub reveal d2">Opening Summer 2026 · Provo, Utah</p>
+  <div class="reveal d3"><a class="btn btn--gold" href="#">Request an Invitation</a></div>
+</section>
+
+<footer>
+  <span>HQ — A Private Sanctuary</span>
+  <span>Provo, Utah · Est. 1900</span>
+  <span>By Invitation Only</span>
+</footer>
+
+<script>
+// ── LOADER ──
+window.addEventListener('load', function() {
+  document.body.classList.add('loaded');
+  var loader = document.getElementById('loader');
+  setTimeout(function() {
+    loader.classList.add('out');
+    loader.addEventListener('animationend', function() {
+      loader.style.display = 'none';
+    }, { once: true });
+  }, 1400);
+
+  // hero entrance stagger
+  var els = [
+    document.querySelector('.hero__label'),
+    document.querySelector('.hero h1'),
+    document.querySelector('.hero__sub'),
+    document.querySelector('.hero__actions'),
+    document.querySelector('.hero__scroll')
+  ];
+  els.forEach(function(el, i) {
+    if (!el) return;
+    setTimeout(function() {
+      el.style.transition = 'opacity .9s cubic-bezier(.16,1,.3,1) '+i*.15+'s, transform .9s cubic-bezier(.16,1,.3,1) '+i*.15+'s';
+      el.style.transform = 'translateY(20px)';
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      });
+    }, 1600 + i * 150);
+  });
+});
+
+// ── NAV ──
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function() {
+  nav.classList.toggle('scrolled', scrollY > 48);
+}, { passive: true });
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var t = document.querySelector(this.getAttribute('href'));
+    if (!t) return; e.preventDefault();
+    t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ── REVEAL ──
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { rootMargin: '0px 0px -52px 0px' });
+document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+
+// ── HERO PARALLAX ──
+var heroImg = document.getElementById('hero-img');
+window.addEventListener('scroll', function() {
+  if (scrollY < innerHeight)
+    heroImg.style.transform = 'scale(1) translateY(' + scrollY * 0.22 + 'px)';
+}, { passive: true });
+</script>
+</body>
+</html>
