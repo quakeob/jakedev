@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HQ — A Private Members' Club · Provo, Utah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --obsidian:    #14100D;
+  --espresso:    #241C16;
+  --slate:       #2C3033;
+  --bone:        #EEE6D3;
+  --bone-deep:   #E3D9C2;
+  --oxblood:     #5C0D10;
+  --oxblood-hi:  #7E1A1D;
+  --brass:       #C9A04A;
+  --signal:      #FFCA32;
+  --paper:       #EEE6D3;
+  --paper-dim:   rgba(238,230,211,.65);
+  --ink:         #14100D;
+  --ink-dim:     rgba(20,16,13,.60);
+  --f:           'Fraunces', Georgia, 'Times New Roman', serif;
+  --s:           'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  --r:           2px;
+  --pad:         clamp(5rem, 10vw, 9rem);
+  --gutter:      clamp(1.5rem, 6vw, 5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--obsidian);
+  color: var(--paper);
+  font-family: var(--s);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+::selection { background: var(--oxblood); color: var(--bone); }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ── KEYBOARD FOCUS ── */
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+
+/* ── LOADER ── */
+.loader {
+  position: fixed; inset: 0; z-index: 900;
+  background: var(--obsidian);
+  display: flex; align-items: center; justify-content: center;
+}
+.loader.out { animation: loaderOut .65s cubic-bezier(.76, 0, .24, 1) forwards; }
+@keyframes loaderOut { to { opacity: 0; pointer-events: none; } }
+.loader__mark {
+  width: clamp(64px, 10vw, 96px);
+  opacity: 0;
+  animation: markIn .5s cubic-bezier(.16, 1, .3, 1) .35s forwards;
+}
+@keyframes markIn {
+  from { opacity: 0; transform: scale(.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  padding: 0 var(--gutter);
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  transition: background .4s ease, border-color .4s ease;
+}
+.nav.scrolled {
+  background: var(--espresso);
+  border-color: rgba(201, 160, 74, .18);
+}
+.nav__mark { height: 22px; opacity: .9; }
+.nav__cta {
+  font-family: var(--s); font-size: .7rem; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase;
+  background: var(--oxblood); color: var(--bone);
+  padding: 9px 20px; border-radius: var(--r);
+  transition: background .2s;
+  min-height: 44px; display: inline-flex; align-items: center;
+}
+.nav__cta:hover { background: var(--oxblood-hi); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; height: 100svh; min-height: 620px; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 var(--gutter) clamp(3.5rem, 7vh, 5.5rem);
+}
+.hero__bg { position: absolute; inset: 0; }
+.hero__bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(.32) saturate(.5);
+}
+.hero__bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top,
+    var(--obsidian) 0%,
+    rgba(20,16,13,.55) 42%,
+    transparent 100%);
+}
+
+/* trajectory rays — the one bold element */
+.hero__rays {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.ray {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+}
+@keyframes drawRay { to { stroke-dashoffset: 0; } }
+
+/* hero content */
+.hero__body { position: relative; z-index: 1; max-width: 900px; }
+.hero__eyebrow {
+  font-family: var(--s); font-size: .7rem; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--brass);
+  margin-bottom: 1.75rem;
+  opacity: 0; animation: riseIn .7s cubic-bezier(.16,1,.3,1) 1.7s forwards;
+}
+.hero__h1 {
+  font-family: var(--f);
+  font-size: clamp(3.25rem, 9vw, 8.5rem);
+  font-weight: 500; line-height: 1.01; letter-spacing: -.025em;
+  font-variation-settings: "opsz" 144;
+  opacity: 0; animation: riseIn .9s cubic-bezier(.16,1,.3,1) 1.85s forwards;
+}
+.hero__h1 em { font-style: italic; }
+.hero__sub {
+  font-size: clamp(.9rem, 1.3vw, 1.05rem);
+  color: var(--paper-dim); line-height: 1.62; max-width: 50ch;
+  margin-top: 1.5rem;
+  opacity: 0; animation: riseIn .7s cubic-bezier(.16,1,.3,1) 2s forwards;
+}
+.hero__actions {
+  display: flex; gap: .75rem; flex-wrap: wrap;
+  margin-top: 2.5rem; align-items: center;
+  opacity: 0; animation: riseIn .7s cubic-bezier(.16,1,.3,1) 2.15s forwards;
+}
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center;
+  font-family: var(--s); font-size: .7rem; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase;
+  padding: 12px 26px; border-radius: var(--r);
+  min-height: 44px; transition: background .2s, border-color .2s, color .2s;
+}
+.btn--primary { background: var(--oxblood); color: var(--bone); }
+.btn--primary:hover { background: var(--oxblood-hi); }
+.btn--ghost {
+  background: transparent;
+  border: 1px solid rgba(238,230,211,.22);
+  color: var(--paper-dim);
+}
+.btn--ghost:hover { border-color: var(--paper); color: var(--paper); }
+
+/* ── SHARED UTILITIES ── */
+.eyebrow {
+  font-family: var(--s); font-size: .7rem; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--brass);
+  margin-bottom: .85rem;
+}
+.eyebrow-ink { color: var(--oxblood); }
+.rule-h { border: none; border-top: 1px solid rgba(201,160,74,.18); }
+
+/* ── PHILOSOPHY ── */
+#philosophy {
+  background: var(--espresso);
+  padding: var(--pad) var(--gutter);
+}
+.philo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  gap: clamp(3rem, 7vw, 8rem);
+  align-items: start;
+}
+.philo-left h2 {
+  font-family: var(--f);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 500; line-height: 1.08; letter-spacing: -.02em;
+  font-variation-settings: "opsz" 72;
+  margin-top: .85rem;
+}
+.philo-left h2 em { font-style: italic; }
+.philo-right {
+  padding-top: 2rem;
+  border-top: 1px solid rgba(201,160,74,.18);
+}
+.philo-right p {
+  font-size: clamp(.95rem, 1.3vw, 1.05rem);
+  color: var(--paper-dim); line-height: 1.72;
+}
+.philo-right p + p { margin-top: 1.1em; }
+.philo-right .note {
+  margin-top: 2rem;
+  font-size: .7rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--brass); opacity: .65;
+}
+
+/* ── CREED ── */
+#creed {
+  background: var(--obsidian);
+  padding: var(--pad) var(--gutter);
+  border-top: 1px solid rgba(201,160,74,.12);
+}
+.creed-intro { margin-bottom: clamp(3rem, 5vw, 4.5rem); max-width: 540px; }
+.creed-intro h2 {
+  font-family: var(--f);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 500; letter-spacing: -.015em; line-height: 1.1;
+  font-variation-settings: "opsz" 72;
+  margin-top: .85rem;
+}
+.creed-item {
+  display: grid;
+  grid-template-columns: clamp(130px, 14vw, 175px) 1fr;
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: start;
+  padding: clamp(1.75rem, 3.5vw, 2.75rem) 0;
+  border-top: 1px solid rgba(201,160,74,.15);
+}
+.creed-item:last-child { border-bottom: 1px solid rgba(201,160,74,.15); }
+.creed-word {
+  font-family: var(--f);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 500; line-height: 1; letter-spacing: -.02em;
+  font-variation-settings: "opsz" 144;
+  color: var(--paper);
+}
+.creed-quote {
+  font-family: var(--f); font-style: italic;
+  font-size: clamp(.95rem, 1.5vw, 1.15rem);
+  color: var(--paper-dim); line-height: 1.5; margin-bottom: .65rem;
+  font-variation-settings: "opsz" 72;
+}
+.creed-amenities {
+  font-size: .68rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--brass); opacity: .6;
+}
+
+/* ── SPACE — the one bone section ── */
+#space {
+  background: var(--bone);
+  padding: var(--pad) var(--gutter);
+}
+#space .eyebrow { color: var(--oxblood); }
+.space-intro {
+  max-width: 620px; margin-bottom: clamp(3rem, 5vw, 4.5rem);
+}
+.space-intro h2 {
+  font-family: var(--f);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 500; line-height: 1.08; letter-spacing: -.02em;
+  font-variation-settings: "opsz" 72;
+  color: var(--ink); margin-top: .85rem;
+}
+.space-intro p {
+  font-size: 1rem; color: var(--ink-dim); line-height: 1.65;
+  margin-top: .9rem; max-width: 46ch;
+}
+.space-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+.space-col-h {
+  font-family: var(--f); font-size: 1.05rem; font-weight: 500;
+  color: var(--ink); margin-bottom: .9rem; padding-bottom: .6rem;
+  border-bottom: 1px solid rgba(20,16,13,.15);
+  font-variation-settings: "opsz" 72;
+}
+.space-list { list-style: none; }
+.space-list li {
+  font-size: .875rem; color: var(--ink-dim);
+  padding: .45rem 0; border-bottom: 1px solid rgba(20,16,13,.08);
+  line-height: 1.4;
+}
+
+/* ── HERITAGE ── */
+#heritage {
+  position: relative; overflow: hidden;
+  min-height: clamp(420px, 48vw, 640px);
+  display: flex; align-items: flex-end;
+  padding: clamp(3.5rem, 7vw, 6rem) var(--gutter);
+}
+.heritage-bg { position: absolute; inset: 0; }
+.heritage-bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 35%;
+  filter: brightness(.28) saturate(.4);
+}
+.heritage-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(20,16,13,.95) 0%,
+    rgba(20,16,13,.5) 50%,
+    rgba(20,16,13,.15) 100%
+  );
+}
+.heritage-content { position: relative; z-index: 1; max-width: 540px; }
+.heritage-address {
+  font-size: .7rem; font-weight: 600; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--brass); margin-bottom: 1.2rem;
+}
+.heritage-content h2 {
+  font-family: var(--f);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 500; line-height: 1.1; letter-spacing: -.015em;
+  font-variation-settings: "opsz" 72;
+  margin-bottom: 1.15rem;
+}
+.heritage-content p {
+  font-size: .95rem; color: var(--paper-dim); line-height: 1.68; max-width: 46ch;
+}
+
+/* ── MEMBERSHIP ── */
+#membership {
+  background: var(--espresso);
+  padding: var(--pad) var(--gutter);
+}
+.mem-intro { max-width: 580px; margin-bottom: clamp(3rem, 5vw, 4.5rem); }
+.mem-intro h2 {
+  font-family: var(--f);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 500; line-height: 1.08; letter-spacing: -.02em;
+  font-variation-settings: "opsz" 72;
+  margin-top: .85rem;
+}
+.step {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: baseline;
+  padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+  border-top: 1px solid rgba(201,160,74,.15);
+}
+.step:last-child { border-bottom: 1px solid rgba(201,160,74,.15); }
+.step__n {
+  font-family: var(--f); font-style: italic; font-size: 1.75rem;
+  font-weight: 400; color: var(--brass); opacity: .3; line-height: 1;
+  font-variation-settings: "opsz" 72;
+}
+.step__name {
+  font-family: var(--f);
+  font-size: clamp(1.15rem, 2vw, 1.65rem);
+  font-weight: 500; line-height: 1.1; letter-spacing: -.01em;
+  font-variation-settings: "opsz" 72;
+  color: var(--paper); margin-bottom: .45rem;
+}
+.step__desc {
+  font-size: .925rem; color: var(--paper-dim); line-height: 1.6; max-width: 52ch;
+}
+
+/* ── CLOSING ── */
+#closing {
+  background: var(--obsidian);
+  padding: clamp(6rem, 12vw, 10rem) var(--gutter);
+  text-align: center;
+  border-top: 1px solid rgba(201,160,74,.12);
+}
+.closing-eyebrow {
+  display: block; margin-bottom: 2rem;
+}
+.closing-h {
+  font-family: var(--f);
+  font-size: clamp(1.75rem, 4.5vw, 3.75rem);
+  font-weight: 500; line-height: 1.07; letter-spacing: -.015em;
+  max-width: 640px; margin: 0 auto;
+  font-variation-settings: "opsz" 72;
+}
+.closing-h em { font-style: italic; }
+.closing-lines {
+  margin: 2.75rem auto;
+  max-width: 460px;
+}
+.closing-lines p {
+  font-family: var(--f); font-style: italic;
+  font-size: clamp(.95rem, 1.6vw, 1.15rem);
+  color: var(--paper-dim); line-height: 1.55; margin-bottom: .6rem;
+  font-variation-settings: "opsz" 72;
+}
+.closing-cta { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.closing-hours {
+  display: block; margin-top: 2.5rem;
+  font-size: .7rem; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--paper-dim); opacity: .45;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--espresso);
+  padding: 1.75rem var(--gutter);
+  border-top: 1px solid rgba(201,160,74,.14);
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: 1rem; align-items: center;
+}
+footer img { height: 18px; opacity: .45; }
+.footer-meta { text-align: right; }
+.footer-meta p {
+  font-size: .7rem; letter-spacing: .08em;
+  color: var(--paper-dim); opacity: .5; line-height: 1.7;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .philo-grid { grid-template-columns: 1fr; }
+  .creed-item { grid-template-columns: 1fr; gap: .75rem; }
+  .space-cols { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .space-cols { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 2.25rem 1fr; gap: 1rem; }
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  .loader { display: none; }
+  .ray { stroke-dashoffset: 0 !important; animation: none !important; }
+  .hero__eyebrow, .hero__h1, .hero__sub, .hero__actions,
+  .loader__mark { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <img class="loader__mark" src="../hq-logo-white.png" alt="HQ">
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <img class="nav__mark" src="../hq-logo-white.png" alt="HQ">
+  <a class="nav__cta" href="#closing">Request an Invitation</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero__bg">
+    <img src="../hero.jpg" alt="">
+  </div>
+
+  <!-- TRAJECTORY RAYS — the one bold element, drawn in once -->
+  <svg class="hero__rays" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <!-- gradient runs from the anchor (bottom-left) out to the tips -->
+      <linearGradient id="rg" x1="-100" y1="980" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"   stop-color="#5C0D10" stop-opacity="0"/>
+        <stop offset="12%"  stop-color="#5C0D10" stop-opacity=".6"/>
+        <stop offset="48%"  stop-color="#C9A04A" stop-opacity=".38"/>
+        <stop offset="78%"  stop-color="#C9A04A" stop-opacity=".18"/>
+        <stop offset="100%" stop-color="#FFCA32" stop-opacity=".14"/>
+      </linearGradient>
+    </defs>
+    <!-- 12 rays fanning from off-canvas bottom-left (-100, 980) -->
+    <line class="ray" x1="-100" y1="980" x2="60"   y2="-10" stroke="url(#rg)" stroke-width=".8"/>
+    <line class="ray" x1="-100" y1="980" x2="180"  y2="-10" stroke="url(#rg)" stroke-width=".8"/>
+    <line class="ray" x1="-100" y1="980" x2="320"  y2="-10" stroke="url(#rg)" stroke-width=".85"/>
+    <line class="ray" x1="-100" y1="980" x2="490"  y2="-10" stroke="url(#rg)" stroke-width=".9"/>
+    <line class="ray" x1="-100" y1="980" x2="680"  y2="-10" stroke="url(#rg)" stroke-width="1"/>
+    <line class="ray" x1="-100" y1="980" x2="880"  y2="-10" stroke="url(#rg)" stroke-width="1"/>
+    <line class="ray" x1="-100" y1="980" x2="1090" y2="-10" stroke="url(#rg)" stroke-width=".9"/>
+    <line class="ray" x1="-100" y1="980" x2="1280" y2="-10" stroke="url(#rg)" stroke-width=".85"/>
+    <line class="ray" x1="-100" y1="980" x2="1440" y2="-10" stroke="url(#rg)" stroke-width=".8"/>
+    <line class="ray" x1="-100" y1="980" x2="1440" y2="220" stroke="url(#rg)" stroke-width=".8"/>
+    <line class="ray" x1="-100" y1="980" x2="1440" y2="480" stroke="url(#rg)" stroke-width=".7"/>
+    <line class="ray" x1="-100" y1="980" x2="1440" y2="740" stroke="url(#rg)" stroke-width=".65"/>
+  </svg>
+
+  <div class="hero__body">
+    <div class="hero__eyebrow">Private Members' Club &nbsp;·&nbsp; Historic Southworth Block</div>
+    <h1 class="hero__h1">
+      Some rooms<br>change the<br><em>trajectory</em><br>of a life.
+    </h1>
+    <p class="hero__sub">An invite-only sanctuary for executives, founders, athletes, and legacy builders. Provo, Utah.</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="#closing">Request an Invitation</a>
+      <a class="btn btn--ghost" href="#philosophy">The Room</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     PHILOSOPHY
+     ══════════════════════════════════════════════════════ -->
+<section id="philosophy">
+  <div class="philo-grid">
+    <div class="philo-left">
+      <div class="eyebrow">— The Room</div>
+      <h2>The quality<br>of the room<br><em>is the point.</em></h2>
+    </div>
+    <div class="philo-right">
+      <p>HQ is an invite-only sanctuary for business executives, innovators, athletes, and legacy builders who seek a premium environment to connect, work, and unwind.</p>
+      <p>We gather to exchange signal, cultivate judgment, and support meaningful work. This is a community built intentionally on substance over spectacle.</p>
+      <p>The modern world is optimized for reach. HQ was built for depth.</p>
+      <p class="note">An absolute no-photo policy ensures a true sanctuary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     CREED — four pillars as editorial list, never a grid
+     ══════════════════════════════════════════════════════ -->
+<section id="creed">
+  <div class="creed-intro">
+    <div class="eyebrow">— Four Pillars</div>
+    <h2>A creed, not a feature list.</h2>
+  </div>
+
+  <div class="creed-item">
+    <div class="creed-word">Gather</div>
+    <div>
+      <div class="creed-quote">"A bundle of matches makes it harder to break."</div>
+      <div class="creed-amenities">Lounge Areas &nbsp;·&nbsp; Bar &nbsp;·&nbsp; Private Parking &amp; Entry</div>
+    </div>
+  </div>
+
+  <div class="creed-item">
+    <div class="creed-word">Reflect</div>
+    <div>
+      <div class="creed-quote">"In order to do good, we must be aware of who we are."</div>
+      <div class="creed-amenities">Sitewide No-Photo Policy &nbsp;·&nbsp; Absolute Discretion</div>
+    </div>
+  </div>
+
+  <div class="creed-item">
+    <div class="creed-word">Create</div>
+    <div>
+      <div class="creed-quote">"We are responsible for what we build."</div>
+      <div class="creed-amenities">Smart Conference Rooms &nbsp;·&nbsp; High-Speed Wi-Fi &nbsp;·&nbsp; Collaborative Tech</div>
+    </div>
+  </div>
+
+  <div class="creed-item">
+    <div class="creed-word">Renew</div>
+    <div>
+      <div class="creed-quote">"We must renew ourselves emotionally, spiritually, mentally, and intellectually."</div>
+      <div class="creed-amenities">Barbershop &nbsp;·&nbsp; Shoe Shine &nbsp;·&nbsp; Massage &nbsp;·&nbsp; Gaming</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SPACE — the one bone section
+     ══════════════════════════════════════════════════════ -->
+<section id="space">
+  <div class="space-intro">
+    <div class="eyebrow eyebrow-ink">— The Space</div>
+    <h2>Built for work that matters.</h2>
+    <p>The amenities are chosen to serve the four pillars. Each one enables — not impresses.</p>
+  </div>
+  <div class="space-cols">
+    <div>
+      <div class="space-col-h">Gather</div>
+      <ul class="space-list">
+        <li>Lounge Areas</li>
+        <li>Full Bar</li>
+        <li>Private Parking</li>
+        <li>Private Entry</li>
+      </ul>
+    </div>
+    <div>
+      <div class="space-col-h">Reflect</div>
+      <ul class="space-list">
+        <li>No-Photo Policy</li>
+        <li>Absolute Discretion</li>
+        <li>Private Dining</li>
+      </ul>
+    </div>
+    <div>
+      <div class="space-col-h">Create</div>
+      <ul class="space-list">
+        <li>Smart Conference Rooms</li>
+        <li>High-Speed Wi-Fi</li>
+        <li>Collaborative Tech</li>
+        <li>Focus Pods</li>
+      </ul>
+    </div>
+    <div>
+      <div class="space-col-h">Renew</div>
+      <ul class="space-list">
+        <li>Barbershop</li>
+        <li>Shoe Shine</li>
+        <li>Massage Therapy</li>
+        <li>Gaming (Coming)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     HERITAGE
+     ══════════════════════════════════════════════════════ -->
+<section id="heritage">
+  <div class="heritage-bg">
+    <img src="../hero.jpg" alt="">
+  </div>
+  <div class="heritage-content">
+    <div class="heritage-address">104 West Center Street &nbsp;·&nbsp; Provo, Utah</div>
+    <h2>A 1900 brownstone<br>brought back to life.</h2>
+    <p>Situated five minutes from the I-15 corridor and steps from the valley's institutional anchors. Exposed brick, hand-hewn timber, structural steel, warm amber light. Rooted in industry. Rooted in craft.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     MEMBERSHIP — editorial steps, not arches
+     ══════════════════════════════════════════════════════ -->
+<section id="membership">
+  <div class="mem-intro">
+    <div class="eyebrow">— Membership</div>
+    <h2>The front door is intentionally narrow.</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step__n">1</div>
+      <div>
+        <div class="step__name">Referral</div>
+        <div class="step__desc">A current member establishes the first signal of trust. Membership is not found — it is extended.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__n">2</div>
+      <div>
+        <div class="step__name">Application</div>
+        <div class="step__desc">Profile, intent, profession, and contribution reviewed together. Not everyone who applies will be invited. Not everyone invited will apply.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__n">3</div>
+      <div>
+        <div class="step__name">Agreement</div>
+        <div class="step__desc">Confidentiality, conduct, and the standard of the room confirmed before access is granted.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__n">4</div>
+      <div>
+        <div class="step__name">Access</div>
+        <div class="step__desc">The private portal opens. Reservations, house standards, and your membership profile — in one place. Capped at 400 members.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     CLOSING
+     ══════════════════════════════════════════════════════ -->
+<section id="closing">
+  <span class="closing-eyebrow eyebrow">— Standard</span>
+  <h2 class="closing-h">Membership is limited.<br><em>Your chair is waiting.</em></h2>
+  <div class="closing-lines">
+    <p>"The door is closed to the public. It is open to you."</p>
+    <p>"We aren't building a crowd. We are protecting a standard."</p>
+    <p>"Stop looking for the right room. Help us build it."</p>
+  </div>
+  <div class="closing-cta">
+    <a class="btn btn--primary" href="#">Request an Invitation</a>
+  </div>
+  <span class="closing-hours">Monday – Saturday &nbsp;·&nbsp; 8 AM to 10 PM</span>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="../hq-logo-white.png" alt="HQ">
+  <div class="footer-meta">
+    <p>104 West Center Street · Provo, Utah 84601<br>By invitation only · Est. 1900</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Loader — 1.4s hold then fade
+  window.addEventListener('load', function () {
+    var loader = document.getElementById('loader');
+    setTimeout(function () {
+      loader.classList.add('out');
+      loader.addEventListener('animationend', function () {
+        loader.style.display = 'none';
+      }, { once: true });
+    }, 1400);
+  });
+
+  // Nav — scroll state
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function () {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  // Rays — draw in after the loader begins to clear
+  // Each ray staggers by 60ms, starting at 1.2s (loader is 1.4s hold + .65s fade)
+  var rays = document.querySelectorAll('.ray');
+  rays.forEach(function (ray, i) {
+    ray.style.animation =
+      'drawRay 2s ' + (1.2 + i * 0.06).toFixed(2) + 's cubic-bezier(.4,0,.2,1) forwards';
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = this.getAttribute('href');
+      if (id === '#') return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
