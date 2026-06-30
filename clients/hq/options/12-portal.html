@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HQ — Private Members' Club · Provo, Utah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ─────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth;}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:1rem;line-height:1.6;
+  background:#0a0a0a;color:#ede8dd;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+::selection{background:#b89b5e;color:#0e0d0b;}
+
+/* ── TOKENS ─────────────────────────────────────────────────────────── */
+:root{
+  --bg:#0a0a0a;
+  --surface:#111111;
+  --lift:#171613;
+  --raise:#1a1a1a;
+  --brass:#b89b5e;
+  --gold:#d4af37;
+  --paper:#ede8dd;
+  --paper-dim:rgba(237,232,221,0.62);
+  --oxblood:#5c0d10;
+  --oxblood-hi:#7e1a1d;
+  --serif:'Playfair Display',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+/* ── LOADER ─────────────────────────────────────────────────────────── */
+#loader{
+  position:fixed;inset:0;background:#0a0a0a;
+  display:flex;align-items:center;justify-content:center;
+  z-index:200;
+  transition:opacity .7s ease .1s, visibility .7s ease .1s;
+}
+#loader.out{opacity:0;visibility:hidden;pointer-events:none;}
+#loader img{
+  height:48px;width:auto;
+  filter:invert(1) brightness(.85);
+  animation:loaderPulse 1.6s ease forwards;
+}
+@keyframes loaderPulse{
+  0%{opacity:0;transform:scale(.92);}
+  25%{opacity:1;transform:scale(1);}
+  80%{opacity:1;}
+  100%{opacity:0;}
+}
+
+/* ── NAV ────────────────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1.25rem,5vw,3rem);height:60px;
+  transition:background .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(10,10,10,.95);
+  border-color:rgba(184,155,94,.1);
+}
+.nav-logo{height:26px;width:auto;filter:invert(1) brightness(.85);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+@media(max-width:680px){.nav-links{display:none;}}
+.nav-links a{
+  font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--paper-dim);transition:color .2s;
+}
+.nav-links a:hover{color:var(--paper);}
+.nav-btn{
+  font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;
+  padding:.5rem 1.125rem;
+  border:1px solid rgba(184,155,94,.45);color:var(--brass);
+  transition:background .2s,color .2s,border-color .2s;cursor:pointer;
+  background:transparent;font-family:var(--sans);
+}
+.nav-btn:hover{background:var(--brass);color:#0e0d0b;border-color:var(--brass);}
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+#hero{
+  position:relative;height:100svh;min-height:600px;
+  overflow:hidden;display:flex;align-items:flex-end;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('https://hq-member-portal-s8xr.vercel.app/landing/hq-hero-lounge-warm.jpg')
+    center center/cover no-repeat;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    100deg,
+    rgba(10,10,10,.95) 0%,
+    rgba(10,10,10,.80) 40%,
+    rgba(10,10,10,.25) 100%
+  );
+}
+.hero-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 24% 0%,rgba(212,175,55,.06) 0%,transparent 52%);
+}
+.hero-content{
+  position:relative;z-index:1;width:100%;
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,6vw,4rem) clamp(3.5rem,8vh,6.5rem);
+}
+.hero-eyebrow{
+  font-size:.6875rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--brass);margin-bottom:1.25rem;
+  opacity:0;transform:translateY(10px);
+}
+.hero-h1{
+  font-family:var(--serif);
+  font-size:clamp(2.25rem,6.5vw,5.75rem);
+  font-weight:400;line-height:1.05;letter-spacing:-.01em;
+  max-width:14ch;margin-bottom:1.5rem;
+  opacity:0;transform:translateY(18px);
+}
+.hero-sub{
+  font-size:clamp(.875rem,1.4vw,1.0625rem);
+  color:var(--paper-dim);max-width:46ch;
+  line-height:1.7;margin-bottom:2.25rem;
+  opacity:0;transform:translateY(12px);
+}
+.hero-ctas{
+  display:flex;gap:.875rem;flex-wrap:wrap;
+  opacity:0;transform:translateY(10px);
+}
+.btn-solid{
+  display:inline-block;font-family:var(--sans);
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.8125rem 1.875rem;
+  background:var(--oxblood);color:var(--paper);
+  transition:background .2s;cursor:pointer;
+}
+.btn-solid:hover{background:var(--oxblood-hi);}
+.btn-outline{
+  display:inline-block;font-family:var(--sans);
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.8125rem 1.875rem;
+  background:transparent;color:var(--paper-dim);
+  border:1px solid rgba(237,232,221,.28);
+  transition:border-color .2s,color .2s;cursor:pointer;
+}
+.btn-outline:hover{border-color:rgba(237,232,221,.7);color:var(--paper);}
+
+/* hero animate (fires after loader) */
+.hero-live .hero-eyebrow{animation:hRise .65s cubic-bezier(.2,.6,.2,1) .08s forwards;}
+.hero-live .hero-h1    {animation:hRise .8s  cubic-bezier(.2,.6,.2,1) .22s forwards;}
+.hero-live .hero-sub   {animation:hRise .65s cubic-bezier(.2,.6,.2,1) .38s forwards;}
+.hero-live .hero-ctas  {animation:hRise .65s cubic-bezier(.2,.6,.2,1) .52s forwards;}
+@keyframes hRise{to{opacity:1;transform:none;}}
+
+/* ── SECTION FRAME ──────────────────────────────────────────────────── */
+.sec{padding:clamp(5rem,10vw,9rem) clamp(1.25rem,6vw,4rem);}
+.sec-inner{max-width:1200px;margin:0 auto;}
+.sec-label{
+  display:flex;align-items:center;gap:.75rem;
+  font-size:.6875rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--brass);margin-bottom:1.25rem;
+}
+.sec-label::before{content:'';display:block;width:22px;height:1px;background:var(--brass);}
+
+/* ── SCROLL REVEAL ──────────────────────────────────────────────────── */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .75s cubic-bezier(.2,.6,.2,1),transform .75s cubic-bezier(.2,.6,.2,1);}
+.rv.in{opacity:1;transform:none;}
+.rv.d1{transition-delay:.08s;}.rv.d2{transition-delay:.18s;}
+.rv.d3{transition-delay:.28s;}.rv.d4{transition-delay:.38s;}
+
+/* ── MANIFESTO ──────────────────────────────────────────────────────── */
+#manifesto{background:var(--surface);}
+.mfst-layout{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:3rem 6rem;align-items:start;
+}
+@media(max-width:760px){.mfst-layout{grid-template-columns:1fr;gap:2rem;}}
+.mfst-qmark{
+  font-family:var(--serif);font-size:5rem;line-height:1;
+  color:var(--brass);opacity:.22;
+  display:block;margin-bottom:-.75rem;
+}
+.mfst-headline{
+  font-family:var(--serif);
+  font-size:clamp(1.75rem,3.5vw,3rem);
+  font-weight:400;font-style:italic;
+  line-height:1.18;
+}
+/* Per-line clip reveal */
+.ml{overflow:hidden;padding-bottom:.06em;}
+.ml-i{display:block;transform:translateY(108%);transition:transform .9s cubic-bezier(.2,.6,.2,1);}
+.ml.in .ml-i{transform:none;}
+.ml:nth-child(2) .ml-i{transition-delay:.1s;}
+.ml:nth-child(3) .ml-i{transition-delay:.2s;}
+.ml:nth-child(4) .ml-i{transition-delay:.3s;}
+
+.mfst-col{display:flex;flex-direction:column;gap:1.75rem;justify-content:center;}
+.mfst-p{font-size:1.0625rem;color:var(--paper-dim);line-height:1.75;max-width:46ch;}
+
+/* ── MEMBERSHIP – ARCHES ────────────────────────────────────────────── */
+#membership{background:#0d0d0d;}
+.mbr-intro{margin-bottom:3.5rem;max-width:600px;}
+.mbr-h2{
+  font-family:var(--serif);
+  font-size:clamp(1.625rem,3vw,2.375rem);
+  font-weight:400;line-height:1.2;margin-bottom:1rem;
+}
+.mbr-sub{font-size:1rem;color:var(--paper-dim);line-height:1.65;}
+
+.arches{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1.25rem;align-items:end;
+}
+@media(max-width:860px){.arches{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.arches{grid-template-columns:repeat(2,1fr);gap:.75rem;}}
+
+.arch-item{display:flex;flex-direction:column;}
+.arch-svg{width:100%;height:auto;display:block;}
+.arch-meta{padding-top:1.125rem;}
+.arch-step{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin-bottom:.4rem;}
+.arch-name{font-family:var(--serif);font-size:1.0625rem;font-weight:400;margin-bottom:.375rem;}
+.arch-desc{font-size:.8125rem;color:var(--paper-dim);line-height:1.6;}
+
+/* ── PILLARS ────────────────────────────────────────────────────────── */
+#pillars{background:var(--bg);}
+.pillars-intro{margin-bottom:3.5rem;}
+.pillars-h2{
+  font-family:var(--serif);
+  font-size:clamp(1.625rem,3vw,2.375rem);
+  font-weight:400;line-height:1.2;
+}
+.pillars-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid rgba(184,155,94,.14);
+}
+@media(max-width:860px){.pillars-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:440px){.pillars-grid{grid-template-columns:1fr;}}
+.pillar{
+  padding:2.25rem 1.875rem 2rem;
+  border-right:1px solid rgba(184,155,94,.14);
+  display:flex;flex-direction:column;
+  transition:background .3s;
+}
+.pillar:last-child{border-right:none;}
+@media(max-width:860px){
+  .pillar:nth-child(2){border-right:none;}
+  .pillar:nth-child(1),
+  .pillar:nth-child(2){border-bottom:1px solid rgba(184,155,94,.14);}
+}
+.pillar:hover{background:rgba(184,155,94,.035);}
+.pillar-icon{width:32px;height:32px;color:var(--brass);margin-bottom:1.5rem;flex-shrink:0;}
+.pillar-num{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(184,155,94,.45);margin-bottom:.375rem;}
+.pillar-kw{font-family:var(--serif);font-size:1.5rem;font-weight:400;line-height:1.15;margin-bottom:.25rem;}
+.pillar-title{font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:1.25rem;}
+.pillar-aph{
+  font-size:.875rem;font-style:italic;color:var(--paper-dim);line-height:1.7;
+  border-top:1px solid rgba(184,155,94,.1);padding-top:1.125rem;
+  margin-top:auto;
+}
+
+/* ── THE SPACE ──────────────────────────────────────────────────────── */
+#space{background:var(--lift);}
+.space-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+@media(max-width:760px){.space-grid{grid-template-columns:1fr;gap:2.5rem;}}
+.space-h2{
+  font-family:var(--serif);
+  font-size:clamp(1.625rem,3vw,2.375rem);
+  font-weight:400;line-height:1.2;margin-bottom:2rem;
+}
+.space-rooms{list-style:none;display:flex;flex-direction:column;}
+.space-room{
+  display:flex;align-items:center;gap:.875rem;
+  padding:1rem 0;font-size:.9375rem;
+  border-bottom:1px solid rgba(184,155,94,.1);
+}
+.space-room:first-child{border-top:1px solid rgba(184,155,94,.1);}
+.room-pip{width:3px;height:3px;border-radius:50%;background:var(--brass);flex-shrink:0;}
+.space-note{
+  font-size:.8125rem;color:var(--paper-dim);
+  line-height:1.65;margin-top:1.5rem;
+}
+/* Image placeholder with subtle brick-like texture lines */
+.space-img-block{
+  aspect-ratio:4/5;
+  background:var(--surface);
+  border:1px solid rgba(184,155,94,.1);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.space-img-block::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(180deg,rgba(255,255,255,.04) 0px,rgba(255,255,255,.04) 1px,transparent 1px,transparent 22px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0px,rgba(255,255,255,.025) 1px,transparent 1px,transparent 64px);
+  background-size:64px 23px,64px 23px;
+}
+.space-img-label{
+  position:relative;font-size:.6875rem;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(184,155,94,.28);text-align:center;
+}
+
+/* ── THE HOUSE ──────────────────────────────────────────────────────── */
+#house{background:var(--surface);}
+.house-h2{
+  font-family:var(--serif);
+  font-size:clamp(1.625rem,3vw,2.375rem);
+  font-weight:400;line-height:1.2;
+  max-width:18ch;margin-bottom:3rem;
+}
+.house-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+@media(max-width:860px){.house-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:440px){.house-grid{grid-template-columns:1fr;}}
+.house-item{}
+.hi-name{
+  font-family:var(--serif);font-size:1.125rem;font-weight:400;
+  margin-bottom:.75rem;padding-bottom:.75rem;
+  border-bottom:1px solid rgba(184,155,94,.15);
+}
+.hi-text{font-size:.875rem;color:var(--paper-dim);line-height:1.7;}
+
+/* ── CLOSING ────────────────────────────────────────────────────────── */
+#closing{
+  background:var(--bg);
+  padding-top:clamp(7rem,14vw,11rem);
+  padding-bottom:clamp(7rem,14vw,11rem);
+  padding-left:clamp(1.25rem,6vw,4rem);
+  padding-right:clamp(1.25rem,6vw,4rem);
+}
+.closing-inner{max-width:1200px;margin:0 auto;text-align:center;}
+.closing-q{
+  font-family:var(--serif);
+  font-size:clamp(1.625rem,3.5vw,3rem);
+  font-style:italic;font-weight:400;
+  line-height:1.25;max-width:22ch;
+  margin:0 auto 1.75rem;
+}
+.closing-note{
+  font-size:.9375rem;color:var(--paper-dim);
+  max-width:42ch;margin:0 auto 2.5rem;line-height:1.7;
+}
+
+/* ── FOOTER ─────────────────────────────────────────────────────────── */
+footer{
+  background:#080808;
+  border-top:1px solid rgba(184,155,94,.1);
+  padding:2.5rem clamp(1.25rem,6vw,4rem);
+}
+.ftr{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  gap:1.5rem;align-items:center;
+}
+@media(max-width:580px){.ftr{grid-template-columns:1fr;}}
+.ftr-logo{height:20px;width:auto;filter:invert(1) brightness(.5);}
+.ftr-tag{
+  font-family:var(--serif);font-style:italic;font-size:.875rem;
+  color:var(--paper-dim);text-align:center;white-space:nowrap;
+}
+.ftr-meta{
+  text-align:right;font-size:.6875rem;letter-spacing:.04em;
+  color:rgba(237,232,221,.28);line-height:1.75;
+}
+@media(max-width:580px){.ftr-tag,.ftr-meta{text-align:left;}}
+
+/* ── REDUCED MOTION ─────────────────────────────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  .hero-eyebrow,.hero-h1,.hero-sub,.hero-ctas{opacity:1!important;transform:none!important;animation:none!important;}
+  .rv{opacity:1;transform:none;}
+  .ml-i{transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <img src="https://hq-member-portal-s8xr.vercel.app/brand/hq-charcoal-cropped.png" alt="HQ">
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#"><img class="nav-logo" src="https://hq-member-portal-s8xr.vercel.app/brand/hq-charcoal-cropped.png" alt="HQ"></a>
+  <ul class="nav-links">
+    <li><a href="#manifesto">The Club</a></li>
+    <li><a href="#membership">Membership</a></li>
+    <li><a href="#space">The Space</a></li>
+    <li><a href="#house">The House</a></li>
+  </ul>
+  <a class="nav-btn" href="#closing">Request Membership</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero" aria-label="Hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Provo, Utah · Summer 2026</p>
+    <h1 class="hero-h1">The long game has a room.</h1>
+    <p class="hero-sub">A private, referral-first club for builders, stewards, and long-horizon thinkers who value discipline, discretion, and signal over noise.</p>
+    <div class="hero-ctas">
+      <a href="#closing" class="btn-solid">Request Membership</a>
+      <a href="#membership" class="btn-outline">How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── MANIFESTO ── -->
+<section id="manifesto" class="sec">
+  <div class="sec-inner">
+    <div class="sec-label rv">The Club</div>
+    <div class="mfst-layout">
+      <div>
+        <span class="mfst-qmark rv">"</span>
+        <h2 class="mfst-headline" id="mfst-head">
+          <span class="ml"><span class="ml-i">A room for builders,</span></span>
+          <span class="ml"><span class="ml-i">stewards, and</span></span>
+          <span class="ml"><span class="ml-i">long-horizon thinkers.</span></span>
+        </h2>
+      </div>
+      <div class="mfst-col rv d2">
+        <p class="mfst-p">None of us choose where we begin. We are responsible for what we build. The club is a deliberate answer to noisy rooms, hurried decisions, and transactional networks.</p>
+        <p class="mfst-p">It is a place to gather with signal, reflect with discipline, create work worth inheriting, and renew the clarity required for the next summit.</p>
+        <p class="mfst-p" style="font-style:italic;color:var(--brass);opacity:.85;font-family:var(--serif);font-size:1rem;">"Some rooms change the trajectory of a life."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MEMBERSHIP – ARCHES ── -->
+<section id="membership" class="sec">
+  <div class="sec-inner">
+    <div class="sec-label rv">How to Join</div>
+    <div class="mbr-intro rv d1">
+      <h2 class="mbr-h2">The front door is intentionally narrow.</h2>
+      <p class="mbr-sub">Applications are built to collect the right signal: referral, professional context, intent, contribution, and signed standards.</p>
+    </div>
+
+    <div class="arches">
+
+      <!-- ARCH 01 -->
+      <div class="arch-item rv d1">
+        <svg class="arch-svg" viewBox="0 0 200 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="ag1" cx="50%" cy="15%" r="55%">
+              <stop offset="0%" stop-color="#b89b5e" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="#b89b5e" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- Piers -->
+          <rect x="10" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="162" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <!-- Capitals -->
+          <rect x="4"   y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="156" y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <!-- Arch ring: center (100,128), inner r=62, outer r=90 -->
+          <!-- Outer arc M(10,128) → A90 → (190,128), step to (162,128), inner arc A62 reversed → (38,128) -->
+          <path d="M 10 128 A 90 90 0 0 1 190 128 L 162 128 A 62 62 0 0 0 38 128 Z"
+                fill="#1c1c1c" stroke="#b89b5e" stroke-width="0.5"/>
+          <!-- Voussoir joints (center 100,128; r_inner=62, r_outer=90) -->
+          <!-- θ=30° cos=.866 sin=.5: inner(153.7,97) outer(177.9,83) -->
+          <line x1="153.7" y1="97"   x2="177.9" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <!-- θ=50° cos=.643 sin=.766: inner(139.9,80.5) outer(157.9,59.1) -->
+          <line x1="139.9" y1="80.5" x2="157.9" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <!-- θ=70° cos=.342 sin=.940: inner(121.2,69.7) outer(130.8,43.4) -->
+          <line x1="121.2" y1="69.7" x2="130.8" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <!-- θ=90° keystone: inner(100,66) outer(100,38) -->
+          <line x1="100"   y1="66"   x2="100"   y2="38"   stroke="#b89b5e" stroke-width="0.65" opacity="0.8"/>
+          <polygon points="96,41 100,33 104,41" fill="#b89b5e" opacity="0.72"/>
+          <!-- Symmetric -->
+          <line x1="78.8" y1="69.7" x2="69.2" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="60.1" y1="80.5" x2="42.1" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="46.3" y1="97"   x2="22.1" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <!-- Void (dark interior under arch) -->
+          <path d="M 38 290 L 38 128 A 62 62 0 0 1 162 128 L 162 290 Z" fill="#090909"/>
+          <!-- Crown glow -->
+          <ellipse cx="100" cy="82" rx="46" ry="32" fill="url(#ag1)"/>
+          <!-- Step numeral -->
+          <text x="100" y="180" text-anchor="middle"
+                font-family="'Playfair Display',serif" font-size="38"
+                fill="#b89b5e" opacity="0.1" font-style="italic">01</text>
+        </svg>
+        <div class="arch-meta">
+          <div class="arch-step">Step 01</div>
+          <div class="arch-name">Referral</div>
+          <div class="arch-desc">A current member establishes the first signal of trust.</div>
+        </div>
+      </div>
+
+      <!-- ARCH 02 -->
+      <div class="arch-item rv d2">
+        <svg class="arch-svg" viewBox="0 0 200 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="ag2" cx="50%" cy="15%" r="55%">
+              <stop offset="0%" stop-color="#b89b5e" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="#b89b5e" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect x="10" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="162" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="4"   y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="156" y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <path d="M 10 128 A 90 90 0 0 1 190 128 L 162 128 A 62 62 0 0 0 38 128 Z"
+                fill="#1c1c1c" stroke="#b89b5e" stroke-width="0.5"/>
+          <line x1="153.7" y1="97"   x2="177.9" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="139.9" y1="80.5" x2="157.9" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="121.2" y1="69.7" x2="130.8" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="100"   y1="66"   x2="100"   y2="38"   stroke="#b89b5e" stroke-width="0.65" opacity="0.8"/>
+          <polygon points="96,41 100,33 104,41" fill="#b89b5e" opacity="0.72"/>
+          <line x1="78.8" y1="69.7" x2="69.2" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="60.1" y1="80.5" x2="42.1" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="46.3" y1="97"   x2="22.1" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <path d="M 38 290 L 38 128 A 62 62 0 0 1 162 128 L 162 290 Z" fill="#090909"/>
+          <ellipse cx="100" cy="82" rx="46" ry="32" fill="url(#ag2)"/>
+          <text x="100" y="180" text-anchor="middle"
+                font-family="'Playfair Display',serif" font-size="38"
+                fill="#b89b5e" opacity="0.1" font-style="italic">02</text>
+        </svg>
+        <div class="arch-meta">
+          <div class="arch-step">Step 02</div>
+          <div class="arch-name">Application</div>
+          <div class="arch-desc">Profile, intent, contribution, and standards reviewed together.</div>
+        </div>
+      </div>
+
+      <!-- ARCH 03 -->
+      <div class="arch-item rv d3">
+        <svg class="arch-svg" viewBox="0 0 200 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="ag3" cx="50%" cy="15%" r="55%">
+              <stop offset="0%" stop-color="#b89b5e" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="#b89b5e" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect x="10" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="162" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="4"   y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="156" y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <path d="M 10 128 A 90 90 0 0 1 190 128 L 162 128 A 62 62 0 0 0 38 128 Z"
+                fill="#1c1c1c" stroke="#b89b5e" stroke-width="0.5"/>
+          <line x1="153.7" y1="97"   x2="177.9" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="139.9" y1="80.5" x2="157.9" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="121.2" y1="69.7" x2="130.8" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="100"   y1="66"   x2="100"   y2="38"   stroke="#b89b5e" stroke-width="0.65" opacity="0.8"/>
+          <polygon points="96,41 100,33 104,41" fill="#b89b5e" opacity="0.72"/>
+          <line x1="78.8" y1="69.7" x2="69.2" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="60.1" y1="80.5" x2="42.1" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <line x1="46.3" y1="97"   x2="22.1" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.55"/>
+          <path d="M 38 290 L 38 128 A 62 62 0 0 1 162 128 L 162 290 Z" fill="#090909"/>
+          <ellipse cx="100" cy="82" rx="46" ry="32" fill="url(#ag3)"/>
+          <text x="100" y="180" text-anchor="middle"
+                font-family="'Playfair Display',serif" font-size="38"
+                fill="#b89b5e" opacity="0.1" font-style="italic">03</text>
+        </svg>
+        <div class="arch-meta">
+          <div class="arch-step">Step 03</div>
+          <div class="arch-name">Agreement</div>
+          <div class="arch-desc">Confidentiality, conduct, and member discretion confirmed.</div>
+        </div>
+      </div>
+
+      <!-- ARCH 04 -->
+      <div class="arch-item rv d4">
+        <svg class="arch-svg" viewBox="0 0 200 290" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="ag4" cx="50%" cy="10%" r="60%">
+              <stop offset="0%" stop-color="#d4af37" stop-opacity="0.35"/>
+              <stop offset="60%" stop-color="#b89b5e" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#b89b5e" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect x="10" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="162" y="128" width="28" height="162" fill="#1a1a1a" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="4"   y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <rect x="156" y="120" width="40" height="11" fill="#202020" stroke="#b89b5e" stroke-width="0.5"/>
+          <path d="M 10 128 A 90 90 0 0 1 190 128 L 162 128 A 62 62 0 0 0 38 128 Z"
+                fill="#1c1c1c" stroke="#b89b5e" stroke-width="0.5"/>
+          <line x1="153.7" y1="97"   x2="177.9" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.65"/>
+          <line x1="139.9" y1="80.5" x2="157.9" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.65"/>
+          <line x1="121.2" y1="69.7" x2="130.8" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.65"/>
+          <line x1="100"   y1="66"   x2="100"   y2="38"   stroke="#d4af37" stroke-width="0.7"  opacity="0.9"/>
+          <polygon points="96,41 100,33 104,41" fill="#d4af37" opacity="0.88"/>
+          <line x1="78.8" y1="69.7" x2="69.2" y2="43.4" stroke="#b89b5e" stroke-width="0.4" opacity="0.65"/>
+          <line x1="60.1" y1="80.5" x2="42.1" y2="59.1" stroke="#b89b5e" stroke-width="0.4" opacity="0.65"/>
+          <line x1="46.3" y1="97"   x2="22.1" y2="83"   stroke="#b89b5e" stroke-width="0.4" opacity="0.65"/>
+          <path d="M 38 290 L 38 128 A 62 62 0 0 1 162 128 L 162 290 Z" fill="#090909"/>
+          <ellipse cx="100" cy="78" rx="52" ry="38" fill="url(#ag4)"/>
+          <text x="100" y="180" text-anchor="middle"
+                font-family="'Playfair Display',serif" font-size="38"
+                fill="#b89b5e" opacity="0.12" font-style="italic">04</text>
+        </svg>
+        <div class="arch-meta">
+          <div class="arch-step">Step 04</div>
+          <div class="arch-name">Access</div>
+          <div class="arch-desc">Approved members enter the private portal and the physical space.</div>
+        </div>
+      </div>
+
+    </div><!-- /arches -->
+  </div>
+</section>
+
+<!-- ── PILLARS ── -->
+<section id="pillars" class="sec">
+  <div class="sec-inner">
+    <div class="pillars-intro rv">
+      <div class="sec-label">Four Pillars</div>
+      <h2 class="pillars-h2">A deliberate answer to noisy rooms.</h2>
+    </div>
+    <div class="pillars-grid">
+
+      <!-- Gather -->
+      <div class="pillar rv d1">
+        <!-- Node cluster icon -->
+        <svg class="pillar-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="16" cy="8"  r="2.5"/>
+          <circle cx="26" cy="22" r="2.5"/>
+          <circle cx="6"  cy="22" r="2.5"/>
+          <line x1="16" y1="10.5" x2="24" y2="20"/>
+          <line x1="16" y1="10.5" x2="8"  y2="20"/>
+          <line x1="8.5" y1="22" x2="23.5" y2="22"/>
+        </svg>
+        <div>
+          <div class="pillar-num">01</div>
+          <div class="pillar-kw">Gather</div>
+          <div class="pillar-title">Curated Signal</div>
+        </div>
+        <div class="pillar-aph">"A bundle of matches makes it harder to break."</div>
+      </div>
+
+      <!-- Reflect -->
+      <div class="pillar rv d2">
+        <!-- Eye / lens icon -->
+        <svg class="pillar-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M 4 16 Q 16 4 28 16 Q 16 28 4 16 Z"/>
+          <circle cx="16" cy="16" r="3.5"/>
+          <line x1="16" y1="4"  x2="16" y2="7"  stroke-width=".8" opacity=".5"/>
+          <line x1="16" y1="25" x2="16" y2="28" stroke-width=".8" opacity=".5"/>
+        </svg>
+        <div>
+          <div class="pillar-num">02</div>
+          <div class="pillar-kw">Reflect</div>
+          <div class="pillar-title">Sanctuary with Edge</div>
+        </div>
+        <div class="pillar-aph">"In order to do good, we must be aware of who we are."</div>
+      </div>
+
+      <!-- Create -->
+      <div class="pillar rv d3">
+        <!-- Compass icon -->
+        <svg class="pillar-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="16" cy="7" r="2.25"/>
+          <line x1="16" y1="9.25" x2="10" y2="28"/>
+          <line x1="16" y1="9.25" x2="22" y2="28"/>
+          <line x1="8.5" y1="21" x2="23.5" y2="21"/>
+        </svg>
+        <div>
+          <div class="pillar-num">03</div>
+          <div class="pillar-kw">Create</div>
+          <div class="pillar-title">Work Worth Inheriting</div>
+        </div>
+        <div class="pillar-aph">"We are responsible for what we build."</div>
+      </div>
+
+      <!-- Renew -->
+      <div class="pillar rv d4">
+        <!-- Circular arc / renew icon -->
+        <svg class="pillar-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M 26 16 A 10 10 0 1 1 16 6"/>
+          <polyline points="12,4 16,8 12,12"/>
+        </svg>
+        <div>
+          <div class="pillar-num">04</div>
+          <div class="pillar-kw">Renew</div>
+          <div class="pillar-title">Clarity as Advantage</div>
+        </div>
+        <div class="pillar-aph">"We must renew ourselves emotionally, spiritually, mentally, and intellectually."</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── THE SPACE ── -->
+<section id="space" class="sec">
+  <div class="sec-inner">
+    <div class="space-grid">
+      <div>
+        <div class="sec-label rv">The Space</div>
+        <h2 class="space-h2 rv d1">A room designed for the long game.</h2>
+        <ul class="space-rooms rv d2">
+          <li class="space-room"><span class="room-pip"></span>Twelve-seat boardroom</li>
+          <li class="space-room"><span class="room-pip"></span>Intimate meeting room</li>
+          <li class="space-room"><span class="room-pip"></span>Flexible gathering space</li>
+          <li class="space-room"><span class="room-pip"></span>Private focus pods</li>
+          <li class="space-room"><span class="room-pip"></span>Recovery suites</li>
+        </ul>
+        <p class="space-note rv d3">The Southworth Block, built 1900. Warm brick, hand-hewn timber, structural steel.<br>104 W Center Street · Provo, Utah<br>Monday – Saturday · 8 AM – 10 PM</p>
+      </div>
+      <div class="space-img-block rv d2">
+        <span class="space-img-label">Interior photography forthcoming</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE HOUSE ── -->
+<section id="house" class="sec">
+  <div class="sec-inner">
+    <div class="sec-label rv">The House</div>
+    <h2 class="house-h2 rv d1">Rules that protect the room.</h2>
+    <div class="house-grid">
+      <div class="house-item rv d1">
+        <div class="hi-name">Confidentiality</div>
+        <p class="hi-text">What happens in the room stays there. An absolute no-photo policy ensures a true sanctuary.</p>
+      </div>
+      <div class="house-item rv d2">
+        <div class="hi-name">Discretion</div>
+        <p class="hi-text">Members exercise judgment in all things. The club's reputation is the sum of each member's conduct.</p>
+      </div>
+      <div class="house-item rv d3">
+        <div class="hi-name">Conduct</div>
+        <p class="hi-text">The standard is not a rulebook. It is an expectation — written, signed, and understood before entry.</p>
+      </div>
+      <div class="house-item rv d4">
+        <div class="hi-name">Management</div>
+        <p class="hi-text">The club is a place, not a platform. Staff are professional, discreet, and invisible when needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLOSING ── -->
+<section id="closing" class="sec">
+  <div class="closing-inner">
+    <div class="sec-label rv" style="justify-content:center;">Membership</div>
+    <blockquote class="closing-q rv d1">"The door is closed to the public. It is open to you."</blockquote>
+    <p class="closing-note rv d2">Not everyone who applies will be invited. Not everyone invited will apply. Equity membership. Limited to 400.</p>
+    <div class="rv d3"><a href="#" class="btn-solid" style="display:inline-block;">Request Membership</a></div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="ftr">
+    <img class="ftr-logo" src="https://hq-member-portal-s8xr.vercel.app/brand/hq-charcoal-cropped.png" alt="HQ">
+    <div class="ftr-tag">"Clarity is the ultimate competitive advantage."</div>
+    <div class="ftr-meta">104 W Center Street<br>Provo, Utah · Summer 2026</div>
+  </div>
+</footer>
+
+<script>
+// Loader → hero
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    document.getElementById('loader').classList.add('out');
+    document.getElementById('hero').classList.add('hero-live');
+  }, 1700);
+});
+
+// Nav scroll state
+(function () {
+  var nav = document.getElementById('nav');
+  function upd() { nav.classList.toggle('scrolled', window.scrollY > 40); }
+  window.addEventListener('scroll', upd, { passive: true });
+  upd();
+})();
+
+// Manifesto headline line reveal
+(function () {
+  var head = document.getElementById('mfst-head');
+  if (!head) return;
+  var io = new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting) {
+      head.querySelectorAll('.ml').forEach(function (l) { l.classList.add('in'); });
+      io.disconnect();
+    }
+  }, { threshold: 0.25 });
+  io.observe(head);
+})();
+
+// General scroll reveals
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
