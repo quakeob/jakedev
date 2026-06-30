@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HQ — Private Social Sanctuary · Provo, Utah</title>
+<meta name="description" content="HQ is a private members club in the historic Southworth Block, Provo, Utah. Built for executives, founders, athletes, and creatives who value substance over spectacle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#090807;
+    --matte:#0d0c0b;
+    --warm-grey:#1e1c1a;
+    --stone:#2a2724;
+    --cream:#F3EEE3;
+    --cream-dim:rgba(243,238,227,0.62);
+    --ink:#14110E;
+    --ink-dim:rgba(20,17,14,0.62);
+    --paper:#EDE8DA;
+    --brass:#C4A15F;
+    --brass-dim:rgba(196,161,95,0.28);
+    --brick:#7B2B1B;
+    --gold-hi:#D4AF37;
+    --display:"Big Shoulders Display",Impact,sans-serif;
+    --serif:"Playfair Display",Georgia,serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--sans);
+    background:var(--void);
+    color:var(--cream);
+    line-height:1.6;
+    overflow-x:hidden;
+    font-weight:300;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- shared helpers ---------- */
+  .wrap{width:min(1320px,92vw);margin-inline:auto}
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+    font-weight:500;color:var(--brass);
+  }
+  .display{font-family:var(--display);font-weight:800;line-height:.9;text-transform:uppercase}
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ghost watermark */
+  .ghost{
+    position:absolute;font-family:var(--display);font-weight:800;text-transform:uppercase;
+    line-height:.8;letter-spacing:-.02em;pointer-events:none;user-select:none;white-space:nowrap;
+    opacity:0;transition:opacity 1.4s ease;z-index:0;
+  }
+  .ghost.in{opacity:var(--ghost-target,.08)}
+
+  /* ---------- LOADER ---------- */
+  #loader{
+    position:fixed;inset:0;z-index:2000;background:var(--void);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .8s ease,visibility .8s ease;
+  }
+  #loader img{width:140px;opacity:0;animation:loaderIn 1.1s ease forwards}
+  #loader.done{opacity:0;visibility:hidden}
+  @keyframes loaderIn{0%{opacity:0;transform:translateY(8px)}30%{opacity:1;transform:none}100%{opacity:1}}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.1rem clamp(1rem,4vw,2.6rem);
+    transition:background .45s ease,border-color .45s ease,padding .45s ease;
+    border-bottom:1px solid transparent;
+  }
+  nav.solid{background:rgba(9,8,7,.92);border-bottom:1px solid var(--brass-dim);padding-top:.85rem;padding-bottom:.85rem}
+  nav .logo img{height:30px}
+  nav ul{list-style:none;display:flex;gap:2.1rem;align-items:center}
+  nav ul a{
+    font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500;
+    color:var(--cream-dim);transition:color .3s ease;padding:.5rem 0;
+  }
+  nav ul a:hover{color:var(--cream)}
+  .nav-cta{
+    background:var(--brick);color:var(--cream);
+    font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+    padding:.95rem 1.4rem;border-radius:0;transition:background .3s ease;
+    display:inline-flex;align-items:center;min-height:44px;
+  }
+  .nav-cta:hover{background:#8f3220}
+  .nav-toggle{display:none;background:none;border:none;color:var(--cream);cursor:pointer;padding:.6rem;min-height:44px;min-width:44px}
+  .nav-toggle svg{width:24px;height:24px}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;min-height:100svh;display:flex;align-items:flex-end;
+    background:url("../assets/hq-exterior-hero-light.png") center/cover no-repeat;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(105deg,rgba(9,8,7,0.70) 0%,rgba(9,8,7,0.40) 50%,rgba(9,8,7,0.08) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;width:100%;padding:0 clamp(1rem,4vw,2.6rem) clamp(3rem,7vh,6rem)}
+  .hero-content{max-width:55%}
+  .hero h1{
+    font-family:var(--display);font-weight:800;text-transform:uppercase;
+    font-size:clamp(3.5rem,8vw,8rem);line-height:.86;letter-spacing:-.01em;
+    margin:1.4rem 0 1.6rem;
+  }
+  .hero h1 .gold{color:var(--gold-hi);display:block}
+  .hero .sub{font-weight:300;color:var(--cream-dim);max-width:44ch;font-size:1.05rem;line-height:1.65}
+  .hero-ctas{display:flex;gap:1rem;margin-top:2.2rem;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;min-height:44px;
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+    padding:1.05rem 1.8rem;border-radius:0;transition:all .3s ease;cursor:pointer;
+  }
+  .btn-brick{background:var(--brick);color:var(--cream)}
+  .btn-brick:hover{background:#8f3220}
+  .btn-outline{background:transparent;color:var(--cream);border:1px solid var(--brass-dim)}
+  .btn-outline:hover{border-color:var(--brass);color:var(--brass)}
+  .hero-vert{
+    position:absolute;right:clamp(.4rem,2vw,1.6rem);top:50%;z-index:2;
+    transform:translateY(-50%) rotate(90deg);transform-origin:right center;
+    color:var(--brass);font-family:var(--display);font-weight:700;text-transform:uppercase;
+    font-size:clamp(1rem,1.5vw,1.6rem);letter-spacing:.6em;white-space:nowrap;opacity:.85;
+  }
+  /* hero stagger */
+  .hero-content > *{opacity:0;transform:translateY(22px)}
+  body.loaded .hero-content > *{animation:heroUp .9s cubic-bezier(.2,.7,.2,1) forwards}
+  body.loaded .hero-content > *:nth-child(1){animation-delay:.05s}
+  body.loaded .hero-content > *:nth-child(2){animation-delay:.18s}
+  body.loaded .hero-content > *:nth-child(3){animation-delay:.31s}
+  body.loaded .hero-content > *:nth-child(4){animation-delay:.44s}
+  @keyframes heroUp{to{opacity:1;transform:none}}
+
+  /* ---------- FEATURE CARD BAND ---------- */
+  .features{background:var(--matte);padding:0;border-top:1px solid var(--brass-dim)}
+  .features-grid{display:grid;grid-template-columns:repeat(5,1fr)}
+  .fcard{
+    background:var(--stone);border-left:1px solid var(--brass-dim);
+    padding:2.4rem 1.5rem 2.2rem;display:flex;flex-direction:column;gap:1rem;min-height:230px;
+    transition:background .35s ease;
+  }
+  .fcard:first-child{border-left:none}
+  .fcard:hover{background:#322e29}
+  .fcard svg{width:34px;height:34px;stroke:var(--brass);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .fcard .flabel{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:var(--cream);margin-top:.4rem}
+  .fcard .fdesc{font-size:.82rem;color:var(--cream-dim);font-weight:300;line-height:1.5}
+
+  /* ---------- HOUSE SECTION ---------- */
+  .house{position:relative;background:var(--warm-grey);overflow:hidden;padding:clamp(4rem,9vh,8rem) 0}
+  .house .ghost{--ghost-target:.08;color:var(--brass);font-size:30vw;top:50%;left:-2vw;transform:translateY(-50%)}
+  .house-inner{position:relative;z-index:2;display:grid;grid-template-columns:45% 55%;gap:0;align-items:stretch}
+  .house-text{padding:0 clamp(1rem,4vw,2.6rem) 0 clamp(1rem,4vw,2.6rem)}
+  .house-text h2{font-size:.82rem;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--cream);margin-bottom:1.2rem}
+  .house-text .intro{color:var(--cream-dim);font-weight:300;max-width:42ch;margin-bottom:2.4rem}
+  .pillar-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--brass-dim)}
+  .pcell{background:var(--warm-grey);padding:1.6rem 1.4rem}
+  .pcell .pnum{font-family:var(--display);font-weight:800;font-size:1.4rem;color:var(--brass);line-height:1}
+  .pcell .pname{font-family:var(--serif);font-style:italic;font-size:1.45rem;color:var(--cream);margin:.5rem 0 .55rem}
+  .pcell .pquote{font-size:.84rem;color:var(--cream-dim);font-weight:300;line-height:1.55}
+  .house-img{position:relative;min-height:520px}
+  .house-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+  /* ---------- NUMBERED PILLAR STRIP ---------- */
+  .strip{
+    position:relative;min-height:60vh;display:flex;
+    background:url("../assets/hq-interior-lounge-light.png") center/cover no-repeat;
+  }
+  .strip::before{content:"";position:absolute;inset:0;background:rgba(9,8,7,0.65);z-index:1}
+  .strip-panels{position:relative;z-index:2;display:flex;width:100%}
+  .panel{
+    flex:1;position:relative;border-left:1px solid var(--brass-dim);
+    padding:2rem 1.6rem;display:flex;flex-direction:column;justify-content:flex-end;
+    transition:flex .5s cubic-bezier(.2,.7,.2,1),background .5s ease;min-height:60vh;
+  }
+  .panel:first-child{border-left:none}
+  .panel:hover{flex:1.3;background:rgba(196,161,95,0.06)}
+  .panel .pnum-big{
+    position:absolute;top:1.4rem;left:1.6rem;font-family:var(--display);font-weight:800;
+    font-size:4rem;color:var(--brass);opacity:.42;line-height:1;
+  }
+  .panel .vlabel{
+    position:absolute;left:.4rem;top:50%;transform:rotate(-90deg) translateX(50%);transform-origin:left center;
+    font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-dim);font-weight:500;white-space:nowrap;
+  }
+  .panel .pn-name{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:1.7rem;color:var(--cream);line-height:1;transition:font-size .5s ease}
+  .panel:hover .pn-name{font-size:2rem}
+  .panel .pn-rule{width:42px;height:1px;background:var(--brass);margin:.9rem 0}
+  .panel .pn-desc{font-size:.82rem;color:var(--cream-dim);font-weight:300;line-height:1.5;max-width:24ch}
+
+  /* ---------- STANDARD SECTION (light) ---------- */
+  .standard{position:relative;background:var(--paper);color:var(--ink);overflow:hidden;padding:clamp(4rem,9vh,8rem) 0}
+  .standard .ghost{--ghost-target:.06;color:var(--ink);font-size:26vw;top:50%;right:-2vw;transform:translateY(-50%)}
+  .standard-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:center}
+  .standard-img img{width:100%;height:100%;object-fit:cover;max-height:640px}
+  .standard-text .slogo{height:74px;margin-bottom:1.6rem}
+  .standard-text .heritage-label{font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;color:var(--brass);font-weight:500}
+  .standard-text h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.8rem,3.4vw,2.9rem);line-height:1.12;color:var(--ink);margin:1.1rem 0 1.4rem}
+  .standard-text .body{color:var(--ink-dim);font-weight:300;max-width:46ch;margin-bottom:1.8rem;line-height:1.7}
+  .detail-tags{display:flex;flex-wrap:wrap;gap:.6rem}
+  .detail-tags span{
+    font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--ink);
+    border:1px solid rgba(20,17,14,.2);padding:.55rem .85rem;border-radius:0;
+  }
+
+  /* ---------- MEMBERSHIP SECTION ---------- */
+  .membership{position:relative;background:var(--matte);overflow:hidden;padding:clamp(4rem,9vh,8rem) 0}
+  .membership .ghost{--ghost-target:.07;color:var(--brass);font-size:20vw;top:1rem;left:50%;transform:translateX(-50%)}
+  .membership-inner{position:relative;z-index:2}
+  .membership-intro{text-align:center;margin-bottom:3.2rem}
+  .membership-intro .eyebrow{display:block;margin-bottom:1rem}
+  .membership-intro h2{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(2.2rem,5vw,4.2rem);line-height:.92;color:var(--cream)}
+  .step-rows{border-top:1px solid var(--brass-dim)}
+  .srow{
+    display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:clamp(1rem,3vw,2.5rem);
+    padding:1.8rem clamp(.6rem,2vw,1.4rem);border-bottom:1px solid var(--brass-dim);
+    transition:background .35s ease,padding-left .35s ease;
+  }
+  .srow:hover{background:rgba(196,161,95,0.08);padding-left:clamp(1rem,3vw,2.2rem)}
+  .srow .snum{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--brass);line-height:1;min-width:2.2ch}
+  .srow .sname{font-size:.84rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--cream);white-space:nowrap}
+  .srow .sdesc{color:var(--cream-dim);font-weight:300;font-size:.95rem;line-height:1.55}
+  .srow .schev{color:var(--brass);font-size:1.4rem;transition:transform .35s ease}
+  .srow:hover .schev{transform:translateX(8px)}
+
+  /* ---------- INVITATION CLOSE ---------- */
+  .close{background:var(--void);padding:clamp(5rem,11vh,9rem) 0;text-align:center}
+  .close h2{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(2.6rem,8vw,6.5rem);line-height:.9;color:var(--cream)}
+  .close h2 .dim{color:rgba(243,238,227,0.22);display:block}
+  .close .body{color:var(--cream-dim);font-weight:300;max-width:54ch;margin:1.8rem auto 2.4rem;line-height:1.7}
+  .btn-gold{background:var(--brass);color:var(--ink);font-weight:500}
+  .btn-gold:hover{background:var(--gold-hi)}
+  .close .pull{font-family:var(--serif);font-style:italic;font-size:clamp(1.2rem,2.6vw,1.9rem);color:var(--cream);margin-top:3rem;opacity:.9}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:#060504;border-top:1px solid var(--brass);padding:clamp(2.5rem,5vh,3.5rem) 0}
+  .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:1.6rem;flex-wrap:wrap}
+  footer .logo img{height:30px}
+  footer ul{list-style:none;display:flex;gap:1.8rem;flex-wrap:wrap}
+  footer ul a{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--cream-dim);transition:color .3s ease;padding:.4rem 0}
+  footer ul a:hover{color:var(--cream)}
+  .footer-meta{text-align:right;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim);font-weight:400;line-height:1.7}
+  .footer-line{text-align:center;margin-top:2.4rem;font-family:var(--serif);font-style:italic;color:var(--brass);font-size:1rem;opacity:.8}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:1000px){
+    .hero-content{max-width:80%}
+    .house-inner,.standard-inner{grid-template-columns:1fr}
+    .house-img{min-height:340px}
+    .features-grid{grid-template-columns:repeat(5,minmax(180px,1fr));overflow-x:auto;scroll-snap-type:x mandatory}
+    .fcard{scroll-snap-align:start}
+    .standard-text{order:2}
+  }
+  @media (max-width:760px){
+    nav ul,.nav-cta{display:none}
+    nav.open ul{
+      display:flex;position:fixed;inset:0;background:var(--void);flex-direction:column;
+      align-items:center;justify-content:center;gap:2rem;z-index:999;
+    }
+    nav.open ul a{font-size:1.1rem}
+    .nav-toggle{display:inline-flex;align-items:center;justify-content:center;z-index:1001}
+    .hero-content{max-width:100%}
+    .hero-vert{display:none}
+    .strip-panels{flex-direction:column}
+    .panel{min-height:240px;border-left:none;border-top:1px solid var(--brass-dim)}
+    .panel:first-child{border-top:none}
+    .panel:hover{flex:1}
+    .panel .vlabel{display:none}
+    .pillar-grid{grid-template-columns:1fr}
+    .srow{grid-template-columns:auto 1fr;row-gap:.6rem}
+    .srow .sdesc{grid-column:1/-1}
+    .srow .schev{display:none}
+    .house .ghost,.standard .ghost{font-size:42vw}
+    .footer-inner{flex-direction:column;align-items:flex-start;text-align:left}
+    .footer-meta{text-align:left}
+  }
+
+  /* ---------- REDUCED MOTION ---------- */
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1!important;transform:none!important}
+    .ghost{opacity:var(--ghost-target,.08)!important}
+    .hero-content > *{opacity:1!important;transform:none!important}
+    #loader{display:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader" aria-hidden="true"><img src="../assets/hq-white.png" alt="HQ"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="logo" href="#top" aria-label="HQ home"><img src="../assets/hq-white.png" alt="HQ"></a>
+  <ul>
+    <li><a href="#house">House</a></li>
+    <li><a href="#standard">Standard</a></li>
+    <li><a href="#membership">Membership</a></li>
+    <li><a href="#provo">Provo</a></li>
+  </ul>
+  <a class="nav-cta" href="mailto:membership@hq.club?subject=HQ%20invitation%20request">Request Invitation</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+  </button>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-vert">Depth Over Reach</div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="eyebrow">Summer 2026 · Provo, Utah</span>
+      <h1>Private Social <span class="gold">Sanctuary</span></h1>
+      <p class="sub">Located in the historic Southworth Block. Built for executives, founders, athletes, and creatives who value substance over spectacle.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-brick" href="mailto:membership@hq.club?subject=HQ%20invitation%20request">Request Invitation</a>
+        <a class="btn btn-outline" href="#house">Learn More</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- FEATURE CARD BAND -->
+<section class="features" aria-label="What defines HQ">
+  <div class="features-grid">
+    <div class="fcard">
+      <svg viewBox="0 0 32 32"><rect x="4" y="9" width="24" height="16" rx="1.5"/><path d="M11 9l2-3h6l2 3"/><circle cx="16" cy="17" r="5"/><line x1="5" y1="5" x2="27" y2="29"/></svg>
+      <span class="flabel">No-Photo Policy</span>
+      <span class="fdesc">Absolute privacy guaranteed</span>
+    </div>
+    <div class="fcard">
+      <svg viewBox="0 0 32 32"><path d="M16 4l11 4v8c0 7-5 11-11 13-6-2-11-6-11-13V8l11-4z"/></svg>
+      <span class="flabel">Vetted Members</span>
+      <span class="fdesc">Referral-first selection</span>
+    </div>
+    <div class="fcard">
+      <svg viewBox="0 0 32 32"><line x1="4" y1="7" x2="28" y2="7"/><line x1="10" y1="11" x2="10" y2="27"/><line x1="22" y1="11" x2="22" y2="27"/><line x1="6" y1="27" x2="26" y2="27"/></svg>
+      <span class="flabel">Historic Space</span>
+      <span class="fdesc">Southworth Block, built 1900</span>
+    </div>
+    <div class="fcard">
+      <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><line x1="16" y1="4" x2="16" y2="8"/><line x1="16" y1="24" x2="16" y2="28"/><line x1="4" y1="16" x2="8" y2="16"/><line x1="24" y1="16" x2="28" y2="16"/><path d="M16 16l5-5-2 7-7 2z"/></svg>
+      <span class="flabel">Four Pillars</span>
+      <span class="fdesc">Gather · Reflect · Create · Renew</span>
+    </div>
+    <div class="fcard">
+      <svg viewBox="0 0 32 32"><circle cx="11" cy="11" r="5"/><line x1="14.5" y1="14.5" x2="26" y2="26"/><line x1="22" y1="22" x2="26" y2="18"/><line x1="25" y1="25" x2="29" y2="21"/></svg>
+      <span class="flabel">Equity Member</span>
+      <span class="fdesc">Capped at 400</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOUSE SECTION -->
+<section class="house" id="house">
+  <span class="ghost" data-ghost>House</span>
+  <div class="house-inner">
+    <div class="house-text reveal">
+      <h2>The Four Pillars</h2>
+      <p class="intro">A site-wide no-photo policy makes privacy a feature, not a footnote. Membership is capped and vetted so the room keeps its standard — built so members gather, reflect, create, and renew inside one private house.</p>
+      <div class="pillar-grid">
+        <div class="pcell">
+          <span class="pnum">01</span>
+          <div class="pname">Gather</div>
+          <p class="pquote">A vetted room where proximity has weight.</p>
+        </div>
+        <div class="pcell">
+          <span class="pnum">02</span>
+          <div class="pname">Reflect</div>
+          <p class="pquote">Quiet enough to step out of performance mode.</p>
+        </div>
+        <div class="pcell">
+          <span class="pnum">03</span>
+          <div class="pname">Create</div>
+          <p class="pquote">Rooms for judgment, momentum, and useful friction.</p>
+        </div>
+        <div class="pcell">
+          <span class="pnum">04</span>
+          <div class="pname">Renew</div>
+          <p class="pquote">Recovery, grooming, and rituals that sharpen the day.</p>
+        </div>
+      </div>
+    </div>
+    <div class="house-img reveal">
+      <img src="../assets/hq-interior-lounge-light.png" alt="HQ interior lounge with leather and warm amber light">
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERED PILLAR STRIP -->
+<section class="strip" aria-label="The four pillars in detail">
+  <div class="strip-panels">
+    <div class="panel">
+      <span class="pnum-big">01</span>
+      <span class="vlabel">Pillar One</span>
+      <div class="pn-name">Gather</div>
+      <div class="pn-rule"></div>
+      <p class="pn-desc">A vetted room where proximity has weight.</p>
+    </div>
+    <div class="panel">
+      <span class="pnum-big">02</span>
+      <span class="vlabel">Pillar Two</span>
+      <div class="pn-name">Reflect</div>
+      <div class="pn-rule"></div>
+      <p class="pn-desc">Quiet enough to step out of performance mode.</p>
+    </div>
+    <div class="panel">
+      <span class="pnum-big">03</span>
+      <span class="vlabel">Pillar Three</span>
+      <div class="pn-name">Create</div>
+      <div class="pn-rule"></div>
+      <p class="pn-desc">Rooms for judgment, momentum, and useful friction.</p>
+    </div>
+    <div class="panel">
+      <span class="pnum-big">04</span>
+      <span class="vlabel">Pillar Four</span>
+      <div class="pn-name">Renew</div>
+      <div class="pn-rule"></div>
+      <p class="pn-desc">Recovery, grooming, and rituals that sharpen the day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STANDARD SECTION (light) -->
+<section class="standard" id="standard">
+  <span class="ghost" data-ghost>Standard</span>
+  <div class="wrap standard-inner">
+    <div class="standard-img reveal">
+      <img src="../assets/hq-invitation-still-life-light.png" alt="HQ invitation still life">
+    </div>
+    <div class="standard-text reveal">
+      <img class="slogo" src="../assets/hq-maroon-provo.png" alt="HQ Provo">
+      <span class="heritage-label">Heritage</span>
+      <h2>Southworth Block, recast as a private house.</h2>
+      <p class="body">Brick, blackened steel, walnut, mountain light, and a standard worth protecting. HQ is not a crowd. It is a closed room built for trust.</p>
+      <div class="detail-tags">
+        <span>Built 1900</span>
+        <span>Provo, Utah</span>
+        <span>Opening Summer 2026</span>
+        <span>Membership capped</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP SECTION -->
+<section class="membership" id="membership">
+  <span class="ghost" data-ghost>Membership</span>
+  <div class="wrap membership-inner">
+    <div class="membership-intro reveal">
+      <span class="eyebrow">Membership</span>
+      <h2>The door is intentionally narrow.</h2>
+    </div>
+    <div class="step-rows">
+      <div class="srow reveal">
+        <span class="snum">01</span>
+        <span class="sname">Referral</span>
+        <span class="sdesc">A current member establishes the first signal of trust.</span>
+        <span class="schev" aria-hidden="true">&rarr;</span>
+      </div>
+      <div class="srow reveal">
+        <span class="snum">02</span>
+        <span class="sname">Application</span>
+        <span class="sdesc">Profile, intent, contribution, and standards reviewed together.</span>
+        <span class="schev" aria-hidden="true">&rarr;</span>
+      </div>
+      <div class="srow reveal">
+        <span class="snum">03</span>
+        <span class="sname">Agreement</span>
+        <span class="sdesc">Confidentiality, conduct, and member discretion confirmed.</span>
+        <span class="schev" aria-hidden="true">&rarr;</span>
+      </div>
+      <div class="srow reveal">
+        <span class="snum">04</span>
+        <span class="sname">Access</span>
+        <span class="sdesc">Approved members enter the private portal and the space.</span>
+        <span class="schev" aria-hidden="true">&rarr;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVITATION CLOSE -->
+<section class="close" id="provo">
+  <div class="wrap reveal">
+    <h2>The Door Is Closed<span class="dim">To The Public.</span></h2>
+    <p class="body">Entrance is granted through member invitation or a vetted application process. Not everyone who applies will be invited. Not everyone invited will apply.</p>
+    <a class="btn btn-gold" href="mailto:membership@hq.club?subject=HQ%20invitation%20request">Request an Invitation</a>
+    <p class="pull">&ldquo;Some rooms change the trajectory of a life.&rdquo;</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap footer-inner">
+    <a class="logo" href="#top" aria-label="HQ home"><img src="../assets/hq-white.png" alt="HQ"></a>
+    <ul>
+      <li><a href="#house">House</a></li>
+      <li><a href="#standard">Standard</a></li>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#provo">Provo</a></li>
+    </ul>
+    <div class="footer-meta">
+      Southworth Block · Provo, Utah<br>
+      Opening Summer 2026
+    </div>
+  </div>
+  <div class="wrap"><p class="footer-line">Clarity is the ultimate competitive advantage.</p></div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // LOADER
+  var loader = document.getElementById('loader');
+  function finishLoad(){
+    document.body.classList.add('loaded');
+    if(loader){loader.classList.add('done');}
+  }
+  if(reduce){ finishLoad(); }
+  else { window.setTimeout(finishLoad, 1500); }
+
+  // NAV solid on scroll
+  var nav = document.getElementById('nav');
+  function onScroll(){
+    if(window.scrollY > 40){ nav.classList.add('solid'); }
+    else { nav.classList.remove('solid'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // NAV mobile toggle
+  var toggle = document.getElementById('navToggle');
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.querySelectorAll('ul a').forEach(function(a){
+      a.addEventListener('click', function(){
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+      });
+    });
+  }
+
+  // Scroll reveal + ghost fade-in via IntersectionObserver
+  var targets = document.querySelectorAll('.reveal, [data-ghost]');
+  if(reduce || !('IntersectionObserver' in window)){
+    targets.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.15, rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
