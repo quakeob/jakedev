@@ -31,27 +31,27 @@ a{color:inherit;text-decoration:none;}
            text-transform:uppercase;letter-spacing:.04em;color:var(--grey);cursor:pointer;}
 .theme-btn:hover{color:var(--text);}
 
-/* grid */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-      background:var(--border);}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:560px){.grid{grid-template-columns:1fr;}}
-
-/* card */
-.card{background:var(--bg);display:flex;flex-direction:column;}
-.card__preview{position:relative;height:260px;overflow:hidden;background:#111;}
-.card__preview iframe{width:200%;height:200%;transform:scale(.5);transform-origin:0 0;
-                       border:none;pointer-events:none;}
-.card__preview::after{content:'';position:absolute;inset:0;} /* blocks hover bleed */
-.card__meta{padding:14px 16px;display:flex;justify-content:space-between;align-items:baseline;
-            border-top:1px solid var(--border);}
-.card__name{font-family:var(--serif);font-size:14px;text-transform:none;
-            letter-spacing:0;font-weight:400;}
-.card__num{font-size:10px;color:var(--grey);}
-.card__open{display:block;padding:10px 16px;font-size:10px;color:var(--green);
-            font-style:italic;border-top:1px solid var(--border);
-            transition:background .15s;}
-.card__open:hover{background:var(--border);}
+/* featured */
+.featured{padding:32px 24px;}
+.featured__label{font-size:10px;color:var(--grey);margin-bottom:20px;
+                  display:flex;justify-content:space-between;align-items:center;}
+.featured__label a{color:var(--green);font-style:italic;}
+.featured__label a:hover{text-decoration:underline;}
+.featured__preview{position:relative;width:100%;height:0;padding-bottom:56.25%;
+                    background:#111;overflow:hidden;border:1px solid var(--border);}
+.featured__preview iframe{position:absolute;inset:0;width:200%;height:200%;
+                            transform:scale(.5);transform-origin:0 0;
+                            border:none;pointer-events:none;}
+.featured__preview::after{content:'';position:absolute;inset:0;}
+.featured__meta{margin-top:16px;display:flex;justify-content:space-between;
+                align-items:baseline;border-top:1px solid var(--border);padding-top:14px;}
+.featured__name{font-family:var(--serif);font-size:18px;text-transform:none;
+                letter-spacing:0;font-weight:400;}
+.featured__num{font-size:10px;color:var(--grey);}
+.featured__open{display:inline-block;margin-top:12px;padding:11px 20px;
+                font-size:10px;color:var(--green);font-style:italic;
+                border:1px solid var(--border);transition:background .15s;}
+.featured__open:hover{background:var(--border);}
 
 /* footer */
 .ftr{padding:16px 24px;border-top:1px solid var(--border);
@@ -64,178 +64,27 @@ a{color:inherit;text-decoration:none;}
   <a href="https://jakedev.org">Jake Davis</a>
   <span class="hdr__title">HQ — Design Review</span>
   <div class="hdr__right">
+    <a href="archive.html">Archive (01–15)</a>
     <a href="https://jakedev.org/#work">Work</a>
     <button class="theme-btn" id="tbtn" onclick="toggleTheme()">Dark</button>
   </div>
 </header>
 
-<div class="grid">
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/01-quiet-bright.html" loading="lazy" title="Quiet & Bright"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Quiet &amp; Bright</span>
-      <span class="card__num">01</span>
-    </div>
-    <a class="card__open" href="options/01-quiet-bright.html" target="_blank">Open full design →</a>
+<div class="featured">
+  <div class="featured__label">
+    <span>Current direction</span>
+    <a href="archive.html">View all past explorations →</a>
   </div>
 
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/02-the-manifesto.html" loading="lazy" title="The Manifesto"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">The Manifesto</span>
-      <span class="card__num">02</span>
-    </div>
-    <a class="card__open" href="options/02-the-manifesto.html" target="_blank">Open full design →</a>
+  <div class="featured__preview">
+    <iframe src="options/16-southworth.html" loading="lazy" title="Southworth"></iframe>
   </div>
 
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/03-the-blueprint.html" loading="lazy" title="The Blueprint"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">The Blueprint</span>
-      <span class="card__num">03</span>
-    </div>
-    <a class="card__open" href="options/03-the-blueprint.html" target="_blank">Open full design →</a>
+  <div class="featured__meta">
+    <span class="featured__name">Southworth</span>
+    <span class="featured__num">16</span>
   </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/04-dark-editorial.html" loading="lazy" title="Dark Editorial"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Dark Editorial</span>
-      <span class="card__num">04</span>
-    </div>
-    <a class="card__open" href="options/04-dark-editorial.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/05-the-charter.html" loading="lazy" title="The Charter"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">The Charter</span>
-      <span class="card__num">05</span>
-    </div>
-    <a class="card__open" href="options/05-the-charter.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/06-amber-room.html" loading="lazy" title="Amber Room"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Amber Room</span>
-      <span class="card__num">06</span>
-    </div>
-    <a class="card__open" href="options/06-amber-room.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/07-enhanced.html" loading="lazy" title="Enhanced"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Enhanced</span>
-      <span class="card__num">07</span>
-    </div>
-    <a class="card__open" href="options/07-enhanced.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/08-the-invitation.html" loading="lazy" title="The Invitation"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">The Invitation</span>
-      <span class="card__num">08</span>
-    </div>
-    <a class="card__open" href="options/08-the-invitation.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/09-industrial.html" loading="lazy" title="Industrial"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Industrial</span>
-      <span class="card__num">09</span>
-    </div>
-    <a class="card__open" href="options/09-industrial.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/10-southworth.html" loading="lazy" title="Southworth"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Southworth</span>
-      <span class="card__num">10</span>
-    </div>
-    <a class="card__open" href="options/10-southworth.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/11-fluid.html" loading="lazy" title="Fluid"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Fluid</span>
-      <span class="card__num">11</span>
-    </div>
-    <a class="card__open" href="options/11-fluid.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/12-portal.html" loading="lazy" title="Portal"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Portal</span>
-      <span class="card__num">12</span>
-    </div>
-    <a class="card__open" href="options/12-portal.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/13-direction-a.html" loading="lazy" title="Direction A"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Direction A</span>
-      <span class="card__num">13</span>
-    </div>
-    <a class="card__open" href="options/13-direction-a.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/14-editorial.html" loading="lazy" title="Dark Editorial"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Dark Editorial</span>
-      <span class="card__num">14</span>
-    </div>
-    <a class="card__open" href="options/14-editorial.html" target="_blank">Open full design →</a>
-  </div>
-
-  <div class="card">
-    <div class="card__preview">
-      <iframe src="options/15-material.html" loading="lazy" title="Architectural Material"></iframe>
-    </div>
-    <div class="card__meta">
-      <span class="card__name">Architectural Material</span>
-      <span class="card__num">15</span>
-    </div>
-    <a class="card__open" href="options/15-material.html" target="_blank">Open full design →</a>
-  </div>
-
+  <a class="featured__open" href="options/16-southworth.html" target="_blank">Open full design →</a>
 </div>
 
 <footer class="ftr">
