@@ -1421,6 +1421,131 @@ img {
   text-align: right;
 }
 
+/* ═══════════ SLOPSCORE MINI WIDGET ═══════════ */
+
+.slop-mini {
+  width: 220px;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'SF Mono', 'Consolas', monospace;
+  overflow: hidden;
+}
+
+.slop-mini__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.slop-mini__url {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slop-mini__badge {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255, 95, 87, 0.9);
+  border: 1px solid rgba(255, 95, 87, 0.35);
+  border-radius: 3px;
+  padding: 2px 5px;
+  flex-shrink: 0;
+}
+
+.slop-mini__body {
+  padding: 12px 14px 14px;
+}
+
+.slop-mini__score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.slop-mini__score {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 95, 87, 0.95);
+}
+
+.slop-mini__score-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.slop-mini__score-label {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.slop-mini__meter {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.slop-mini__meter-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(52, 199, 89, 0.7), rgba(254, 188, 46, 0.8), rgba(255, 95, 87, 0.9));
+}
+
+.slop-mini__signals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.slop-mini__signal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slop-mini__signal-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  width: 38px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.slop-mini__signal-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.slop-mini__signal-fill {
+  height: 100%;
+  background: rgba(255, 95, 87, 0.6);
+  border-radius: 2px;
+}
+
+.slop-mini__flags {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.5;
+}
+
 /* ═══════════ NEURAL NETWORK MINI WIDGET ═══════════ */
 
 .nn-mini {
@@ -7406,6 +7531,19 @@ img {
   .nn-mini__node--hidden { fill: rgba(45,106,79,0.2); }
   .nn-mini__node--hidden2 { fill: rgba(45,106,79,0.15); }
   .nn-mini__node--output { fill: rgba(45,106,79,0.4); }
+
+  /* SlopScore mini */
+  .slop-mini {
+    background: rgba(245, 245, 245, 0.95);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.06);
+  }
+  .slop-mini__bar { background: rgba(0,0,0,0.03); border-bottom-color: rgba(0,0,0,0.06); }
+  .slop-mini__url { color: var(--w-text-2); }
+  .slop-mini__score-label { color: var(--w-text-2); }
+  .slop-mini__meter { background: var(--w-bg-deep); }
+  .slop-mini__signal-label { color: var(--w-text-2); }
+  .slop-mini__signal-bar { background: var(--w-bg-deep); }
+  .slop-mini__flags { color: var(--w-text-2); }
 
   /* Vault mini */
   .vault-mini {
