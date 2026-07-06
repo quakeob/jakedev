@@ -4,7 +4,7 @@ description: "Personal AI assistant running 24/7 on a Mac Mini. Manages calendar
 status: "Active"
 emoji: "🤖"
 tags: ["OpenClaw", "Python", "Anthropic", "Automation"]
-order: 2
+order: 3
 ---
 
 ## The Problem

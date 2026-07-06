@@ -5,7 +5,7 @@ status: "In Progress"
 emoji: "🧠"
 tags: ["Python", "NumPy", "Machine Learning"]
 github: "https://github.com/quakeob/neural-networks"
-order: 4
+order: 8
 ---
 
 ## The Problem
