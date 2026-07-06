@@ -4,7 +4,7 @@ description: "Nightly market scanner that finds Ralph's True Strength Index buy 
 status: "Active"
 emoji: "📈"
 tags: ["Python", "yfinance", "launchd", "Finance"]
-order: 7
+order: 6
 ---
 
 ## The Problem

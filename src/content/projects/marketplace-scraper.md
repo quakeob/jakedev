@@ -4,7 +4,7 @@ description: "Automated vehicle deal finder for Toyota Tacoma & 4Runner. Scrapes
 status: "Active"
 emoji: "🔍"
 tags: ["Python", "SQLite", "Web Scraping", "Telegram"]
-order: 5
+order: 4
 ---
 
 ## The Problem

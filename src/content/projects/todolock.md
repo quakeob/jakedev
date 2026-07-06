@@ -4,7 +4,7 @@ description: "Minimal iOS to-do list where distracting apps stay shielded until 
 status: "In Development"
 emoji: "🔒"
 tags: ["Swift", "SwiftUI", "SwiftData", "Family Controls"]
-order: 6
+order: 5
 ---
 
 ## The Problem

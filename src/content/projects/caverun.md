@@ -4,7 +4,7 @@ description: "Playable Unity roguelike survival prototype — auto-attacking wea
 status: "Prototype"
 emoji: "🕹️"
 tags: ["Unity", "C#", "Game Dev"]
-order: 10
+order: 9
 ---
 
 ## The Problem

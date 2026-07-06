@@ -4,7 +4,7 @@ description: "Paste a URL, get a slop score. Analyzes any page for AI-generated 
 status: "In Development"
 emoji: "🗑️"
 tags: ["TypeScript", "Claude API", "Web"]
-order: 2
+order: 0
 ---
 
 ## The Problem

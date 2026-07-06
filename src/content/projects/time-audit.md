@@ -4,7 +4,7 @@ description: "macOS screen time tracker — logs active applications every 30s, 
 status: "Active"
 emoji: "⏱️"
 tags: ["Python", "macOS", "AppleScript", "launchd"]
-order: 9
+order: 8
 ---
 
 ## The Problem

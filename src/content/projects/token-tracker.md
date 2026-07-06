@@ -5,7 +5,7 @@ status: "Active"
 emoji: "📊"
 tags: ["Swift", "SwiftUI", "macOS", "WidgetKit"]
 github: "https://github.com/quakeob/ClaudeTokenTracker"
-order: 4
+order: 3
 ---
 
 ## The Problem

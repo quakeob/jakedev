@@ -5,7 +5,7 @@ status: "Legacy"
 emoji: "🏛️"
 tags: ["Obsidian", "Python", "AI", "PKM"]
 github: "https://github.com/quakeob/ObsidianVaultkeeper"
-order: 11
+order: 10
 ---
 
 ## The Problem
