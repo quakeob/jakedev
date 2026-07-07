@@ -1424,7 +1424,7 @@ img {
 /* ═══════════ TUI PROJECTS EXPLORER ═══════════ */
 
 .tui {
-  max-width: 1000px;
+  max-width: 1500px;
   background: rgba(18, 18, 18, 0.97);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -1441,25 +1441,25 @@ img {
 .tui__chrome {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
+  gap: 7px;
+  padding: 14px 22px;
   background: rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.tui__dot { width: 9px; height: 9px; border-radius: 50%; }
+.tui__dot { width: 11px; height: 11px; border-radius: 50%; }
 
-.tui__chrome-title { font-size: 11px; color: var(--text-2); margin-left: 10px; }
+.tui__chrome-title { font-size: 13px; color: var(--text-2); margin-left: 10px; }
 
-.tui__chrome-meta { margin-left: auto; font-size: 10px; color: var(--grey); letter-spacing: 0.05em; }
+.tui__chrome-meta { margin-left: auto; font-size: 12px; color: var(--grey); letter-spacing: 0.05em; }
 
 .tui__prompt {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 4px;
-  padding: 10px 16px;
-  font-size: 11px;
+  padding: 14px 22px;
+  font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
   color: var(--text-2);
@@ -1471,8 +1471,8 @@ img {
 
 .tui__cursor {
   display: inline-block;
-  width: 7px;
-  height: 13px;
+  width: 8px;
+  height: 16px;
   background: var(--green);
   vertical-align: -2px;
   margin-left: 2px;
@@ -1488,12 +1488,12 @@ img {
 
 .tui-flag {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--grey);
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-  padding: 2px 8px;
+  border-radius: 5px;
+  padding: 4px 12px;
   cursor: pointer;
   transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
 }
@@ -1507,9 +1507,9 @@ img {
 .tui__list {
   display: flex;
   flex-direction: column;
-  padding: 10px 0;
+  padding: 14px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.07);
-  min-height: 380px;
+  min-height: 600px;
 }
 
 .tui-row {
@@ -1517,9 +1517,9 @@ img {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 7px 16px;
+  padding: 13px 24px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-2);
   background: none;
   border: none;
@@ -1529,7 +1529,7 @@ img {
   transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
 }
 
-.tui-row__marker { color: var(--green); opacity: 0; width: 10px; transition: opacity 0.2s var(--ease); }
+.tui-row__marker { color: var(--green); opacity: 0; width: 14px; transition: opacity 0.2s var(--ease); }
 
 .tui-row.is-selected {
   background: rgba(52, 199, 89, 0.08);
@@ -1542,20 +1542,20 @@ img {
 
 .tui-row__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.tui-row__meta { display: flex; gap: 12px; font-size: 10px; color: var(--grey); }
-.tui-row__time { min-width: 34px; text-align: right; }
+.tui-row__meta { display: flex; gap: 16px; font-size: 12px; color: var(--grey); }
+.tui-row__time { min-width: 48px; text-align: right; }
 .tui-row__time.is-fresh { color: var(--green); }
-.tui-row__status { min-width: 42px; }
+.tui-row__status { min-width: 56px; }
 
-.tui__preview { position: relative; padding: 22px 24px; min-height: 380px; }
+.tui__preview { position: relative; padding: 34px 38px; min-height: 600px; }
 
 .tui-preview {
   position: absolute;
-  inset: 22px 24px;
+  inset: 34px 38px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 16px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s var(--ease), visibility 0.25s;
@@ -1566,34 +1566,34 @@ img {
 
 .tui-preview__title {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-size: clamp(2rem, 3.4vw, 3.2rem);
   text-transform: uppercase;
   line-height: 1;
   color: #fff;
 }
 
-.tui-preview__statusline { font-size: 10px; letter-spacing: 0.08em; color: var(--grey); }
+.tui-preview__statusline { font-size: 12px; letter-spacing: 0.08em; color: var(--grey); }
 .tui-preview__statusline.is-fresh { color: var(--green); }
 
-.tui-preview__desc { font-size: 11px; line-height: 1.65; color: var(--text-2); max-width: 380px; margin: 0; }
+.tui-preview__desc { font-size: 13px; line-height: 1.7; color: var(--text-2); max-width: 480px; margin: 0; }
 
-.tui-preview__art { transform: scale(0.9); transform-origin: left top; }
+.tui-preview__art { transform: scale(1.15); transform-origin: left top; margin-bottom: 1rem; }
 
-.tui-preview__spark { display: flex; align-items: flex-end; gap: 2px; height: 18px; }
+.tui-preview__spark { display: flex; align-items: flex-end; gap: 3px; height: 26px; }
 
 .tui-preview__spark i {
-  width: 5px;
+  width: 7px;
   height: var(--h);
   background: var(--green);
   opacity: 0.55;
   border-radius: 1px;
 }
 
-.tui-preview__log { font-size: 10px; color: var(--grey); font-style: italic; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tui-preview__log { font-size: 12px; color: var(--grey); font-style: italic; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tui-preview__typed { color: var(--text-2); }
-.tui-preview__cursor { width: 6px; height: 11px; }
+.tui-preview__cursor { width: 7px; height: 13px; }
 
-.tui-preview__hints { display: flex; gap: 14px; font-size: 9px; color: var(--grey); opacity: 0.7; margin-top: auto; }
+.tui-preview__hints { display: flex; gap: 18px; font-size: 11px; color: var(--grey); opacity: 0.7; margin-top: auto; }
 
 /* Boot animation */
 @media (prefers-reduced-motion: no-preference) {
@@ -1611,8 +1611,8 @@ img {
 @media (max-width: 768px) {
   .tui__body { grid-template-columns: 1fr; }
   .tui__list { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.07); min-height: 0; }
-  .tui__preview { min-height: 300px; }
-  .tui-preview { inset: 18px 16px; }
+  .tui__preview { min-height: 380px; }
+  .tui-preview { inset: 20px 18px; }
   .tui-preview__hints { display: none; }
   .tui__chrome-meta { display: none; }
 }
