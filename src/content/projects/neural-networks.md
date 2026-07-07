@@ -4,7 +4,6 @@ description: "Custom neural network library in Python — backpropagation, multi
 status: "In Progress"
 emoji: "🧠"
 tags: ["Python", "NumPy", "Machine Learning"]
-github: "https://github.com/quakeob/neural-networks"
 order: 7
 ---
 

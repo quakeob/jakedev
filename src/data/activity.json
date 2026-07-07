@@ -1,0 +1,165 @@
+{
+  "generated": "2026-07-07T02:00:28.727Z",
+  "projects": {
+    "fuel": {
+      "lastCommit": "2026-03-11T23:35:04Z",
+      "commitCount": 3,
+      "lastMessage": "Add privacy policy for App Store",
+      "weekly": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "showMessage": true
+    },
+    "vault-keeper": {
+      "lastCommit": "2025-11-05T21:18:46Z",
+      "commitCount": 1,
+      "lastMessage": "Initial commit: Vault Keeper system documentation",
+      "weekly": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "showMessage": true
+    },
+    "todolock": {
+      "lastCommit": "2026-06-07T19:44:21-06:00",
+      "commitCount": 56,
+      "lastMessage": "Onboarding Welcome: add WelcomeIllustration card",
+      "weekly": [
+        0,
+        0,
+        1,
+        17,
+        7,
+        1,
+        23,
+        7,
+        0,
+        0,
+        0,
+        0
+      ],
+      "showMessage": true
+    },
+    "token-tracker": {
+      "lastCommit": "2026-02-11T19:13:32-07:00",
+      "commitCount": 10,
+      "lastMessage": "Fix sync never writing: debounce cancelled on every refresh",
+      "weekly": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "showMessage": true
+    },
+    "missionary-moments": {
+      "lastCommit": "2026-06-20T11:22:28-06:00",
+      "commitCount": 2,
+      "lastMessage": "Wire waitlist forms to MailerLite via JSONP",
+      "weekly": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "showMessage": true
+    },
+    "lumice": {
+      "lastCommit": "2026-04-17T23:14:53-06:00",
+      "commitCount": 13,
+      "lastMessage": "Swap hero/about images so ice structures lead",
+      "weekly": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "showMessage": true
+    },
+    "slumbr": {
+      "lastCommit": "2026-03-08T19:10:56-06:00",
+      "commitCount": 11,
+      "lastMessage": "feat: wire up TabView, add SleepManager, entitlements, and preview data",
+      "weekly": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "showMessage": true
+    },
+    "uesc-monitor": {
+      "lastCommit": "2026-03-18T01:29:26-06:00",
+      "commitCount": 10,
+      "lastMessage": "ci: add GitHub Actions — 5min data polling + Pages deployment",
+      "weekly": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "showMessage": true
+    }
+  }
+}
