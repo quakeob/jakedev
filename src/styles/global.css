@@ -1432,6 +1432,8 @@ img {
   box-shadow: 0 24px 80px -12px rgba(0, 0, 0, 0.55);
   font-family: var(--font-mono);
   outline: none;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .tui:focus-visible { border-color: var(--green); }

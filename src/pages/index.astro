@@ -1494,7 +1494,140 @@ const galleryPhotos = [
       });
     })();
 
+    // ═══════════ TUI PROJECTS EXPLORER ═══════════
+    (function() {
+      const tui = document.getElementById('tui');
+      if (!tui) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const rows = Array.from(tui.querySelectorAll('.tui-row'));
+      const previews = Array.from(tui.querySelectorAll('.tui-preview'));
+      const flags = Array.from(tui.querySelectorAll('.tui-flag'));
+      const cmd = document.getElementById('tui-cmd');
 
+      function relTime(iso) {
+        const s = (Date.now() - Date.parse(iso)) / 1000;
+        if (s < 3600) return Math.max(1, Math.floor(s / 60)) + 'm';
+        if (s < 86400) return Math.floor(s / 3600) + 'h';
+        if (s < 604800) return Math.floor(s / 86400) + 'd';
+        if (s < 86400 * 30) return Math.floor(s / 604800) + 'w';
+        if (s < 86400 * 365) return Math.floor(s / (86400 * 30)) + 'mo';
+        return Math.floor(s / (86400 * 365)) + 'y';
+      }
+      const isFresh = (iso) => Date.now() - Date.parse(iso) < 7 * 86400e3;
+
+      // Fill relative times
+      tui.querySelectorAll('.tui-row__time[data-last]').forEach((el) => {
+        if (!el.dataset.last) return;
+        el.textContent = '● ' + relTime(el.dataset.last);
+        if (isFresh(el.dataset.last)) el.classList.add('is-fresh');
+      });
+      previews.forEach((p) => {
+        const sl = p.querySelector('.tui-preview__statusline');
+        if (sl.dataset.last) {
+          sl.textContent += ' · ● active ' + relTime(sl.dataset.last) + ' ago';
+          if (isFresh(sl.dataset.last)) sl.classList.add('is-fresh');
+        }
+      });
+      const meta = document.getElementById('tui-meta');
+      if (meta && meta.dataset.lastPush) {
+        meta.textContent = rows.length + ' dirs · last push ' + relTime(meta.dataset.lastPush) + ' ago';
+      }
+
+      // Selection
+      let selected = -1;
+      const typedPreviews = new Set();
+      function typeLog(preview) {
+        const log = preview.querySelector('.tui-preview__log[data-message]');
+        if (!log) return;
+        const target = log.querySelector('.tui-preview__typed');
+        const msg = log.dataset.message;
+        const idx = preview.dataset.idx;
+        if (reduceMotion || typedPreviews.has(idx)) { target.textContent = msg; return; }
+        typedPreviews.add(idx);
+        let i = 0;
+        const tick = setInterval(() => {
+          target.textContent = msg.slice(0, ++i);
+          if (i >= msg.length) clearInterval(tick);
+        }, 18);
+      }
+      function select(i, scroll) {
+        if (i === selected || !rows[i] || rows[i].classList.contains('is-filtered')) return;
+        rows.forEach((r) => r.classList.remove('is-selected'));
+        previews.forEach((p) => p.classList.remove('is-active'));
+        rows[i].classList.add('is-selected');
+        previews[i].classList.add('is-active');
+        selected = i;
+        typeLog(previews[i]);
+        if (scroll) rows[i].scrollIntoView({ block: 'nearest' });
+      }
+
+      rows.forEach((row, i) => {
+        row.addEventListener('mouseenter', () => select(i, false));
+        row.addEventListener('click', () => {
+          if (selected === i && row.dataset.link) { window.location.href = row.dataset.link; return; }
+          select(i, false);
+        });
+      });
+
+      // Keyboard
+      function visibleRows() { return rows.filter((r) => !r.classList.contains('is-filtered')); }
+      document.addEventListener('keydown', (e) => {
+        if (!tui.matches(':hover') && document.activeElement !== tui) return;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          const vis = visibleRows();
+          if (!vis.length) return;
+          const cur = vis.indexOf(rows[selected]);
+          const next = e.key === 'ArrowDown' ? Math.min(cur + 1, vis.length - 1) : Math.max(cur - 1, 0);
+          select(rows.indexOf(vis[next < 0 ? 0 : next]), true);
+        } else if (e.key === 'Enter' && selected >= 0 && rows[selected].dataset.link) {
+          window.location.href = rows[selected].dataset.link;
+        }
+      });
+
+      // Filters
+      function matches(row, chip) {
+        if (chip === 'all') return true;
+        if (chip === 'active') {
+          const iso = row.dataset.lastCommit;
+          return !!iso && Date.now() - Date.parse(iso) < 30 * 86400e3;
+        }
+        return (row.dataset.chips || '').split(' ').includes(chip);
+      }
+      flags.forEach((flag) => {
+        const chip = flag.dataset.chip;
+        flag.querySelector('.tui-flag__count').textContent = String(rows.filter((r) => matches(r, chip)).length);
+        flag.addEventListener('click', () => {
+          flags.forEach((f) => f.classList.remove('is-active'));
+          flag.classList.add('is-active');
+          if (cmd) cmd.textContent = chip === 'all' ? 'ls -la' : 'ls -la --' + chip;
+          rows.forEach((r) => r.classList.toggle('is-filtered', !matches(r, chip)));
+          const first = visibleRows()[0];
+          if (first) { selected = -1; select(rows.indexOf(first), false); }
+        });
+      });
+
+      // Boot
+      function boot() {
+        if (reduceMotion) { tui.classList.add('is-booted'); select(0, false); return; }
+        rows.forEach((r, i) => r.style.setProperty('--row', String(i)));
+        tui.classList.add('is-booting');
+        const full = 'ls -la';
+        if (cmd) {
+          cmd.textContent = '';
+          let i = 0;
+          const t = setInterval(() => {
+            cmd.textContent = full.slice(0, ++i);
+            if (i >= full.length) clearInterval(t);
+          }, 70);
+        }
+        setTimeout(() => { tui.classList.add('is-booted'); tui.classList.remove('is-booting'); select(0, false); }, rows.length * 50 + 500);
+      }
+      const bootObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { bootObs.disconnect(); boot(); }
+      }, { threshold: 0.25 });
+      bootObs.observe(tui);
+    })();
 
   </script>
 </BaseLayout>
