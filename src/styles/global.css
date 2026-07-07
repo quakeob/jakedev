@@ -1421,6 +1421,135 @@ img {
   text-align: right;
 }
 
+/* ═══════════ PROJECTS: ACTIVITY + FILTERS ═══════════ */
+
+.projects-header__stat {
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.project-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--grey);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.project-chip:hover { color: var(--text-2); border-color: var(--grey); }
+
+.project-chip.is-active { color: var(--green); border-color: var(--green); }
+
+.project-chip__count { opacity: 0.55; }
+
+.project-card__activity {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.activity-last {
+  font-size: 10px;
+  color: var(--grey);
+  letter-spacing: 0.05em;
+}
+
+.activity-last.is-fresh { color: var(--green); }
+
+.activity-spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.activity-spark i {
+  width: 4px;
+  height: var(--h);
+  background: var(--green);
+  opacity: 0.55;
+  border-radius: 1px;
+  transform-origin: bottom;
+}
+
+.git-strip {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 12px;
+  border-width: 0;
+  transition: max-height 0.5s var(--ease), opacity 0.4s var(--ease), padding 0.5s var(--ease);
+}
+
+.has-preview:hover .git-strip {
+  max-height: 40px;
+  opacity: 1;
+  padding: 7px 12px;
+  border-width: 1px;
+}
+
+.git-strip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grey);
+  flex-shrink: 0;
+}
+
+.git-strip__dot.is-fresh { background: var(--green); }
+
+.git-strip__active { color: var(--text-2); }
+.git-strip__count { color: var(--grey); }
+.git-strip__log { color: var(--grey); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.git-strip__typed { color: var(--text-2); }
+
+.project-card.is-filtered-out {
+  opacity: 0;
+  transform: translateX(16px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .activity-spark i {
+    transform: scaleY(0);
+    transition: transform 0.45s var(--ease);
+    transition-delay: calc(var(--i) * 45ms);
+  }
+  .activity-spark.is-drawn i { transform: scaleY(1); }
+  .project-card { transition: transform 0.4s var(--ease), padding 0.4s var(--ease), background 0.4s var(--ease), opacity 0.3s var(--ease); }
+}
+
+@media (max-width: 768px) {
+  .project-card__activity { display: none; }
+  .projects-header__stat { display: none; }
+}
+
 /* ═══════════ SLOPSCORE MINI WIDGET ═══════════ */
 
 .slop-mini {
@@ -7544,6 +7673,10 @@ img {
   .slop-mini__signal-label { color: var(--w-text-2); }
   .slop-mini__signal-bar { background: var(--w-bg-deep); }
   .slop-mini__flags { color: var(--w-text-2); }
+
+  /* Projects activity + filters */
+  .project-chip { border-color: rgba(0, 0, 0, 0.12); }
+  .git-strip { background: rgba(0, 0, 0, 0.03); border-color: rgba(0, 0, 0, 0.08); }
 
   /* Vault mini */
   .vault-mini {
