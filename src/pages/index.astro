@@ -2,9 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import fs from 'node:fs';
 import path from 'node:path';
+import activity from '../data/activity.json';
 
 const projects = [
   {
+    id: 'slopscore',
     title: 'SlopScore',
     desc: 'Paste a URL, get a slop score. Analyzes pages for AI-generated content patterns — filler text, generic structure, fake credentials — and calls out the grift.',
     tags: ['TypeScript', 'Claude API', 'Web'],
@@ -12,6 +14,7 @@ const projects = [
     status: 'In Development',
   },
   {
+    id: 'fuel',
     title: 'Fuel',
     desc: 'Native iOS calorie tracker with AI food parsing, barcode scanning, HealthKit sync, and Apple Watch companion.',
     tags: ['Swift', 'SwiftUI', 'HealthKit', 'AI'],
@@ -19,6 +22,7 @@ const projects = [
     status: 'Live',
   },
   {
+    id: 'yerb',
     title: 'Yerb',
     desc: 'Personal AI assistant running 24/7 on a Mac Mini. Manages calendar, automates coursework, runs autonomous builds overnight.',
     tags: ['Python', 'Anthropic', 'Automation'],
@@ -26,6 +30,7 @@ const projects = [
     status: 'Active',
   },
   {
+    id: 'token-tracker',
     title: 'Token Tracker',
     desc: 'Native macOS widget tracking Claude Code usage in real-time. Parses sessions, shows per-model breakdowns and costs.',
     tags: ['Swift', 'SwiftUI', 'macOS'],
@@ -33,6 +38,7 @@ const projects = [
     status: 'Active',
   },
   {
+    id: 'marketplace-scraper',
     title: 'Marketplace Scraper',
     desc: 'Automated vehicle deal finder for Toyota Tacoma & 4Runner. Scrapes listings, scores deals, sends alerts.',
     tags: ['Python', 'SQLite', 'Telegram'],
@@ -40,6 +46,7 @@ const projects = [
     status: 'Active',
   },
   {
+    id: 'todolock',
     title: 'TodoLock',
     desc: 'Minimal iOS to-do list where distracting apps stay shielded until today’s tasks are done. Family Controls with real consequences.',
     tags: ['Swift', 'SwiftUI', 'Family Controls'],
@@ -47,12 +54,14 @@ const projects = [
     status: 'In Development',
   },
   {
+    id: 'neural-networks',
     title: 'Neural Networks',
     desc: 'Custom neural network library — backpropagation, activation functions, convolutional layers — no frameworks.',
     tags: ['Python', 'NumPy', 'ML'],
     status: 'In Progress',
   },
   {
+    id: 'time-audit',
     title: 'Time Audit',
     desc: 'macOS screen-time tracker — logs active apps every 30 seconds, generates daily usage reports. Runs as a background launchd service.',
     tags: ['Python', 'macOS', 'launchd'],
@@ -60,6 +69,7 @@ const projects = [
     status: 'Active',
   },
   {
+    id: 'caverun',
     title: 'CaveRun',
     desc: 'Playable Unity roguelike survival prototype — auto-attacking weapons, scaling enemy waves, XP and level-ups. Arena built entirely at runtime.',
     tags: ['Unity', 'C#', 'Game Dev'],
@@ -67,24 +77,28 @@ const projects = [
     status: 'Prototype',
   },
   {
+    id: 'uesc-monitor',
     title: 'UESC Monitor',
     desc: 'Terminal-styled tracker for Bungie’s Marathon — release countdown, server status, and ARG milestone tracking.',
     tags: ['Astro', 'Tailwind', 'Web'],
     status: 'Live',
   },
   {
+    id: 'lumice',
     title: 'Lumice',
     desc: 'LUMICE — a Finnish ice experience. Single-page teaser site, designed and shipped ahead of launch.',
     tags: ['Web', 'Design'],
     status: 'Coming Soon',
   },
   {
+    id: 'slumbr',
     title: 'Slumbr',
     desc: 'Strava for sleep — competitive sleep tracking for iOS. Sleep scores from HealthKit and wearables; friends, teams, and challenges via CloudKit.',
     tags: ['Swift', 'SwiftUI', 'CloudKit', 'HealthKit'],
     status: 'Early',
   },
   {
+    id: 'vault-keeper',
     title: 'Vault Keeper',
     desc: 'AI-powered accountability system built on Obsidian. Reads journals, detects behavioral patterns, generates briefs.',
     tags: ['Obsidian', 'Python', 'AI'],
@@ -92,6 +106,7 @@ const projects = [
     status: 'Legacy',
   },
   {
+    id: 'missionary-moments',
     title: 'Missionary Moments',
     desc: 'A weekly keepsake service for missionary families — one email prompt becomes a beautiful personal website of notes, voice memos, and videos the whole family can follow.',
     tags: ['SaaS', 'Web', 'AI', 'Design'],
@@ -99,6 +114,24 @@ const projects = [
     status: 'Waitlist',
   },
 ];
+
+const CHIP_MAP: Record<string, string> = {
+  Swift: 'swift', SwiftUI: 'swift', SwiftData: 'swift', HealthKit: 'swift', CloudKit: 'swift', 'Family Controls': 'swift',
+  AI: 'ai', 'Claude API': 'ai', Anthropic: 'ai', ML: 'ai', NumPy: 'ai',
+  Web: 'web', Astro: 'web', Tailwind: 'web', Design: 'web', SaaS: 'web', TypeScript: 'web',
+  Python: 'tools', SQLite: 'tools', Telegram: 'tools', launchd: 'tools', Unity: 'tools', 'C#': 'tools', 'Game Dev': 'tools', Obsidian: 'tools', Automation: 'tools',
+};
+// deliberately NO `macOS` key: Token Tracker already gets `swift` via Swift/SwiftUI,
+// and mapping macOS→swift would wrongly tag Time Audit (Python + macOS) as swift.
+const chipsFor = (p: { tags: string[] }) => [...new Set(p.tags.map((t) => CHIP_MAP[t]).filter(Boolean))];
+const actFor = (p: { id: string }) => (activity.projects as Record<string, any>)[p.id];
+const sparkBars = (weekly: number[]) => {
+  const max = Math.max(...weekly, 1);
+  return weekly.map((w) => (w === 0 ? 8 : Math.max(12, Math.round((w / max) * 100))));
+};
+const EXPAND_TITLES = new Set(['Token Tracker', 'Fuel', 'Yerb', 'Marketplace Scraper', 'Neural Networks', 'Vault Keeper', 'SlopScore']);
+const lastPush = Object.values(activity.projects as Record<string, any>)
+  .map((a) => a.lastCommit).sort((x, y) => Date.parse(x) - Date.parse(y)).at(-1) ?? '';
 
 // Get all B&W photos for slideshow
 const bwDir = path.join(process.cwd(), 'public', 'photos', 'bw');
@@ -752,11 +785,19 @@ const galleryPhotos = [
     <div class="projects-header">
       <h2 class="display display--2">Projects</h2>
       <span class="projects-header__hint lead">(hover)</span>
+      <span class="projects-header__stat lead" id="projects-stat" data-last-push={lastPush}>{projects.length} projects</span>
       <button class="projects-header__expand lead" id="projects-expand-btn">(tap to expand)</button>
+    </div>
+    <div class="project-filters" id="project-filters">
+      {['all', 'active', 'swift', 'ai', 'web', 'tools'].map((c) => (
+        <button class={`project-chip lead ${c === 'all' ? 'is-active' : ''}`} data-chip={c}>
+          {c.toUpperCase()} <span class="project-chip__count"></span>
+        </button>
+      ))}
     </div>
     <div class="project-list">
       {projects.map((project, i) => (
-        <a href={project.link} class={`project-card js-in has-preview`} style={`animation-delay: ${i * 0.05}s; ${!project.link ? 'cursor: default;' : ''}`}>
+        <a href={project.link} class={`project-card js-in has-preview`} data-chips={chipsFor(project).join(' ')} data-last-commit={actFor(project)?.lastCommit} style={`animation-delay: ${i * 0.05}s; ${!project.link ? 'cursor: default;' : ''}`}>
           <div class="project-card__index lead">
             {String(i + 1).padStart(2, '0')}
           </div>
@@ -768,6 +809,26 @@ const galleryPhotos = [
               <span class="u-g">{project.status}</span>
             </div>
           </div>
+          {actFor(project) && (
+            <div class="project-card__activity" aria-hidden="true">
+              <span class="activity-last lead" data-last={actFor(project).lastCommit}></span>
+              <div class="activity-spark">
+                {sparkBars(actFor(project).weekly).map((h, bi) => (
+                  <i style={`--h:${h}%;--i:${bi}`}></i>
+                ))}
+              </div>
+            </div>
+          )}
+          {actFor(project) && EXPAND_TITLES.has(project.title) && (
+            <div class="git-strip lead">
+              <span class="git-strip__dot"></span>
+              <span class="git-strip__active" data-last={actFor(project).lastCommit}></span>
+              <span class="git-strip__count">{actFor(project).commitCount} commits</span>
+              {actFor(project).showMessage && (
+                <span class="git-strip__log" data-message={actFor(project).lastMessage}>$ git log -1 → "<span class="git-strip__typed"></span>"</span>
+              )}
+            </div>
+          )}
           {project.title === 'Token Tracker' && (
             <div class="project-expand">
               <div class="project-expand__showcase">
