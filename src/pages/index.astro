@@ -823,7 +823,7 @@ const galleryPhotos = [
             <div class="git-strip lead">
               <span class="git-strip__dot"></span>
               <span class="git-strip__active" data-last={actFor(project).lastCommit}></span>
-              <span class="git-strip__count">{actFor(project).commitCount} commits</span>
+              <span class="git-strip__count">{actFor(project).commitCount} {actFor(project).commitCount === 1 ? 'commit' : 'commits'}</span>
               {actFor(project).showMessage && (
                 <span class="git-strip__log" data-message={actFor(project).lastMessage}>$ git log -1 → "<span class="git-strip__typed"></span>"</span>
               )}
@@ -1741,6 +1741,115 @@ const galleryPhotos = [
         btn.textContent = expanded ? '(tap to collapse)' : '(tap to expand)';
       });
     }
+
+    // ═══════════ PROJECTS: LIVE DATA + FILTERS + MOTION ═══════════
+    (function() {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const cards = Array.from(document.querySelectorAll('.project-list .project-card'));
+      if (!cards.length) return;
+
+      function relTime(iso) {
+        const s = (Date.now() - Date.parse(iso)) / 1000;
+        if (s < 3600) return Math.max(1, Math.floor(s / 60)) + 'm ago';
+        if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+        if (s < 604800) return Math.floor(s / 86400) + 'd ago';
+        if (s < 86400 * 30) return Math.floor(s / 604800) + 'w ago';
+        if (s < 86400 * 365) return Math.floor(s / (86400 * 30)) + 'mo ago';
+        return Math.floor(s / (86400 * 365)) + 'y ago';
+      }
+      const isFresh = (iso) => Date.now() - Date.parse(iso) < 7 * 86400e3;
+
+      // Relative times: card dots + git-strips
+      document.querySelectorAll('.activity-last[data-last]').forEach((el) => {
+        el.textContent = '● ' + relTime(el.dataset.last);
+        if (isFresh(el.dataset.last)) el.classList.add('is-fresh');
+      });
+      document.querySelectorAll('.git-strip').forEach((strip) => {
+        const active = strip.querySelector('.git-strip__active');
+        if (active && active.dataset.last) {
+          active.textContent = 'active ' + relTime(active.dataset.last);
+          if (isFresh(active.dataset.last)) strip.querySelector('.git-strip__dot').classList.add('is-fresh');
+        }
+      });
+
+      // Heading stat
+      const stat = document.getElementById('projects-stat');
+      if (stat && stat.dataset.lastPush) {
+        stat.textContent = cards.length + ' projects · last push ' + relTime(stat.dataset.lastPush);
+      }
+
+      // Sparkline draw-in
+      const sparks = document.querySelectorAll('.activity-spark');
+      if (reduceMotion) {
+        sparks.forEach((s) => s.classList.add('is-drawn'));
+      } else {
+        const sparkObs = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add('is-drawn'); sparkObs.unobserve(e.target); }
+          });
+        }, { threshold: 0.4 });
+        sparks.forEach((s) => sparkObs.observe(s));
+      }
+
+      // Git-strip typing (once per card)
+      cards.forEach((card) => {
+        const log = card.querySelector('.git-strip__log[data-message]');
+        if (!log) return;
+        const target = log.querySelector('.git-strip__typed');
+        const msg = log.dataset.message;
+        if (reduceMotion) { target.textContent = msg; return; }
+        let typed = false;
+        card.addEventListener('mouseenter', () => {
+          if (typed) return;
+          typed = true;
+          let i = 0;
+          const tick = setInterval(() => {
+            target.textContent = msg.slice(0, ++i);
+            if (i >= msg.length) clearInterval(tick);
+          }, 20);
+        });
+      });
+
+      // Filter chips
+      const chips = document.querySelectorAll('#project-filters .project-chip');
+      function matches(card, chip) {
+        if (chip === 'all') return true;
+        if (chip === 'active') {
+          const iso = card.dataset.lastCommit;
+          return !!iso && Date.now() - Date.parse(iso) < 30 * 86400e3;
+        }
+        return (card.dataset.chips || '').split(' ').includes(chip);
+      }
+      // Fill counts
+      chips.forEach((chipEl) => {
+        const n = cards.filter((c) => matches(c, chipEl.dataset.chip)).length;
+        chipEl.querySelector('.project-chip__count').textContent = String(n);
+      });
+      function applyFilter(chip) {
+        let n = 0;
+        cards.forEach((card) => {
+          const show = matches(card, chip);
+          if (show) {
+            n++;
+            card.querySelector('.project-card__index').textContent = String(n).padStart(2, '0');
+            card.style.display = '';
+            if (reduceMotion) card.classList.remove('is-filtered-out');
+            else requestAnimationFrame(() => requestAnimationFrame(() => card.classList.remove('is-filtered-out')));
+          } else {
+            card.classList.add('is-filtered-out');
+            if (reduceMotion) card.style.display = 'none';
+            else setTimeout(() => { if (card.classList.contains('is-filtered-out')) card.style.display = 'none'; }, 320);
+          }
+        });
+      }
+      chips.forEach((chipEl) => {
+        chipEl.addEventListener('click', () => {
+          chips.forEach((c) => c.classList.remove('is-active'));
+          chipEl.classList.add('is-active');
+          applyFilter(chipEl.dataset.chip);
+        });
+      });
+    })();
 
   </script>
 </BaseLayout>

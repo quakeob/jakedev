@@ -7675,7 +7675,7 @@ img {
   .slop-mini__flags { color: var(--w-text-2); }
 
   /* Projects activity + filters */
-  .project-chip { border-color: rgba(0, 0, 0, 0.12); }
+  .project-chip:not(.is-active) { border-color: rgba(0, 0, 0, 0.12); }
   .git-strip { background: rgba(0, 0, 0, 0.03); border-color: rgba(0, 0, 0, 0.08); }
 
   /* Vault mini */
