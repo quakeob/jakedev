@@ -1,0 +1,6 @@
+<svg width="336" height="72" viewBox="0 0 336 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Meridian">
+  <rect y="6" width="60" height="60" fill="#FFFFFF"/>
+  <text x="30" y="47" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-size="32" fill="#0B0B0C" letter-spacing="-0.6">M<tspan font-style="italic">&#305;</tspan></text>
+  <circle cx="40.5" cy="29" r="2" fill="#0B0B0C"/>
+  <text x="78" y="52" font-family="Instrument Serif, Georgia, serif" font-size="48" fill="#FFFFFF" letter-spacing="-0.6">Mer<tspan font-style="italic">i</tspan>dian</text>
+</svg>
