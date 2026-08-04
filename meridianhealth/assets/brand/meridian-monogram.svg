@@ -1,0 +1,5 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Meridian">
+  <rect width="120" height="120" fill="#0B0B0C"/>
+  <text x="60" y="81" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-size="64" fill="#FFFFFF" letter-spacing="-1.2">M<tspan font-style="italic">&#305;</tspan></text>
+  <circle cx="81" cy="35" r="4" fill="#FFFFFF"/>
+</svg>

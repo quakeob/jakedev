@@ -13,6 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://jakedev.org/meridianhealth">
   <meta property="og:image" content="https://jakedev.org/meridianhealth/assets/images/og-meridian-daily-rebuild.png">
+  <link rel="icon" href="assets/brand/meridian-favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="assets/images/06-homepage-hero.png">
   <style>
     :root {
@@ -62,11 +63,9 @@
       text-transform: uppercase;
     }
 
-    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand-mark { width: 34px; height: 34px; position: relative; flex: 0 0 34px; border-radius: 50%; background: var(--forest); }
-    .brand-mark::before { content: ""; position: absolute; left: 8px; right: 8px; top: 16px; height: 2px; border-radius: 2px; background: var(--ivory); }
-    .brand-mark::after { content: ""; position: absolute; left: 10px; right: 10px; top: 17px; height: 8px; border: 2px solid var(--ivory); border-bottom: 0; border-left-color: transparent; border-right-color: transparent; border-radius: 50% 50% 0 0; transform: rotate(180deg); }
-    .brand-name { color: var(--forest); font-family: var(--utility); font-size: 16px; font-weight: 700; letter-spacing: .24em; }
+    .brand { display: inline-flex; align-items: center; text-decoration: none; }
+    .brand-logo { width: 168px; height: 36px; object-fit: contain; object-position: left center; }
+    .brand-logo--reversed { width: 184px; height: auto; }
 
     .site-header { position: absolute; inset: 0 0 auto; z-index: 20; color: var(--forest); }
     .header-inner { min-height: 86px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid rgba(23, 63, 53, .22); }
@@ -192,7 +191,6 @@
 
     .site-footer { padding: 72px 0 34px; background: #102f27; color: #dce4de; }
     .footer-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 60px; }
-    .site-footer .brand-name { color: var(--ivory); }
     .site-footer p { max-width: 620px; color: #b9c7bf; font-size: 13px; }
     .footer-links { display: flex; justify-content: flex-end; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
     .footer-links a { color: var(--ivory); font-size: 13px; }
@@ -226,8 +224,7 @@
 
     @media (max-width: 600px) {
       .header-inner { min-height: 72px; }
-      .brand-mark { width: 30px; height: 30px; flex-basis: 30px; }
-      .brand-name { font-size: 13px; }
+      .brand-logo { width: 148px; height: auto; }
       .hero { min-height: 680px; }
       .hero-media { object-position: 68% center; opacity: .82; }
       .hero::after { background: linear-gradient(90deg, rgba(245,241,232,.96) 0%, rgba(245,241,232,.82) 68%, rgba(245,241,232,.24) 100%); }
@@ -271,8 +268,7 @@
   <header class="site-header">
     <div class="shell header-inner">
       <a class="brand" href="#top" aria-label="Meridian home">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span class="brand-name">MERIDIAN</span>
+        <img class="brand-logo" src="assets/brand/meridian-lockup.svg" width="336" height="72" alt="Meridian">
       </a>
       <nav class="nav" aria-label="Main navigation">
         <a href="#formula">Formula</a>
@@ -469,7 +465,7 @@
     <div class="shell">
       <div class="footer-grid">
         <div>
-          <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">MERIDIAN</span></a>
+          <a class="brand" href="#top" aria-label="Meridian home"><img class="brand-logo brand-logo--reversed" src="assets/brand/meridian-lockup-reversed.svg" width="336" height="72" alt="Meridian"></a>
           <p>Daily gut support explained plainly. Meridian is currently a pre-launch brand; product photography containing people or hands is an AI-assisted launch composite and is not a customer testimonial.</p>
         </div>
         <nav class="footer-links" aria-label="Footer navigation">
