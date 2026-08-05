@@ -6,13 +6,12 @@
   <title>Daily Rebuild — Meridian</title>
   <meta name="description" content="Meridian Daily Rebuild is a simple daily probiotic with 40 billion CFU, four named strains, and prebiotics.">
   <meta name="theme-color" content="#F5F1E8">
-  <meta name="robots" content="noindex,follow">
-  <link rel="canonical" href="https://jakedev.org/meridianhealth">
+  <link rel="canonical" href="https://meridiangut.com">
   <meta property="og:title" content="Daily Rebuild — Meridian">
   <meta property="og:description" content="Warm, straightforward daily gut support for the return home.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://jakedev.org/meridianhealth">
-  <meta property="og:image" content="https://jakedev.org/meridianhealth/assets/images/og-meridian-daily-rebuild.png">
+  <meta property="og:url" content="https://meridiangut.com">
+  <meta property="og:image" content="https://meridiangut.com/assets/images/og-meridian-daily-rebuild.png">
   <link rel="icon" href="assets/brand/meridian-favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="assets/images/06-homepage-hero.png">
   <style>
@@ -73,7 +72,6 @@
     .nav a { font-size: 14px; font-weight: 600; text-decoration: none; }
     .nav a:hover { color: var(--forest-soft); }
     .bag { display: inline-flex; align-items: center; gap: 8px; }
-    .bag-count { display: grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 999px; background: var(--forest); color: var(--white); font-size: 12px; }
 
     .hero { position: relative; min-height: 760px; overflow: hidden; background: #eee8dc; }
     .hero-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; animation: settle 1.2s ease-out both; }
@@ -112,6 +110,7 @@
     .formula-line span { padding: 7px 10px; border-radius: 999px; background: var(--sage-pale); color: var(--forest); font-size: 12px; font-weight: 700; }
     .price-options { margin-top: 26px; border-top: 1px solid var(--line); }
     .purchase-option { width: 100%; display: grid; grid-template-columns: 20px 1fr auto; align-items: start; gap: 12px; padding: 18px 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: inherit; text-align: left; cursor: pointer; }
+    .purchase-option:disabled { cursor: not-allowed; opacity: .5; }
     .purchase-option .radio { width: 18px; height: 18px; margin-top: 2px; border: 1px solid var(--sage); border-radius: 50%; box-shadow: inset 0 0 0 4px transparent; }
     .purchase-option.is-selected .radio { background: var(--forest); box-shadow: inset 0 0 0 4px var(--white); }
     .purchase-option strong { display: block; font-size: 15px; }
@@ -122,6 +121,7 @@
     .qty button { height: 100%; border: 0; background: transparent; color: var(--forest); cursor: pointer; font-size: 20px; }
     .qty-output { text-align: center; font-weight: 700; }
     .add-button { border: 0; }
+    .add-button:disabled { cursor: not-allowed; opacity: .66; transform: none; }
     .store-note { margin: 16px 0 0; color: #6b746f; font-size: 12px; }
     .micro-trust { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 26px; }
     .micro-trust div { padding: 15px; border-radius: 12px; background: var(--ivory); }
@@ -274,7 +274,7 @@
         <a href="#formula">Formula</a>
         <a href="#why">Why Meridian</a>
         <a href="#faq">Questions</a>
-        <a class="bag" href="#buy">Bag <span class="bag-count" id="bag-count">0</span></a>
+        <a class="bag" href="#buy">Buy Daily Rebuild</a>
       </nav>
     </div>
   </header>
@@ -337,15 +337,15 @@
           </div>
 
           <div class="price-options" aria-label="Purchase options">
-            <button class="purchase-option is-selected" type="button" data-mode="subscription" data-price="27.20" aria-pressed="true">
+            <button class="purchase-option is-selected" type="button" data-mode="subscription" aria-pressed="true">
               <span class="radio" aria-hidden="true"></span>
               <span><strong>Subscribe and save 20%</strong><small>Ships every 30 days. Skip or cancel anytime.</small></span>
-              <span class="price">$27.20</span>
+              <span class="price">—</span>
             </button>
-            <button class="purchase-option" type="button" data-mode="once" data-price="34.00" aria-pressed="false">
+            <button class="purchase-option" type="button" data-mode="once" aria-pressed="false">
               <span class="radio" aria-hidden="true"></span>
               <span><strong>One-time purchase</strong><small>One 30-day bottle.</small></span>
-              <span class="price">$34.00</span>
+              <span class="price">—</span>
             </button>
           </div>
 
@@ -355,9 +355,9 @@
               <output class="qty-output" id="qty-output" aria-live="polite">1</output>
               <button type="button" aria-label="Increase quantity" id="qty-up">+</button>
             </div>
-            <button class="button add-button" type="button" id="add-button">Add to preview bag — $27.20</button>
+            <button class="button add-button" type="button" id="add-button" disabled>Loading secure checkout…</button>
           </div>
-          <p class="store-note">Store preview: checkout activates after the first production lot is approved.</p>
+          <p class="store-note" id="commerce-status" role="status" aria-live="polite">Checking current availability and pricing…</p>
 
           <div class="micro-trust">
             <div><strong>What you can verify</strong><span>Every ingredient on the authentic Facts panel.</span></div>
@@ -416,7 +416,7 @@
             <li><em>Lactobacillus plantarum</em><span>Lp-115</span></li>
             <li><em>Lactobacillus paracasei</em><span>Lpc-37</span></li>
           </ul>
-          <p class="formula-note">We show the panel exactly as supplied. Before launch, Meridian should order the physical product and independently confirm the production lot.</p>
+          <p class="formula-note">We show the panel exactly as supplied and do not invent amounts the supplier does not disclose.</p>
         </div>
       </div>
     </section>
@@ -454,8 +454,8 @@
           <details open><summary>What is in one serving?</summary><p>Two capsules provide a proprietary 800 mg probiotic blend listed at 40 billion CFU, plus 60 mg of complex marine polysaccharide and 24 mg of fructooligosaccharide.</p></details>
           <details><summary>Are the individual strain amounts listed?</summary><p>No. The supplier names all four strains but provides one combined amount for the probiotic blend. We do not estimate or invent the individual allocations.</p></details>
           <details><summary>Is this a treatment for an infection?</summary><p>No. This is a dietary supplement. If you suspect an infection or have severe, persistent, or worsening symptoms, get evaluated by a qualified healthcare professional.</p></details>
-          <details><summary>When does the subscription ship?</summary><p>The planned subscription cadence is one 60-capsule bottle every 30 days. Subscription checkout will open after the first production lot and label are approved.</p></details>
-          <details><summary>Why are there no customer reviews yet?</summary><p>Meridian is pre-launch. Reviews will appear only after verified customers receive the production product.</p></details>
+          <details><summary>When does the subscription ship?</summary><p>Subscriptions are billed and shipped every 30 days. You can manage or cancel your subscription through your secure customer account.</p></details>
+          <details><summary>Why are there no customer reviews yet?</summary><p>Meridian does not publish placeholder testimonials. Customer feedback will appear only after it comes from actual purchasers.</p></details>
         </div>
       </div>
     </section>
@@ -466,12 +466,17 @@
       <div class="footer-grid">
         <div>
           <a class="brand" href="#top" aria-label="Meridian home"><img class="brand-logo brand-logo--reversed" src="assets/brand/meridian-lockup-reversed.svg" width="336" height="72" alt="Meridian"></a>
-          <p>Daily gut support explained plainly. Meridian is currently a pre-launch brand; product photography containing people or hands is an AI-assisted launch composite and is not a customer testimonial.</p>
+          <p>Daily gut support explained plainly. Product photography containing people or hands is an AI-assisted launch composite and is not a customer testimonial.</p>
         </div>
         <nav class="footer-links" aria-label="Footer navigation">
           <a href="#formula">Formula</a>
           <a href="#why">Why Meridian</a>
           <a href="#faq">FAQ</a>
+          <a href="https://shop.meridiangut.com/policies/privacy-policy">Privacy</a>
+          <a href="https://shop.meridiangut.com/policies/refund-policy">Refunds</a>
+          <a href="https://shop.meridiangut.com/policies/shipping-policy">Shipping</a>
+          <a href="https://shop.meridiangut.com/policies/terms-of-service">Terms</a>
+          <a href="https://shop.meridiangut.com/policies/subscription-policy">Subscriptions</a>
         </nav>
       </div>
       <div class="legal">These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. © 2026 Meridian.</div>
@@ -489,45 +494,9 @@
           galleryButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
         });
       });
-
-      let quantity = 1;
-      let price = 27.20;
-      const quantityOutput = document.getElementById('qty-output');
-      const addButton = document.getElementById('add-button');
-      const bagCount = document.getElementById('bag-count');
-      const purchaseOptions = [...document.querySelectorAll('.purchase-option')];
-
-      const renderPurchase = () => {
-        quantityOutput.value = quantity;
-        quantityOutput.textContent = quantity;
-        addButton.textContent = `Add to preview bag — $${(price * quantity).toFixed(2)}`;
-      };
-
-      document.getElementById('qty-down').addEventListener('click', () => {
-        quantity = Math.max(1, quantity - 1);
-        renderPurchase();
-      });
-      document.getElementById('qty-up').addEventListener('click', () => {
-        quantity = Math.min(6, quantity + 1);
-        renderPurchase();
-      });
-      purchaseOptions.forEach((option) => {
-        option.addEventListener('click', () => {
-          price = Number(option.dataset.price);
-          purchaseOptions.forEach((item) => {
-            const selected = item === option;
-            item.classList.toggle('is-selected', selected);
-            item.setAttribute('aria-pressed', String(selected));
-          });
-          renderPurchase();
-        });
-      });
-      addButton.addEventListener('click', () => {
-        bagCount.textContent = String(Number(bagCount.textContent) + quantity);
-        addButton.textContent = 'Added to preview bag';
-        setTimeout(renderPurchase, 1200);
-      });
     })();
   </script>
+  <script id="shopify-config" type="application/json">{"shopDomain":"meridian-9793.myshopify.com","productHandle":"daily-rebuild","sellingPlanName":"Delivery every 30 days","commerceEnabled":false}</script>
+  <script type="module" src="assets/js/shopify-commerce.js"></script>
 </body>
 </html>
