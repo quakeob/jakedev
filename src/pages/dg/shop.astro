@@ -1,0 +1,33 @@
+---
+import DGLayout from '../../components/dg/DGLayout.astro';
+import DGHeader from '../../components/dg/DGHeader.astro';
+import DGFooter from '../../components/dg/DGFooter.astro';
+import DGProductCard from '../../components/dg/DGProductCard.astro';
+import { dgProducts } from '../../data/dg';
+const products = [...dgProducts, ...dgProducts];
+---
+
+<DGLayout title="Shop Firearms — Doug's Shoot'n Sports">
+  <DGHeader />
+  <main class="catalog shell">
+    <div class="breadcrumbs">Home <span>/</span> Firearms</div>
+    <div class="catalog-title">
+      <div><p class="eyebrow">Live store inventory</p><h1>FIREARMS</h1><p>Shop 1,284 available products from brands we know and trust.</p></div>
+      <label class="sort">Sort by <select><option>Featured</option><option>Price: low to high</option><option>Newest</option></select></label>
+    </div>
+    <div class="catalog-layout">
+      <aside class="filters">
+        <div class="filter-heading"><b>FILTERS</b><button>Clear</button></div>
+        <div class="filter-block"><h3>Category <span>−</span></h3>{['Handguns','Rifles','Shotguns','Lower receivers'].map((item, i) => <label><input type="checkbox" /> <span>{item}</span><small>{[248,186,92,44][i]}</small></label>)}</div>
+        <div class="filter-block"><h3>Availability <span>−</span></h3>{['In stock','Available online','In-store only'].map((item, i) => <label><input type="checkbox" checked={i === 0} /> <span>{item}</span><small>{[248,186,92][i]}</small></label>)}</div>
+        <div class="filter-block"><h3>Manufacturer <span>−</span></h3>{['Smith & Wesson','Winchester','Stevens','Taurus'].map((item, i) => <label><input type="checkbox" /> <span>{item}</span><small>{[248,186,92,44][i]}</small></label>)}</div>
+        <div class="filter-block"><h3>Price range</h3><div class="price-inputs"><span>$0</span><span>$2,500+</span></div><div class="fake-range"><i></i></div></div>
+      </aside>
+      <section class="catalog-results">
+        <div class="result-meta"><span><b>1,284</b> products</span><button>☷ Show filters</button></div>
+        <div class="product-grid catalog-grid">{products.map((product) => <DGProductCard product={product} />)}</div>
+      </section>
+    </div>
+  </main>
+  <DGFooter />
+</DGLayout>

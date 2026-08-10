@@ -1,0 +1,57 @@
+---
+import '../../styles/dg.css';
+const { title = "Doug's Shoot'n Sports — Client Review" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div id="review-gate" class="review-gate">
+      <div class="review-gate__panel">
+        <p class="review-gate__eyebrow">Private client preview</p>
+        <h1>Doug&apos;s Storefront</h1>
+        <p>Enter the review password to view this concept.</p>
+        <form id="review-form">
+          <label for="review-password">Password</label>
+          <input id="review-password" name="password" type="password" inputmode="numeric" autocomplete="current-password" autofocus />
+          <button type="submit">View concept</button>
+          <p id="review-error" class="review-gate__error" role="alert"></p>
+        </form>
+      </div>
+    </div>
+
+    <div id="dg-site" hidden><slot /></div>
+
+    <script is:inline>
+      (() => {
+        const gate = document.getElementById('review-gate');
+        const site = document.getElementById('dg-site');
+        const form = document.getElementById('review-form');
+        const input = document.getElementById('review-password');
+        const error = document.getElementById('review-error');
+        const reveal = () => {
+          gate.hidden = true;
+          site.hidden = false;
+          sessionStorage.setItem('dg-review-access', 'granted');
+        };
+
+        if (sessionStorage.getItem('dg-review-access') === 'granted') reveal();
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (input.value === '1234') reveal();
+          else {
+            error.textContent = 'Incorrect password.';
+            input.select();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

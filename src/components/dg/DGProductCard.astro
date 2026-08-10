@@ -1,0 +1,19 @@
+---
+const { product } = Astro.props;
+---
+<article class="product-card">
+  <a href="/dg/product" class="product-image">
+    {product.badge && <span class="pill">{product.badge}</span>}
+    <img src={product.image} alt={`${product.brand} ${product.name}`} />
+  </a>
+  <div class="product-body">
+    <p class="kicker">{product.brand}</p>
+    <h3><a href="/dg/product">{product.name}</a></h3>
+    <p class="product-spec">{product.spec}</p>
+    <div class="stock"><span></span>{product.stock}</div>
+    <div class="price-row">
+      <div>{product.compare && <small>{product.compare}</small>}<strong>{product.price}</strong></div>
+      <a class="quick-add" href="/dg/product" aria-label={`View ${product.name}`}>VIEW</a>
+    </div>
+  </div>
+</article>

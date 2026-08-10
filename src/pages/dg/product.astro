@@ -1,0 +1,41 @@
+---
+import DGLayout from '../../components/dg/DGLayout.astro';
+import DGHeader from '../../components/dg/DGHeader.astro';
+import DGFooter from '../../components/dg/DGFooter.astro';
+import DGProductCard from '../../components/dg/DGProductCard.astro';
+import { dgProducts } from '../../data/dg';
+---
+
+<DGLayout title="Stevens 320 Security Pump — Doug's Shoot'n Sports">
+  <DGHeader />
+  <main>
+    <div class="shell breadcrumbs product-crumbs">Home <span>/</span> Shotguns <span>/</span> Pump action</div>
+    <section class="product-detail shell">
+      <div class="gallery">
+        <div class="gallery-main"><span class="pill">Featured price</span><img src="/dg/stevens.png" alt="Stevens 320 Security pump shotgun" /><button class="zoom">＋</button></div>
+        <div class="thumbnails"><button class="selected"><img src="/dg/stevens.png" alt="Side profile" /></button><button><span>DETAIL</span></button><button><span>ACTION</span></button></div>
+      </div>
+      <div class="buy-panel">
+        <p class="kicker">Stevens</p><h1>320 SECURITY PUMP</h1><p class="sku">SKU 19496 · UPC 011356194961</p>
+        <div class="review-line"><span>★★★★★</span> 4.8 <a href="#details">12 reviews</a></div>
+        <p class="product-summary">12 Gauge · 18.5&quot; barrel · 5-round capacity · Matte black</p>
+        <div class="detail-price"><span><small>Regular $319.99</small><strong>$284.36</strong></span><em>Save $35.63</em></div>
+        <div class="availability"><span class="status-dot"></span><div><b>Available for order</b><small>Usually ready for pickup in 3–7 business days</small></div></div>
+        <div class="fulfillment">
+          <p>CHOOSE FULFILLMENT</p>
+          <label class="fulfillment-option selected"><input type="radio" name="fulfillment" checked /><span><b>Pick up at Doug&apos;s</b><small>4926 S Redwood Rd · No shipping fee</small></span><strong>FREE</strong></label>
+          <label class="fulfillment-option"><input type="radio" name="fulfillment" /><span><b>Ship to another FFL</b><small>Dealer selection happens at checkout</small></span><strong>CALCULATED</strong></label>
+        </div>
+        <button class="add-cart">ADD TO CART <span>→</span></button>
+        <p class="legal-note">Firearms may only be transferred to the purchaser after all required federal and state checks. Valid government-issued ID required.</p>
+        <div class="mini-benefits"><span>✓ Secure checkout</span><span>✓ Expert support</span><span>✓ Easy local pickup</span></div>
+      </div>
+    </section>
+    <section id="details" class="details shell">
+      <div class="detail-copy"><p class="eyebrow">Product details</p><h2>BUILT SIMPLE.<br />BUILT TO WORK.</h2><p>The Stevens 320 uses a proven rotary bolt design and dual slide bars for dependable operation.</p></div>
+      <dl class="spec-table"><div><dt>Manufacturer</dt><dd>Stevens</dd></div><div><dt>Model</dt><dd>320 Field & Security</dd></div><div><dt>Caliber</dt><dd>12 Gauge</dd></div><div><dt>Capacity</dt><dd>5 rounds</dd></div><div><dt>Barrel</dt><dd>18.5 inches</dd></div><div><dt>Finish</dt><dd>Matte black</dd></div></dl>
+    </section>
+    <section class="section products-section related"><div class="shell"><div class="section-heading"><div><p class="eyebrow">Keep looking</p><h2>YOU MAY ALSO LIKE</h2></div><a href="/dg/shop" class="text-link">View all shotguns →</a></div><div class="product-grid">{dgProducts.slice(1).map((product) => <DGProductCard product={product} />)}</div></div></section>
+  </main>
+  <DGFooter />
+</DGLayout>
