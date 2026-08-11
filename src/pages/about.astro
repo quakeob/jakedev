@@ -1,0 +1,751 @@
+---
+const pageTitle = 'Jake Davis — Creative + Developer';
+const pageDescription = 'Jake Davis works across websites, software, graphics, video, photography, and creative direction. Available for brand partnerships and creative work.';
+
+const disciplines = [
+  { number: '01', title: 'Web', copy: 'Distinctive websites built to look sharp and work hard.' },
+  { number: '02', title: 'Graphics', copy: 'Visual direction, campaign assets, and digital design.' },
+  { number: '03', title: 'Software', copy: 'Apps, AI systems, and useful tools built from scratch.' },
+  { number: '04', title: 'Photo', copy: 'Lifestyle, outdoor, travel, and product photography.' },
+  { number: '05', title: 'Video', copy: 'Short-form stories, product films, and moving images.' },
+  { number: '06', title: 'Direction', copy: 'Editorial judgment, visual systems, and a distinct point of view.' },
+];
+
+const exploreLinks = [
+  { label: 'Selected work', detail: 'Websites, apps & software', href: '/#work' },
+  { label: 'Photography', detail: 'Places, people & products', href: '/photos' },
+  { label: 'Writing', detail: 'AI, code & neuroscience', href: '/writing' },
+];
+
+const socials = [
+  { label: 'Instagram', handle: '@jjakedavis', href: 'https://instagram.com/jjakedavis' },
+  { label: 'GitHub', handle: 'quakeob', href: 'https://github.com/quakeob' },
+  { label: 'VSCO', handle: 'jakesphone', href: 'https://vsco.co/jakesphone/gallery' },
+  { label: 'Spotify', handle: 'jjakedavis', href: 'https://open.spotify.com/user/jjakedavis?si=f27deedac039460a' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content={pageDescription} />
+    <meta name="theme-color" content="#ebe7df" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://jakedev.org/about" />
+    <meta property="og:image" content="https://jakedev.org/og-links-v2.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://jakedev.org/og-links-v2.png" />
+    <title>{pageTitle}</title>
+    <link rel="canonical" href="https://jakedev.org/about" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <main class="links-page">
+      <header class="topbar">
+        <a class="wordmark" href="/" aria-label="Jake Davis home">Jake Davis</a>
+        <span class="topbar__status"><i aria-hidden="true"></i> Open to partnerships</span>
+      </header>
+
+      <section class="hero" aria-labelledby="profile-name">
+        <div class="hero__image-wrap" data-carousel aria-roledescription="carousel" aria-label="Photos of Jake Davis">
+          <div class="hero__slides">
+            <img
+              class="hero__image is-active"
+              data-slide
+              src="/DSCF9480.JPEG"
+              alt="Jake Davis overlooking the Hong Kong skyline"
+              width="1776"
+              height="1184"
+              loading="eager"
+            />
+            <img
+              class="hero__image"
+              data-slide
+              src="/DSCF6478.JPEG"
+              alt="Jake Davis holding a salmon while fishing in a forest river"
+              width="1776"
+              height="1184"
+              loading="lazy"
+              aria-hidden="true"
+            />
+            <img
+              class="hero__image"
+              data-slide
+              src="/DSCF7420.jpg"
+              alt="Jake Davis standing against a rock wall"
+              width="1776"
+              height="1184"
+              loading="lazy"
+              aria-hidden="true"
+            />
+          </div>
+          <div class="hero__stamp" aria-hidden="true">
+            <span>Creative</span>
+            <span>Developer</span>
+          </div>
+          <div class="hero__carousel-controls">
+            <button type="button" data-previous aria-label="Show previous photo">←</button>
+            <span data-counter aria-live="polite">01 / 03</span>
+            <button type="button" data-next aria-label="Show next photo">→</button>
+          </div>
+        </div>
+
+        <div class="hero__copy">
+          <p class="kicker">Independent creative + developer</p>
+          <h1 id="profile-name">Jake Davis — Creative + Developer</h1>
+          <p class="intro">
+            My work spans websites, software, graphics, video, and photography. What connects it is taste: an eye for the right ideas, images, and details—and the restraint to bring them together well. Off-roading, camping, backpacking, hiking, and a long list of side interests keep the point of view wide.
+          </p>
+          <a class="website-link" href="/">
+            <span>See my website</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+
+      <a class="reach" href="https://instagram.com/jjakedavis" target="_blank" rel="noreferrer" aria-label="Visit Jake Davis on Instagram">
+        <span class="reach__label">Instagram · typical reach</span>
+        <span class="reach__community">≈10K followers</span>
+        <strong aria-label="Approximately 2 million">≈2M</strong>
+        <span class="reach__unit">monthly<br />impressions</span>
+        <span class="reach__arrow" aria-hidden="true">↗</span>
+      </a>
+
+      <section class="range" aria-labelledby="capabilities-title">
+        <div class="section-rule">
+          <span id="capabilities-title">Capabilities</span>
+          <span>06 disciplines</span>
+        </div>
+        <p class="range__intro">Creative ideas are better when one person can carry them from concept to camera to code.</p>
+
+        <div class="discipline-grid">
+          {disciplines.map((item) => (
+            <article class="discipline">
+              <span>{item.number}</span>
+              <h3>{item.title}</h3>
+              <p>{item.copy}</p>
+            </article>
+          ))}
+        </div>
+
+      </section>
+
+      <nav class="explore" aria-label="Explore Jake Davis's work">
+        <div class="section-rule">
+          <span>Explore</span>
+          <span>03 links</span>
+        </div>
+        {exploreLinks.map((link) => (
+          <a class="explore-link" href={link.href}>
+            <span>
+              <strong>{link.label}</strong>
+              <small>{link.detail}</small>
+            </span>
+            <span class="explore-link__arrow" aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </nav>
+
+      <section class="socials" aria-labelledby="socials-title">
+        <div class="section-rule">
+          <span id="socials-title">Elsewhere</span>
+          <span>Follow along</span>
+        </div>
+        <div class="social-grid">
+          {socials.map((social) => (
+            <a href={social.href} target="_blank" rel="noreferrer">
+              <strong>{social.label}</strong>
+              <small>{social.handle}</small>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="contact" aria-labelledby="contact-title">
+        <p>Brand partnerships · campaigns · builds · ideas</p>
+        <h2 id="contact-title">Let’s talk.</h2>
+        <p class="contact__copy">If you have a product, project, or story worth making well, I want to hear about it.</p>
+        <a class="contact__button" href="mailto:jake@bryt.works?subject=Let%27s%20work%20together">
+          <span>Start a conversation</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </section>
+
+      <footer>
+        <span>© {new Date().getFullYear()} Jake Davis</span>
+        <a href="mailto:jake@bryt.works">jake@bryt.works</a>
+      </footer>
+    </main>
+  </body>
+</html>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));
+    const previous = carousel.querySelector<HTMLButtonElement>('[data-previous]');
+    const next = carousel.querySelector<HTMLButtonElement>('[data-next]');
+    const counter = carousel.querySelector<HTMLElement>('[data-counter]');
+    let activeIndex = 0;
+    let touchStartX = 0;
+    let autoplayTimer: number | undefined;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const showSlide = (index: number) => {
+      activeIndex = (index + slides.length) % slides.length;
+
+      slides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === activeIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', String(!isActive));
+      });
+
+      if (counter) {
+        counter.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+      }
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayTimer !== undefined) {
+        window.clearInterval(autoplayTimer);
+        autoplayTimer = undefined;
+      }
+    };
+
+    const startAutoplay = () => {
+      if (prefersReducedMotion || slides.length < 2 || autoplayTimer !== undefined) return;
+      autoplayTimer = window.setInterval(() => showSlide(activeIndex + 1), 4000);
+    };
+
+    const restartAutoplay = () => {
+      stopAutoplay();
+      startAutoplay();
+    };
+
+    previous?.addEventListener('click', () => {
+      showSlide(activeIndex - 1);
+      restartAutoplay();
+    });
+
+    next?.addEventListener('click', () => {
+      showSlide(activeIndex + 1);
+      restartAutoplay();
+    });
+
+    carousel.addEventListener('touchstart', (event) => {
+      stopAutoplay();
+      touchStartX = event.changedTouches[0]?.clientX ?? 0;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', (event) => {
+      const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+      const distance = touchEndX - touchStartX;
+
+      if (Math.abs(distance) > 45) {
+        showSlide(activeIndex + (distance < 0 ? 1 : -1));
+      }
+
+      startAutoplay();
+    }, { passive: true });
+
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+    carousel.addEventListener('focusin', stopAutoplay);
+    carousel.addEventListener('focusout', startAutoplay);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAutoplay();
+      else startAutoplay();
+    });
+
+    startAutoplay();
+  });
+</script>
+
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #181816;
+    --paper: #ebe7df;
+    --white: #f7f4ed;
+    --muted: #68645d;
+    --line: rgba(24, 24, 22, 0.18);
+    --rust: #9d452e;
+    --blue: #173d5c;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    min-height: 100%;
+    background: var(--paper);
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100%;
+    margin: 0;
+    background:
+      linear-gradient(rgba(24, 24, 22, 0.024) 1px, transparent 1px),
+      var(--paper);
+    background-size: 100% 4px;
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  p, h1, h2, h3 { margin-top: 0; }
+
+  .links-page {
+    width: min(100%, 700px);
+    min-height: 100svh;
+    margin-inline: auto;
+    padding: max(1.1rem, env(safe-area-inset-top)) 1rem max(2rem, env(safe-area-inset-bottom));
+  }
+
+  .topbar,
+  .section-rule,
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topbar {
+    min-height: 3rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .wordmark {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .topbar__status {
+    display: flex;
+    align-items: center;
+    gap: 0.42rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.51rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .topbar__status i {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--rust);
+  }
+
+  .hero__image-wrap {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: #746c61;
+  }
+
+  .hero__image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    filter: saturate(0.72) contrast(1.06);
+    transition: opacity 300ms ease;
+  }
+
+  .hero__image.is-active {
+    opacity: 1;
+  }
+
+  .hero__image-wrap::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 58%, rgba(13, 15, 17, 0.38));
+    pointer-events: none;
+  }
+
+  .hero__stamp {
+    position: absolute;
+    z-index: 2;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    display: grid;
+    justify-items: end;
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.13em;
+    line-height: 1.65;
+    text-transform: uppercase;
+  }
+
+  .hero__carousel-controls {
+    position: absolute;
+    z-index: 2;
+    bottom: 0.7rem;
+    left: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    background: rgba(24, 24, 22, 0.72);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.06em;
+  }
+
+  .hero__carousel-controls button {
+    display: grid;
+    width: 2.35rem;
+    height: 2.35rem;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+  }
+
+  .hero__carousel-controls span {
+    min-width: 3.2rem;
+    text-align: center;
+  }
+
+  .hero__copy {
+    padding: 1.5rem 0 0.3rem;
+  }
+
+  .kicker,
+  .section-rule,
+  .contact > p:first-child,
+  footer {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .kicker {
+    margin-bottom: 0.75rem;
+    color: var(--rust);
+  }
+
+  h1,
+  .contact h2 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    letter-spacing: -0.045em;
+  }
+
+  h1 {
+    max-width: 35rem;
+    margin-bottom: 1rem;
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 0.96;
+  }
+
+  .intro {
+    max-width: 38rem;
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    line-height: 1.52;
+  }
+
+  .website-link {
+    display: flex;
+    width: min(100%, 15rem);
+    min-height: 3.2rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    padding: 0 0.9rem;
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform 160ms ease, background 160ms ease;
+  }
+
+  .reach {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto 1fr;
+    gap: 0 0.8rem;
+    min-height: 8.4rem;
+    align-items: end;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--blue);
+    color: var(--white);
+    transition: transform 160ms ease;
+  }
+
+  .reach__label {
+    align-self: start;
+    color: rgba(247, 244, 237, 0.62);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .reach__community {
+    grid-column: 2 / -1;
+    align-self: start;
+    justify-self: end;
+    color: rgba(247, 244, 237, 0.62);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .reach strong {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(4.4rem, 22vw, 7rem);
+    font-weight: 400;
+    letter-spacing: -0.06em;
+    line-height: 0.65;
+  }
+
+  .reach__unit {
+    align-self: end;
+    padding-bottom: 0.05rem;
+    color: rgba(247, 244, 237, 0.75);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.51rem;
+    letter-spacing: 0.06em;
+    line-height: 1.45;
+    text-transform: uppercase;
+  }
+
+  .reach__arrow {
+    align-self: end;
+    font-size: 1.2rem;
+  }
+
+  .range,
+  .explore,
+  .socials {
+    margin-top: 4rem;
+  }
+
+  .range__intro {
+    max-width: 28rem;
+    margin: 1rem 0 1.5rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .discipline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+
+  .discipline {
+    min-height: 10.5rem;
+    padding: 0.8rem;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .discipline > span {
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.48rem;
+  }
+
+  .discipline h3 {
+    margin: 2rem 0 0.45rem;
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.65rem;
+    font-weight: 400;
+  }
+
+  .discipline p {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 0.66rem;
+    line-height: 1.5;
+  }
+
+  .section-rule {
+    min-height: 2rem;
+    border-bottom: 1px solid var(--ink);
+    color: var(--muted);
+  }
+
+  .explore-link {
+    display: flex;
+    min-height: 5.25rem;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    transition: padding 160ms ease, color 160ms ease;
+  }
+
+  .explore-link > span:first-child {
+    display: grid;
+    gap: 0.22rem;
+  }
+
+  .explore-link strong {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.65rem;
+    font-weight: 400;
+  }
+
+  .explore-link small,
+  .social-grid small {
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  .explore-link__arrow {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    font-size: 0.9rem;
+  }
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    padding-top: 0.75rem;
+  }
+
+  .social-grid a {
+    display: grid;
+    min-height: 5.4rem;
+    align-content: space-between;
+    padding: 0.72rem;
+    border: 1px solid var(--line);
+  }
+
+  .social-grid strong {
+    font-size: 0.68rem;
+    font-weight: 600;
+  }
+
+  .contact {
+    margin-top: 4rem;
+    padding: 1.35rem;
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .contact > p:first-child {
+    margin-bottom: 2.25rem;
+    color: rgba(247, 244, 237, 0.5);
+    line-height: 1.6;
+  }
+
+  .contact h2 {
+    margin-bottom: 1rem;
+    font-size: clamp(4rem, 20vw, 7.5rem);
+    line-height: 0.76;
+  }
+
+  .contact__copy {
+    max-width: 26rem;
+    margin-bottom: 1.5rem;
+    color: rgba(247, 244, 237, 0.62);
+    font-size: 0.73rem;
+    line-height: 1.6;
+  }
+
+  .contact__button {
+    display: flex;
+    min-height: 3.7rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background: var(--white);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  footer {
+    min-height: 5rem;
+    color: var(--muted);
+    font-size: 0.48rem;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--rust);
+    outline-offset: 3px;
+  }
+
+  .reach:active,
+  .website-link:active,
+  .contact__button:active { transform: scale(0.987); }
+
+  @media (hover: hover) {
+    .reach:hover { transform: translateY(-3px); }
+    .website-link:hover { background: var(--rust); }
+    .explore-link:hover { padding-inline: 0.6rem; color: var(--rust); }
+    .social-grid a:hover { border-color: var(--ink); }
+    .contact__button:hover { background: #d9d4ca; }
+  }
+
+  @media (min-width: 600px) {
+    .links-page { padding-inline: 2.5rem; }
+    .hero__copy { padding-top: 2rem; }
+    .discipline { min-height: 11.5rem; padding: 1rem; }
+    .contact { padding: 2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
