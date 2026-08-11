@@ -55,18 +55,46 @@ const socials = [
       </header>
 
       <section class="hero" aria-labelledby="profile-name">
-        <div class="hero__image-wrap">
-          <img
-            class="hero__image"
-            src="/DSCF7420.jpg"
-            alt="Jake Davis standing against a rock wall"
-            width="960"
-            height="1200"
-            loading="eager"
-          />
+        <div class="hero__image-wrap" data-carousel aria-roledescription="carousel" aria-label="Photos of Jake Davis">
+          <div class="hero__slides">
+            <img
+              class="hero__image is-active"
+              data-slide
+              src="/DSCF9480.JPEG"
+              alt="Jake Davis overlooking the Hong Kong skyline"
+              width="1776"
+              height="1184"
+              loading="eager"
+            />
+            <img
+              class="hero__image"
+              data-slide
+              src="/DSCF6478.JPEG"
+              alt="Jake Davis holding a salmon while fishing in a forest river"
+              width="1776"
+              height="1184"
+              loading="lazy"
+              aria-hidden="true"
+            />
+            <img
+              class="hero__image"
+              data-slide
+              src="/DSCF7420.jpg"
+              alt="Jake Davis standing against a rock wall"
+              width="1776"
+              height="1184"
+              loading="lazy"
+              aria-hidden="true"
+            />
+          </div>
           <div class="hero__stamp" aria-hidden="true">
             <span>Creative</span>
             <span>Developer</span>
+          </div>
+          <div class="hero__carousel-controls">
+            <button type="button" data-previous aria-label="Show previous photo">←</button>
+            <span data-counter aria-live="polite">01 / 03</span>
+            <button type="button" data-next aria-label="Show next photo">→</button>
           </div>
         </div>
 
@@ -76,6 +104,10 @@ const socials = [
           <p class="intro">
             My work spans websites, software, graphics, video, and photography. What connects it is taste: an eye for the right ideas, images, and details—and the restraint to bring them together well. Off-roading, camping, backpacking, hiking, and a long list of side interests keep the point of view wide.
           </p>
+          <a class="website-link" href="/">
+            <span>See my website</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </section>
 
@@ -103,6 +135,7 @@ const socials = [
             </article>
           ))}
         </div>
+
       </section>
 
       <nav class="explore" aria-label="Explore Jake Davis's work">
@@ -153,6 +186,88 @@ const socials = [
     </main>
   </body>
 </html>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));
+    const previous = carousel.querySelector<HTMLButtonElement>('[data-previous]');
+    const next = carousel.querySelector<HTMLButtonElement>('[data-next]');
+    const counter = carousel.querySelector<HTMLElement>('[data-counter]');
+    let activeIndex = 0;
+    let touchStartX = 0;
+    let autoplayTimer: number | undefined;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const showSlide = (index: number) => {
+      activeIndex = (index + slides.length) % slides.length;
+
+      slides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === activeIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', String(!isActive));
+      });
+
+      if (counter) {
+        counter.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+      }
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayTimer !== undefined) {
+        window.clearInterval(autoplayTimer);
+        autoplayTimer = undefined;
+      }
+    };
+
+    const startAutoplay = () => {
+      if (prefersReducedMotion || slides.length < 2 || autoplayTimer !== undefined) return;
+      autoplayTimer = window.setInterval(() => showSlide(activeIndex + 1), 4000);
+    };
+
+    const restartAutoplay = () => {
+      stopAutoplay();
+      startAutoplay();
+    };
+
+    previous?.addEventListener('click', () => {
+      showSlide(activeIndex - 1);
+      restartAutoplay();
+    });
+
+    next?.addEventListener('click', () => {
+      showSlide(activeIndex + 1);
+      restartAutoplay();
+    });
+
+    carousel.addEventListener('touchstart', (event) => {
+      stopAutoplay();
+      touchStartX = event.changedTouches[0]?.clientX ?? 0;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', (event) => {
+      const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+      const distance = touchEndX - touchStartX;
+
+      if (Math.abs(distance) > 45) {
+        showSlide(activeIndex + (distance < 0 ? 1 : -1));
+      }
+
+      startAutoplay();
+    }, { passive: true });
+
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+    carousel.addEventListener('focusin', stopAutoplay);
+    carousel.addEventListener('focusout', startAutoplay);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAutoplay();
+      else startAutoplay();
+    });
+
+    startAutoplay();
+  });
+</script>
 
 <style>
   :root {
@@ -243,23 +358,32 @@ const socials = [
 
   .hero__image-wrap {
     position: relative;
-    aspect-ratio: 4 / 4.35;
+    aspect-ratio: 3 / 2;
     overflow: hidden;
     background: #746c61;
   }
 
   .hero__image {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 69% 47%;
+    object-position: center;
+    opacity: 0;
     filter: saturate(0.72) contrast(1.06);
+    transition: opacity 300ms ease;
+  }
+
+  .hero__image.is-active {
+    opacity: 1;
   }
 
   .hero__image-wrap::after {
     content: '';
     position: absolute;
+    z-index: 1;
     inset: 0;
     background: linear-gradient(180deg, transparent 58%, rgba(13, 15, 17, 0.38));
     pointer-events: none;
@@ -267,7 +391,7 @@ const socials = [
 
   .hero__stamp {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     right: 0.8rem;
     bottom: 0.8rem;
     display: grid;
@@ -278,6 +402,41 @@ const socials = [
     letter-spacing: 0.13em;
     line-height: 1.65;
     text-transform: uppercase;
+  }
+
+  .hero__carousel-controls {
+    position: absolute;
+    z-index: 2;
+    bottom: 0.7rem;
+    left: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    background: rgba(24, 24, 22, 0.72);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.06em;
+  }
+
+  .hero__carousel-controls button {
+    display: grid;
+    width: 2.35rem;
+    height: 2.35rem;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+  }
+
+  .hero__carousel-controls span {
+    min-width: 3.2rem;
+    text-align: center;
   }
 
   .hero__copy {
@@ -319,6 +478,24 @@ const socials = [
     color: var(--muted);
     font-size: clamp(1rem, 3vw, 1.2rem);
     line-height: 1.52;
+  }
+
+  .website-link {
+    display: flex;
+    width: min(100%, 15rem);
+    min-height: 3.2rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    padding: 0 0.9rem;
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform 160ms ease, background 160ms ease;
   }
 
   .reach {
@@ -545,10 +722,12 @@ const socials = [
   }
 
   .reach:active,
+  .website-link:active,
   .contact__button:active { transform: scale(0.987); }
 
   @media (hover: hover) {
     .reach:hover { transform: translateY(-3px); }
+    .website-link:hover { background: var(--rust); }
     .explore-link:hover { padding-inline: 0.6rem; color: var(--rust); }
     .social-grid a:hover { border-color: var(--ink); }
     .contact__button:hover { background: #d9d4ca; }
@@ -556,7 +735,6 @@ const socials = [
 
   @media (min-width: 600px) {
     .links-page { padding-inline: 2.5rem; }
-    .hero__image-wrap { aspect-ratio: 5 / 4.6; }
     .hero__copy { padding-top: 2rem; }
     .discipline { min-height: 11.5rem; padding: 1rem; }
     .contact { padding: 2rem; }
