@@ -53,7 +53,6 @@ const socials = [
     <main class="links-page">
       <header class="topbar">
         <a class="wordmark" href="/" aria-label="Jake Davis home">Jake Davis</a>
-        <span class="topbar__status"><i aria-hidden="true"></i> Open to partnerships</span>
       </header>
 
       <section class="hero" aria-labelledby="profile-name">
@@ -94,9 +93,9 @@ const socials = [
             <span>Developer</span>
           </div>
           <div class="hero__carousel-controls">
-            <button type="button" data-previous aria-label="Show previous photo">←</button>
+            <button type="button" data-previous aria-label="Show previous photo">Prev</button>
             <span data-counter aria-live="polite">01 / 03</span>
-            <button type="button" data-next aria-label="Show next photo">→</button>
+            <button type="button" data-next aria-label="Show next photo">Next</button>
           </div>
         </div>
 
@@ -108,7 +107,6 @@ const socials = [
           </p>
           <a class="website-link" href="/">
             <span>See my website</span>
-            <span aria-hidden="true">→</span>
           </a>
         </div>
       </section>
@@ -118,7 +116,6 @@ const socials = [
         <span class="reach__community">≈10K followers</span>
         <strong aria-label="Approximately 2 million">≈2M</strong>
         <span class="reach__unit">monthly<br />impressions</span>
-        <span class="reach__arrow" aria-hidden="true">↗</span>
       </a>
 
       <section class="range" aria-labelledby="capabilities-title">
@@ -151,7 +148,6 @@ const socials = [
               <strong>{link.label}</strong>
               <small>{link.detail}</small>
             </span>
-            <span class="explore-link__arrow" aria-hidden="true">↗</span>
           </a>
         ))}
       </nav>
@@ -177,7 +173,6 @@ const socials = [
         <p class="contact__copy">If you have a product, project, or story worth making well, I want to hear about it.</p>
         <a class="contact__button" href="mailto:jake@bryt.works?subject=Let%27s%20work%20together">
           <span>Start a conversation</span>
-          <span aria-hidden="true">→</span>
         </a>
       </section>
 
@@ -340,24 +335,6 @@ const socials = [
     text-transform: uppercase;
   }
 
-  .topbar__status {
-    display: flex;
-    align-items: center;
-    gap: 0.42rem;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.51rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .topbar__status i {
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 50%;
-    background: var(--rust);
-  }
-
   .hero__image-wrap {
     position: relative;
     aspect-ratio: 3 / 2;
@@ -424,7 +401,7 @@ const socials = [
 
   .hero__carousel-controls button {
     display: grid;
-    width: 2.35rem;
+    width: 3rem;
     height: 2.35rem;
     padding: 0;
     place-items: center;
@@ -433,7 +410,9 @@ const socials = [
     color: inherit;
     cursor: pointer;
     font: inherit;
-    font-size: 0.85rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .hero__carousel-controls span {
@@ -502,7 +481,7 @@ const socials = [
 
   .reach {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto;
     grid-template-rows: auto 1fr;
     gap: 0 0.8rem;
     min-height: 8.4rem;
@@ -551,11 +530,6 @@ const socials = [
     letter-spacing: 0.06em;
     line-height: 1.45;
     text-transform: uppercase;
-  }
-
-  .reach__arrow {
-    align-self: end;
-    font-size: 1.2rem;
   }
 
   .range,
@@ -638,16 +612,6 @@ const socials = [
     font-family: 'Space Mono', monospace;
     font-size: 0.5rem;
     letter-spacing: 0.03em;
-  }
-
-  .explore-link__arrow {
-    display: grid;
-    width: 2.5rem;
-    height: 2.5rem;
-    place-items: center;
-    border: 1px solid var(--ink);
-    border-radius: 50%;
-    font-size: 0.9rem;
   }
 
   .social-grid {
