@@ -1,0 +1,24 @@
+1:"$Sreact.fragment"
+2:I[22016,["/_next/static/chunks/2_nwd9ikdpgl-.js"],""]
+3:I[97367,["/_next/static/chunks/2_nwd9ikdpgl-.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+8:I[97367,["/_next/static/chunks/2_nwd9ikdpgl-.js"],"ViewportBoundary"]
+9:I[97367,["/_next/static/chunks/2_nwd9ikdpgl-.js"],"MetadataBoundary"]
+b:I[39756,["/_next/static/chunks/2_nwd9ikdpgl-.js"],"default"]
+c:I[37457,["/_next/static/chunks/2_nwd9ikdpgl-.js"],"default"]
+10:I[18444,["/_next/static/chunks/2_nwd9ikdpgl-.js"],"default"]
+:HL["/_next/static/chunks/0etw63c45_tu2.css","style"]
+7:X
+e:X
+e:C
+f:["$","style",null,{"children":".intro{display:none}"}]
+0:{"buildId":"Fd5yQ3wqvCh5Rm6c0vyqA","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"dev","children":[["$","h1",null,{"className":"title title--s","children":"Nothing here."}],["$","p",null,{"style":{"marginTop":14},"children":["$","$L2",null,{"className":"link","href":"/","children":"Back to the pictures"}]}]]}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f2efea"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Jake Davis"}],["$","meta","1",{"name":"description","content":"Photo and video. Utah. Fujifilm X100V."}],["$","meta","2",{"property":"og:title","content":"Jake Davis"}],["$","meta","3",{"property":"og:description","content":"Photo and video. Utah. Fujifilm X100V."}],["$","meta","4",{"property":"og:image","content":"https://jakedev.org/img/8650-1440.webp"}],["$","meta","5",{"property":"og:type","content":"website"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"Jake Davis"}],["$","meta","8",{"name":"twitter:description","content":"Photo and video. Utah. Fujifilm X100V."}],["$","meta","9",{"name":"twitter:image","content":"https://jakedev.org/img/8650-1440.webp"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@a","staleTime":"$7","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Lb",null,{"parallelRouterKey":"children","template":["$","$Lc",null,{}]}]]}],"isPartial":"$@d","staleTime":"$7","varyParams":"$e"},{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/0etw63c45_tu2.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/2_nwd9ikdpgl-.js","async":true}]],["$","html",null,{"lang":"en","className":"schibsted_grotesk_8a5768ca-module__rIP5uG__variable newsreader_b98994c-module__Ll3uOa__variable ibm_plex_mono_4bb33f7c-module__u9UimW__variable","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{if(sessionStorage.getItem(\"intro\")===\"1\"||matchMedia(\"(prefers-reduced-motion: reduce)\").matches)document.documentElement.classList.add(\"intro-seen\")}catch(e){}"}}],["$","noscript",null,{"children":"$f"}]]}],["$","body",null,{"children":[["$","$L10",null,{}],["$","main",null,{"children":["$","$Lb",null,{"parallelRouterKey":"children","template":["$","$Lc",null,{}],"notFound":[["$","div",null,{"className":"dev","children":[["$","h1",null,{"className":"title title--s","children":"Nothing here."}],["$","p",null,{"style":{"marginTop":14},"children":["$","$L2",null,{"className":"link","href":"/","children":"Back to the pictures"}]}]]}],[]]}]}],["$","footer",null,{"className":"foot","children":["$","div",null,{"className":"foot__links","children":[["$","a",null,{"className":"link","href":"mailto:jake@bryt.works","children":"jake@bryt.works"}],["$","a",null,{"href":"https://instagram.com/jjakedavis","children":"Instagram"}],["$","a",null,{"href":"/jake-davis-media-kit.pdf","children":"Media kit PDF"}],["$","$L2",null,{"href":"/dev/","children":"Software"}]]}]}]]}]]}]]}],"isPartial":"$@11","staleTime":"$7","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@12","rootVaryParams":null,"needsRuntimeRequest":"$@13"}
+5:null
+7:300
+13:true
+7:C
+12:0
+a:"$undefined"
+d:"$undefined"
+11:"$undefined"
+6:"$undefined"
