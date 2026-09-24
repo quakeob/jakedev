@@ -15,11 +15,11 @@ Loading
 <p>Every AI demo I saw was the same thing: a chatbot. You type a question, it types an answer, and that’s it. Cool for five minutes, useless for real life.</p>
 <p>I didn’t want an AI I could <em>talk to</em>. I wanted an AI that could <em>do things</em>. Check my calendar, submit my homework, scrape Craigslist for 4Runner deals, draft tweets, commit code — all without me asking.</p>
 <h2 id="the-approach">The Approach</h2>
-<p>Yerb is a 24/7 autonomous AI assistant running on a Mac Mini in my apartment. It’s built on <a href="https://openclaw.com">OpenClaw</a>, which provides the gateway layer between Claude and a full suite of tools: Calendar, Canvas API (BYU’s LMS), GitHub, Telegram, browser automation, file system access, and more.</p>
+<p>Yerb is a 24/7 autonomous AI assistant running on a Mac Mini in my apartment. It’s built on <a href="https://openclaw.com">OpenClaw</a>, which provides the gateway layer between Claude and a full suite of tools: Calendar, Canvas API, GitHub, Telegram, browser automation, file system access, and more.</p>
 <p>It’s not a chatbot. It’s an operating system for my life.</p>
 <h2 id="what-it-actually-does">What It Actually Does</h2>
 <p><strong>Calendar management.</strong> Yerb reads my calendar, sends me morning briefs, and alerts me before meetings. It knows my schedule better than I do.</p>
-<p><strong>Coursework automation.</strong> It connects to BYU’s Canvas API, checks for upcoming assignments, reads rubrics, and helps me stay on top of deadlines. It’s pulled assignment details, submission requirements, and grades — all programmatically.</p>
+<p><strong>Coursework automation.</strong> It connects to the Canvas API, checks for upcoming assignments, reads rubrics, and helps me stay on top of deadlines. It’s pulled assignment details, submission requirements, and grades — all programmatically.</p>
 <p><strong>Nightly builds.</strong> While I sleep, Yerb runs builds on my projects, checks for errors, and commits fixes. I wake up to a summary of what happened overnight.</p>
 <p><strong>Content ghostwriting.</strong> It drafts X (Twitter) posts based on what I’m working on, matching my voice and tone. I review and post — or sometimes it posts autonomously.</p>
 <p><strong>Vehicle deal hunting.</strong> Yerb runs my marketplace scraper, filters results, scores deals, and sends me Telegram alerts when something good shows up.</p>
@@ -27,7 +27,7 @@ Loading
 <h2 id="architecture">Architecture</h2>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Me (Telegram/Web) → OpenClaw Gateway → Claude → Tools</span></span>
 <span class="line"><span>                                                  ├── Calendar API</span></span>
-<span class="line"><span>                                                  ├── Canvas API (BYU)</span></span>
+<span class="line"><span>                                                  ├── Canvas API</span></span>
 <span class="line"><span>                                                  ├── GitHub</span></span>
 <span class="line"><span>                                                  ├── Browser Automation</span></span>
 <span class="line"><span>                                                  ├── File System</span></span>

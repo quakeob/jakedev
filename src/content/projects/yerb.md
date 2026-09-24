@@ -15,7 +15,7 @@ I didn't want an AI I could *talk to*. I wanted an AI that could *do things*. Ch
 
 ## The Approach
 
-Yerb is a 24/7 autonomous AI assistant running on a Mac Mini in my apartment. It's built on [OpenClaw](https://openclaw.com), which provides the gateway layer between Claude and a full suite of tools: Calendar, Canvas API (BYU's LMS), GitHub, Telegram, browser automation, file system access, and more.
+Yerb is a 24/7 autonomous AI assistant running on a Mac Mini in my apartment. It's built on [OpenClaw](https://openclaw.com), which provides the gateway layer between Claude and a full suite of tools: Calendar, Canvas API, GitHub, Telegram, browser automation, file system access, and more.
 
 It's not a chatbot. It's an operating system for my life.
 
@@ -23,7 +23,7 @@ It's not a chatbot. It's an operating system for my life.
 
 **Calendar management.** Yerb reads my calendar, sends me morning briefs, and alerts me before meetings. It knows my schedule better than I do.
 
-**Coursework automation.** It connects to BYU's Canvas API, checks for upcoming assignments, reads rubrics, and helps me stay on top of deadlines. It's pulled assignment details, submission requirements, and grades — all programmatically.
+**Coursework automation.** It connects to the Canvas API, checks for upcoming assignments, reads rubrics, and helps me stay on top of deadlines. It's pulled assignment details, submission requirements, and grades — all programmatically.
 
 **Nightly builds.** While I sleep, Yerb runs builds on my projects, checks for errors, and commits fixes. I wake up to a summary of what happened overnight.
 
@@ -38,7 +38,7 @@ It's not a chatbot. It's an operating system for my life.
 ```
 Me (Telegram/Web) → OpenClaw Gateway → Claude → Tools
                                                   ├── Calendar API
-                                                  ├── Canvas API (BYU)
+                                                  ├── Canvas API
                                                   ├── GitHub
                                                   ├── Browser Automation
                                                   ├── File System

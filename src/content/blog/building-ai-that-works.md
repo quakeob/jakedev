@@ -17,7 +17,7 @@ Yerb is my personal AI assistant. It runs 24/7 on a Mac Mini sitting on my desk.
 
 Here's what a typical night looks like:
 
-1. Around midnight, Yerb checks my Canvas (BYU's LMS) for upcoming assignments
+1. Around midnight, Yerb checks Canvas for upcoming assignments
 2. It reviews what's due, drafts responses for discussion posts, and queues them for my review
 3. It runs build checks on my active projects
 4. It scrapes Craigslist for Tacoma and 4Runner deals (a man has priorities)
