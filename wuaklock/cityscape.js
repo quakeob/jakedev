@@ -1,5 +1,7 @@
-/* Original WuakLock skyline. Geometry is typeset once into four cached glyph layers.
-   There is no idle animation loop: motion runs only until pointer/scroll changes settle. */
+/* Original WuakLock skyline. Geometry is typeset once into cached glyph layers.
+   On load the emblem grows in, its exact spire rises to crown the central tower, and the city is
+   built outward from it. After that there is no idle loop: motion runs only until pointer/scroll
+   changes settle. */
 (() => {
   'use strict';
   const canvas = document.getElementById('cityscape');
@@ -15,6 +17,16 @@
   let manualPause = false, visible = true, width = 0, height = 0, dpr = 1;
   let layers = [], frame = 0, resizeTimer = 0, destroyed = false;
   const target = {x: 0, y: 0}, current = {x: 0, y: 0};
+  // The emblem's spire crowns the tower, lifted from the artwork (1254 px emblem space).
+  const SPIRE = {x0: 522, x1: 734, y0: 55, y1: 400};
+  const CROWN = {x: 1090, bottom: 335, width: 180};
+  const EMBLEM = {eyeX: 1090, eyeY: 470, size: 560, eye: [627/1254, 655/1254], ring: 300/1254, pitch: 12};
+  const SMALL = {eye: [230/460, 213/460], ring: 120/460, pitch: 6};
+  const T = {appear: 350, grow: 900, grown: 2300, rise: 2600, riseEnd: 3700, shaft: 3200, shaftEnd: 4000, city: 3400, cityEnd: 5300};
+  const BAYER = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+  let art = null, introStart = 0, introDone = false, scratch = null;
+  const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2;
+  const smooth = (a, b, v) => { const t = clamp((v - a)/(b - a), 0, 1); return t*t*(3 - 2*t); };
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
   const noise = (x, y) => {
     const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
@@ -227,25 +239,112 @@
     ];
   }
 
-  function paint() {
-    if(!width || !height || !layers.length) return;
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
-    const scale=Math.max(width/WIDTH,height/HEIGHT);
-    const viewWidth=width/scale;
-    const focal=width<700?.61:.68;
+  function view() {
+    const scale=Math.max(width/WIDTH,height/HEIGHT), viewWidth=width/scale, focal=width<700?.61:.68;
     const originX=width<1100?clamp(1090-viewWidth*focal,0,WIDTH-viewWidth):(WIDTH-viewWidth)/2;
     const originY=Math.max(0,(HEIGHT-height/scale)*.38);
-    for(const layer of layers){
-      const x=motionAllowed()?current.x*layer.depth:0;
-      const y=motionAllowed()?current.y*layer.depth:0;
-      ctx.drawImage(layer.image,(-originX+x)*scale,(-originY+y)*scale,WIDTH*scale,HEIGHT*scale);
+    return {scale, originX, originY};
+  }
+  // Draw in 1600x900 source space, shifted by a layer's parallax depth.
+  function place(c, v, depth) {
+    const x=motionAllowed()?current.x*depth:0, y=motionAllowed()?current.y*depth:0;
+    c.setTransform(dpr*v.scale,0,0,dpr*v.scale,(-v.originX+x)*dpr*v.scale,(-v.originY+y)*dpr*v.scale);
+  }
+  const crown = () => { const k=CROWN.width/(SPIRE.x1-SPIRE.x0), h=(SPIRE.y1-SPIRE.y0)*k; return {k, x:CROWN.x-CROWN.width/2, y:CROWN.bottom-h, w:CROWN.width, h}; };
+  function drawCrown(c, box, alpha) {
+    if(!art||alpha<=0)return; c.globalAlpha=alpha*.78;
+    c.drawImage(art.big,SPIRE.x0,SPIRE.y0,SPIRE.x1-SPIRE.x0,SPIRE.y1-SPIRE.y0,box.x,box.y,box.w,box.h); c.globalAlpha=1;
+  }
+  // An emblem image drawn with an ordered dither. keep(threshold) decides which cells stay.
+  function dithered(v, image, x, y, size, pitch, eye, reach, keep, mask) {
+    if(!scratch||scratch.width!==canvas.width||scratch.height!==canvas.height){scratch=document.createElement('canvas');scratch.width=canvas.width;scratch.height=canvas.height;}
+    const s=scratch.getContext('2d'); s.setTransform(1,0,0,1,0,0); s.clearRect(0,0,scratch.width,scratch.height);
+    place(s,v,.68); s.drawImage(image,x,y,size,size);
+    s.globalCompositeOperation='destination-out';
+    if(mask)mask(s);
+    s.beginPath();
+    for(let r=0,py=y;py<y+size;r++,py+=pitch)for(let c=0,px=x;px<x+size;c++,px+=pitch){
+      const d=Math.min(1,Math.hypot(px+pitch/2-eye[0],py+pitch/2-eye[1])/reach);
+      if(!keep(BAYER[(r%4)*4+(c%4)]/16,d))s.rect(px-.3,py-.3,pitch+.6,pitch+.6);
+    }
+    s.fill(); s.globalCompositeOperation='source-over';
+    ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(scratch,0,0);
+  }
+  // A layer revealed floor by floor from the street, sweeping out from the tower (b: 0..1).
+  function buildLayer(v, layer, b, lag) {
+    if(b<=0)return;
+    if(b>=1){place(ctx,v,layer.depth);ctx.drawImage(layer.image,0,0);return;}
+    place(ctx,v,layer.depth); ctx.save(); ctx.beginPath();
+    const edges=[];
+    for(let X=0;X<WIDTH;X+=16){
+      const delay=Math.min(1,Math.abs(X+8-CROWN.x)/760)*.55+lag+noise(X,7)*.04;
+      const p=ease(clamp((b-delay)/.4,0,1)); if(p<=0)continue;
+      const top=HEIGHT*(1-p); ctx.rect(X,top,16.5,HEIGHT-top); if(p<1)edges.push([X,top]);
+    }
+    ctx.clip(); ctx.drawImage(layer.image,0,0); ctx.restore();
+    // the rising edge of each building, brightened as it is laid
+    ctx.globalCompositeOperation='lighter';
+    for(const [X,top] of edges)ctx.drawImage(layer.image,X,top,16,7,X,top,16,7);
+    ctx.globalCompositeOperation='source-over';
+  }
+  function paint(now=performance.now()) {
+    if(!width || !height || !layers.length) return;
+    ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);
+    const v=view(), t=introDone||!art?Infinity:now-introStart, box=crown();
+    const [sky,distant,district,tower,fore]=layers;
+    if(t>=T.cityEnd){
+      for(const layer of [sky,distant,district]){place(ctx,v,layer.depth);ctx.drawImage(layer.image,0,0);}
+      place(ctx,v,tower.depth);ctx.save();ctx.beginPath();ctx.rect(0,CROWN.bottom,WIDTH,HEIGHT);ctx.clip();ctx.drawImage(tower.image,0,0);ctx.restore();
+      drawCrown(ctx,box,1);
+      place(ctx,v,fore.depth);ctx.drawImage(fore.image,0,0);
+      ctx.setTransform(1,0,0,1,0,0); stage.dataset.cityReady='true'; return;
     }
     stage.dataset.cityReady='true';
+    const E=EMBLEM.size, ex=EMBLEM.eyeX-EMBLEM.eye[0]*E, ey=EMBLEM.eyeY-EMBLEM.eye[1]*E, eye=[EMBLEM.eyeX,EMBLEM.eyeY];
+    // the city, built outward from the tower
+    const b=clamp((t-T.city)/(T.cityEnd-T.city),0,1);
+    if(b>0){place(ctx,v,sky.depth);ctx.globalAlpha=smooth(0,.5,b);ctx.drawImage(sky.image,0,0);ctx.globalAlpha=1;}
+    buildLayer(v,distant,b,.12); buildLayer(v,district,b,.04);
+    // the tower body extrudes down from the crown to the street
+    const sh=ease(clamp((t-T.shaft)/(T.shaftEnd-T.shaft),0,1));
+    if(sh>0){place(ctx,v,tower.depth);ctx.save();ctx.beginPath();const end=CROWN.bottom+(HEIGHT-CROWN.bottom)*sh;ctx.rect(0,CROWN.bottom,WIDTH,end-CROWN.bottom);ctx.clip();ctx.drawImage(tower.image,0,0);ctx.restore();
+      if(sh<1){ctx.globalCompositeOperation='lighter';ctx.drawImage(tower.image,900,end-7,380,7,900,end-7,380,7);ctx.globalCompositeOperation='source-over';}}
+    buildLayer(v,fore,b,.2);
+    // the emblem: the small mark grows in, then the body dithers away from the rays inward
+    const reach=EMBLEM.ring*E*2.7;
+    if(t<T.grown+200){
+      const a=ease(clamp(t/T.appear,0,1)), g=ease(clamp((t-T.grow)/(T.grown-T.grow),0,1));
+      const small=E*EMBLEM.ring*.6/SMALL.ring*(1+(1/.6-1)*g)*(1+(1-a)*.05);
+      if(g<1)dithered(v,art.small,EMBLEM.eyeX-SMALL.eye[0]*small,EMBLEM.eyeY-SMALL.eye[1]*small,small,small*SMALL.pitch/460,eye,reach,(n,d)=>a>=1?n*.3+(1-d)*.7>=g*1.02:n<a*1.01);
+      if(g>0){const size=E*(.6+.4*g);dithered(v,art.big,EMBLEM.eyeX-EMBLEM.eye[0]*size,EMBLEM.eyeY-EMBLEM.eye[1]*size,size,size*EMBLEM.pitch/1254,eye,reach*(.6+.4*g),(n,d)=>n*.3+d*.7<=g*1.02);}
+    } else {
+      const d0=clamp((t-T.rise)/(T.riseEnd-T.rise-300),0,1);
+      if(d0<1)dithered(v,art.big,ex,ey,E,E*EMBLEM.pitch/1254,eye,reach,(n,d)=>n*.3+(1-d)*.7>=d0*1.02,s=>{const k=E/1254;s.fillRect(ex+SPIRE.x0*k,ey+SPIRE.y0*k-1,(SPIRE.x1-SPIRE.x0)*k,(SPIRE.y1-SPIRE.y0)*k+1);});
+      // the spire as one piece: from its place on the emblem up into the crown
+      const r=ease(clamp((t-T.rise)/(T.riseEnd-T.rise),0,1)), k0=E/1254;
+      const from={x:ex+SPIRE.x0*k0,y:ey+SPIRE.y0*k0,w:(SPIRE.x1-SPIRE.x0)*k0,h:(SPIRE.y1-SPIRE.y0)*k0};
+      place(ctx,v,tower.depth);
+      drawCrown(ctx,{x:from.x+(box.x-from.x)*r,y:from.y+(box.y-from.y)*r,w:from.w+(box.w-from.w)*r,h:from.h+(box.h-from.h)*r},1);
+    }
+    ctx.setTransform(1,0,0,1,0,0);
   }
+  function intro(now) {
+    if(destroyed)return;
+    paint(now);
+    if(now-introStart<T.cityEnd+50)requestAnimationFrame(intro);else{introDone=true;paint();}
+  }
+  // Recolour the cream artwork as glyph ink with transparency, matching the city.
+  function ink(image) {
+    const c=document.createElement('canvas');c.width=image.naturalWidth;c.height=image.naturalHeight;
+    const o=c.getContext('2d');o.drawImage(image,0,0);const img=o.getImageData(0,0,c.width,c.height),d=img.data;
+    for(let i=0;i<d.length;i+=4){const l=(d[i]*.2126+d[i+1]*.7152+d[i+2]*.0722)/255;d[i]=INK[0];d[i+1]=INK[1];d[i+2]=INK[2];d[i+3]=clamp((l-.05)*1.35,0,1)*255;}
+    o.putImageData(img,0,0);return c;
+  }
+  const loadImage=src=>new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src;});
 
   function animate() {
     frame=0;
-    if(destroyed||!visible||document.hidden)return;
+    if(destroyed||!visible||document.hidden||!introDone)return;
     const dx=target.x-current.x,dy=target.y-current.y;
     current.x+=dx*.13;current.y+=dy*.13;
     if(!motionAllowed()){current.x=0;current.y=0;}
@@ -260,7 +359,7 @@
     if(nextWidth===width&&nextHeight===height&&nextDpr===dpr)return;
     width=nextWidth;height=nextHeight;dpr=nextDpr;
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
-    requestPaint();
+    if(introDone)paint();
   }
   function updateToggle(){
     if(!toggle)return;
@@ -293,6 +392,14 @@
   addEventListener('pageshow',event=>{if(event.persisted){destroyed=false;requestPaint();}});
   canvas.setAttribute('aria-hidden','true');
   updateToggle();
-  const build=()=>{createLayers();resize();requestPaint();};
+  const build=()=>{
+    if(motionAllowed()&&scrollY<innerHeight*.5)stage.dataset.cityReady='true';
+    createLayers();resize();
+    Promise.all([loadImage('emblem-small.png'),loadImage('emblem.png')]).then(([small,big])=>{
+      art={small:ink(small),big:ink(big)};
+      if(!motionAllowed()||scrollY>innerHeight*.5){introDone=true;paint();return;}
+      introStart=performance.now();requestAnimationFrame(intro);
+    },()=>{introDone=true;paint();});
+  };
   if(document.fonts?.load) document.fonts.load(`500 7.3px ${font}`).then(build,build);else build();
 })();
