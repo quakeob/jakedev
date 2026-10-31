@@ -126,8 +126,8 @@ footer .note { flex-basis: 100%; }
 <script>
 /* The emblem: the small mark dissolves into its own glyphs, which mutate and grow into the full
    emblem and then resolve exactly onto it. At rest its eye watches the pointer and blinks.
-   Scrolling changes the emblem behind the page: a drifting cloud, the small mark, then the full
-   emblem again at the end.
+   Scrolling warps the emblem behind the page into a glyph skyline of the city, and back into the
+   emblem at the end.
    Click the emblem to watch it grow again. Reduced motion shows the full emblem at rest. */
 (() => {
   const canvas = document.getElementById('emblem'), ctx = canvas.getContext('2d');
@@ -196,6 +196,62 @@ footer .note { flex-basis: 100%; }
       return { sx: source.x, sy: source.y, tx, ty, ink: c.ink, sink: source.ink, delay: Math.min(.32, travel * .2) + rise * 1.1 + hash(tx, ty) * .08,
         arc: (hash(ty, tx) - .5) * S * .06 * Math.min(1, travel), seed: hash(tx * .7, ty * 1.3) };
     });
+    buildCity();
+  }
+
+  // A 1920s skyline in the spirit of Deadlock's occult New York, drawn procedurally and set as
+  // glyphs: stepped towers, needle spires, deco crowns, water towers and lit windows, with the
+  // tallest tower standing where the emblem's spire was. Every emblem glyph gets a place in it.
+  let city = [], cityRest = [], cityPitch = 10;
+  function buildCity() {
+    const off = document.createElement('canvas'); off.width = Math.ceil(W); off.height = Math.ceil(H);
+    const o = off.getContext('2d'), ground = H, unit = Math.max(9, W / 90);
+    let seed = 1; const r = () => hash(seed++, 7.31);
+    const tower = (x, w, h, color, tiers, crown) => {
+      o.fillStyle = color; let y = ground, left = x, width = w;
+      const parts = tiers === 1 ? [1] : tiers === 2 ? [.72, .28] : [.58, .26, .16];
+      parts.forEach((part, i) => { const th = h * part; o.fillRect(left, y - th, width, th); y -= th; if (i < parts.length - 1) { const inset = width * (.12 + r() * .1); left += inset; width -= inset * 2; } });
+      const cx = left + width / 2;
+      if (crown < .22) { o.fillRect(cx - Math.max(1.5, unit * .14), y - h * .2, Math.max(3, unit * .28), h * .2); }
+      else if (crown < .42) { for (let k = 1; k <= 3; k++) { const sw = width * (1 - k * .24); o.fillRect(cx - sw / 2, y - k * unit * .7, sw, unit * .7); } }
+      else if (crown < .56) { o.beginPath(); o.moveTo(left, y); o.lineTo(cx, y - width * .9); o.lineTo(left + width, y); o.fill(); o.fillRect(cx - 1.5, y - width * .9 - h * .1, 3, h * .1); }
+      else if (crown < .7) { o.beginPath(); o.ellipse(cx, y, width * .5, width * .55, 0, Math.PI, 0); o.fill(); o.fillRect(cx - 1.5, y - width * .55 - h * .07, 3, h * .07); }
+      else if (crown < .8) { const tw = Math.min(width * .45, unit * 1.6); o.fillRect(cx - tw / 2, y - unit * 1.9, tw, unit * 1.1); o.fillRect(cx - tw / 2, y - unit * .8, 2, unit * .8); o.fillRect(cx + tw / 2 - 2, y - unit * .8, 2, unit * .8); }
+    };
+    // back layer, then the front, then the landmark tower at the centre
+    for (let x = -unit * 2; x < W + unit; ) { const w = unit * (3 + r() * 5); tower(x, w, H * (.16 + Math.pow(r(), 1.4) * .3), 'rgb(0,255,0)', 1 + Math.floor(r() * 2), r()); x += w + unit * (r() * .6); }
+    const mid = W / 2, keep = unit * 6.5;
+    for (let x = -unit; x < W + unit; ) {
+      const w = unit * (3.2 + r() * 6); const h = H * (.2 + Math.pow(r(), 1.7) * .36) * (1 - Math.max(0, 1 - Math.abs(x + w / 2 - mid) / (W * .5)) * -.25);
+      if (x + w > mid - keep && x < mid + keep) { x = mid + keep + unit * .6; continue; }
+      tower(x, w, Math.min(h, H * .52), 'rgb(255,0,0)', 1 + Math.floor(r() * 3), r()); x += w + unit * (.25 + r() * .9);
+    }
+    o.fillStyle = 'rgb(255,0,0)';
+    const lw = unit * 10, lh = H * .64; let ly = ground, ll = mid - lw / 2, lwid = lw;
+    for (const [part, inset] of [[.46, .14], [.24, .16], [.16, .18], [.14, 0]]) { o.fillRect(ll, ly - lh * part, lwid, lh * part); ly -= lh * part; ll += lwid * inset; lwid -= lwid * inset * 2; }
+    for (let k = 1; k <= 4; k++) { const sw = lwid * (1 - k * .2); o.fillRect(mid - sw / 2, ly - k * unit * .8, sw, unit * .8); }
+    o.fillRect(mid - Math.max(2, unit * .2), ly - unit * 3.2 - H * .16, Math.max(4, unit * .4), H * .16);
+    const data = o.getImageData(0, 0, off.width, off.height).data;
+    cityPitch = clamp(W / 130, 7, 12);
+    const cols = Math.floor(W / cityPitch), rows = Math.floor(H / cityPitch), kindAt = (c, rr) => {
+      if (c < 0 || rr < 0 || c >= cols || rr >= rows) return 0;
+      const i = (Math.floor((rr + .5) * cityPitch) * off.width + Math.floor((c + .5) * cityPitch)) * 4;
+      return data[i] > 128 ? 2 : data[i + 1] > 128 ? 1 : 0;
+    };
+    const cells = [];
+    for (let rr = 0; rr < rows; rr++) for (let c = 0; c < cols; c++) {
+      const kind = kindAt(c, rr); if (!kind) continue;
+      const edge = kind === 2 && (kindAt(c - 1, rr) !== 2 || kindAt(c + 1, rr) !== 2 || kindAt(c, rr - 1) !== 2);
+      const window = kind === 2 && !edge && c % 2 === 1 && rr % 3 !== 0;
+      cells.push({ x: (c + .5) * cityPitch, y: (rr + .5) * cityPitch, kind: edge ? 'edge' : window ? 'window' : kind === 2 ? 'wall' : 'back', lit: hash(c, rr * 1.7) < .22 });
+    }
+    // Pair emblem glyphs with city cells from left to right, so the emblem stretches into the skyline.
+    cells.sort((a, b) => a.x - b.x || a.y - b.y);
+    const order = particles.map((p, i) => i).sort((a, b) => particles[a].tx - particles[b].tx || particles[a].ty - particles[b].ty);
+    city = new Array(particles.length); const taken = new Uint8Array(cells.length);
+    order.forEach((index, k) => { const c = Math.min(cells.length - 1, Math.floor(k / particles.length * cells.length)); city[index] = cells[c]; taken[c] = 1; });
+    // Cells no emblem glyph reaches fade in where they stand, so the skyline is complete.
+    cityRest = cells.filter((_, k) => !taken[k]);
   }
 
   function resize() {
@@ -351,33 +407,42 @@ footer .note { flex-basis: 100%; }
     ctx.restore(); ctx.globalAlpha = 1;
   }
 
-  // Scrolling the page changes the emblem behind it: it breaks into a drifting cloud as the content
-  // arrives, gathers into the small mark mid-page, and grows back into the full emblem at the end.
+  // Scrolling the page changes the emblem behind it: its glyphs warp across into the skyline as
+  // the content arrives, the city holds behind the page with its windows lit, and at the end it
+  // warps back into the emblem. The whole thing follows the scroll position, in both directions.
+  function cityGlyph(c, x, y, i, tick, alpha) {
+    let char = '#', color = `rgb(${CREAM})`, a = .26;
+    if (c.kind === 'back') { char = '='; a = .14; }
+    else if (c.kind === 'edge') a = .8;
+    else if (c.kind === 'window') { const lit = c.lit !== (hash(i, tick) < .015); char = lit ? '#' : '.'; a = lit ? 1 : .18; if (lit) color = '#fffaf0'; }
+    ctx.fillStyle = color; drawGlyph(x, y, cityPitch * 1.05, char, alpha * a);
+  }
   function scrollScene(now, f, q, hero) {
-    const cellA = f.A.size * A.pitch / 460, cellB = f.B.size * B.pitch / 1254;
-    const veil = 1 - smooth(0, .6, hero) * .78 + smooth(.9, 1, q) * .12;
-    const imageB = (1 - smooth(0, .07, q)) + smooth(.965, 1, q), imageA = smooth(.56, .63, q) * (1 - smooth(.82, .86, q));
-    if (imageB > 0) { ctx.globalAlpha = veil * clamp(imageB); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); }
-    if (imageA > 0) drawAbout(images[0], A, f.A.size, veil * imageA);
-    ctx.globalAlpha = 1;
+    const cellB = f.B.size * B.pitch / 1254;
+    const veil = 1 - smooth(0, .6, hero) * .64 + smooth(.9, 1, q) * .04;
+    const imageB = (1 - smooth(0, .05, q)) + smooth(.97, 1, q);
+    if (imageB > 0) { ctx.globalAlpha = veil * clamp(imageB); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); ctx.globalAlpha = 1; }
     if (imageB >= 1 && q > .99) { eye(now, f, veil); return; }
-    const presence = 1 - clamp(imageB) - imageA;
-    if (presence <= .01) return;
+    const presence = 1 - clamp(imageB);
+    if (presence <= .01 || !city.length) return;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const swirl = q * 1.1, cos = Math.cos(swirl), sin = Math.sin(swirl);
-    for (const p of particles) {
-      const dx = p.tx - f.eye[0], dy = p.ty - f.eye[1], d = Math.hypot(dx, dy) || 1, spread = S * (.2 + p.seed * .5);
-      let cxp = dx / d * (d + spread), cyp = dy / d * (d + spread) * .7 - S * .18 * p.seed;
-      [cxp, cyp] = [cxp * cos - cyp * sin, cxp * sin + cyp * cos];
-      const cloudX = f.eye[0] + cxp, cloudY = f.eye[1] + cyp;
-      const stagger = v => clamp((v - p.seed * .3) / .7);
-      let x, y, size, rest;
-      if (q < .3) { const u = ease(stagger(smooth(0, .3, q))); x = p.tx + (cloudX - p.tx) * u; y = p.ty + (cloudY - p.ty) * u; size = cellB * 1.15; rest = u < .02; }
-      else if (q < .82) { const v = ease(stagger(smooth(.3, .62, q))); x = cloudX + (p.sx - cloudX) * v; y = cloudY + (p.sy - cloudY) * v; size = cellB * 1.15 + (cellA * 1.25 - cellB * 1.15) * v; rest = v > .98; }
-      else { const w = ease(stagger(smooth(.82, 1, q))), bend = Math.sin(w * Math.PI) * p.arc; x = p.sx + (p.tx - p.sx) * w - bend * .4; y = p.sy + (p.ty - p.sy) * w + bend; size = cellA * 1.25 + (cellB * 1.15 - cellA * 1.25) * w; rest = w > .98; }
-      ctx.fillStyle = !rest && p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`;
-      drawGlyph(x, y, size, rest ? '#' : GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)], veil * presence * (.45 + p.ink * .55));
+    const into = smooth(.02, .3, q), back = smooth(.8, .985, q), drift = (q - .55) * W * .05, tick = Math.floor(now / 900);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i], c = city[i]; if (!c) continue;
+      const stagger = v => clamp((v - p.seed * .35) / .65);
+      const u = q < .55 ? ease(stagger(into)) : 1 - ease(stagger(back));
+      const cx = c.x + drift * u, cy = c.y;
+      // the warp: a travelling ripple that bends the glyphs sideways while they cross
+      const wave = Math.sin(u * Math.PI);
+      const x = p.tx + (cx - p.tx) * u + Math.sin(p.ty * .02 + u * 6) * S * .05 * wave;
+      const y = p.ty + (cy - p.ty) * u + Math.sin(p.tx * .015 + u * 5) * S * .04 * wave;
+      const size = cellB * 1.15 + (cityPitch * 1.05 - cellB * 1.15) * u, moving = u > .03 && u < .97;
+      if (moving) { ctx.fillStyle = p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(x, y, size, GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)], veil * presence * (.45 + p.ink * .55)); }
+      else if (u >= .97) cityGlyph(c, x, y, i, tick, veil * presence);
+      else { ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, size, '#', veil * presence * (.45 + p.ink * .55)); }
     }
+    const whole = q < .55 ? smooth(.16, .32, q) : 1 - smooth(.8, .9, q);
+    if (whole > 0) cityRest.forEach((c, i) => cityGlyph(c, c.x + drift, c.y, i + 99991, tick, veil * presence * whole));
     ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
   }
 
