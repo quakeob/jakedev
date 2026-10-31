@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="How WuakLock, the Deadlock companion app, handles settings, recorded matches, game memory reads and community API requests."><title>WuakLock Privacy Policy</title><link rel="icon" href="../logo.png"><style>
+@font-face{font-family:"Geist Mono";src:url(../geist-mono-latin.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{color-scheme:dark light;--bg:#0f0f0e;--fg:#e9e5da;--dim:#a29e93;--cream:#efe4c4;--line:rgba(239,228,196,.16);--accent:#8a93ff}
+@media(prefers-color-scheme:light){:root{--bg:#f6f3ea;--fg:#1d1c19;--dim:#5f5b52;--cream:#2a2416;--line:rgba(29,28,25,.16);--accent:#1800f8}.mark img{filter:brightness(.18) sepia(.4)}}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.7 "Geist Mono",ui-monospace,Consolas,monospace;-webkit-font-smoothing:antialiased}
+main{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.mark{display:flex;align-items:center;gap:14px;color:var(--cream);text-decoration:none;font-weight:700;letter-spacing:-.02em;font-size:16px}
+.mark img{width:56px;height:56px}
+nav{display:flex;gap:18px;font-size:13px}nav a{color:var(--dim);text-decoration:none}nav a[aria-current=page],nav a:hover{color:var(--fg)}
+h1{margin:44px 0 18px;font-size:clamp(30px,6vw,44px);line-height:1.08;font-weight:500;letter-spacing:-.05em;color:var(--cream)}
+.meta{margin:0 0 28px;color:var(--dim);font-size:13px}.meta b{font-weight:500;color:var(--fg)}
+.intro{font-size:16.5px;color:var(--fg);margin-bottom:8px}
+h2{margin:44px 0 10px;padding-top:18px;border-top:1px solid var(--line);font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--cream)}
+h2::before{content:"> ";color:var(--accent)}
+p{margin:0 0 14px}ul{margin:0 0 16px;padding-left:20px}li{margin:0 0 8px}li::marker{color:var(--dim)}
+code{font:inherit;color:var(--cream)}
+a{color:inherit;text-decoration-color:var(--dim);text-underline-offset:3px}a:hover{text-decoration-color:var(--fg)}
+a:focus-visible{outline:1px solid var(--accent);outline-offset:3px}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--dim);font-size:13px;display:flex;flex-wrap:wrap;gap:8px 20px}
+footer a{color:var(--dim)}
+@media(max-width:520px){main{padding:32px 18px 56px}body{font-size:14px}header{flex-direction:column;align-items:flex-start}.mark img{width:48px;height:48px}}
+</style></head><body><main>
+<header><a class="mark" href="../privacy/"><img src="../logo.png" alt="" width="56" height="56">WuakLock</a><nav aria-label="WuakLock policies"><a href="../privacy/" aria-current=page>Privacy</a><a href="../terms/">Terms</a></nav></header>
+<h1>Privacy Policy</h1>
+<p class="meta"><b>Effective date:</b> October 30, 2026<br><b>Developer:</b> Jake Davis<br><b>Contact:</b> <a href="mailto:jake@bryt.works">jake@bryt.works</a></p>
+<p class="intro">WuakLock is a Windows companion app for Deadlock. It has no accounts, ads or analytics. Your data stays on your PC, and the only service the app contacts is the community Deadlock API, for public match data.</p>
+
+<h2>What stays on your PC</h2>
+<p>WuakLock keeps everything in the <code>data</code> folder next to <code>Wuaklock.exe</code>:</p>
+<ul>
+<li><b>Settings:</b> the Steam account ID you enter (optional), your Deadlock installation folder, and overlay preferences such as opacity, size, position and visibility.</li>
+<li><b>Recorded matches:</b> for each match you play with WuakLock running, the scoreboard it observed. That includes every player's display name, Steam account ID, hero, kills, deaths, assists, souls, damage, healing and items, along with match timing and the result. Recordings stay until you delete them.</li>
+<li><b>Cached community data:</b> copies of recent responses from the community Deadlock API, so pages load quickly and the app respects the service's rate limits.</li>
+<li><b>Diagnostic logs:</b> <code>app.log</code>, with connection and error messages, and the <code>debug.log</code> written by the app's browser engine.</li>
+<li><b>Your light or dark theme choice.</b></li>
+</ul>
+<p>WuakLock never uploads this folder. Delete it to remove everything the app has stored.</p>
+
+<h2>Reading the game</h2>
+<p>While Deadlock is running, WuakLock opens <code>deadlock.exe</code> with permission to query and read its memory, and nothing more. It reads scoreboard statistics, match timing, Mid Boss status and your own permanent buff count. It does not read world positions, hidden enemy information, Steam credentials, chat or your keyboard and mouse input. It never writes to the game, the game's files or your system settings.</p>
+<p>What it reads is shown in the app and saved in your recorded matches. It is not sent anywhere.</p>
+
+<h2>The community Deadlock API</h2>
+<p>For public data, WuakLock connects to <code>api.deadlock-api.com</code>, an independent community service. It is not run by Valve or by WuakLock. Requests can include:</p>
+<ul>
+<li>the account ID you entered in Settings, when you open Player history;</li>
+<li>the Steam account IDs of the players in your current match, to look up their public match history and rank. WuakLock does this automatically during live matches, and when you press Scout lobby;</li>
+<li>match IDs, to fetch final match data after a recorded match ends;</li>
+<li>hero IDs and the filters you choose on the Heroes and Leaderboards pages.</li>
+</ul>
+<p>Hero art and item icons load from the same service's image host. Like any web request, these reveal your IP address, and WuakLock identifies itself by name and version. The service's own practices apply to what it receives; see <a href="https://deadlock-api.com">deadlock-api.com</a>.</p>
+<p>If you block WuakLock's network access, live tracking and local recording keep working. Only the community features stop.</p>
+
+<h2>Links and launching the game</h2>
+<p>The Launch Deadlock button opens Steam through its <code>steam://</code> link. Links to a short list of websites open in your browser, where that website's own policy applies.</p>
+
+<h2>What WuakLock doesn't do</h2>
+<p>It doesn't create accounts, use cookies or advertising identifiers, run analytics or crash reporting, or send your recordings, settings or logs to the developer. Your information is never sold or shared.</p>
+
+<h2>Children</h2>
+<p>WuakLock is not directed to children under 13, and it does not knowingly collect personal information from them. It stores nothing outside your PC.</p>
+
+<h2>These pages</h2>
+<p>This policy and the terms load no scripts, cookies or analytics. jakedev.org is hosted on GitHub Pages, which may keep standard server logs such as IP addresses; see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>.</p>
+
+<h2>Changes</h2>
+<p>If WuakLock starts handling data differently, this page will be updated, with a new effective date, before that version is released.</p>
+
+<h2>Contact</h2>
+<p>For questions or requests about this policy, email <a href="mailto:jake@bryt.works">jake@bryt.works</a>.</p>
+<footer><span>WuakLock by Jake Davis</span><a href="mailto:jake@bryt.works">jake@bryt.works</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a></footer>
+</main></body></html>
