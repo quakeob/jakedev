@@ -1,571 +1,122 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WuakLock</title>
-<meta name="description" content="WuakLock is a Windows companion for Deadlock: live stats on your second screen and over the game, every match recorded on your PC, and community data for heroes and lobbies.">
-<meta property="og:title" content="WuakLock">
-<meta property="og:description" content="Live Deadlock stats on your second screen and over the game.">
-<meta property="og:image" content="https://jakedev.org/wuaklock/emblem.png">
-<link rel="icon" href="logo.png">
-<link rel="preload" href="emblem-small.png" as="image">
-<link rel="preload" href="emblem.png" as="image">
-<style>
-@font-face { font-family: "Geist Mono"; src: url(geist-mono-latin.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
-:root { --bg: #000; --fg: #e8e2d4; --cream: #e3dac9; --dim: #9b968a; --line: rgba(227, 218, 201, .14); --accent: #8a93ff; color-scheme: dark; }
-* { box-sizing: border-box; }
-html { background: var(--bg); scroll-behavior: auto; }
-body { margin: 0; background: var(--bg); color: var(--fg); font: 400 15px/1.65 "Geist Mono", ui-monospace, Consolas, monospace; -webkit-font-smoothing: antialiased; }
-a { color: inherit; }
-a:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
-
-/* Hero: the emblem fills the first screen and grows from the small mark into the full one. */
-.hero { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
-#emblem { position: fixed; inset: 0; z-index: 0; width: 100vw; height: 100vh; display: block; }
-.top, .foot { opacity: var(--fade, 1); }
-main, footer { position: relative; z-index: 1; }
-
-.top { position: absolute; z-index: 2; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 22px clamp(18px, 3.5vw, 44px); }
-.word { font-weight: 700; font-size: 16px; letter-spacing: -.02em; color: var(--cream); text-decoration: none; }
-.top nav { display: flex; gap: 22px; font-size: 13px; }
-.top nav a { color: var(--dim); text-decoration: none; }
-.top nav a:hover { color: var(--fg); }
-.foot { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 0 clamp(18px, 3.5vw, 44px) 26px; pointer-events: none; }
-.line { min-height: 1.65em; max-width: 74ch; color: var(--fg); font-size: 14px; }
-.line .p { color: var(--accent); }
-.status { color: var(--dim); font-size: 12.5px; white-space: nowrap; text-align: right; }
-@keyframes blink { 50% { opacity: 0; } }
-
-/* Sections */
-section.block { max-width: 1120px; margin: 0 auto; padding: 120px clamp(18px, 3.5vw, 44px) 0; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; }
-section.block.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
-section.block.flip .copy { order: 2; }
-.label { color: var(--accent); font-size: 12.5px; margin: 0 0 14px; }
-h2 { margin: 0 0 18px; font-size: clamp(28px, 4vw, 44px); line-height: 1.05; font-weight: 500; letter-spacing: -.05em; color: var(--cream); }
-.copy p { margin: 0 0 14px; color: var(--dim); max-width: 46ch; }
-.copy ul { margin: 18px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.copy li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--fg); font-size: 14px; }
-.copy li span { color: var(--dim); }
-figure { margin: 0; }
-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
-figcaption { margin-top: 10px; color: var(--dim); font-size: 12px; }
-.private { max-width: 1120px; margin: 0 auto; padding: 140px clamp(18px, 3.5vw, 44px) 0; }
-.private h2 { max-width: 18ch; }
-.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 34px; border-top: 1px solid var(--line); }
-.facts div { padding: 18px 18px 0 0; }
-.facts b { display: block; font-weight: 500; color: var(--cream); margin-bottom: 6px; }
-.facts span { color: var(--dim); font-size: 13.5px; }
-footer { max-width: 1120px; margin: 140px auto 0; padding: 22px clamp(18px, 3.5vw, 44px) 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px 24px; color: var(--dim); font-size: 12.5px; }
-footer a { color: var(--dim); }
-footer .note { flex-basis: 100%; }
-
-@media (max-width: 860px) {
-  section.block, section.block.flip { grid-template-columns: 1fr; gap: 32px; padding-top: 88px; }
-  section.block.flip .copy { order: 0; }
-  .facts { grid-template-columns: 1fr 1fr; }
-  .foot { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .status { text-align: left; }
-}
-@media (prefers-reduced-motion: reduce) { .line .cur { animation: none; } }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080a09">
+  <title>WuakLock — A Deadlock companion</title>
+  <meta name="description" content="A Windows companion for Deadlock. Live stats over the game, a wider view on your second screen, and public match history for lobby scouting. In development.">
+  <meta property="og:title" content="WuakLock — A Deadlock companion">
+  <meta property="og:description" content="Read the city. Live overlay, lobby scouting and local match history for Deadlock. Windows · in development.">
+  <meta property="og:image" content="https://jakedev.org/wuaklock/emblem.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jakedev.org/wuaklock/">
+  <link rel="canonical" href="https://jakedev.org/wuaklock/">
+  <link rel="icon" href="logo.png">
+  <link rel="preload" href="geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="city.css">
+  <script src="cityscape.js" defer></script>
 </head>
 <body>
-<header class="hero" id="hero">
-  <canvas id="emblem" role="img" aria-label="The WuakLock emblem: a radiant eye above a W, crowned by a spire."></canvas>
-  <div class="top"><a class="word" href="./">wuaklock</a><nav aria-label="WuakLock"><a href="privacy/">Privacy</a><a href="terms/">Terms</a></nav></div>
-  <div class="foot"><p class="line"><span class="p">&gt;</span> wuaklock. live deadlock stats on your second screen and over the game.</p><p class="status">Windows · in development</p></div>
-</header>
+  <a class="skip-link" href="#companion">Skip to the app</a>
+  <header class="masthead">
+    <a class="wordmark" href="./" aria-label="WuakLock home"><img src="logo.png" width="38" height="38" alt=""><span>wuaklock</span></a>
+    <span class="masthead-note">An independent Deadlock companion</span>
+    <nav aria-label="WuakLock"><a href="privacy/">Privacy</a><a href="terms/">Terms</a></nav>
+  </header>
 
-<main>
-  <section class="block">
-    <div class="copy">
-      <p class="label">&gt; over the game</p>
-      <h2>Your numbers, mid-fight.</h2>
-      <p>A small panel sits over Deadlock and updates about once a second. Locked, clicks pass straight through to the game. Unlocked, you drag it anywhere.</p>
-      <ul>
-        <li>Souls per minute, K/D/A, hero damage <span>· live</span></li>
-        <li>Team soul lead and Mid Boss timer <span>· live</span></li>
-        <li>Your share of each detected fight <span>· live</span></li>
-      </ul>
-    </div>
-    <figure><img src="overlay-shot.jpg" width="1280" height="520" alt="The WuakLock overlay showing souls per minute, K/D/A, hero damage and healing over a bright game scene." loading="lazy"><figcaption>Overlay, shown with sample data.</figcaption></figure>
-  </section>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="city-stage" aria-hidden="true">
+        <img class="city-fallback" src="cityscape-fallback.svg" width="1600" height="900" alt="" fetchpriority="high">
+        <canvas id="cityscape"></canvas>
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="cross" aria-hidden="true">+</span> A companion for Deadlock</p>
+        <h1 id="hero-title">Read<br> the city<span class="title-stop">.</span></h1>
+        <p class="hero-description">Live overlay. Lobby scouting.<br> A wider view of the match.</p>
+        <a class="text-link hero-link" href="#companion">Explore WuakLock <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-baseline">
+        <p class="build-status"><span class="status-dot" aria-hidden="true"></span> Windows <span class="separator" aria-hidden="true">/</span> In development</p>
+        <a class="scroll-cue" href="#companion" aria-label="Explore WuakLock below the skyline"><span>Below the skyline</span><span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
 
-  <section class="block flip">
-    <div class="copy">
-      <p class="label">&gt; on your second screen</p>
-      <h2>The whole match, measured.</h2>
-      <p>The dashboard draws the soul lead bar by bar on a real scale, keeps every match you play on your PC, and pulls public data for heroes, builds, leaderboards and the players in your lobby.</p>
-      <ul>
-        <li>Recorded matches <span>· saved locally</span></li>
-        <li>Hero win rates with sample sizes <span>· community API</span></li>
-        <li>Lobby scouting from public history <span>· community API</span></li>
-      </ul>
-    </div>
-    <figure><img src="dashboard-shot.jpg" width="2560" height="1560" alt="The WuakLock dashboard during a live match: hero name, match clock, soul advantage chart and the player's stats." loading="lazy"><figcaption>Dashboard, shown with sample data.</figcaption></figure>
-  </section>
+    <section class="introduction content-width" id="companion" aria-labelledby="intro-title">
+      <div class="section-heading">
+        <p class="eyebrow"><span class="index">01</span> The companion</p>
+        <h2 id="intro-title">The match moves fast.<br> Keep the bigger picture.</h2>
+      </div>
+      <div class="intro-description">
+        <p>WuakLock brings live match stats, your recorded games and public community data into one Windows app.</p>
+        <p>Keep a small overlay over Deadlock, or give the match room to breathe on your second screen.</p>
+      </div>
+      <figure class="dashboard-figure">
+        <div class="figure-heading"><span>On your second screen</span><span class="preview-label">Development preview</span></div>
+        <a class="image-link" href="dashboard-shot.jpg" target="_blank" rel="noopener" aria-label="Open full-size dashboard preview in a new tab">
+          <img src="dashboard-shot.jpg" width="2560" height="1560" alt="WuakLock's dark dashboard with a live-match clock, team soul advantage timeline and player statistics." loading="lazy" decoding="async">
+          <span class="image-expand" aria-hidden="true">↗</span>
+        </a>
+        <figcaption><span>Dashboard shown with sample data.</span><span>Live view / Match history / Community data</span></figcaption>
+      </figure>
+    </section>
 
-  <section class="private">
-    <p class="label">&gt; private by default</p>
-    <h2>Nothing leaves your PC that doesn't have to.</h2>
-    <div class="facts">
-      <div><b>No account</b><span>Nothing to sign up for.</span></div>
-      <div><b>No ads</b><span>No analytics or tracking either.</span></div>
-      <div><b>Local records</b><span>Matches stay in one folder you control.</span></div>
-      <div><b>Read only</b><span>It reads the game and never writes to it.</span></div>
-    </div>
-  </section>
-</main>
+    <section class="field-section content-width" aria-labelledby="overlay-title">
+      <div class="field-copy">
+        <p class="eyebrow"><span class="index">02</span> In the moment</p>
+        <h2 id="overlay-title">Eyes on<br> the fight.</h2>
+        <p>Your numbers, close at hand. A compact overlay keeps live stats over the game, with a position you control.</p>
+        <ul class="feature-lines">
+          <li><span>Souls, K/D/A and hero damage</span><span aria-hidden="true">↗</span></li>
+          <li><span>Team soul lead and Mid Boss timer</span><span aria-hidden="true">↗</span></li>
+          <li><span>Lock it for clicks to pass through</span><span aria-hidden="true">↗</span></li>
+        </ul>
+      </div>
+      <figure class="overlay-figure">
+        <div class="figure-heading"><span>Over the game</span><span aria-hidden="true">02 / LIVE</span></div>
+        <a class="image-link" href="overlay-shot.jpg" target="_blank" rel="noopener" aria-label="Open full-size overlay preview in a new tab">
+          <img src="overlay-shot.jpg" width="1280" height="520" alt="A compact WuakLock statistics overlay across the top of a Deadlock game scene." loading="lazy" decoding="async">
+          <span class="image-expand" aria-hidden="true">↗</span>
+        </a>
+        <figcaption>Overlay shown with sample data.</figcaption>
+        <p class="margin-note"><span aria-hidden="true">└</span> A little information. Right where you need it.</p>
+      </figure>
+    </section>
 
-<footer>
-  <span>WuakLock by Jake Davis</span><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="mailto:jake@bryt.works">jake@bryt.works</a>
-  <span class="note">An independent companion app. Not made, endorsed or approved by Valve. Deadlock and Steam are trademarks of Valve Corporation.</span>
-</footer>
+    <section class="intel-section content-width" aria-labelledby="intel-title">
+      <div class="intel-heading">
+        <p class="eyebrow"><span class="index">03</span> Beyond the scoreboard</p>
+        <h2 id="intel-title">Go into the next<br> match with context.</h2>
+      </div>
+      <div class="intel-entries">
+        <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[+]</span><div><h3>Read the lobby.</h3><p>Scout players through their public match history. Community data adds context to the names on the scoreboard.</p></div></article>
+        <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[%]</span><div><h3>Know your hero.</h3><p>Explore hero win rates, builds and leaderboards, with sample sizes alongside the numbers.</p></div></article>
+        <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[≡]</span><div><h3>Keep your history.</h3><p>Return to your recorded matches. Local records keep the story of a game after the scoreboard closes.</p></div></article>
+      </div>
+      <p class="data-note">Scouting and hero data use the independent community Deadlock API. Availability depends on the public data it provides.</p>
+    </section>
 
-<script>
-/* The emblem: the small mark dissolves into its own glyphs, which mutate and grow into the full
-   emblem and then resolve exactly onto it. At rest its eye watches the pointer and blinks.
-   Scrolling raises the emblem's spire as the tower of the Cursed Apple while the rest of the
-   emblem dithers away, then builds the city floor by floor; at the end it all reverses.
-   Click the emblem to watch it grow again. Reduced motion shows the full emblem at rest. */
-(() => {
-  const canvas = document.getElementById('emblem'), ctx = canvas.getContext('2d');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const CREAM = [227, 218, 201], FONT = '"Geist Mono", ui-monospace, monospace';
-  // Anchors measured on the artwork: eye centre and ring radius, as fractions of each image.
-  const A = { src: 'emblem-small.png', eye: [230 / 460, 213 / 460], ring: 120 / 460, pitch: 6 };
-  const B = { src: 'emblem.png', eye: [627 / 1254, 655 / 1254], ring: 300 / 1254, pitch: 12 };
-  const GROW_FROM = .6; // the small mark's ring is this fraction of the full ring when the page opens
-  const T = { appear: 350, hold: 650, morph: 1500, settle: 450 };
-  let W = 0, H = 0, dpr = 1, S = 0, cx = 0, cy = 0, particles = [], start = 0, pointer = null, ready = false;
-  const hash = (x, y) => { const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return h - Math.floor(h); };
-  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
-  const load = src => new Promise((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = reject; image.src = src; });
+    <section class="closing-section content-width" aria-labelledby="privacy-title">
+      <div class="closing-mark" aria-hidden="true"><img src="emblem.png" width="1254" height="1254" alt="" loading="lazy" decoding="async"></div>
+      <div class="closing-copy">
+        <p class="eyebrow"><span class="index">04</span> Yours to keep</p>
+        <h2 id="privacy-title">Your matches.<br> Your machine.</h2>
+        <p>Local match records. No account, ads or analytics. Public community data when you need it.</p>
+        <a class="text-link" href="privacy/">How WuakLock handles data <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
 
-  // Ink cells of an image on its own glyph grid, with their brightness.
-  function cells(image, pitch) {
-    const off = document.createElement('canvas'); off.width = image.naturalWidth; off.height = image.naturalHeight;
-    const o = off.getContext('2d'); o.drawImage(image, 0, 0);
-    const data = o.getImageData(0, 0, off.width, off.height).data, out = [];
-    for (let y = pitch / 2; y < off.height; y += pitch) for (let x = pitch / 2; x < off.width; x += pitch) {
-      let total = 0, count = 0;
-      for (let dy = -pitch / 3; dy <= pitch / 3; dy += 2) for (let dx = -pitch / 3; dx <= pitch / 3; dx += 2) {
-        const i = ((Math.round(y + dy)) * off.width + Math.round(x + dx)) * 4; total += data[i] * .2126 + data[i + 1] * .7152 + data[i + 2] * .0722; count++;
-      }
-      const ink = total / count / 255; if (ink > .16) out.push({ u: x / off.width, v: y / off.height, ink });
-    }
-    return out;
-  }
+    <section class="development content-width" aria-label="Development status">
+      <div><p class="eyebrow">Windows / In development</p><p class="development-title">See you in the city.</p></div>
+      <a class="text-link" href="mailto:jake@bryt.works">Get in touch <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
 
-  // Where each logo sits on screen: the full emblem fills the stage; the small mark is centred on
-  // the same eye, at GROW_FROM of the full ring's size.
-  function frames() {
-    const sizeB = S, sizeA = S * B.ring * GROW_FROM / A.ring;
-    const eye = [cx + (B.eye[0] - .5) * sizeB, cy + (B.eye[1] - .5) * sizeB];
-    return {
-      B: { x: eye[0] - B.eye[0] * sizeB, y: eye[1] - B.eye[1] * sizeB, size: sizeB },
-      A: { x: eye[0] - A.eye[0] * sizeA, y: eye[1] - A.eye[1] * sizeA, size: sizeA }, eye,
-    };
-  }
-
-  function build(cellsA, cellsB) {
-    const f = frames(), ringA = A.ring * f.A.size, ringB = B.ring * f.B.size;
-    const from = cellsA.map(c => { const x = f.A.x + c.u * f.A.size, y = f.A.y + c.v * f.A.size; return { x, y, nx: (x - f.eye[0]) / ringA, ny: (y - f.eye[1]) / ringA, ink: c.ink }; });
-    // Spatial hash on the small mark, in ring-normalised space, so ring maps to ring and eye to eye.
-    const bucket = new Map(), key = (x, y) => `${Math.floor(x * 6)},${Math.floor(y * 6)}`;
-    from.forEach(p => { const k = key(p.nx, p.ny); (bucket.get(k) || bucket.set(k, []).get(k)).push(p); });
-    const nearest = (nx, ny) => {
-      for (let r = 0; r < 14; r++) {
-        let best = null, bestD = Infinity;
-        for (let gx = -r; gx <= r; gx++) for (let gy = -r; gy <= r; gy++) {
-          if (Math.max(Math.abs(gx), Math.abs(gy)) !== r) continue;
-          for (const p of bucket.get(`${Math.floor(nx * 6) + gx},${Math.floor(ny * 6) + gy}`) || []) { const d = (p.nx - nx) ** 2 + (p.ny - ny) ** 2; if (d < bestD) { bestD = d; best = p; } }
-        }
-        if (best) return best;
-      }
-      return from[0];
-    };
-    const ringTop = f.eye[1] - ringB * 1.05;
-    particles = cellsB.map(c => {
-      const tx = f.B.x + c.u * f.B.size, ty = f.B.y + c.v * f.B.size, nx = (tx - f.eye[0]) / ringB, ny = (ty - f.eye[1]) / ringB;
-      const source = nearest(nx, ny), travel = Math.hypot(nx - source.nx, ny - source.ny);
-      // The spire builds upward: the higher above the ring, the later a glyph arrives.
-      const rise = Math.max(0, (ringTop - ty) / S);
-      return { sx: source.x, sy: source.y, tx, ty, ink: c.ink, sink: source.ink, delay: Math.min(.32, travel * .2) + rise * 1.1 + hash(tx, ty) * .08,
-        arc: (hash(ty, tx) - .5) * S * .06 * Math.min(1, travel), seed: hash(tx * .7, ty * 1.3), spire: inSpire(c.u * 1254, c.v * 1254), u: c.u, v: c.v };
-    });
-    buildCity();
-  }
-
-  // The city's tower is the emblem's own spire, lifted out of the artwork pixel for pixel
-  // (art rect below, in 1254 px emblem space) and set on a shaft continued from its own columns.
-  const SPIRE = { x0: 522, x1: 734, y0: 55, y1: 400, slice: [292, 334], shaft: [545, 712] };
-  const inSpire = (ax, ay) => ax >= SPIRE.x0 && ax <= SPIRE.x1 && ay >= SPIRE.y0 && ay <= SPIRE.y1;
-  let tower = null;
-  function buildTower() {
-    const k = H * .5 / (SPIRE.y1 - SPIRE.y0), top = H * .06, artW = SPIRE.x1 - SPIRE.x0, spireH = SPIRE.y1 - SPIRE.y0;
-    const baseArt = Math.max(0, Math.ceil((H - top) / k * 3)), sprite = document.createElement('canvas');
-    sprite.width = artW; sprite.height = spireH + baseArt;
-    const o = sprite.getContext('2d');
-    o.drawImage(images[1], SPIRE.x0, SPIRE.y0, artW, spireH, 0, 0, artW, spireH);
-    const sw = SPIRE.shaft[1] - SPIRE.shaft[0], sh = SPIRE.slice[1] - SPIRE.slice[0];
-    for (let y = spireH; y < sprite.height; y += sh) o.drawImage(images[1], SPIRE.shaft[0], SPIRE.slice[0], sw, sh, SPIRE.shaft[0] - SPIRE.x0, y, sw, sh);
-    tower = { sprite, k, x: W / 2 - artW * k / 2, top, spireBottom: top + spireH * k, w: artW * k, h: sprite.height * k,
-      at: (ax, ay) => [W / 2 - artW * k / 2 + (ax - SPIRE.x0) * k, top + (ay - SPIRE.y0) * k] };
-  }
-
-  // The Cursed Apple: Deadlock's occult early-1900s Manhattan, drawn as a glyph skyline from the
-  // wiki's own landmarks. York on the left (Seaport cranes, Statue of Liberty out past the docks,
-  // Fairfax smokestacks, the Stock Exchange, a gothic office tower), Broadway's billboards either
-  // side of the tower, then the Chinatown Bell Tower, the theatre's broken glass dome, Umbria
-  // University, brownstones and Central Park on the Greenwich side. Materials pick the glyphs.
-  const MAT = { back: 1, wall: 2, column: 3, sign: 4, tree: 5, solid: 6, glass: 7, roof: 8 };
-  let city = [], cityPitch = 10, smoke = [], body = null;
-  function buildCity() {
-    buildTower();
-    const off = document.createElement('canvas'); off.width = Math.ceil(W); off.height = Math.ceil(H);
-    const o = off.getContext('2d'), u = W / 100, G = H, h = v => G - H * v;
-    const paint = m => { o.fillStyle = `rgb(${m * 25},0,0)`; o.strokeStyle = o.fillStyle; };
-    const rect = (x, top, w, m) => { paint(m); o.fillRect(x * u, h(top), w * u, G - h(top)); };
-    const band = (x, top, w, height, m) => { paint(m); o.fillRect(x * u, h(top), w * u, H * height); };
-    const poly = (pts, m) => { paint(m); o.beginPath(); pts.forEach(([x, y], i) => i ? o.lineTo(x * u, h(y)) : o.moveTo(x * u, h(y))); o.closePath(); o.fill(); };
-    const line = (x0, y0, x1, y1, width, m) => { paint(m); o.lineWidth = Math.max(width, W / 110); o.beginPath(); o.moveTo(x0 * u, h(y0)); o.lineTo(x1 * u, h(y1)); o.stroke(); };
-    const waterTower = (x, y) => { band(x - .9, y + .05, 1.8, .03, MAT.solid); poly([[x - 1, y + .05], [x, y + .075], [x + 1, y + .05]], MAT.solid); band(x - .8, y + .02, .25, .02, MAT.solid); band(x + .55, y + .02, .25, .02, MAT.solid); };
-    smoke = [];
-    // back layer: early-1900s blocks with water towers, the museum dome, Liberty past the docks
-    let seed = 3; const r = () => hash(seed++, 1.9);
-    for (let x = 0; x < 100;) { const w = 2.5 + r() * 3.5, top = .12 + r() * .16; if (r() < .6) { rect(x, top, w, MAT.back); if (r() < .4) waterTower(x + w / 2, top); } x += w + 1 + r() * 2.5; }
-    paint(MAT.back); o.beginPath(); o.ellipse(91 * u, h(.36), 4.2 * u, H * .07, 0, Math.PI, 0); o.fill(); rect(86.5, .36, 9, MAT.back);
-    // Statue of Liberty: plinth, robe, raised arm and torch
-    rect(2.6, .12, 4.8, MAT.solid); rect(3.4, .19, 3.2, MAT.solid); poly([[3.7, .19], [6.3, .19], [5.6, .33], [4.4, .33]], MAT.solid);
-    rect(4.55, .37, .9, MAT.solid); poly([[4.3, .37], [5, .4], [5.7, .37]], MAT.solid); line(5.5, .33, 6.4, .43, u * .7, MAT.solid); rect(6, .46, 1, MAT.solid);
-    // York: Seaport docks and cranes
-    rect(0, .05, 11, MAT.wall); rect(0, .02, 13, MAT.solid);
-    for (const cx of [2.5, 8]) { line(cx - 1.4, .05, cx, .26, u * .35, MAT.solid); line(cx + 1.4, .05, cx, .26, u * .35, MAT.solid); line(cx - 2.6, .25, cx + 3.6, .27, u * .3, MAT.solid); line(cx + 3.6, .27, cx + 3.6, .2, u * .15, MAT.solid); }
-    // Fairfax Factories: sawtooth roofs and stacks
-    rect(11, .17, 11, MAT.wall);
-    for (let x = 11; x < 22; x += 2.2) poly([[x, .17], [x + 2.2, .17], [x + 2.2, .21]], MAT.roof);
-    for (const [x, top] of [[12.8, .42], [16.2, .48], [19.6, .38]]) { rect(x, top, 1.2, MAT.solid); band(x - .2, top + .01, 1.6, .012, MAT.solid); smoke.push([(x + .6) * u, h(top + .012)]); }
-    // Stock Exchange: steps, six columns, entablature and pediment
-    rect(22.5, .05, 9, MAT.wall); rect(23, .25, 8, MAT.wall);
-    for (let k = 0; k < 6; k++) rect(23.6 + k * 1.33, .23, .7, MAT.column);
-    band(22.8, .27, 8.4, .025, MAT.solid); poly([[22.8, .27], [27, .33], [31.2, .27]], MAT.solid);
-    // a gothic early-1900s office tower with pinnacles
-    rect(32, .5, 5, MAT.wall); rect(32.8, .62, 3.4, MAT.wall); rect(33.6, .7, 1.8, MAT.wall);
-    poly([[33.6, .7], [34.5, .8], [35.4, .7]], MAT.solid); for (const x of [32.1, 36.6]) { band(x, .54, .4, .04, MAT.solid); poly([[x, .54], [x + .2, .58], [x + .4, .54]], MAT.solid); }
-    // Broadway: Times Square blocks wrapped in billboards, both sides of the tower
-    for (const [x, w, top] of [[37.5, 5.5, .44], [57, 6, .5]]) {
-      rect(x, top, w, MAT.wall);
-      for (let k = 0; k < 4; k++) band(x + .4 + (k % 2) * w * .35, top - .04 - k * .085, w * .55, .05, MAT.sign);
-      rect(x + w * .3, top + .06, w * .4, MAT.wall); band(x + w * .2, top + .085, w * .6, .028, MAT.sign);
-    }
-    // a mansard-domed tower with a lantern, like the period's Singer Building
-    rect(63.5, .56, 4.5, MAT.wall); paint(MAT.roof); o.beginPath(); o.ellipse(65.75 * u, h(.56), 2.25 * u, H * .07, 0, Math.PI, 0); o.fill();
-    band(65.3, .66, .9, .04, MAT.solid); band(65.6, .7, .3, .04, MAT.solid);
-    // Chinatown Bell Tower: stacked pagoda roofs with upturned eaves and an open bell chamber
-    rect(70, .3, 6, MAT.wall);
-    let base = .3; for (let k = 0; k < 4; k++) { const w = 6 - k * 1.1, x = 73 - w / 2;
-      poly([[x - 1.2, base + .01], [x - .4, base + .03], [x + w + .4, base + .03], [x + w + 1.2, base + .01], [x + w, base + .045], [x, base + .045]], MAT.roof);
-      if (k < 3) { rect(x + .3, base + .12, w - .6, MAT.wall); if (k === 2) band(x + w * .3, base + .11, w * .4, .07, MAT.glass); }
-      base += .12; }
-    band(72.8, base + .1, .4, .1, MAT.solid);
-    // the theatre, its glass dome broken open
-    rect(77, .26, 9, MAT.wall); band(77, .29, 9, .03, MAT.solid);
-    paint(MAT.glass); o.beginPath(); o.ellipse(81.5 * u, h(.29), 3.6 * u, H * .11, 0, Math.PI, 0); o.fill();
-    o.globalCompositeOperation = 'destination-out'; o.beginPath(); o.moveTo(80.6 * u, h(.29)); o.lineTo(81.3 * u, h(.4)); o.lineTo(83.6 * u, h(.36)); o.lineTo(82.4 * u, h(.29)); o.fill(); o.globalCompositeOperation = 'source-over';
-    // Umbria University: gothic hall with twin pointed towers
-    rect(86, .3, 7, MAT.wall); for (const x of [86.3, 91.4]) { rect(x, .44, 1.3, MAT.wall); poly([[x, .44], [x + .65, .53], [x + 1.3, .44]], MAT.solid); }
-    for (let k = 0; k < 4; k++) poly([[87.7 + k * 1.2, .3], [88.3 + k * 1.2, .34], [88.9 + k * 1.2, .3]], MAT.solid);
-    // brownstones and Central Park
-    for (let x = 93; x < 100; x += 1.8) { rect(x, .12, 1.7, MAT.wall); band(x + .2, .14, 1.3, .02, MAT.roof); }
-    paint(MAT.tree); for (let k = 0; k < 9; k++) { const x = 92 + k * 1.1 + hash(k, 2) * .8, y = .03 + hash(2, k) * .06; o.beginPath(); o.arc(x * u, h(y + .05), u * (1.1 + hash(k, k) * .7), 0, Math.PI * 2); o.fill(); }
-    // the tower stands alone: clear the city behind its silhouette
-    o.globalCompositeOperation = 'destination-out'; o.drawImage(tower.sprite, tower.x, tower.top, tower.w, tower.h); o.fillRect(tower.x + tower.w * .2, tower.spireBottom, tower.w * .6, H); o.globalCompositeOperation = 'source-over';
-    // sample on the glyph grid
-    const data = o.getImageData(0, 0, off.width, off.height).data;
-    cityPitch = clamp(W / 130, 7, 12);
-    const cols = Math.floor(W / cityPitch), rows = Math.floor(H / cityPitch), mat = (c, rr) => {
-      if (c < 0 || rr < 0 || c >= cols || rr >= rows) return 0;
-      const i = (Math.floor((rr + .5) * cityPitch) * off.width + Math.floor((c + .5) * cityPitch)) * 4;
-      return data[i + 3] > 100 ? Math.round(data[i] / 25) : 0;
-    };
-    const cells = [];
-    for (let rr = 0; rr < rows; rr++) for (let c = 0; c < cols; c++) {
-      const m = mat(c, rr); if (!m) continue;
-      const x = (c + .5) * cityPitch, y = (rr + .5) * cityPitch, front = m !== MAT.back;
-      const edge = front ? (mat(c - 1, rr) <= 1 || mat(c + 1, rr) <= 1 || mat(c, rr - 1) <= 1) : (!mat(c - 1, rr) || !mat(c + 1, rr) || !mat(c, rr - 1));
-      const window = m === MAT.wall && !edge && c % 2 === 1 && rr % 3 !== 0;
-      const spread = Math.abs(x - W / 2) / (W / 2), rise = 1 - y / H, lane = hash(Math.floor(c / 4), 9) * .02;
-      // Built floor by floor from the street, sweeping out from the tower; taken down top first.
-      cells.push({ x, y, m, edge, window, lit: hash(c, rr * 1.7) < .22, at: .13 + spread * .15 + lane + rise * .07, back: .8 + (1 - spread) * .055 + (1 - rise) * .03 + lane });
-    }
-    city = cells;
-  }
-
-  function resize() {
-    dpr = Math.min(2, devicePixelRatio || 1); W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    S = Math.min(W * .94, H * .9, 980); cx = W / 2; cy = H / 2 - Math.min(24, H * .02);
-    body = document.createElement('canvas'); body.width = canvas.width; body.height = canvas.height; body.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (ready) build(cellsA, cellsB);
-  }
-
-  let images = null, cellsA = null, cellsB = null;
-  // Recolour the cream artwork to bone.
-  function bone(image) {
-    const off = document.createElement('canvas'); off.width = image.naturalWidth; off.height = image.naturalHeight;
-    const o = off.getContext('2d'); o.drawImage(image, 0, 0);
-    const img = o.getImageData(0, 0, off.width, off.height), d = img.data;
-    for (let i = 0; i < d.length; i += 4) {
-      const lum = (d[i] * .2126 + d[i + 1] * .7152 + d[i + 2] * .0722) / 255;
-      d[i] = CREAM[0] * lum; d[i + 1] = CREAM[1] * lum; d[i + 2] = CREAM[2] * lum; d[i + 3] = 255;
-    }
-    o.putImageData(img, 0, 0); return off;
-  }
-  const GLYPHS = '#+=*:%@';
-  function drawGlyph(x, y, size, glyph, alpha) {
-    ctx.globalAlpha = alpha; ctx.font = `700 ${size.toFixed(1)}px ${FONT}`; ctx.fillText(glyph, x, y);
-  }
-
-  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
-  // Draws an image scaled about the eye, so both marks grow from the same point.
-  function drawAbout(image, logo, size, alpha, clipTop = null) {
-    if (alpha <= 0) return;
-    const f = frames(), x = f.eye[0] - logo.eye[0] * size, y = f.eye[1] - logo.eye[1] * size;
-    ctx.save(); ctx.globalAlpha = alpha;
-    if (clipTop !== null) { ctx.beginPath(); ctx.rect(0, clipTop, W, H - clipTop); ctx.clip(); }
-    ctx.drawImage(image, x, y, size, size); ctx.restore();
-  }
-  function frame(now) {
-    const hero = clamp(scrollY / (innerHeight * .85)), range = Math.max(1, document.documentElement.scrollHeight - innerHeight), q = clamp(scrollY / range);
-    let t = now - start; const f = frames();
-    const settledAt = T.appear + T.hold + T.morph + T.settle;
-    if (scrollY > 0 && t < settledAt) { start = now - settledAt; t = settledAt; }
-    heroEl.style.setProperty('--fade', 1 - smooth(0, .35, hero));
-    ctx.clearRect(0, 0, W, H);
-    if (t >= settledAt && scrollY > 0) { scrollScene(now, f, q, hero); requestAnimationFrame(frame); return; }
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = `rgb(${CREAM})`;
-    const morphAt = T.appear + T.hold, end = morphAt + T.morph + T.settle;
-    const m = clamp((t - morphAt) / (T.morph + T.settle)), grow = ease(m);
-    const cellA = f.A.size * A.pitch / 460, cellB = f.B.size * B.pitch / 1254;
-    const arrive = ease(clamp(t / T.appear));
-    const sizeA = f.A.size * (1 + (1 - arrive) * .06) * (1 + (1 / GROW_FROM - 1) * grow);
-    if (t < end) drawAbout(images[0], A, sizeA, arrive * (1 - smooth(.12, .55, m)));
-    if (m > 0) {
-      const ringB = B.ring * f.B.size, reveal = smooth(.3, .95, m);
-      const top = f.eye[1] + ringB * 1.15 - (f.eye[1] + ringB * 1.15 - f.B.y) * reveal;
-      drawAbout(images[1], B, f.B.size * (GROW_FROM + (1 - GROW_FROM) * grow), smooth(.2, .62, m), m < 1 ? top : null);
-    }
-    const presence = Math.sin(Math.PI * smooth(0, 1, m)) ** .8;
-    if (presence > .01) {
-      const pm = clamp(m / .85);
-      for (const p of particles) {
-        const local = ease(clamp((pm - p.delay) / Math.max(.2, 1 - p.delay)));
-        const bend = Math.sin(local * Math.PI) * p.arc;
-        const x = p.sx + (p.tx - p.sx) * local - bend * .4, y = p.sy + (p.ty - p.sy) * local + bend;
-        const moving = local > .02 && local < .98;
-        const glyph = moving ? GLYPHS[Math.floor((p.seed * 50 + now * .02) % GLYPHS.length)] : '#';
-        const size = (cellA + (cellB - cellA) * local) * 1.25;
-        const alpha = Math.min(1, presence * (.6 + (moving ? p.ink : p.sink) * .6));
-        if (moving && p.seed < .06) { ctx.fillStyle = p.seed < .015 ? '#8a93ff' : '#f7f2e8'; drawGlyph(x, y, size, glyph, alpha); ctx.fillStyle = `rgb(${CREAM})`; }
-        else drawGlyph(x, y, size, glyph, alpha);
-      }
-      ctx.globalAlpha = 1;
-    }
-    if (t >= end) { eye(now, f, 1); shimmer(now, cellB, 1); }
-    requestAnimationFrame(frame);
-  }
-
-  function shimmer(now, cellB, alpha) {
-    const tick = Math.floor(now / 110);
-    for (let i = 0; i < particles.length; i += 1) {
-      const p = particles[i];
-      if (hash(i, tick) < .004) { ctx.fillStyle = hash(tick, i) < .3 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(p.tx, p.ty, cellB * 1.15, GLYPHS[(i + tick) % GLYPHS.length], .9 * alpha); }
-    }
-    ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
-  }
-
-  // The eye, measured on the 1254 px artwork: the iris is lifted out as its own soft-edged piece
-  // and moves inside an almond opening that matches the lids, so the lids hide its edge. It jumps
-  // to new targets in quick saccades, holds with a faint tremor, and blinks with closing lids.
-  const EYE = { iris: [627, 640], r: 47, left: [514, 636], right: [740, 636], top: 578, bottom: 712, reachX: 46, reachY: 9 };
-  let irisSprite = null;
-  const gaze = { x: 0, y: 0, fromX: 0, fromY: 0, toX: 0, toY: 0, at: 0, next: 0 }, blink = { at: 0, double: false };
-  function makeIris() {
-    const pad = 4, size = (EYE.r + pad) * 2, off = document.createElement('canvas'); off.width = off.height = size;
-    const o = off.getContext('2d');
-    o.drawImage(images[1], EYE.iris[0] - EYE.r - pad, EYE.iris[1] - EYE.r - pad, size, size, 0, 0, size, size);
-    o.globalCompositeOperation = 'destination-in';
-    const g = o.createRadialGradient(size / 2, size / 2, EYE.r * .82, size / 2, size / 2, EYE.r + pad * .5);
-    g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)'); o.fillStyle = g; o.fillRect(0, 0, size, size);
-    irisSprite = off;
-  }
-  function socket(context, k, f, closeTop = 0, closeBottom = 0) {
-    // The opening between the lids, in screen space; closeTop/closeBottom (0..1) lower and raise the lids.
-    const X = v => f.B.x + v * k, Y = v => f.B.y + v * k, mid = EYE.left[1];
-    const topC = EYE.top + (mid - EYE.top) * closeTop * 1.02, bottomC = EYE.bottom - (EYE.bottom - mid) * closeBottom * 1.02;
-    context.beginPath(); context.moveTo(X(EYE.left[0]), Y(EYE.left[1]));
-    context.quadraticCurveTo(X(EYE.iris[0]), Y(topC), X(EYE.right[0]), Y(EYE.right[1]));
-    context.quadraticCurveTo(X(EYE.iris[0]), Y(bottomC), X(EYE.left[0]), Y(EYE.left[1]));
-    context.closePath();
-    return { topC, bottomC };
-  }
-  function eye(now, f, alpha) {
-    if (!irisSprite) makeIris();
-    const k = f.B.size / 1254, cx0 = f.B.x + EYE.iris[0] * k, cy0 = f.B.y + EYE.iris[1] * k;
-    // Choose where to look: the pointer when there is one, otherwise an idle glance now and then.
-    let tx = gaze.toX, ty = gaze.toY;
-    if (pointer) {
-      const dx = (pointer.x - cx0) / (S * .45), dy = (pointer.y - cy0) / (S * .45), d = Math.hypot(dx, dy), s = d > 1 ? 1 / d : 1;
-      tx = dx * s * EYE.reachX; ty = dy * s * EYE.reachY;
-    } else if (now > gaze.next) { tx = (hash(now, 1) - .5) * EYE.reachX * 1.1; ty = (hash(1, now) - .5) * EYE.reachY * 1.2; gaze.next = now + 1400 + hash(now, now) * 2600; }
-    if (Math.hypot(tx - gaze.toX, ty - gaze.toY) > 3.5) { gaze.fromX = gaze.x; gaze.fromY = gaze.y; gaze.toX = tx; gaze.toY = ty; gaze.at = now; }
-    const sac = clamp((now - gaze.at) / 85), e = 1 - Math.pow(1 - sac, 4);
-    gaze.x = gaze.fromX + (gaze.toX - gaze.fromX) * e; gaze.y = gaze.fromY + (gaze.toY - gaze.fromY) * e;
-    const tremorX = (hash(Math.floor(now / 90), 3) - .5) * .9, tremorY = (hash(5, Math.floor(now / 90)) - .5) * .6;
-    // Blink: lids close in 90 ms, hold, open in 140 ms; sometimes twice.
-    if (!blink.at) blink.at = now + 2200 + Math.random() * 3000;
-    const bt = now - blink.at;
-    let lid = 0;
-    if (bt > 0) { lid = bt < 90 ? ease(bt / 90) : bt < 130 ? 1 : bt < 270 ? 1 - ease((bt - 130) / 140) : 0;
-      if (bt >= 270) { if (!blink.double && Math.random() < .25) { blink.double = true; blink.at = now + 120; } else { blink.double = false; blink.at = now + 3600 + Math.random() * 4200; } } }
-    const near = pointer ? clamp(1 - Math.hypot(pointer.x - cx0, pointer.y - cy0) / (S * .5)) : 0;
-    ctx.save(); ctx.globalAlpha = alpha;
-    // Empty the socket, then draw the iris inside it, then the closing lids.
-    ctx.save(); socket(ctx, k, f); ctx.clip(); ctx.fillStyle = '#000'; ctx.fillRect(cx0 - EYE.r * 3 * k, cy0 - EYE.r * 2 * k, EYE.r * 6 * k, EYE.r * 4 * k);
-    const size = irisSprite.width * k * (1 + near * .06), ix = cx0 + (gaze.x + tremorX) * k, iy = cy0 + (gaze.y + tremorY) * k;
-    ctx.drawImage(irisSprite, ix - size / 2, iy - size / 2, size, size);
-    ctx.restore();
-    if (lid > 0) {
-      const open = socket(ctx, k, f), lidTop = EYE.top + (EYE.left[1] - EYE.top) * lid, lidBottom = EYE.bottom - (EYE.bottom - EYE.left[1]) * lid * .55;
-      ctx.save(); socket(ctx, k, f); ctx.clip(); ctx.fillStyle = '#000';
-      const X = v => f.B.x + v * k, Y = v => f.B.y + v * k;
-      ctx.beginPath(); ctx.moveTo(X(EYE.left[0]), Y(EYE.left[1])); ctx.quadraticCurveTo(X(EYE.iris[0]), Y(EYE.top - 40), X(EYE.right[0]), Y(EYE.right[1]));
-      ctx.quadraticCurveTo(X(EYE.iris[0]), Y(lidTop), X(EYE.left[0]), Y(EYE.left[1])); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(X(EYE.left[0]), Y(EYE.left[1])); ctx.quadraticCurveTo(X(EYE.iris[0]), Y(EYE.bottom + 40), X(EYE.right[0]), Y(EYE.right[1]));
-      ctx.quadraticCurveTo(X(EYE.iris[0]), Y(lidBottom), X(EYE.left[0]), Y(EYE.left[1])); ctx.fill();
-      ctx.restore();
-      // The closing lid edges, set as a row of glyphs like the artwork's lash line.
-      ctx.fillStyle = `rgb(${CREAM})`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      const cell = 12 * k, bez = (a, c, b, u) => (1 - u) * (1 - u) * a + 2 * (1 - u) * u * c + u * u * b;
-      for (const [cy, a] of [[lidTop, 1], [lidBottom, .7]]) for (let u = .06; u <= .94; u += .07) {
-        drawGlyph(X(bez(EYE.left[0], EYE.iris[0], EYE.right[0], u)), Y(bez(EYE.left[1], cy, EYE.right[1], u)), cell * 1.1, '#', alpha * a * (.5 + lid * .5));
-      }
-      void open;
-    }
-    ctx.restore(); ctx.globalAlpha = 1;
-  }
-
-  // Scrolling: the emblem's spire lifts off and becomes the city's tower, its shaft grows down to
-  // the street, and the skyline rises out from it to both edges; at the end it all folds back.
-
-  // The emblem without its spire, dissolving in an ordered dither from the rays inward (d: 0..1).
-  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
-  function emblemBody(f, d, alpha) {
-    if (alpha <= 0 || d >= 1) return;
-    const l = body.getContext('2d'), k = f.B.size / 1254, cell = B.pitch * k;
-    l.clearRect(0, 0, W, H); l.globalCompositeOperation = 'source-over';
-    l.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size);
-    l.globalCompositeOperation = 'destination-out';
-    l.fillRect(f.B.x + SPIRE.x0 * k, f.B.y + SPIRE.y0 * k - 2, (SPIRE.x1 - SPIRE.x0) * k, (SPIRE.y1 - SPIRE.y0) * k + 2);
-    if (d > 0) {
-      l.beginPath();
-      const reach = B.ring * f.B.size * 2.7;
-      for (let y = f.B.y; y < f.B.y + f.B.size; y += cell) for (let x = f.B.x; x < f.B.x + f.B.size; x += cell) {
-        const c = Math.round((x - f.B.x) / cell), r = Math.round((y - f.B.y) / cell);
-        const inner = 1 - Math.min(1, Math.hypot(x + cell / 2 - f.eye[0], y + cell / 2 - f.eye[1]) / reach);
-        if (BAYER[(r % 4) * 4 + (c % 4)] / 16 * .3 + inner * .7 < d) l.rect(x - .5, y - .5, cell + 1, cell + 1);
-      }
-      l.fill();
-    }
-    l.globalCompositeOperation = 'source-over';
-    ctx.globalAlpha = alpha; ctx.drawImage(body, 0, 0, W, H); ctx.globalAlpha = 1;
-  }
-  // The tower as one piece of artwork: the spire rises and scales from its place on the emblem to
-  // the top of the skyline while its shaft extrudes beneath it down to the street (t: 0..1).
-  function drawTower(f, t, alpha) {
-    if (alpha <= 0) return;
-    const k0 = f.B.size / 1254, k = k0 + (tower.k - k0) * t, spireH = SPIRE.y1 - SPIRE.y0, artW = SPIRE.x1 - SPIRE.x0;
-    const x = (f.B.x + SPIRE.x0 * k0) + (tower.x - (f.B.x + SPIRE.x0 * k0)) * t, y = (f.B.y + SPIRE.y0 * k0) + (tower.top - (f.B.y + SPIRE.y0 * k0)) * t;
-    const shaft = smooth(.12, .55, t);
-    ctx.save(); ctx.globalAlpha = alpha;
-    if (shaft > 0) {
-      const top = y + spireH * k, length = (H - top) * shaft;
-      ctx.beginPath(); ctx.rect(0, top - 1, W, length + 1); ctx.clip();
-      ctx.drawImage(tower.sprite, 0, spireH, artW, tower.sprite.height - spireH, x, top, artW * k, (tower.sprite.height - spireH) * k);
-      ctx.restore(); ctx.save(); ctx.globalAlpha = alpha;
-      // the leading edge of the shaft as it extrudes
-      if (shaft < 1) { ctx.fillStyle = '#fffaf0'; ctx.globalAlpha = alpha * .9; ctx.fillRect(x + (SPIRE.shaft[0] - SPIRE.x0) * k, top + length - 1.5, (SPIRE.shaft[1] - SPIRE.shaft[0]) * k, 1.5); }
-    }
-    ctx.restore(); ctx.save(); ctx.globalAlpha = alpha;
-    ctx.drawImage(tower.sprite, 0, 0, artW, spireH, x, y, artW * k, spireH * k);
-    ctx.restore(); ctx.globalAlpha = 1;
-  }
-  function cityGlyph(c, x, y, i, tick, now, alpha) {
-    let char = '#', color = `rgb(${CREAM})`, a = .22;
-    if (c.m === MAT.back) { if (!c.edge) return; char = '.'; a = .35; }
-    else if (c.m === MAT.column) { char = '|'; a = .6; }
-    else if (c.m === MAT.sign) { const on = hash(i, Math.floor(now / 140)) > .04; char = on ? '=' : ' '; a = 1; color = '#fffaf0'; }
-    else if (c.m === MAT.tree) { char = hash(i, 4) < .5 ? '*' : '%'; a = .42; }
-    else if (c.m === MAT.solid) { if (c.edge) a = .9; else { char = ':'; a = .4; } }
-    else if (c.m === MAT.glass) { char = '+'; a = .45; }
-    else if (c.m === MAT.roof) { char = '^'; a = .55; }
-    else if (c.edge) a = .95;
-    else if (c.window) { const lit = c.lit !== (hash(i, tick) < .015); if (!lit) return; a = 1; color = '#fffaf0'; }
-    else { char = '.'; a = .22; }
-    if (char === ' ') return;
-    ctx.fillStyle = color; drawGlyph(x, y, cityPitch * 1.05, char, alpha * a);
-  }
-  // Scrolling: the spire rises out of the emblem as the tower while the rest of the emblem
-  // dithers away, then the city is built floor by floor out from the tower. It all reverses at
-  // the end of the page, and follows the scroll position both ways.
-  function scrollScene(now, f, q, hero) {
-    const veil = 1 - smooth(0, .6, hero) * .52;
-    const forward = q < .55;
-    const t = forward ? ease(clamp((q - .02) / .12)) : 1 - ease(clamp((q - .895) / .08));
-    const d = forward ? smooth(.008, .11, q) : 1 - smooth(.895, .975, q);
-    if (q > .99) { ctx.globalAlpha = veil; ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); ctx.globalAlpha = 1; eye(now, f, veil); return; }
-    emblemBody(f, d, veil);
-    if (!tower) return;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const drift = (q - .55) * W * .03, tick = Math.floor(now / 900);
-    for (let i = 0; i < city.length; i++) {
-      const c = city[i];
-      const shown = forward ? q - c.at : c.back - q;
-      if (shown < 0) continue;
-      const a = smooth(0, .005, shown) * veil;
-      if (shown < .01) { ctx.fillStyle = '#fffaf0'; drawGlyph(c.x + drift, c.y, cityPitch * 1.05, '#', a); continue; }
-      cityGlyph(c, c.x + drift, c.y, i, tick, now, a);
-    }
-    drawTower(f, t, veil);
-    // smoke from the Fairfax stacks once the city stands
-    const standing = forward ? smooth(.3, .36, q) : 1 - smooth(.8, .84, q);
-    if (standing > 0) for (const [sx, sy] of smoke) for (let k = 0; k < 7; k++) {
-      const p = (now / 2600 + k / 7 + hash(sx, k)) % 1, x = sx + drift + Math.sin(p * 5 + k) * cityPitch * .8 + p * cityPitch * 6, y = sy - p * H * .16;
-      ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, cityPitch * (1.1 + p * .8), p < .5 ? '~' : '.', veil * standing * (1 - p) * .9);
-    }
-    ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
-  }
-
-  const heroEl = document.getElementById('hero');
-  addEventListener('pointermove', event => { pointer = { x: event.clientX, y: event.clientY }; });
-  document.addEventListener('pointerleave', () => { pointer = null; });
-  heroEl.addEventListener('click', event => { if (ready && !reduced && !event.target.closest('a') && scrollY < 10) start = performance.now(); });
-
-  resize();
-  Promise.all([load(A.src), load(B.src), document.fonts?.load?.(`700 12px ${FONT}`)]).then(([a, b]) => {
-    images = [bone(a), bone(b)];
-    if (reduced) {
-      const f = frames(); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size);
-      addEventListener('resize', () => { const g = frames(); ctx.clearRect(0, 0, W, H); ctx.drawImage(images[1], g.B.x, g.B.y, g.B.size, g.B.size); });
-      return;
-    }
-    cellsA = cells(a, A.pitch); cellsB = cells(b, B.pitch); ready = true; build(cellsA, cellsB);
-    start = performance.now(); requestAnimationFrame(frame);
-  });
-})();
-</script>
+  <footer class="site-footer content-width">
+    <div class="footer-row"><a class="wordmark footer-word" href="./">wuaklock</a><span>By Jake Davis</span><nav aria-label="Footer"><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="mailto:jake@bryt.works">jake@bryt.works</a></nav></div>
+    <p>An independent companion app. Not made, endorsed or approved by Valve. Deadlock and Steam are trademarks of Valve Corporation.</p>
+  </footer>
 </body>
 </html>

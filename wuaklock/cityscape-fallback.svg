@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <title>A city after dark</title>
+  <desc>An original city of stepped towers, narrow spires, suspended railways and arched viaducts, drawn in ivory monospaced characters.</desc>
+  <defs>
+    <pattern id="stone" width="12" height="13" patternUnits="userSpaceOnUse"><text x="2" y="8" fill="#d8d1c0" opacity=".2" font-family="monospace" font-size="7">:.</text></pattern>
+    <pattern id="windows" width="19" height="24" patternUnits="userSpaceOnUse"><text x="3" y="9" fill="#e3dcca" opacity=".68" font-family="monospace" font-size="7">|</text><text x="3" y="17" fill="#e3dcca" opacity=".35" font-family="monospace" font-size="7">:</text></pattern>
+    <pattern id="ribs" width="20" height="7" patternUnits="userSpaceOnUse"><text x="0" y="6" fill="#e3dcca" opacity=".85" font-family="monospace" font-size="7">|</text></pattern>
+    <pattern id="light" width="5" height="7" patternUnits="userSpaceOnUse"><text x="0" y="6" fill="#e3dcca" font-family="monospace" font-size="7">#</text></pattern>
+  </defs>
+  <g stroke="#e3dcca" stroke-dasharray="2 6" opacity=".12">
+    <circle cx="1090" cy="427" r="226"/><circle cx="1090" cy="427" r="250"/><circle cx="1090" cy="427" r="274"/>
+    <path d="M1090 141v-13m0 585v-13M803 427h13m548 0h13M887 224l9 9m388 388 9 9m-406 0 9-9m388-388 9-9"/>
+  </g>
+  <g fill="url(#stone)" stroke="#e3dcca" stroke-dasharray="2 5" opacity=".2">
+    <path d="M-20 900V730h48v-20h30v190m-9 0V690h63v210m-10 0V732h55v168m-8 0V650h63v250m-8 0V705h72v195m-8 0V690h63v210m-7 0V620h71v280m-7 0V690h63v210m-6 0V655h70v245m-5 0V722h65v178m-6 0V675h66v225m-8 0V703h68v197m-7 0V613h70v287m-6 0V665h63v235m-6 0V715h73v185m-8 0V675h65v225m-6 0V633h70v267m-7 0V680h65v220m-6 0V721h66v179m-7 0V651h68v249m-6 0V670h65v230m-6 0V714h67v186m-7 0V620h66v280m-8 0V698h73v202m-8 0V664h61v236m-6 0V690h80v210"/>
+    <path d="M270 800V600h12v200m22 0V586h12v214m22 0V574h12v226"/>
+  </g>
+  <g fill="url(#windows)" stroke="#e3dcca" stroke-dasharray="2 4" opacity=".47">
+    <path d="M514 900V590h21v-42h16v-32h27v-30h20v30h25v33h21v42h17v309z"/>
+    <path d="M588 454v32m-48 63v279m17-299v299m17-314v314m17-317v317m17-309v309m17-290v290m17-271v271"/>
+    <path d="M704 900V658h18v-90h12v-47h14v-35l11 35h9v47h14v90h17v242z"/>
+    <path d="M739 632v-64a11 11 0 0 1 22 0v64"/>
+    <path d="M1242 900V573a85 66 0 0 1 170 0v327z"/>
+    <path d="M1242 573h171m-86-66v66m-68 0a68 66 0 0 1 136 0m-119 0a51 66 0 0 1 102 0m-85 0a34 66 0 0 1 68 0m-51 0a17 66 0 0 1 34 0m-34 0a17 66 0 0 1 34 0m-17-98v31"/>
+    <path d="M1440 900V588h40v-37h58v37h38v312zM1509 516v35"/>
+    <path d="M-18 900V762h141v138m36 0V739h124v161m48 0V756h115v144"/>
+  </g>
+  <g stroke="#e3dcca" stroke-dasharray="2 4" opacity=".48">
+    <path d="M754 557Q1012 745 1495 553M754 565Q1012 753 1495 561M1228 632v19m-20 0h44v23h-44z"/>
+    <path d="M1215 658h30m-30 8h30"/>
+    <path d="M670 782h780m-780 12h780m-778 18h778"/>
+    <path d="M687 900v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44m16 0v-44a37 37 0 0 1 74 0v44"/>
+  </g>
+  <g stroke="#e3dcca" stroke-dasharray="2 3">
+    <path fill="#080b0b" d="M945 900V598h20V471h20V351h20v-77h20v-51h21v-35h15v-29h14l15-47 15 47h14v29h15v35h21v51h20v77h20v120h20v127h20v302z"/>
+    <path fill="url(#ribs)" opacity=".7" d="M945 900V598h20V471h20V351h20v-77h20v-51h21v-35h15v-29h14l15-47 15 47h14v29h15v35h21v51h20v77h20v120h20v127h20v302z"/>
+    <path opacity=".5" d="M974 490v410m20-531v531m20-608v608m21-659v659m20-695v695m16-724v153m38-153v153m16-124v695m20-659v659m20-608v608m20-531v531m20-410v410"/>
+    <path d="M1090 66v45m-8-24h16m-8-48v5m0 8v5m0 87v165m-101 24v13m20-90v13m20-64v13m21-49v13m80-13v13m21 23v13m20 38v13m20 64v13"/>
+    <circle fill="#080b0b" cx="1090" cy="389" r="58"/>
+    <circle opacity=".3" cx="1090" cy="389" r="69"/>
+    <path stroke-width="3" d="M1048 389q42-44 84 0-42 42-84 0z"/>
+    <ellipse fill="url(#light)" cx="1090" cy="389" rx="9" ry="24"/>
+    <path d="M1090 319v14m0 112v17m0 16v183M950 603h280M950 624h280M970 530h240M970 580h240M970 721h240"/>
+    <path stroke-width="3" d="m1072 662 9 35 9-20 9 20 9-35"/>
+    <path d="M1048 900V767a42 42 0 0 1 84 0v133m-72 0V772a30 30 0 0 1 60 0v128"/>
+  </g>
+  <g stroke="#e3dcca" fill="#080b0b" stroke-dasharray="2 4" opacity=".62">
+    <path d="M-24 900v-65h201v65m21 0v-89h162v89m25 0v-57h133v57m2 0v-95h117v95m633 0v-55h185v55m27 0V788h149v112"/>
+    <path fill="url(#windows)" d="M-24 900v-65h201v65m21 0v-89h162v89m25 0v-57h133v57m2 0v-95h117v95m633 0v-55h185v55m27 0V788h149v112"/>
+    <path d="M553 805l5-43h16l5 43m-26-20 26 14m0-14-26 14m-3-46h32v35h-32zm-4 0 20-15 20 15m924 35 5-43h16l5 43m-26-20 26 14m0-14-26 14m-3-46h32v35h-32zm-4 0 20-15 20 15"/>
+    <path d="M813 825v-88h115v88M819 743h103v44H819zM825 788v34m89-34v34"/>
+    <text fill="#e3dcca" stroke="none" x="870" y="768" text-anchor="middle" font-size="13" font-family="monospace">NIGHT LINE</text>
+    <path d="M-50 792Q240 904 553 793M111 778v122m-13-105h26m266 13v92m-13-76h26"/>
+  </g>
+</svg>
