@@ -15,7 +15,7 @@
 @font-face { font-family: "Geist Mono"; src: url(geist-mono-latin.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
 :root { --bg: #000; --fg: #e8e2d4; --cream: #e3dac9; --dim: #9b968a; --line: rgba(227, 218, 201, .14); --accent: #8a93ff; color-scheme: dark; }
 * { box-sizing: border-box; }
-html { background: var(--bg); }
+html { background: var(--bg); scroll-behavior: auto; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 400 15px/1.65 "Geist Mono", ui-monospace, Consolas, monospace; -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 a:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
@@ -25,9 +25,7 @@ a:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
 #emblem { position: fixed; inset: 0; z-index: 0; width: 100vw; height: 100vh; display: block; }
 .top, .foot { opacity: var(--fade, 1); }
 main, footer { position: relative; z-index: 1; }
-main { background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, #000 220px); }
-footer { background: #000; }
-.decode { font-variant-ligatures: none; }
+
 .top { position: absolute; z-index: 2; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 22px clamp(18px, 3.5vw, 44px); }
 .word { font-weight: 700; font-size: 16px; letter-spacing: -.02em; color: var(--cream); text-decoration: none; }
 .top nav { display: flex; gap: 22px; font-size: 13px; }
@@ -36,7 +34,6 @@ footer { background: #000; }
 .foot { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 0 clamp(18px, 3.5vw, 44px) 26px; pointer-events: none; }
 .line { min-height: 1.65em; max-width: 74ch; color: var(--fg); font-size: 14px; }
 .line .p { color: var(--accent); }
-.line .cur { display: inline-block; width: .6em; height: 1.1em; margin-left: 2px; vertical-align: -.2em; background: var(--accent); animation: blink 1.05s steps(1) infinite; }
 .status { color: var(--dim); font-size: 12.5px; white-space: nowrap; text-align: right; }
 @keyframes blink { 50% { opacity: 0; } }
 
@@ -77,7 +74,7 @@ footer .note { flex-basis: 100%; }
 <header class="hero" id="hero">
   <canvas id="emblem" role="img" aria-label="The WuakLock emblem: a radiant eye above a W, crowned by a spire."></canvas>
   <div class="top"><a class="word" href="./">wuaklock</a><nav aria-label="WuakLock"><a href="privacy/">Privacy</a><a href="terms/">Terms</a></nav></div>
-  <div class="foot"><p class="line" id="line" aria-live="off"></p><p class="status">Windows · in development</p></div>
+  <div class="foot"><p class="line"><span class="p">&gt;</span> wuaklock. live deadlock stats on your second screen and over the game.</p><p class="status">Windows · in development</p></div>
 </header>
 
 <main>
@@ -128,12 +125,12 @@ footer .note { flex-basis: 100%; }
 
 <script>
 /* The emblem: the small mark dissolves into its own glyphs, which mutate and grow into the full
-   emblem and then resolve exactly onto it. At rest its eye follows the pointer and now and then
-   blinks. Scrolling breaks the emblem back into drifting glyphs while the page slides over it.
+   emblem and then resolve exactly onto it. At rest its eye watches the pointer and blinks.
+   Scrolling changes the emblem behind the page: a drifting cloud, the small mark, then the full
+   emblem again at the end.
    Click the emblem to watch it grow again. Reduced motion shows the full emblem at rest. */
 (() => {
   const canvas = document.getElementById('emblem'), ctx = canvas.getContext('2d');
-  const line = document.getElementById('line');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const CREAM = [227, 218, 201], FONT = '"Geist Mono", ui-monospace, monospace';
   // Anchors measured on the artwork: eye centre and ring radius, as fractions of each image.
@@ -235,29 +232,25 @@ footer .note { flex-basis: 100%; }
     ctx.drawImage(image, x, y, size, size); ctx.restore();
   }
   function frame(now) {
-    const scroll = clamp(scrollY / (innerHeight * .85));
+    const hero = clamp(scrollY / (innerHeight * .85)), range = Math.max(1, document.documentElement.scrollHeight - innerHeight), q = clamp(scrollY / range);
     let t = now - start; const f = frames();
     const settledAt = T.appear + T.hold + T.morph + T.settle;
-    if (scroll > 0 && t < settledAt) { start = now - settledAt; t = settledAt; }
-    hero.style.setProperty('--fade', 1 - smooth(0, .35, scroll));
+    if (scrollY > 0 && t < settledAt) { start = now - settledAt; t = settledAt; }
+    heroEl.style.setProperty('--fade', 1 - smooth(0, .35, hero));
     ctx.clearRect(0, 0, W, H);
-    if (t >= settledAt && scroll > 0) { dissolve(now, f, scroll); requestAnimationFrame(frame); return; }
+    if (t >= settledAt && scrollY > 0) { scrollScene(now, f, q, hero); requestAnimationFrame(frame); return; }
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = `rgb(${CREAM})`;
     const morphAt = T.appear + T.hold, end = morphAt + T.morph + T.settle;
     const m = clamp((t - morphAt) / (T.morph + T.settle)), grow = ease(m);
     const cellA = f.A.size * A.pitch / 460, cellB = f.B.size * B.pitch / 1254;
-    // The small mark arrives, breathes, then grows and dissolves into its glyphs.
     const arrive = ease(clamp(t / T.appear));
     const sizeA = f.A.size * (1 + (1 - arrive) * .06) * (1 + (1 / GROW_FROM - 1) * grow);
-    drawAbout(images[0], A, sizeA, arrive * (1 - smooth(.12, .55, m)));
-    // The full emblem grows in from the small mark's size and is revealed from the ring upward,
-    // so the spire builds last.
+    if (t < end) drawAbout(images[0], A, sizeA, arrive * (1 - smooth(.12, .55, m)));
     if (m > 0) {
       const ringB = B.ring * f.B.size, reveal = smooth(.3, .95, m);
       const top = f.eye[1] + ringB * 1.15 - (f.eye[1] + ringB * 1.15 - f.B.y) * reveal;
       drawAbout(images[1], B, f.B.size * (GROW_FROM + (1 - GROW_FROM) * grow), smooth(.2, .62, m), m < 1 ? top : null);
     }
-    // Glyphs carry the change between the two marks; they peak mid-mutation and settle away.
     const presence = Math.sin(Math.PI * smooth(0, 1, m)) ** .8;
     if (presence > .01) {
       const pm = clamp(m / .85);
@@ -274,109 +267,137 @@ footer .note { flex-basis: 100%; }
       }
       ctx.globalAlpha = 1;
     }
-    if (t >= end) idle(now, f, cellB);
-    if (!typed && m > .9) type();
+    if (t >= end) { eye(now, f, 1); shimmer(now, cellB, 1); }
     requestAnimationFrame(frame);
   }
 
-  // At rest: a few glyphs flicker, and the eye follows the pointer inside its socket, using the
-  // artwork itself, and blinks every few seconds.
-  const IRIS = { at: [626 / 1254, 657 / 1254], r: 50 / 1254 };
-  const gaze = { x: 0, y: 0 };
-  let nextBlink = 0;
-  function idle(now, f, cellB) {
+  function shimmer(now, cellB, alpha) {
     const tick = Math.floor(now / 110);
     for (let i = 0; i < particles.length; i += 1) {
       const p = particles[i];
-      if (hash(i, tick) < .005) { ctx.fillStyle = hash(tick, i) < .3 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(p.tx, p.ty, cellB * 1.15, GLYPHS[(i + tick) % GLYPHS.length], .9); }
-    }
-    const ix = f.B.x + IRIS.at[0] * f.B.size, iy = f.B.y + IRIS.at[1] * f.B.size, r = IRIS.r * f.B.size;
-    let tx = 0, ty = 0;
-    if (pointer) {
-      const dx = pointer.x - ix, dy = pointer.y - iy, d = Math.hypot(dx, dy) || 1, reach = Math.min(1, d / (S * .35));
-      tx = dx / d * reach * r * .55; ty = dy / d * reach * r * .24;
-    } else { tx = Math.sin(now / 2300) * r * .12; }
-    gaze.x += (tx - gaze.x) * .14; gaze.y += (ty - gaze.y) * .14;
-    if (!nextBlink) nextBlink = now + 2500 + Math.random() * 4000;
-    const blinkT = (now - nextBlink) / 180, lid = blinkT > 0 && blinkT < 1 ? Math.sin(blinkT * Math.PI) : 0;
-    if (blinkT >= 1) nextBlink = now + 3500 + Math.random() * 5000;
-    ctx.save(); ctx.beginPath(); ctx.arc(ix, iy, r * 1.12, 0, Math.PI * 2); ctx.clip();
-    ctx.globalAlpha = 1; ctx.fillStyle = '#000'; ctx.fillRect(ix - r * 1.2, iy - r * 1.2, r * 2.4, r * 2.4);
-    const squash = 1 - lid * .92;
-    ctx.translate(ix + gaze.x, iy + gaze.y); ctx.scale(1, squash); ctx.translate(-ix, -iy);
-    ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size);
-    ctx.restore(); ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
-  }
-
-  // Scrolling: the emblem breaks back into glyphs that drift outward and up as the page covers it.
-  function dissolve(now, f, scroll) {
-    const cellB = f.B.size * B.pitch / 1254, out = ease(scroll);
-    ctx.globalAlpha = 1 - smooth(0, .45, scroll); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size);
-    const presence = smooth(0, .18, scroll) * (1 - smooth(.7, 1, scroll));
-    if (presence <= 0) { ctx.globalAlpha = 1; return; }
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    for (const p of particles) {
-      const dx = p.tx - f.eye[0], dy = p.ty - f.eye[1], d = Math.hypot(dx, dy) || 1;
-      const spread = out * S * (.25 + p.seed * .55);
-      const x = p.tx + dx / d * spread + Math.sin(p.seed * 40 + now * .002) * 6 * out;
-      const y = p.ty + dy / d * spread * .6 - out * S * .45 * (.3 + p.seed);
-      const char = GLYPHS[Math.floor((p.seed * 60 + now * .015) % GLYPHS.length)];
-      ctx.fillStyle = p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`;
-      drawGlyph(x, y, cellB * (1.15 - out * .4), out < .05 ? '#' : char, presence * (.4 + p.ink * .6) * (1 - out * .5));
+      if (hash(i, tick) < .004) { ctx.fillStyle = hash(tick, i) < .3 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(p.tx, p.ty, cellB * 1.15, GLYPHS[(i + tick) % GLYPHS.length], .9 * alpha); }
     }
     ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
   }
 
-  // The terminal line under the emblem types itself once the emblem has grown.
-  let typed = false;
-  function type() {
-    typed = true;
-    const text = 'wuaklock. live deadlock stats on your second screen and over the game.';
-    line.innerHTML = '<span class="p">&gt;</span> <span class="t"></span><span class="cur"></span>';
-    const target = line.querySelector('.t'); let i = 0;
-    const step = () => { target.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(step, 12 + Math.random() * 16); };
-    step();
+  // The eye, measured on the 1254 px artwork: the iris is lifted out as its own soft-edged piece
+  // and moves inside an almond opening that matches the lids, so the lids hide its edge. It jumps
+  // to new targets in quick saccades, holds with a faint tremor, and blinks with closing lids.
+  const EYE = { iris: [627, 640], r: 47, left: [514, 636], right: [740, 636], top: 578, bottom: 712, reachX: 46, reachY: 9 };
+  let irisSprite = null;
+  const gaze = { x: 0, y: 0, fromX: 0, fromY: 0, toX: 0, toY: 0, at: 0, next: 0 }, blink = { at: 0, double: false };
+  function makeIris() {
+    const pad = 4, size = (EYE.r + pad) * 2, off = document.createElement('canvas'); off.width = off.height = size;
+    const o = off.getContext('2d');
+    o.drawImage(images[1], EYE.iris[0] - EYE.r - pad, EYE.iris[1] - EYE.r - pad, size, size, 0, 0, size, size);
+    o.globalCompositeOperation = 'destination-in';
+    const g = o.createRadialGradient(size / 2, size / 2, EYE.r * .82, size / 2, size / 2, EYE.r + pad * .5);
+    g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)'); o.fillStyle = g; o.fillRect(0, 0, size, size);
+    irisSprite = off;
+  }
+  function socket(context, k, f, closeTop = 0, closeBottom = 0) {
+    // The opening between the lids, in screen space; closeTop/closeBottom (0..1) lower and raise the lids.
+    const X = v => f.B.x + v * k, Y = v => f.B.y + v * k, mid = EYE.left[1];
+    const topC = EYE.top + (mid - EYE.top) * closeTop * 1.02, bottomC = EYE.bottom - (EYE.bottom - mid) * closeBottom * 1.02;
+    context.beginPath(); context.moveTo(X(EYE.left[0]), Y(EYE.left[1]));
+    context.quadraticCurveTo(X(EYE.iris[0]), Y(topC), X(EYE.right[0]), Y(EYE.right[1]));
+    context.quadraticCurveTo(X(EYE.iris[0]), Y(bottomC), X(EYE.left[0]), Y(EYE.left[1]));
+    context.closePath();
+    return { topC, bottomC };
+  }
+  function eye(now, f, alpha) {
+    if (!irisSprite) makeIris();
+    const k = f.B.size / 1254, cx0 = f.B.x + EYE.iris[0] * k, cy0 = f.B.y + EYE.iris[1] * k;
+    // Choose where to look: the pointer when there is one, otherwise an idle glance now and then.
+    let tx = gaze.toX, ty = gaze.toY;
+    if (pointer) {
+      const dx = (pointer.x - cx0) / (S * .45), dy = (pointer.y - cy0) / (S * .45), d = Math.hypot(dx, dy), s = d > 1 ? 1 / d : 1;
+      tx = dx * s * EYE.reachX; ty = dy * s * EYE.reachY;
+    } else if (now > gaze.next) { tx = (hash(now, 1) - .5) * EYE.reachX * 1.1; ty = (hash(1, now) - .5) * EYE.reachY * 1.2; gaze.next = now + 1400 + hash(now, now) * 2600; }
+    if (Math.hypot(tx - gaze.toX, ty - gaze.toY) > 3.5) { gaze.fromX = gaze.x; gaze.fromY = gaze.y; gaze.toX = tx; gaze.toY = ty; gaze.at = now; }
+    const sac = clamp((now - gaze.at) / 85), e = 1 - Math.pow(1 - sac, 4);
+    gaze.x = gaze.fromX + (gaze.toX - gaze.fromX) * e; gaze.y = gaze.fromY + (gaze.toY - gaze.fromY) * e;
+    const tremorX = (hash(Math.floor(now / 90), 3) - .5) * .9, tremorY = (hash(5, Math.floor(now / 90)) - .5) * .6;
+    // Blink: lids close in 90 ms, hold, open in 140 ms; sometimes twice.
+    if (!blink.at) blink.at = now + 2200 + Math.random() * 3000;
+    const bt = now - blink.at;
+    let lid = 0;
+    if (bt > 0) { lid = bt < 90 ? ease(bt / 90) : bt < 130 ? 1 : bt < 270 ? 1 - ease((bt - 130) / 140) : 0;
+      if (bt >= 270) { if (!blink.double && Math.random() < .25) { blink.double = true; blink.at = now + 120; } else { blink.double = false; blink.at = now + 3600 + Math.random() * 4200; } } }
+    const near = pointer ? clamp(1 - Math.hypot(pointer.x - cx0, pointer.y - cy0) / (S * .5)) : 0;
+    ctx.save(); ctx.globalAlpha = alpha;
+    // Empty the socket, then draw the iris inside it, then the closing lids.
+    ctx.save(); socket(ctx, k, f); ctx.clip(); ctx.fillStyle = '#000'; ctx.fillRect(cx0 - EYE.r * 3 * k, cy0 - EYE.r * 2 * k, EYE.r * 6 * k, EYE.r * 4 * k);
+    const size = irisSprite.width * k * (1 + near * .06), ix = cx0 + (gaze.x + tremorX) * k, iy = cy0 + (gaze.y + tremorY) * k;
+    ctx.drawImage(irisSprite, ix - size / 2, iy - size / 2, size, size);
+    ctx.restore();
+    if (lid > 0) {
+      const open = socket(ctx, k, f), lidTop = EYE.top + (EYE.left[1] - EYE.top) * lid, lidBottom = EYE.bottom - (EYE.bottom - EYE.left[1]) * lid * .55;
+      ctx.save(); socket(ctx, k, f); ctx.clip(); ctx.fillStyle = '#000';
+      const X = v => f.B.x + v * k, Y = v => f.B.y + v * k;
+      ctx.beginPath(); ctx.moveTo(X(EYE.left[0]), Y(EYE.left[1])); ctx.quadraticCurveTo(X(EYE.iris[0]), Y(EYE.top - 40), X(EYE.right[0]), Y(EYE.right[1]));
+      ctx.quadraticCurveTo(X(EYE.iris[0]), Y(lidTop), X(EYE.left[0]), Y(EYE.left[1])); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(X(EYE.left[0]), Y(EYE.left[1])); ctx.quadraticCurveTo(X(EYE.iris[0]), Y(EYE.bottom + 40), X(EYE.right[0]), Y(EYE.right[1]));
+      ctx.quadraticCurveTo(X(EYE.iris[0]), Y(lidBottom), X(EYE.left[0]), Y(EYE.left[1])); ctx.fill();
+      ctx.restore();
+      // The closing lid edges, set as a row of glyphs like the artwork's lash line.
+      ctx.fillStyle = `rgb(${CREAM})`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      const cell = 12 * k, bez = (a, c, b, u) => (1 - u) * (1 - u) * a + 2 * (1 - u) * u * c + u * u * b;
+      for (const [cy, a] of [[lidTop, 1], [lidBottom, .7]]) for (let u = .06; u <= .94; u += .07) {
+        drawGlyph(X(bez(EYE.left[0], EYE.iris[0], EYE.right[0], u)), Y(bez(EYE.left[1], cy, EYE.right[1], u)), cell * 1.1, '#', alpha * a * (.5 + lid * .5));
+      }
+      void open;
+    }
+    ctx.restore(); ctx.globalAlpha = 1;
+  }
+
+  // Scrolling the page changes the emblem behind it: it breaks into a drifting cloud as the content
+  // arrives, gathers into the small mark mid-page, and grows back into the full emblem at the end.
+  function scrollScene(now, f, q, hero) {
+    const cellA = f.A.size * A.pitch / 460, cellB = f.B.size * B.pitch / 1254;
+    const veil = 1 - smooth(0, .6, hero) * .78 + smooth(.9, 1, q) * .12;
+    const imageB = (1 - smooth(0, .07, q)) + smooth(.965, 1, q), imageA = smooth(.56, .63, q) * (1 - smooth(.82, .86, q));
+    if (imageB > 0) { ctx.globalAlpha = veil * clamp(imageB); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); }
+    if (imageA > 0) drawAbout(images[0], A, f.A.size, veil * imageA);
+    ctx.globalAlpha = 1;
+    if (imageB >= 1 && q > .99) { eye(now, f, veil); return; }
+    const presence = 1 - clamp(imageB) - imageA;
+    if (presence <= .01) return;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const swirl = q * 1.1, cos = Math.cos(swirl), sin = Math.sin(swirl);
+    for (const p of particles) {
+      const dx = p.tx - f.eye[0], dy = p.ty - f.eye[1], d = Math.hypot(dx, dy) || 1, spread = S * (.2 + p.seed * .5);
+      let cxp = dx / d * (d + spread), cyp = dy / d * (d + spread) * .7 - S * .18 * p.seed;
+      [cxp, cyp] = [cxp * cos - cyp * sin, cxp * sin + cyp * cos];
+      const cloudX = f.eye[0] + cxp, cloudY = f.eye[1] + cyp;
+      const stagger = v => clamp((v - p.seed * .3) / .7);
+      let x, y, size, rest;
+      if (q < .3) { const u = ease(stagger(smooth(0, .3, q))); x = p.tx + (cloudX - p.tx) * u; y = p.ty + (cloudY - p.ty) * u; size = cellB * 1.15; rest = u < .02; }
+      else if (q < .82) { const v = ease(stagger(smooth(.3, .62, q))); x = cloudX + (p.sx - cloudX) * v; y = cloudY + (p.sy - cloudY) * v; size = cellB * 1.15 + (cellA * 1.25 - cellB * 1.15) * v; rest = v > .98; }
+      else { const w = ease(stagger(smooth(.82, 1, q))), bend = Math.sin(w * Math.PI) * p.arc; x = p.sx + (p.tx - p.sx) * w - bend * .4; y = p.sy + (p.ty - p.sy) * w + bend; size = cellA * 1.25 + (cellB * 1.15 - cellA * 1.25) * w; rest = w > .98; }
+      ctx.fillStyle = !rest && p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`;
+      drawGlyph(x, y, size, rest ? '#' : GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)], veil * presence * (.45 + p.ink * .55));
+    }
+    ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
   }
 
   addEventListener('resize', resize);
-  const hero = document.getElementById('hero');
-  addEventListener('pointermove', event => { pointer = scrollY < innerHeight * .5 ? { x: event.clientX, y: event.clientY } : null; });
+  const heroEl = document.getElementById('hero');
+  addEventListener('pointermove', event => { pointer = { x: event.clientX, y: event.clientY }; });
   document.addEventListener('pointerleave', () => { pointer = null; });
-  hero.addEventListener('click', event => { if (ready && !reduced && !event.target.closest('a') && scrollY < 10) start = performance.now(); });
+  heroEl.addEventListener('click', event => { if (ready && !reduced && !event.target.closest('a') && scrollY < 10) start = performance.now(); });
 
   resize();
   Promise.all([load(A.src), load(B.src), document.fonts?.load?.(`700 12px ${FONT}`)]).then(([a, b]) => {
     images = [bone(a), bone(b)];
     if (reduced) {
       const f = frames(); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size);
-      line.innerHTML = '<span class="p">&gt;</span> wuaklock. live deadlock stats on your second screen and over the game.';
       addEventListener('resize', () => { const g = frames(); ctx.clearRect(0, 0, W, H); ctx.drawImage(images[1], g.B.x, g.B.y, g.B.size, g.B.size); });
       return;
     }
     cellsA = cells(a, A.pitch); cellsB = cells(b, B.pitch); ready = true; build(cellsA, cellsB);
     start = performance.now(); requestAnimationFrame(frame);
   });
-})();
-
-/* Section headings and labels decode from glyphs into text as they scroll into view. */
-(() => {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
-  const GLYPHS = '#+=*:%@', targets = document.querySelectorAll('main h2, main .label, .facts b');
-  const decode = element => {
-    const text = element.dataset.text, start = performance.now(), duration = 520 + text.length * 14;
-    const step = now => {
-      const progress = Math.min(1, (now - start) / duration);
-      const settled = Math.floor(progress * text.length);
-      element.textContent = text.split('').map((char, i) => i < settled || char === ' ' ? char : GLYPHS[(i * 7 + Math.floor(now / 45)) % GLYPHS.length]).join('');
-      if (progress < 1) requestAnimationFrame(step); else element.textContent = text;
-    };
-    requestAnimationFrame(step);
-  };
-  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    observer.unobserve(entry.target); decode(entry.target);
-  }), { rootMargin: '0px 0px -12% 0px' });
-  targets.forEach(element => { element.dataset.text = element.textContent; element.classList.add('decode'); observer.observe(element); });
 })();
 </script>
 </body>
