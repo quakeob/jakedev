@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jake Davis</title>
+<meta name="description" content="Jake Davis. Photo, film, software and web, from Utah.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { background:#000; color:#fff; -webkit-text-size-adjust:100%; }
+  body { font:500 12px/1.6 "JetBrains Mono", ui-monospace, monospace; letter-spacing:.02em; overflow-x:hidden; }
+  a { color:inherit; text-decoration:none; }
+  ::selection { background:#fff; color:#000; }
+
+  .world { position:relative; }
+  .stage { position:sticky; top:0; height:100vh; height:100lvh; width:100%; overflow:hidden; background:#000; z-index:0; }
+  .stage canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  #cc { image-rendering:pixelated; }
+  .flow { position:relative; z-index:1; margin-top:-100vh; margin-top:-100lvh; }
+
+  .mono { text-transform:uppercase; letter-spacing:.05em; font-size:clamp(10px, .9vw, 12px); }
+  .b-head { position:absolute; right:2.4%; top:clamp(16px, 4vh, 40px); text-align:right; mix-blend-mode:difference; pointer-events:none; }
+  .c-name { position:absolute; left:3%; top:clamp(20px, 5vh, 48px); font:900 clamp(56px, 8vw, 136px)/.84 "Inter Tight", sans-serif; letter-spacing:-.055em; pointer-events:none; opacity:0; }
+  .c-list { position:absolute; left:3%; bottom:10%; pointer-events:none; opacity:0; }
+  .c-list i { display:block; font-style:normal; opacity:.35; transition:opacity .35s; }
+  .c-list i.on { opacity:1; }
+  .c-count { position:absolute; right:3%; bottom:10%; pointer-events:none; opacity:0; }
+
+  .runway { height:230vh; height:230lvh; }
+  .scroll-hint { position:absolute; left:2.4%; bottom:clamp(16px, 4vh, 40px); mix-blend-mode:difference; }
+
+  /* trades: text scrolls normally over the stone, which turns to face each one */
+  .trade { min-height:100vh; min-height:100lvh; display:flex; align-items:center; padding:12vh 3% 12vh; }
+  .slab { width:min(36vw, 520px); }
+  .trade .no { margin-bottom:14px; opacity:.55; }
+  .trade h2 { font:900 clamp(64px, 8.5vw, 150px)/.8 "Inter Tight", sans-serif; letter-spacing:-.06em; margin:0 0 4vh -.04em; }
+  .trade ul { list-style:none; border-top:1px solid #fff; }
+  .trade li { border-bottom:1px solid rgba(255,255,255,.28); }
+  .trade li a, .trade li > span { display:grid; grid-template-columns:1fr 1.3fr auto; gap:16px; padding:11px 0; align-items:baseline; }
+  .trade li a span:first-child { font-weight:500; }
+  .trade li a span:nth-child(2) { opacity:.6; }
+  .trade li a span:last-child { opacity:.6; text-align:right; }
+  .trade li a { transition:background .2s, color .2s, padding .2s; }
+  .trade li a:hover, .trade li a:focus-visible { background:#fff; color:#000; padding-left:10px; padding-right:10px; outline:none; }
+  .trade li a:hover span, .trade li a:focus-visible span { opacity:1; }
+
+  .end { min-height:100vh; min-height:100lvh; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(20px, 5vh, 48px) 3% clamp(20px, 4vh, 40px); }
+  .end h2 { font:900 clamp(72px, 15vw, 260px)/.8 "Inter Tight", sans-serif; letter-spacing:-.05em; }
+  .end .row { display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; align-items:flex-end; }
+  .end .links a { display:inline-block; border-bottom:1px solid #fff; margin-right:22px; }
+  .end .links a:hover { background:#fff; color:#000; }
+  .end button { font:inherit; color:inherit; background:none; border:1px solid #fff; padding:8px 14px; cursor:pointer; text-transform:uppercase; letter-spacing:.05em; }
+  .end button:hover { background:#fff; color:#000; }
+  .credit { opacity:.45; max-width:520px; text-transform:none; }
+
+  @media (max-width: 760px) {
+    .slab { width:100%; background:rgba(0,0,0,.84); padding:18px 16px 8px; }
+    .trade { padding:10vh 16px; align-items:flex-start; }
+    .trade li a { grid-template-columns:1fr auto; }
+    .trade li a span:nth-child(2) { display:none; }
+    .c-list, .c-count { bottom:12%; }
+    .end { padding-left:16px; padding-right:16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .trade li a { transition:none; } }
+</style>
+</head>
+<body>
+<div class="world">
+  <div class="stage" id="stage" aria-hidden="true">
+    <canvas id="cb"></canvas>
+    <canvas id="cc"></canvas>
+    <div class="b-head mono" id="bhead">Jake Davis<br>Photo / Film / Software / Web</div>
+    <div class="scroll-hint mono" id="hint">Scroll</div>
+    <div class="c-name" id="cname">JAKE<br>DAVIS</div>
+    <div class="c-list mono" id="clist"><i>Photo</i><i>Film</i><i>Software</i><i>Web</i></div>
+    <div class="c-count mono" id="ccount">Rotation 001</div>
+  </div>
+
+  <div class="flow">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Jake Davis: photo, film, software and web</h1>
+    <div class="runway" id="runway"></div>
+
+    <section class="trade" data-trade="Photo" aria-labelledby="t1">
+      <div class="slab">
+        <p class="no mono">01 / 04</p>
+        <h2 id="t1">Photo</h2>
+        <ul class="mono">
+          <li><a href="/work/ben-lomond/"><span>Ben Lomond</span><span>Willard Basin, Utah</span><span>Sep 2026</span></a></li>
+          <li><a href="/work/summer-high/"><span>High country</span><span>Utah and the North Cascades</span><span>Jul 2026</span></a></li>
+          <li><a href="/work/tunnels/"><span>The tunnels</span><span>West Desert, Utah</span><span>Jan 2026</span></a></li>
+          <li><a href="/work/lot-days/"><span>Lot days</span><span>Beaver Mountain, Snowbasin</span><span>Jan 2026</span></a></li>
+          <li><a href="/work/engadin/"><span>Engadin</span><span>Upper Engadin, Switzerland</span><span>Dec 2025</span></a></li>
+          <li><a href="/work/tetons/"><span>Cathedral Group</span><span>Grand Teton, Wyoming</span><span>Oct 2025</span></a></li>
+          <li><a href="/work/first-snow/"><span>First snow</span><span>Wasatch Back, Utah</span><span>Oct 2025</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="trade" data-trade="Film" aria-labelledby="t2">
+      <div class="slab">
+        <p class="no mono">02 / 04</p>
+        <h2 id="t2">Film</h2>
+        <ul class="mono">
+          <li><a href="https://www.instagram.com/jjakedavis/" target="_blank" rel="noopener"><span>Instagram</span><span>@jjakedavis, 11k followers</span><span>Sep 2026</span></a></li>
+          <li><a href="/media-kit/"><span>UGC video</span><span>Vertical, 15 to 60 s</span><span>Kit</span></a></li>
+          <li><a href="/work/first-snow/"><span>First snow</span><span>Clip, Wasatch Back</span><span>Oct 2025</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="trade" data-trade="Software" aria-labelledby="t3">
+      <div class="slab">
+        <p class="no mono">03 / 04</p>
+        <h2 id="t3">Software</h2>
+        <ul class="mono">
+          <li><a href="/software/hq/"><span>HQ</span><span>Site and founder portal</span><span>2026</span></a></li>
+          <li><a href="/software/todolock/"><span>TodoLock</span><span>iOS, App Store</span><span>2026</span></a></li>
+          <li><a href="/wuaklock/"><span>WuakLock</span><span>Deadlock companion, Windows</span><span>In dev</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="trade" data-trade="Web" aria-labelledby="t4">
+      <div class="slab">
+        <p class="no mono">04 / 04</p>
+        <h2 id="t4">Web</h2>
+        <ul class="mono">
+          <li><a href="https://hqprovo.com/" target="_blank" rel="noopener"><span>hqprovo.com</span><span>HQ, Provo</span><span>Live</span></a></li>
+          <li><a href="https://formanova.cloud/" target="_blank" rel="noopener"><span>formanova.cloud</span><span>Forma Nova</span><span>Live</span></a></li>
+          <li><a href="https://missionarymoments.org/" target="_blank" rel="noopener"><span>missionarymoments.org</span><span>Missionary Moments</span><span>Live</span></a></li>
+          <li><a href="/"><span>jakedev.org</span><span>This site</span><span>Live</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="end" id="end">
+      <h2>AGAIN.</h2>
+      <div class="row mono">
+        <div>
+          <p class="links"><a href="mailto:jake@bryt.works">jake@bryt.works</a><a href="https://www.instagram.com/jjakedavis/" target="_blank" rel="noopener">Instagram</a></p>
+          <p class="credit">Painting: Titian, Sisyphus, 1548–49, Museo del Prado, public domain.</p>
+        </div>
+        <button id="again" type="button">Push it back up ↑</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+  const load = src => new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+  const TR = ['Photo', 'Film', 'Software', 'Web'];
+  const TILE_SRC = ['photo-1', 'film-1', 'software-1', 'web-1', 'photo-2', 'film-2', 'software-2', 'web-2'].map(s => 'a/' + s + '.jpg');
+  const tileTrade = k => TR[k % 4];
+
+  const stage = document.getElementById('stage');
+  const cb = document.getElementById('cb'), bx = cb.getContext('2d');
+  const cc = document.getElementById('cc'), sx = cc.getContext('2d');
+  const bhead = document.getElementById('bhead'), hint = document.getElementById('hint'), cname = document.getElementById('cname');
+  const clist = document.getElementById('clist'), items = [...clist.children], ccount = document.getElementById('ccount');
+  const runway = document.getElementById('runway'), end = document.getElementById('end');
+  const trades = [...document.querySelectorAll('.trade')];
+  document.getElementById('again').addEventListener('click', () => scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }));
+
+  Promise.all([load('a/titian.jpg'), ...TILE_SRC.map(load), document.fonts.ready]).then(([titian, ...rest]) => {
+    const tiles = rest.slice(0, TILE_SRC.length);
+
+    /* ---------- the painting, re-read through a grid ---------- */
+    const RAMP = ' .\'`,:;-~=+*xo#%@';
+    const bayer4 = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5].map(v => (v + .5) / 16);
+    const MODES = ['ascii', 'dither', 'half', 'engrave', 'pixel', 'ascii', 'dither', 'half'];
+    let W, H, cols, rows, cell, modes, thresh, layers, boulder, hover = -1;
+
+    function buildB() {
+      W = cb.width = Math.round(stage.clientWidth); H = cb.height = Math.round(stage.clientHeight);
+      const off = document.createElement('canvas'); off.width = W; off.height = H;
+      const ox = off.getContext('2d', { willReadFrequently: true });
+      const s = Math.max(W / titian.width, H / titian.height), dw = titian.width * s, dh = titian.height * s;
+      // mirrored, so the boulder rides his other shoulder; phones centre on it
+      const offX = W < H ? clamp(W / 2 - .38 * dw, W - dw, 0) : (W - dw) / 2, offY = -(dh - H) * .14;
+      ox.filter = 'grayscale(1) contrast(1.35) brightness(1.08)';
+      ox.save(); ox.translate(offX + dw, offY); ox.scale(-1, 1); ox.drawImage(titian, 0, 0, dw, dh); ox.restore();
+      boulder = { x: offX + .38 * dw, y: offY + .175 * dh, r: .215 * dw };
+      const d = ox.getImageData(0, 0, W, H).data, lum = new Float32Array(W * H);
+      for (let i = 0; i < W * H; i++) lum[i] = d[i * 4] / 255;
+      // lift the boulder out of Titian's shadows; the rest keeps its grade
+      for (let y = Math.max(0, (boulder.y - boulder.r * 1.3) | 0); y < Math.min(H, boulder.y + boulder.r * 1.3); y++)
+        for (let x = Math.max(0, (boulder.x - boulder.r * 1.3) | 0); x < Math.min(W, boulder.x + boulder.r * 1.3); x++) {
+          const k = 1 - smooth(.78, 1.12, Math.hypot((x - boulder.x) / 1.08, y - boulder.y) / boulder.r);
+          if (k > 0) { const i = y * W + x; lum[i] = Math.min(1, lum[i] * (1 + 1.3 * k) + .1 * k); }
+        }
+      // the raw layer (hover) carries the same lift
+      for (let i = 0; i < W * H; i++) { const v = lum[i] * 255; d[i * 4] = d[i * 4 + 1] = d[i * 4 + 2] = v; }
+      ox.putImageData(new ImageData(d, W, H), 0, 0);
+      const L = (px, py) => lum[clamp(py | 0, 0, H - 1) * W + clamp(px | 0, 0, W - 1)];
+      const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.fillStyle = '#000'; x.fillRect(0, 0, W, H); x.fillStyle = '#fff'; return [c, x]; };
+      layers = { raw: off };
+      { const [c, x] = mk(); const g = 7; x.font = `500 ${g + 2}px "JetBrains Mono", monospace`; x.textBaseline = 'top';
+        for (let yy = 0; yy < H; yy += g + 2) for (let xx = 0; xx < W; xx += g) { const v = L(xx + g / 2, yy + g / 2); x.fillText(RAMP[Math.min(RAMP.length - 1, (v * RAMP.length) | 0)], xx, yy); }
+        layers.ascii = c; }
+      { const [c, x] = mk(); const g = 2;
+        for (let yy = 0; yy < H; yy += g) for (let xx = 0; xx < W; xx += g) if (L(xx, yy) > bayer4[((yy / g) & 3) * 4 + ((xx / g) & 3)]) x.fillRect(xx, yy, g, g);
+        layers.dither = c; }
+      { const [c, x] = mk(); const g = 9;
+        for (let yy = 0; yy < H; yy += g) for (let xx = 0; xx < W; xx += g) { const v = L(xx + g / 2, yy + g / 2); x.beginPath(); x.arc(xx + g / 2, yy + g / 2, g * .58 * Math.sqrt(v), 0, 7); x.fill(); }
+        layers.half = c; }
+      { const [c, x] = mk(); const g = 5;
+        for (let yy = 0; yy < H; yy += g) for (let xx = 0; xx < W; xx += 2) { const v = L(xx, yy + g / 2); x.fillRect(xx, yy + (g - g * v) / 2, 2, g * v * .95); }
+        layers.engrave = c; }
+      { const [c, x] = mk(); const g = 12;
+        for (let yy = 0; yy < H; yy += g) for (let xx = 0; xx < W; xx += g) { const v = Math.round(L(xx + g / 2, yy + g / 2) * 3) / 3 * 255; x.fillStyle = `rgb(${v},${v},${v})`; x.fillRect(xx, yy, g - 1, g - 1); }
+        layers.pixel = c; }
+      cols = W > 700 ? 8 : 5; cell = Math.ceil(W / cols); rows = Math.ceil(H / cell);
+      modes = Array.from({ length: cols * rows }, (_, i) => MODES[(i * 5 + (i % 3)) % MODES.length]);
+      const maxD = Math.hypot(W, H);
+      thresh = modes.map((_, i) => {
+        const X = (i % cols + .5) * cell, Y = ((i / cols | 0) + .5) * cell;
+        return clamp(Math.hypot(X - boulder.x, Y - boulder.y) / maxD * .78 + (((Math.sin(i * 12.9898) * 43758.5453) % 1 + 1) % 1) * .08, 0, .8);
+      });
+      buildC();
+    }
+
+    function drawB(p) {
+      bx.fillStyle = '#000'; bx.fillRect(0, 0, W, H);
+      if (p >= 1) return;
+      for (let i = 0; i < modes.length; i++) {
+        const th = thresh[i], X = (i % cols) * cell, Y = (i / cols | 0) * cell;
+        let layer;
+        if (p <= th) layer = (i === hover && p < .02) ? layers.raw : layers[modes[i]];
+        else if (p < th + .07) layer = layers.ascii;   // cells pass through type as they turn
+        else continue;
+        const k = p <= th ? 1 : 1 - (p - th) / .07, hh = cell * k;
+        bx.drawImage(layer, X, Y, cell, cell, X, Y + (cell - hh) / 2, cell, hh);
+      }
+      bx.strokeStyle = `rgba(255,255,255,${.18 * (1 - smooth(.3, .8, p))})`; bx.lineWidth = 1;
+      bx.beginPath();
+      for (let i = 1; i < cols; i++) { bx.moveTo(i * cell + .5, 0); bx.lineTo(i * cell + .5, H); }
+      for (let j = 1; j < rows; j++) { bx.moveTo(0, j * cell + .5); bx.lineTo(W, j * cell + .5); }
+      bx.stroke();
+    }
+
+    if (!RM) setInterval(() => {
+      if (!modes) return;
+      const i = (Math.random() * modes.length) | 0; if (i === hover) return;
+      const opts = ['ascii', 'dither', 'half', 'engrave', 'pixel'].filter(m => m !== modes[i]);
+      modes[i] = opts[(Math.random() * opts.length) | 0];
+    }, 420);
+    addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse' || !cell) return;
+      hover = ((e.clientY / cell) | 0) * cols + ((e.clientX / cell) | 0);
+    }, { passive: true });
+
+    /* ---------- the stone, made of the work ---------- */
+    const TW = 1024, TH = 256, N = tiles.length;
+    const tex = document.createElement('canvas'); tex.width = TW; tex.height = TH;
+    const tx = tex.getContext('2d', { willReadFrequently: true });
+    tx.fillStyle = '#000'; tx.fillRect(0, 0, TW, TH);
+    tx.filter = 'grayscale(1) contrast(1.25)';
+    tiles.forEach((im, i) => { if (!im) return; const w = TW / N, s = Math.max(w / im.width, TH / im.height); tx.save(); tx.beginPath(); tx.rect(i * w, 0, w, TH); tx.clip(); tx.drawImage(im, i * w + (w - im.width * s) / 2, (TH - im.height * s) / 2, im.width * s, im.height * s); tx.restore(); });
+    const td = tx.getImageData(0, 0, TW, TH).data, T = new Float32Array(TW * TH);
+    for (let i = 0; i < TW * TH; i++) T[i] = td[i * 4] / 255;
+    const bayer8 = [0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21].map(v => (v + .5) / 64);
+    const RES = 3, lx = -.55, ly = -.6, lz = .58, ln = Math.hypot(lx, ly, lz);
+    let CW, CH, buf;
+    function buildC() { CW = cc.width = Math.round(W / RES); CH = cc.height = Math.round(H / RES); buf = sx.createImageData(CW, CH); }
+
+    function drawStone(cx, cy, R, rot, a, groundY, ground) {
+      const d = buf.data; d.fill(0);
+      if (a > 0 && R > 0) {
+        const cr = Math.cos(rot), sr = Math.sin(rot);
+        const y0 = Math.max(0, (cy - R) | 0), y1 = Math.min(CH, Math.ceil(cy + R)), x0 = Math.max(0, (cx - R) | 0), x1 = Math.min(CW, Math.ceil(cx + R));
+        const blackA = Math.round(255 * a * a * a);
+        for (let py = y0; py < y1; py++) for (let px = x0; px < x1; px++) {
+          const nx = (px - cx) / R, ny = (py - cy) / R, rr = nx * nx + ny * ny; if (rr >= 1) continue;
+          const nz = Math.sqrt(1 - rr), rx = nx * cr + nz * sr, rz = -nx * sr + nz * cr;
+          const u = ((Math.atan2(rx, rz) / (Math.PI * 2) + .5) * TW) | 0, w = ((Math.asin(clamp(ny, -1, 1)) / Math.PI + .5) * TH) | 0;
+          const light = Math.max(0, (nx * lx + ny * ly + nz * lz) / ln);
+          const v = (T[Math.min(TH - 1, w) * TW + Math.min(TW - 1, u)] * (.25 + .95 * light) + Math.pow(light, 18) * .5) * a;
+          const on = v > bayer8[(py & 7) * 8 + (px & 7)], o = (py * CW + px) * 4;
+          d[o] = d[o + 1] = d[o + 2] = on ? 255 : 0; d[o + 3] = on ? 255 : blackA;
+        }
+      }
+      sx.putImageData(buf, 0, 0);
+      if (ground > 0) { sx.fillStyle = '#fff'; sx.fillRect(0, Math.round(groundY), Math.round(CW * ground), 1); }
+    }
+    // which trade faces the viewer at a given rotation
+    const faceTile = r => Math.floor((((r / (Math.PI * 2) + .5) % 1) + 1) % 1 * N) % N;
+    const rotForTile = k => Math.PI * 2 * ((k + .5) / N - .5);
+
+    buildB();
+    let rw = innerWidth; addEventListener('resize', () => { if (Math.abs(innerWidth - rw) > 2 || Math.abs(stage.clientHeight - H) > 120) { rw = innerWidth; buildB(); } });
+
+    let rot = 0, last = performance.now();
+    function frame(now) {
+      const dt = Math.min(64, now - last); last = now;
+      const vh = innerHeight;
+      const p = clamp(scrollY / Math.max(1, runway.offsetHeight - vh));
+      // the active trade is the section crossing the middle of the screen
+      let active = null;
+      for (const s of trades) { const r = s.getBoundingClientRect(); if (r.top < vh * .55 && r.bottom > vh * .45) { active = s.dataset.trade; break; } }
+      const er = end.getBoundingClientRect(), q = smooth(0, 1, (vh - er.top) / vh);   // the roll back down
+
+      const a = smooth(.02, .22, p), m = ease(clamp((p - .18) / .62));
+      const narrow = CW < CH;
+      const R1 = Math.min(CH * .40, CW * .44);
+      const X1 = (narrow ? CW * .5 : CW * .65) + (RM ? 0 : Math.sin(now / 5200) * CW * .05);
+      const Y1 = CH - R1 - CH * (narrow ? .2 : .07);
+      const R0 = boulder.r / RES, X0 = boulder.x / RES, Y0 = boulder.y / RES;
+      let R = R0 + (R1 - R0) * m, cx = X0 + (X1 - X0) * m, cy = Y0 + (Y1 - Y0) * m;
+      const backX = -R1 * 1.3; cx += (backX - cx) * ease(q);
+
+      const offset = m * 4 - ease(q) * 9;             // turns added by rolling down, and back
+      if (active) {
+        const ks = [...Array(N).keys()].filter(k => tileTrade(k) === active);
+        let best = Infinity;
+        for (const k of ks) { let t = rotForTile(k) - offset; while (t < rot - 1e-3) t += Math.PI * 2; if (t - rot < best) best = t - rot; }
+        rot += best * (RM ? 1 : 1 - Math.exp(-dt / 260));
+      } else if (!RM) rot += dt / 2600;
+      const shown = rot + offset;
+
+      drawB(p);
+      drawStone(cx, cy, R, shown, a, Y1 + R1, smooth(.55, .9, p) * (1 - q));
+
+      const face = active || tileTrade(faceTile(shown));
+      items.forEach(el => el.classList.toggle('on', el.textContent === face));
+      ccount.textContent = 'Rotation ' + String(Math.max(1, Math.floor(shown / (Math.PI * 2)) + 1)).padStart(3, '0');
+      const hb = 1 - smooth(0, .2, p); bhead.style.opacity = hb; hint.style.opacity = hb;
+      const tIn = smooth(.72, .95, p);
+      const firstTop = trades[0].getBoundingClientRect().top, tOut = smooth(vh * .9, vh * .35, firstTop);
+      cname.style.opacity = tIn * (1 - tOut);
+      cname.style.transform = `translateY(${(1 - tIn) * 24}px)`;
+      clist.style.opacity = ccount.style.opacity = tIn * (1 - tOut);
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  });
+})();
+</script>
+</body>
+</html>
