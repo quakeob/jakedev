@@ -126,8 +126,8 @@ footer .note { flex-basis: 100%; }
 <script>
 /* The emblem: the small mark dissolves into its own glyphs, which mutate and grow into the full
    emblem and then resolve exactly onto it. At rest its eye watches the pointer and blinks.
-   Scrolling sends the emblem's spire down to become the city's tower, and the skyline rises out
-   from it behind the page; at the end it all folds back into the emblem.
+   Scrolling lifts the emblem's spire out to become the tower of the Cursed Apple, and the city
+   rises from it behind the page; at the end it all folds back into the emblem.
    Click the emblem to watch it grow again. Reduced motion shows the full emblem at rest. */
 (() => {
   const canvas = document.getElementById('emblem'), ctx = canvas.getContext('2d');
@@ -194,74 +194,120 @@ footer .note { flex-basis: 100%; }
       // The spire builds upward: the higher above the ring, the later a glyph arrives.
       const rise = Math.max(0, (ringTop - ty) / S);
       return { sx: source.x, sy: source.y, tx, ty, ink: c.ink, sink: source.ink, delay: Math.min(.32, travel * .2) + rise * 1.1 + hash(tx, ty) * .08,
-        arc: (hash(ty, tx) - .5) * S * .06 * Math.min(1, travel), seed: hash(tx * .7, ty * 1.3), spire: ty < ringTop - S * .015 && Math.abs(tx - f.eye[0]) < S * .2 };
+        arc: (hash(ty, tx) - .5) * S * .06 * Math.min(1, travel), seed: hash(tx * .7, ty * 1.3), spire: inSpire(c.u * 1254, c.v * 1254), u: c.u, v: c.v };
     });
     buildCity();
   }
 
-  // A 1920s skyline in the spirit of Deadlock's occult New York, drawn procedurally and set as
-  // glyphs: stepped towers, needle spires, deco crowns, water towers and lit windows, with the
-  // tallest tower standing where the emblem's spire was. Every emblem glyph gets a place in it.
-  let city = [], cityRest = [], cityPitch = 10;
+  // The city's tower is the emblem's own spire, lifted out of the artwork pixel for pixel
+  // (art rect below, in 1254 px emblem space) and set on a shaft continued from its own columns.
+  const SPIRE = { x0: 522, x1: 734, y0: 55, y1: 400, slice: [292, 334], shaft: [545, 712] };
+  const inSpire = (ax, ay) => ax >= SPIRE.x0 && ax <= SPIRE.x1 && ay >= SPIRE.y0 && ay <= SPIRE.y1;
+  let tower = null;
+  function buildTower() {
+    const k = H * .5 / (SPIRE.y1 - SPIRE.y0), top = H * .06, artW = SPIRE.x1 - SPIRE.x0, spireH = SPIRE.y1 - SPIRE.y0;
+    const baseArt = Math.max(0, Math.ceil((H - top) / k - spireH)), sprite = document.createElement('canvas');
+    sprite.width = artW; sprite.height = spireH + baseArt;
+    const o = sprite.getContext('2d');
+    o.drawImage(images[1], SPIRE.x0, SPIRE.y0, artW, spireH, 0, 0, artW, spireH);
+    const sw = SPIRE.shaft[1] - SPIRE.shaft[0], sh = SPIRE.slice[1] - SPIRE.slice[0];
+    for (let y = spireH; y < sprite.height; y += sh) o.drawImage(images[1], SPIRE.shaft[0], SPIRE.slice[0], sw, sh, SPIRE.shaft[0] - SPIRE.x0, y, sw, sh);
+    tower = { sprite, k, x: W / 2 - artW * k / 2, top, spireBottom: top + spireH * k, w: artW * k, h: sprite.height * k,
+      at: (ax, ay) => [W / 2 - artW * k / 2 + (ax - SPIRE.x0) * k, top + (ay - SPIRE.y0) * k] };
+  }
+
+  // The Cursed Apple: Deadlock's occult early-1900s Manhattan, drawn as a glyph skyline from the
+  // wiki's own landmarks. York on the left (Seaport cranes, Statue of Liberty out past the docks,
+  // Fairfax smokestacks, the Stock Exchange, a gothic office tower), Broadway's billboards either
+  // side of the tower, then the Chinatown Bell Tower, the theatre's broken glass dome, Umbria
+  // University, brownstones and Central Park on the Greenwich side. Materials pick the glyphs.
+  const MAT = { back: 1, wall: 2, column: 3, sign: 4, tree: 5, solid: 6, glass: 7, roof: 8 };
+  let city = [], cityRest = [], cityPitch = 10, smoke = [];
   function buildCity() {
+    buildTower();
     const off = document.createElement('canvas'); off.width = Math.ceil(W); off.height = Math.ceil(H);
-    const o = off.getContext('2d'), ground = H, unit = Math.max(9, W / 90);
-    let seed = 1; const r = () => hash(seed++, 7.31);
-    const tower = (x, w, h, color, tiers, crown) => {
-      o.fillStyle = color; let y = ground, left = x, width = w;
-      const parts = tiers === 1 ? [1] : tiers === 2 ? [.72, .28] : [.58, .26, .16];
-      parts.forEach((part, i) => { const th = h * part; o.fillRect(left, y - th, width, th); y -= th; if (i < parts.length - 1) { const inset = width * (.12 + r() * .1); left += inset; width -= inset * 2; } });
-      const cx = left + width / 2;
-      if (crown < .22) { o.fillRect(cx - Math.max(1.5, unit * .14), y - h * .2, Math.max(3, unit * .28), h * .2); }
-      else if (crown < .42) { for (let k = 1; k <= 3; k++) { const sw = width * (1 - k * .24); o.fillRect(cx - sw / 2, y - k * unit * .7, sw, unit * .7); } }
-      else if (crown < .56) { o.beginPath(); o.moveTo(left, y); o.lineTo(cx, y - width * .9); o.lineTo(left + width, y); o.fill(); o.fillRect(cx - 1.5, y - width * .9 - h * .1, 3, h * .1); }
-      else if (crown < .7) { o.beginPath(); o.ellipse(cx, y, width * .5, width * .55, 0, Math.PI, 0); o.fill(); o.fillRect(cx - 1.5, y - width * .55 - h * .07, 3, h * .07); }
-      else if (crown < .8) { const tw = Math.min(width * .45, unit * 1.6); o.fillRect(cx - tw / 2, y - unit * 1.9, tw, unit * 1.1); o.fillRect(cx - tw / 2, y - unit * .8, 2, unit * .8); o.fillRect(cx + tw / 2 - 2, y - unit * .8, 2, unit * .8); }
-    };
-    // back layer, then the front, then the landmark tower at the centre
-    for (let x = -unit * 2; x < W + unit; ) { const w = unit * (3 + r() * 5); tower(x, w, H * (.16 + Math.pow(r(), 1.4) * .3), 'rgb(0,255,0)', 1 + Math.floor(r() * 2), r()); x += w + unit * (r() * .6); }
-    const mid = W / 2, keep = unit * 6.5;
-    for (let x = -unit; x < W + unit; ) {
-      const w = unit * (3.2 + r() * 6); const h = H * (.2 + Math.pow(r(), 1.7) * .36) * (1 - Math.max(0, 1 - Math.abs(x + w / 2 - mid) / (W * .5)) * -.25);
-      if (x + w > mid - keep && x < mid + keep) { x = mid + keep + unit * .6; continue; }
-      tower(x, w, Math.min(h, H * .52), 'rgb(255,0,0)', 1 + Math.floor(r() * 3), r()); x += w + unit * (.25 + r() * .9);
+    const o = off.getContext('2d'), u = W / 100, G = H, h = v => G - H * v;
+    const paint = m => { o.fillStyle = `rgb(${m * 25},0,0)`; o.strokeStyle = o.fillStyle; };
+    const rect = (x, top, w, m) => { paint(m); o.fillRect(x * u, h(top), w * u, G - h(top)); };
+    const band = (x, top, w, height, m) => { paint(m); o.fillRect(x * u, h(top), w * u, H * height); };
+    const poly = (pts, m) => { paint(m); o.beginPath(); pts.forEach(([x, y], i) => i ? o.lineTo(x * u, h(y)) : o.moveTo(x * u, h(y))); o.closePath(); o.fill(); };
+    const line = (x0, y0, x1, y1, width, m) => { paint(m); o.lineWidth = Math.max(width, W / 110); o.beginPath(); o.moveTo(x0 * u, h(y0)); o.lineTo(x1 * u, h(y1)); o.stroke(); };
+    const waterTower = (x, y) => { band(x - .9, y + .05, 1.8, .03, MAT.solid); poly([[x - 1, y + .05], [x, y + .075], [x + 1, y + .05]], MAT.solid); band(x - .8, y + .02, .25, .02, MAT.solid); band(x + .55, y + .02, .25, .02, MAT.solid); };
+    smoke = [];
+    // back layer: early-1900s blocks with water towers, the museum dome, Liberty past the docks
+    let seed = 3; const r = () => hash(seed++, 1.9);
+    for (let x = 0; x < 100;) { const w = 2.5 + r() * 3.5, top = .12 + r() * .16; if (r() < .6) { rect(x, top, w, MAT.back); if (r() < .4) waterTower(x + w / 2, top); } x += w + 1 + r() * 2.5; }
+    paint(MAT.back); o.beginPath(); o.ellipse(91 * u, h(.36), 4.2 * u, H * .07, 0, Math.PI, 0); o.fill(); rect(86.5, .36, 9, MAT.back);
+    // Statue of Liberty: plinth, robe, raised arm and torch
+    rect(2.6, .12, 4.8, MAT.solid); rect(3.4, .19, 3.2, MAT.solid); poly([[3.7, .19], [6.3, .19], [5.6, .33], [4.4, .33]], MAT.solid);
+    rect(4.55, .37, .9, MAT.solid); poly([[4.3, .37], [5, .4], [5.7, .37]], MAT.solid); line(5.5, .33, 6.4, .43, u * .7, MAT.solid); rect(6, .46, 1, MAT.solid);
+    // York: Seaport docks and cranes
+    rect(0, .05, 11, MAT.wall); rect(0, .02, 13, MAT.solid);
+    for (const cx of [2.5, 8]) { line(cx - 1.4, .05, cx, .26, u * .35, MAT.solid); line(cx + 1.4, .05, cx, .26, u * .35, MAT.solid); line(cx - 2.6, .25, cx + 3.6, .27, u * .3, MAT.solid); line(cx + 3.6, .27, cx + 3.6, .2, u * .15, MAT.solid); }
+    // Fairfax Factories: sawtooth roofs and stacks
+    rect(11, .17, 11, MAT.wall);
+    for (let x = 11; x < 22; x += 2.2) poly([[x, .17], [x + 2.2, .17], [x + 2.2, .21]], MAT.roof);
+    for (const [x, top] of [[12.8, .42], [16.2, .48], [19.6, .38]]) { rect(x, top, 1.2, MAT.solid); band(x - .2, top + .01, 1.6, .012, MAT.solid); smoke.push([(x + .6) * u, h(top + .012)]); }
+    // Stock Exchange: steps, six columns, entablature and pediment
+    rect(22.5, .05, 9, MAT.wall); rect(23, .25, 8, MAT.wall);
+    for (let k = 0; k < 6; k++) rect(23.6 + k * 1.33, .23, .7, MAT.column);
+    band(22.8, .27, 8.4, .025, MAT.solid); poly([[22.8, .27], [27, .33], [31.2, .27]], MAT.solid);
+    // a gothic early-1900s office tower with pinnacles
+    rect(32, .5, 5, MAT.wall); rect(32.8, .62, 3.4, MAT.wall); rect(33.6, .7, 1.8, MAT.wall);
+    poly([[33.6, .7], [34.5, .8], [35.4, .7]], MAT.solid); for (const x of [32.1, 36.6]) { band(x, .54, .4, .04, MAT.solid); poly([[x, .54], [x + .2, .58], [x + .4, .54]], MAT.solid); }
+    // Broadway: Times Square blocks wrapped in billboards, both sides of the tower
+    for (const [x, w, top] of [[37.5, 5.5, .44], [57, 6, .5]]) {
+      rect(x, top, w, MAT.wall);
+      for (let k = 0; k < 4; k++) band(x + .4 + (k % 2) * w * .35, top - .04 - k * .085, w * .55, .05, MAT.sign);
+      rect(x + w * .3, top + .06, w * .4, MAT.wall); band(x + w * .2, top + .085, w * .6, .028, MAT.sign);
     }
-    o.fillStyle = 'rgb(255,0,255)';
-    const lw = unit * 10, lh = H * .64; let ly = ground, ll = mid - lw / 2, lwid = lw;
-    for (const [part, inset] of [[.46, .14], [.24, .16], [.16, .18], [.14, 0]]) { o.fillRect(ll, ly - lh * part, lwid, lh * part); ly -= lh * part; ll += lwid * inset; lwid -= lwid * inset * 2; }
-    for (let k = 1; k <= 4; k++) { const sw = lwid * (1 - k * .2); o.fillRect(mid - sw / 2, ly - k * unit * .8, sw, unit * .8); }
-    o.fillRect(mid - Math.max(2, unit * .2), ly - unit * 3.2 - H * .16, Math.max(4, unit * .4), H * .16);
+    // a mansard-domed tower with a lantern, like the period's Singer Building
+    rect(63.5, .56, 4.5, MAT.wall); paint(MAT.roof); o.beginPath(); o.ellipse(65.75 * u, h(.56), 2.25 * u, H * .07, 0, Math.PI, 0); o.fill();
+    band(65.3, .66, .9, .04, MAT.solid); band(65.6, .7, .3, .04, MAT.solid);
+    // Chinatown Bell Tower: stacked pagoda roofs with upturned eaves and an open bell chamber
+    rect(70, .3, 6, MAT.wall);
+    let base = .3; for (let k = 0; k < 4; k++) { const w = 6 - k * 1.1, x = 73 - w / 2;
+      poly([[x - 1.2, base + .01], [x - .4, base + .03], [x + w + .4, base + .03], [x + w + 1.2, base + .01], [x + w, base + .045], [x, base + .045]], MAT.roof);
+      if (k < 3) { rect(x + .3, base + .12, w - .6, MAT.wall); if (k === 2) band(x + w * .3, base + .11, w * .4, .07, MAT.glass); }
+      base += .12; }
+    band(72.8, base + .1, .4, .1, MAT.solid);
+    // the theatre, its glass dome broken open
+    rect(77, .26, 9, MAT.wall); band(77, .29, 9, .03, MAT.solid);
+    paint(MAT.glass); o.beginPath(); o.ellipse(81.5 * u, h(.29), 3.6 * u, H * .11, 0, Math.PI, 0); o.fill();
+    o.globalCompositeOperation = 'destination-out'; o.beginPath(); o.moveTo(80.6 * u, h(.29)); o.lineTo(81.3 * u, h(.4)); o.lineTo(83.6 * u, h(.36)); o.lineTo(82.4 * u, h(.29)); o.fill(); o.globalCompositeOperation = 'source-over';
+    // Umbria University: gothic hall with twin pointed towers
+    rect(86, .3, 7, MAT.wall); for (const x of [86.3, 91.4]) { rect(x, .44, 1.3, MAT.wall); poly([[x, .44], [x + .65, .53], [x + 1.3, .44]], MAT.solid); }
+    for (let k = 0; k < 4; k++) poly([[87.7 + k * 1.2, .3], [88.3 + k * 1.2, .34], [88.9 + k * 1.2, .3]], MAT.solid);
+    // brownstones and Central Park
+    for (let x = 93; x < 100; x += 1.8) { rect(x, .12, 1.7, MAT.wall); band(x + .2, .14, 1.3, .02, MAT.roof); }
+    paint(MAT.tree); for (let k = 0; k < 9; k++) { const x = 92 + k * 1.1 + hash(k, 2) * .8, y = .03 + hash(2, k) * .06; o.beginPath(); o.arc(x * u, h(y + .05), u * (1.1 + hash(k, k) * .7), 0, Math.PI * 2); o.fill(); }
+    // the tower stands alone: clear the city behind its silhouette
+    o.globalCompositeOperation = 'destination-out'; o.drawImage(tower.sprite, tower.x, tower.top, tower.w, tower.h); o.fillRect(tower.x + tower.w * .2, tower.spireBottom, tower.w * .6, H); o.globalCompositeOperation = 'source-over';
+    // sample on the glyph grid
     const data = o.getImageData(0, 0, off.width, off.height).data;
     cityPitch = clamp(W / 130, 7, 12);
-    const cols = Math.floor(W / cityPitch), rows = Math.floor(H / cityPitch), kindAt = (c, rr) => {
+    const cols = Math.floor(W / cityPitch), rows = Math.floor(H / cityPitch), mat = (c, rr) => {
       if (c < 0 || rr < 0 || c >= cols || rr >= rows) return 0;
       const i = (Math.floor((rr + .5) * cityPitch) * off.width + Math.floor((c + .5) * cityPitch)) * 4;
-      return data[i + 2] > 128 ? 3 : data[i] > 128 ? 2 : data[i + 1] > 128 ? 1 : 0;
+      return data[i + 3] > 100 ? Math.round(data[i] / 25) : 0;
     };
     const cells = [];
     for (let rr = 0; rr < rows; rr++) for (let c = 0; c < cols; c++) {
-      const kind = kindAt(c, rr); if (!kind) continue;
-      const front = kind >= 2, edge = front && (kindAt(c - 1, rr) < 2 || kindAt(c + 1, rr) < 2 || kindAt(c, rr - 1) < 2);
-      const window = front && !edge && c % 2 === 1 && rr % 3 !== 0;
-      const x = (c + .5) * cityPitch, y = (rr + .5) * cityPitch;
-      // When each cell arrives: the landmark first, then the city spreads out from it and rises.
-      const spread = kind === 3 ? 0 : Math.abs(x - W / 2) / (W / 2), rise = 1 - y / H;
-      cells.push({ x, y, landmark: kind === 3, kind: edge ? 'edge' : window ? 'window' : front ? 'wall' : 'back', lit: hash(c, rr * 1.7) < .22,
-        at: kind === 3 ? .02 + rise * .08 : .11 + spread * .16 + rise * .035 + hash(c, rr) * .015, back: .8 + (1 - spread) * .1 + (kind === 3 ? .02 + (1 - rise) * .04 : 0) });
+      const m = mat(c, rr); if (!m) continue;
+      const x = (c + .5) * cityPitch, y = (rr + .5) * cityPitch, front = m !== MAT.back;
+      const edge = front ? (mat(c - 1, rr) <= 1 || mat(c + 1, rr) <= 1 || mat(c, rr - 1) <= 1) : (!mat(c - 1, rr) || !mat(c + 1, rr) || !mat(c, rr - 1));
+      const window = m === MAT.wall && !edge && c % 2 === 1 && rr % 3 !== 0;
+      const spread = Math.abs(x - W / 2) / (W / 2), rise = 1 - y / H;
+      cells.push({ x, y, m, edge, window, lit: hash(c, rr * 1.7) < .22, at: .15 + spread * .16 + rise * .035 + hash(c, rr) * .015, back: .8 + (1 - spread) * .09 });
     }
-    // The emblem's spire becomes the landmark tower; the rest of the emblem stretches, left to
-    // right, into the other buildings. Cells no glyph reaches rise in where they stand.
+    // Pair the rest of the emblem with the city from left to right; unreached cells rise in place.
     city = new Array(particles.length); const rest = [];
-    const pair = (ids, targets) => {
-      targets.sort((a, b) => a.x - b.x || a.y - b.y);
-      ids.sort((a, b) => particles[a].tx - particles[b].tx || particles[a].ty - particles[b].ty);
-      const taken = new Uint8Array(targets.length);
-      ids.forEach((index, k) => { const c = Math.min(targets.length - 1, Math.floor(k / ids.length * targets.length)); city[index] = targets[c]; taken[c] = 1; });
-      targets.forEach((cell, k) => { if (!taken[k]) rest.push(cell); });
-    };
-    const ids = particles.map((_, i) => i);
-    pair(ids.filter(i => particles[i].spire), cells.filter(c => c.landmark));
-    pair(ids.filter(i => !particles[i].spire), cells.filter(c => !c.landmark));
+    const ids = particles.map((_, i) => i).filter(i => !particles[i].spire);
+    cells.sort((a, b) => a.x - b.x || a.y - b.y);
+    ids.sort((a, b) => particles[a].tx - particles[b].tx || particles[a].ty - particles[b].ty);
+    const taken = new Uint8Array(cells.length);
+    ids.forEach((index, k) => { const c = Math.min(cells.length - 1, Math.floor(k / ids.length * cells.length)); city[index] = cells[c]; taken[c] = 1; });
+    cells.forEach((cell, k) => { if (!taken[k]) rest.push(cell); });
     cityRest = rest;
   }
 
@@ -418,45 +464,72 @@ footer .note { flex-basis: 100%; }
     ctx.restore(); ctx.globalAlpha = 1;
   }
 
-  // Scrolling the page changes the emblem behind it: its glyphs warp across into the skyline as
-  // the content arrives, the city holds behind the page with its windows lit, and at the end it
-  // warps back into the emblem. The whole thing follows the scroll position, in both directions.
-  function cityGlyph(c, x, y, i, tick, alpha) {
-    let char = '#', color = `rgb(${CREAM})`, a = .26;
-    if (c.kind === 'back') { char = '='; a = .14; }
-    else if (c.kind === 'edge') a = .8;
-    else if (c.kind === 'window') { const lit = c.lit !== (hash(i, tick) < .015); char = lit ? '#' : '.'; a = lit ? 1 : .18; if (lit) color = '#fffaf0'; }
+  // Scrolling: the emblem's spire lifts off and becomes the city's tower, its shaft grows down to
+  // the street, and the skyline rises out from it to both edges; at the end it all folds back.
+  function cityGlyph(c, x, y, i, tick, now, alpha) {
+    let char = '#', color = `rgb(${CREAM})`, a = .22;
+    if (c.m === MAT.back) { if (!c.edge) return; char = '.'; a = .35; }
+    else if (c.m === MAT.column) { char = '|'; a = .6; }
+    else if (c.m === MAT.sign) { const on = hash(i, Math.floor(now / 140)) > .04; char = on ? '=' : ' '; a = 1; color = '#fffaf0'; }
+    else if (c.m === MAT.tree) { char = hash(i, 4) < .5 ? '*' : '%'; a = .42; }
+    else if (c.m === MAT.solid) { if (c.edge) a = .9; else { char = ':'; a = .4; } }
+    else if (c.m === MAT.glass) { char = '+'; a = .45; }
+    else if (c.m === MAT.roof) { char = '^'; a = .55; }
+    else if (c.edge) a = .95;
+    else if (c.window) { const lit = c.lit !== (hash(i, tick) < .015); if (!lit) return; a = 1; color = '#fffaf0'; }
+    else { char = '.'; a = .22; }
+    if (char === ' ') return;
     ctx.fillStyle = color; drawGlyph(x, y, cityPitch * 1.05, char, alpha * a);
   }
   function scrollScene(now, f, q, hero) {
     const cellB = f.B.size * B.pitch / 1254;
-    const veil = 1 - smooth(0, .6, hero) * .64 + smooth(.9, 1, q) * .04;
+    const veil = 1 - smooth(0, .6, hero) * .52;
     const imageB = (1 - smooth(0, .03, q)) + smooth(.975, 1, q);
     if (imageB > 0) { ctx.globalAlpha = veil * clamp(imageB); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); ctx.globalAlpha = 1; }
     if (imageB >= 1 && q > .99) { eye(now, f, veil); return; }
     const presence = 1 - clamp(imageB);
-    if (presence <= .01 || !city.length) return;
+    if (presence <= .01 || !tower) return;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const drift = (q - .55) * W * .05, tick = Math.floor(now / 900);
+    const drift = (q - .55) * W * .04, tick = Math.floor(now / 900);
     const progress = c => q < .55 ? ease(clamp((q - c.at) / .1)) : 1 - ease(clamp((q - c.back) / .07));
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i], c = city[i]; if (!c) continue;
-      const u = progress(c);
-      const cx = c.x + drift * u, cy = c.y;
-      // the warp: a travelling ripple that bends the glyphs sideways while they cross
-      const wave = Math.sin(u * Math.PI);
-      const x = p.tx + (cx - p.tx) * u + Math.sin(p.ty * .02 + u * 6) * S * .05 * wave;
-      const y = p.ty + (cy - p.ty) * u + Math.sin(p.tx * .015 + u * 5) * S * .04 * wave;
-      const size = cellB * 1.15 + (cityPitch * 1.05 - cellB * 1.15) * u, moving = u > .03 && u < .97;
-      if (moving) { ctx.fillStyle = p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(x, y, size, GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)], veil * presence * (.45 + p.ink * .55)); }
-      else if (u >= .97) cityGlyph(c, x, y, i, tick, veil * presence);
-      else { const wait = q < .55 && !p.spire ? 1 - smooth(.04, .12, q) * .6 : 1; ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, size, '#', veil * presence * wait * (.45 + p.ink * .55)); }
+    // The tower: spire glyphs fly to the very same pixels of the scaled-up spire, then the art
+    // itself fades in and its shaft grows down to the street.
+    const spireIn = q < .55 ? ease(clamp((q - .02) / .08)) : 1 - ease(clamp((q - .92) / .065));
+    const art = q < .55 ? smooth(.085, .11, q) : 1 - smooth(.9, .925, q);
+    const shaft = q < .55 ? ease(clamp((q - .1) / .07)) : 1 - ease(clamp((q - .885) / .03));
+    if (art > 0) {
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, tower.spireBottom + (H - tower.spireBottom) * shaft); ctx.clip();
+      ctx.globalAlpha = veil * presence * art; ctx.drawImage(tower.sprite, tower.x, tower.top, tower.w, tower.h); ctx.restore(); ctx.globalAlpha = 1;
     }
-    cityRest.forEach((c, i) => { const u = progress(c); if (u > .01) cityGlyph(c, c.x + drift, c.y + (1 - u) * cityPitch * 3, i + 99991, tick, veil * presence * u); });
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      if (p.spire) {
+        if (art >= 1) continue;
+        const [x1, y1] = tower.at(p.u * 1254, p.v * 1254), d = clamp((spireIn - p.seed * .15) / .85), w = ease(d);
+        const x = p.tx + (x1 - p.tx) * w, y = p.ty + (y1 - p.ty) * w, moving = w > .02 && w < .98;
+        ctx.fillStyle = moving && p.seed < .08 ? '#f7f2e8' : `rgb(${CREAM})`;
+        drawGlyph(x, y, cellB * 1.15 + (B.pitch * tower.k * 1.15 - cellB * 1.15) * w, moving ? GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)] : '#', veil * presence * (1 - art) * (.5 + p.ink * .5));
+        continue;
+      }
+      const c = city[i]; if (!c) continue;
+      const u = progress(c), cx = c.x + drift * u, wave = Math.sin(u * Math.PI);
+      const x = p.tx + (cx - p.tx) * u + Math.sin(p.ty * .02 + u * 6) * S * .05 * wave;
+      const y = p.ty + (c.y - p.ty) * u + Math.sin(p.tx * .015 + u * 5) * S * .04 * wave;
+      const size = cellB * 1.15 + (cityPitch * 1.05 - cellB * 1.15) * u;
+      if (u > .03 && u < .97) { ctx.fillStyle = p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(x, y, size, GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)], veil * presence * (.45 + p.ink * .55)); }
+      else if (u >= .97) cityGlyph(c, x, y, i, tick, now, veil * presence);
+      else { const wait = q < .55 ? 1 - smooth(.04, .13, q) * .65 : 1; ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, size, '#', veil * presence * wait * (.45 + p.ink * .55)); }
+    }
+    cityRest.forEach((c, i) => { const u = progress(c); if (u > .01) cityGlyph(c, c.x + drift, c.y + (1 - u) * cityPitch * 3, i + 99991, tick, now, veil * presence * u); });
+    // smoke from the Fairfax stacks once the city stands
+    const standing = q < .55 ? smooth(.3, .36, q) : 1 - smooth(.8, .84, q);
+    if (standing > 0) for (const [sx, sy] of smoke) for (let k = 0; k < 7; k++) {
+      const t = (now / 2600 + k / 7 + hash(sx, k)) % 1, x = sx + drift + Math.sin(t * 5 + k) * cityPitch * .8 + t * cityPitch * 6, y = sy - t * H * .16;
+      ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, cityPitch * (1.1 + t * .8), t < .5 ? '~' : '.', veil * presence * standing * (1 - t) * .9);
+    }
     ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
   }
 
-  addEventListener('resize', resize);
   const heroEl = document.getElementById('hero');
   addEventListener('pointermove', event => { pointer = { x: event.clientX, y: event.clientY }; });
   document.addEventListener('pointerleave', () => { pointer = null; });
