@@ -126,8 +126,8 @@ footer .note { flex-basis: 100%; }
 <script>
 /* The emblem: the small mark dissolves into its own glyphs, which mutate and grow into the full
    emblem and then resolve exactly onto it. At rest its eye watches the pointer and blinks.
-   Scrolling warps the emblem behind the page into a glyph skyline of the city, and back into the
-   emblem at the end.
+   Scrolling sends the emblem's spire down to become the city's tower, and the skyline rises out
+   from it behind the page; at the end it all folds back into the emblem.
    Click the emblem to watch it grow again. Reduced motion shows the full emblem at rest. */
 (() => {
   const canvas = document.getElementById('emblem'), ctx = canvas.getContext('2d');
@@ -194,7 +194,7 @@ footer .note { flex-basis: 100%; }
       // The spire builds upward: the higher above the ring, the later a glyph arrives.
       const rise = Math.max(0, (ringTop - ty) / S);
       return { sx: source.x, sy: source.y, tx, ty, ink: c.ink, sink: source.ink, delay: Math.min(.32, travel * .2) + rise * 1.1 + hash(tx, ty) * .08,
-        arc: (hash(ty, tx) - .5) * S * .06 * Math.min(1, travel), seed: hash(tx * .7, ty * 1.3) };
+        arc: (hash(ty, tx) - .5) * S * .06 * Math.min(1, travel), seed: hash(tx * .7, ty * 1.3), spire: ty < ringTop - S * .015 && Math.abs(tx - f.eye[0]) < S * .2 };
     });
     buildCity();
   }
@@ -226,7 +226,7 @@ footer .note { flex-basis: 100%; }
       if (x + w > mid - keep && x < mid + keep) { x = mid + keep + unit * .6; continue; }
       tower(x, w, Math.min(h, H * .52), 'rgb(255,0,0)', 1 + Math.floor(r() * 3), r()); x += w + unit * (.25 + r() * .9);
     }
-    o.fillStyle = 'rgb(255,0,0)';
+    o.fillStyle = 'rgb(255,0,255)';
     const lw = unit * 10, lh = H * .64; let ly = ground, ll = mid - lw / 2, lwid = lw;
     for (const [part, inset] of [[.46, .14], [.24, .16], [.16, .18], [.14, 0]]) { o.fillRect(ll, ly - lh * part, lwid, lh * part); ly -= lh * part; ll += lwid * inset; lwid -= lwid * inset * 2; }
     for (let k = 1; k <= 4; k++) { const sw = lwid * (1 - k * .2); o.fillRect(mid - sw / 2, ly - k * unit * .8, sw, unit * .8); }
@@ -236,22 +236,33 @@ footer .note { flex-basis: 100%; }
     const cols = Math.floor(W / cityPitch), rows = Math.floor(H / cityPitch), kindAt = (c, rr) => {
       if (c < 0 || rr < 0 || c >= cols || rr >= rows) return 0;
       const i = (Math.floor((rr + .5) * cityPitch) * off.width + Math.floor((c + .5) * cityPitch)) * 4;
-      return data[i] > 128 ? 2 : data[i + 1] > 128 ? 1 : 0;
+      return data[i + 2] > 128 ? 3 : data[i] > 128 ? 2 : data[i + 1] > 128 ? 1 : 0;
     };
     const cells = [];
     for (let rr = 0; rr < rows; rr++) for (let c = 0; c < cols; c++) {
       const kind = kindAt(c, rr); if (!kind) continue;
-      const edge = kind === 2 && (kindAt(c - 1, rr) !== 2 || kindAt(c + 1, rr) !== 2 || kindAt(c, rr - 1) !== 2);
-      const window = kind === 2 && !edge && c % 2 === 1 && rr % 3 !== 0;
-      cells.push({ x: (c + .5) * cityPitch, y: (rr + .5) * cityPitch, kind: edge ? 'edge' : window ? 'window' : kind === 2 ? 'wall' : 'back', lit: hash(c, rr * 1.7) < .22 });
+      const front = kind >= 2, edge = front && (kindAt(c - 1, rr) < 2 || kindAt(c + 1, rr) < 2 || kindAt(c, rr - 1) < 2);
+      const window = front && !edge && c % 2 === 1 && rr % 3 !== 0;
+      const x = (c + .5) * cityPitch, y = (rr + .5) * cityPitch;
+      // When each cell arrives: the landmark first, then the city spreads out from it and rises.
+      const spread = kind === 3 ? 0 : Math.abs(x - W / 2) / (W / 2), rise = 1 - y / H;
+      cells.push({ x, y, landmark: kind === 3, kind: edge ? 'edge' : window ? 'window' : front ? 'wall' : 'back', lit: hash(c, rr * 1.7) < .22,
+        at: kind === 3 ? .02 + rise * .08 : .11 + spread * .16 + rise * .035 + hash(c, rr) * .015, back: .8 + (1 - spread) * .1 + (kind === 3 ? .02 + (1 - rise) * .04 : 0) });
     }
-    // Pair emblem glyphs with city cells from left to right, so the emblem stretches into the skyline.
-    cells.sort((a, b) => a.x - b.x || a.y - b.y);
-    const order = particles.map((p, i) => i).sort((a, b) => particles[a].tx - particles[b].tx || particles[a].ty - particles[b].ty);
-    city = new Array(particles.length); const taken = new Uint8Array(cells.length);
-    order.forEach((index, k) => { const c = Math.min(cells.length - 1, Math.floor(k / particles.length * cells.length)); city[index] = cells[c]; taken[c] = 1; });
-    // Cells no emblem glyph reaches fade in where they stand, so the skyline is complete.
-    cityRest = cells.filter((_, k) => !taken[k]);
+    // The emblem's spire becomes the landmark tower; the rest of the emblem stretches, left to
+    // right, into the other buildings. Cells no glyph reaches rise in where they stand.
+    city = new Array(particles.length); const rest = [];
+    const pair = (ids, targets) => {
+      targets.sort((a, b) => a.x - b.x || a.y - b.y);
+      ids.sort((a, b) => particles[a].tx - particles[b].tx || particles[a].ty - particles[b].ty);
+      const taken = new Uint8Array(targets.length);
+      ids.forEach((index, k) => { const c = Math.min(targets.length - 1, Math.floor(k / ids.length * targets.length)); city[index] = targets[c]; taken[c] = 1; });
+      targets.forEach((cell, k) => { if (!taken[k]) rest.push(cell); });
+    };
+    const ids = particles.map((_, i) => i);
+    pair(ids.filter(i => particles[i].spire), cells.filter(c => c.landmark));
+    pair(ids.filter(i => !particles[i].spire), cells.filter(c => !c.landmark));
+    cityRest = rest;
   }
 
   function resize() {
@@ -420,17 +431,17 @@ footer .note { flex-basis: 100%; }
   function scrollScene(now, f, q, hero) {
     const cellB = f.B.size * B.pitch / 1254;
     const veil = 1 - smooth(0, .6, hero) * .64 + smooth(.9, 1, q) * .04;
-    const imageB = (1 - smooth(0, .05, q)) + smooth(.97, 1, q);
+    const imageB = (1 - smooth(0, .03, q)) + smooth(.975, 1, q);
     if (imageB > 0) { ctx.globalAlpha = veil * clamp(imageB); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); ctx.globalAlpha = 1; }
     if (imageB >= 1 && q > .99) { eye(now, f, veil); return; }
     const presence = 1 - clamp(imageB);
     if (presence <= .01 || !city.length) return;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const into = smooth(.02, .3, q), back = smooth(.8, .985, q), drift = (q - .55) * W * .05, tick = Math.floor(now / 900);
+    const drift = (q - .55) * W * .05, tick = Math.floor(now / 900);
+    const progress = c => q < .55 ? ease(clamp((q - c.at) / .1)) : 1 - ease(clamp((q - c.back) / .07));
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i], c = city[i]; if (!c) continue;
-      const stagger = v => clamp((v - p.seed * .35) / .65);
-      const u = q < .55 ? ease(stagger(into)) : 1 - ease(stagger(back));
+      const u = progress(c);
       const cx = c.x + drift * u, cy = c.y;
       // the warp: a travelling ripple that bends the glyphs sideways while they cross
       const wave = Math.sin(u * Math.PI);
@@ -439,10 +450,9 @@ footer .note { flex-basis: 100%; }
       const size = cellB * 1.15 + (cityPitch * 1.05 - cellB * 1.15) * u, moving = u > .03 && u < .97;
       if (moving) { ctx.fillStyle = p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(x, y, size, GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)], veil * presence * (.45 + p.ink * .55)); }
       else if (u >= .97) cityGlyph(c, x, y, i, tick, veil * presence);
-      else { ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, size, '#', veil * presence * (.45 + p.ink * .55)); }
+      else { const wait = q < .55 && !p.spire ? 1 - smooth(.04, .12, q) * .6 : 1; ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, size, '#', veil * presence * wait * (.45 + p.ink * .55)); }
     }
-    const whole = q < .55 ? smooth(.16, .32, q) : 1 - smooth(.8, .9, q);
-    if (whole > 0) cityRest.forEach((c, i) => cityGlyph(c, c.x + drift, c.y, i + 99991, tick, veil * presence * whole));
+    cityRest.forEach((c, i) => { const u = progress(c); if (u > .01) cityGlyph(c, c.x + drift, c.y + (1 - u) * cityPitch * 3, i + 99991, tick, veil * presence * u); });
     ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
   }
 
