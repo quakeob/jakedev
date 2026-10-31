@@ -126,8 +126,8 @@ footer .note { flex-basis: 100%; }
 <script>
 /* The emblem: the small mark dissolves into its own glyphs, which mutate and grow into the full
    emblem and then resolve exactly onto it. At rest its eye watches the pointer and blinks.
-   Scrolling lifts the emblem's spire out to become the tower of the Cursed Apple, and the city
-   rises from it behind the page; at the end it all folds back into the emblem.
+   Scrolling raises the emblem's spire as the tower of the Cursed Apple while the rest of the
+   emblem dithers away, then builds the city floor by floor; at the end it all reverses.
    Click the emblem to watch it grow again. Reduced motion shows the full emblem at rest. */
 (() => {
   const canvas = document.getElementById('emblem'), ctx = canvas.getContext('2d');
@@ -206,7 +206,7 @@ footer .note { flex-basis: 100%; }
   let tower = null;
   function buildTower() {
     const k = H * .5 / (SPIRE.y1 - SPIRE.y0), top = H * .06, artW = SPIRE.x1 - SPIRE.x0, spireH = SPIRE.y1 - SPIRE.y0;
-    const baseArt = Math.max(0, Math.ceil((H - top) / k - spireH)), sprite = document.createElement('canvas');
+    const baseArt = Math.max(0, Math.ceil((H - top) / k * 3)), sprite = document.createElement('canvas');
     sprite.width = artW; sprite.height = spireH + baseArt;
     const o = sprite.getContext('2d');
     o.drawImage(images[1], SPIRE.x0, SPIRE.y0, artW, spireH, 0, 0, artW, spireH);
@@ -222,7 +222,7 @@ footer .note { flex-basis: 100%; }
   // side of the tower, then the Chinatown Bell Tower, the theatre's broken glass dome, Umbria
   // University, brownstones and Central Park on the Greenwich side. Materials pick the glyphs.
   const MAT = { back: 1, wall: 2, column: 3, sign: 4, tree: 5, solid: 6, glass: 7, roof: 8 };
-  let city = [], cityRest = [], cityPitch = 10, smoke = [];
+  let city = [], cityPitch = 10, smoke = [], body = null;
   function buildCity() {
     buildTower();
     const off = document.createElement('canvas'); off.width = Math.ceil(W); off.height = Math.ceil(H);
@@ -297,24 +297,18 @@ footer .note { flex-basis: 100%; }
       const x = (c + .5) * cityPitch, y = (rr + .5) * cityPitch, front = m !== MAT.back;
       const edge = front ? (mat(c - 1, rr) <= 1 || mat(c + 1, rr) <= 1 || mat(c, rr - 1) <= 1) : (!mat(c - 1, rr) || !mat(c + 1, rr) || !mat(c, rr - 1));
       const window = m === MAT.wall && !edge && c % 2 === 1 && rr % 3 !== 0;
-      const spread = Math.abs(x - W / 2) / (W / 2), rise = 1 - y / H;
-      cells.push({ x, y, m, edge, window, lit: hash(c, rr * 1.7) < .22, at: .15 + spread * .16 + rise * .035 + hash(c, rr) * .015, back: .8 + (1 - spread) * .09 });
+      const spread = Math.abs(x - W / 2) / (W / 2), rise = 1 - y / H, lane = hash(Math.floor(c / 4), 9) * .02;
+      // Built floor by floor from the street, sweeping out from the tower; taken down top first.
+      cells.push({ x, y, m, edge, window, lit: hash(c, rr * 1.7) < .22, at: .13 + spread * .15 + lane + rise * .07, back: .8 + (1 - spread) * .055 + (1 - rise) * .03 + lane });
     }
-    // Pair the rest of the emblem with the city from left to right; unreached cells rise in place.
-    city = new Array(particles.length); const rest = [];
-    const ids = particles.map((_, i) => i).filter(i => !particles[i].spire);
-    cells.sort((a, b) => a.x - b.x || a.y - b.y);
-    ids.sort((a, b) => particles[a].tx - particles[b].tx || particles[a].ty - particles[b].ty);
-    const taken = new Uint8Array(cells.length);
-    ids.forEach((index, k) => { const c = Math.min(cells.length - 1, Math.floor(k / ids.length * cells.length)); city[index] = cells[c]; taken[c] = 1; });
-    cells.forEach((cell, k) => { if (!taken[k]) rest.push(cell); });
-    cityRest = rest;
+    city = cells;
   }
 
   function resize() {
     dpr = Math.min(2, devicePixelRatio || 1); W = canvas.clientWidth; H = canvas.clientHeight;
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     S = Math.min(W * .94, H * .9, 980); cx = W / 2; cy = H / 2 - Math.min(24, H * .02);
+    body = document.createElement('canvas'); body.width = canvas.width; body.height = canvas.height; body.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
     if (ready) build(cellsA, cellsB);
   }
 
@@ -466,6 +460,49 @@ footer .note { flex-basis: 100%; }
 
   // Scrolling: the emblem's spire lifts off and becomes the city's tower, its shaft grows down to
   // the street, and the skyline rises out from it to both edges; at the end it all folds back.
+
+  // The emblem without its spire, dissolving in an ordered dither from the rays inward (d: 0..1).
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  function emblemBody(f, d, alpha) {
+    if (alpha <= 0 || d >= 1) return;
+    const l = body.getContext('2d'), k = f.B.size / 1254, cell = B.pitch * k;
+    l.clearRect(0, 0, W, H); l.globalCompositeOperation = 'source-over';
+    l.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size);
+    l.globalCompositeOperation = 'destination-out';
+    l.fillRect(f.B.x + SPIRE.x0 * k, f.B.y + SPIRE.y0 * k - 2, (SPIRE.x1 - SPIRE.x0) * k, (SPIRE.y1 - SPIRE.y0) * k + 2);
+    if (d > 0) {
+      l.beginPath();
+      const reach = B.ring * f.B.size * 2.7;
+      for (let y = f.B.y; y < f.B.y + f.B.size; y += cell) for (let x = f.B.x; x < f.B.x + f.B.size; x += cell) {
+        const c = Math.round((x - f.B.x) / cell), r = Math.round((y - f.B.y) / cell);
+        const inner = 1 - Math.min(1, Math.hypot(x + cell / 2 - f.eye[0], y + cell / 2 - f.eye[1]) / reach);
+        if (BAYER[(r % 4) * 4 + (c % 4)] / 16 * .3 + inner * .7 < d) l.rect(x - .5, y - .5, cell + 1, cell + 1);
+      }
+      l.fill();
+    }
+    l.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha; ctx.drawImage(body, 0, 0, W, H); ctx.globalAlpha = 1;
+  }
+  // The tower as one piece of artwork: the spire rises and scales from its place on the emblem to
+  // the top of the skyline while its shaft extrudes beneath it down to the street (t: 0..1).
+  function drawTower(f, t, alpha) {
+    if (alpha <= 0) return;
+    const k0 = f.B.size / 1254, k = k0 + (tower.k - k0) * t, spireH = SPIRE.y1 - SPIRE.y0, artW = SPIRE.x1 - SPIRE.x0;
+    const x = (f.B.x + SPIRE.x0 * k0) + (tower.x - (f.B.x + SPIRE.x0 * k0)) * t, y = (f.B.y + SPIRE.y0 * k0) + (tower.top - (f.B.y + SPIRE.y0 * k0)) * t;
+    const shaft = smooth(.12, .55, t);
+    ctx.save(); ctx.globalAlpha = alpha;
+    if (shaft > 0) {
+      const top = y + spireH * k, length = (H - top) * shaft;
+      ctx.beginPath(); ctx.rect(0, top - 1, W, length + 1); ctx.clip();
+      ctx.drawImage(tower.sprite, 0, spireH, artW, tower.sprite.height - spireH, x, top, artW * k, (tower.sprite.height - spireH) * k);
+      ctx.restore(); ctx.save(); ctx.globalAlpha = alpha;
+      // the leading edge of the shaft as it extrudes
+      if (shaft < 1) { ctx.fillStyle = '#fffaf0'; ctx.globalAlpha = alpha * .9; ctx.fillRect(x + (SPIRE.shaft[0] - SPIRE.x0) * k, top + length - 1.5, (SPIRE.shaft[1] - SPIRE.shaft[0]) * k, 1.5); }
+    }
+    ctx.restore(); ctx.save(); ctx.globalAlpha = alpha;
+    ctx.drawImage(tower.sprite, 0, 0, artW, spireH, x, y, artW * k, spireH * k);
+    ctx.restore(); ctx.globalAlpha = 1;
+  }
   function cityGlyph(c, x, y, i, tick, now, alpha) {
     let char = '#', color = `rgb(${CREAM})`, a = .22;
     if (c.m === MAT.back) { if (!c.edge) return; char = '.'; a = .35; }
@@ -481,51 +518,33 @@ footer .note { flex-basis: 100%; }
     if (char === ' ') return;
     ctx.fillStyle = color; drawGlyph(x, y, cityPitch * 1.05, char, alpha * a);
   }
+  // Scrolling: the spire rises out of the emblem as the tower while the rest of the emblem
+  // dithers away, then the city is built floor by floor out from the tower. It all reverses at
+  // the end of the page, and follows the scroll position both ways.
   function scrollScene(now, f, q, hero) {
-    const cellB = f.B.size * B.pitch / 1254;
     const veil = 1 - smooth(0, .6, hero) * .52;
-    const imageB = (1 - smooth(0, .03, q)) + smooth(.975, 1, q);
-    if (imageB > 0) { ctx.globalAlpha = veil * clamp(imageB); ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); ctx.globalAlpha = 1; }
-    if (imageB >= 1 && q > .99) { eye(now, f, veil); return; }
-    const presence = 1 - clamp(imageB);
-    if (presence <= .01 || !tower) return;
+    const forward = q < .55;
+    const t = forward ? ease(clamp((q - .02) / .12)) : 1 - ease(clamp((q - .895) / .08));
+    const d = forward ? smooth(.008, .11, q) : 1 - smooth(.895, .975, q);
+    if (q > .99) { ctx.globalAlpha = veil; ctx.drawImage(images[1], f.B.x, f.B.y, f.B.size, f.B.size); ctx.globalAlpha = 1; eye(now, f, veil); return; }
+    emblemBody(f, d, veil);
+    if (!tower) return;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const drift = (q - .55) * W * .04, tick = Math.floor(now / 900);
-    const progress = c => q < .55 ? ease(clamp((q - c.at) / .1)) : 1 - ease(clamp((q - c.back) / .07));
-    // The tower: spire glyphs fly to the very same pixels of the scaled-up spire, then the art
-    // itself fades in and its shaft grows down to the street.
-    const spireIn = q < .55 ? ease(clamp((q - .02) / .08)) : 1 - ease(clamp((q - .92) / .065));
-    const art = q < .55 ? smooth(.085, .11, q) : 1 - smooth(.9, .925, q);
-    const shaft = q < .55 ? ease(clamp((q - .1) / .07)) : 1 - ease(clamp((q - .885) / .03));
-    if (art > 0) {
-      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, tower.spireBottom + (H - tower.spireBottom) * shaft); ctx.clip();
-      ctx.globalAlpha = veil * presence * art; ctx.drawImage(tower.sprite, tower.x, tower.top, tower.w, tower.h); ctx.restore(); ctx.globalAlpha = 1;
+    const drift = (q - .55) * W * .03, tick = Math.floor(now / 900);
+    for (let i = 0; i < city.length; i++) {
+      const c = city[i];
+      const shown = forward ? q - c.at : c.back - q;
+      if (shown < 0) continue;
+      const a = smooth(0, .005, shown) * veil;
+      if (shown < .01) { ctx.fillStyle = '#fffaf0'; drawGlyph(c.x + drift, c.y, cityPitch * 1.05, '#', a); continue; }
+      cityGlyph(c, c.x + drift, c.y, i, tick, now, a);
     }
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      if (p.spire) {
-        if (art >= 1) continue;
-        const [x1, y1] = tower.at(p.u * 1254, p.v * 1254), d = clamp((spireIn - p.seed * .15) / .85), w = ease(d);
-        const x = p.tx + (x1 - p.tx) * w, y = p.ty + (y1 - p.ty) * w, moving = w > .02 && w < .98;
-        ctx.fillStyle = moving && p.seed < .08 ? '#f7f2e8' : `rgb(${CREAM})`;
-        drawGlyph(x, y, cellB * 1.15 + (B.pitch * tower.k * 1.15 - cellB * 1.15) * w, moving ? GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)] : '#', veil * presence * (1 - art) * (.5 + p.ink * .5));
-        continue;
-      }
-      const c = city[i]; if (!c) continue;
-      const u = progress(c), cx = c.x + drift * u, wave = Math.sin(u * Math.PI);
-      const x = p.tx + (cx - p.tx) * u + Math.sin(p.ty * .02 + u * 6) * S * .05 * wave;
-      const y = p.ty + (c.y - p.ty) * u + Math.sin(p.tx * .015 + u * 5) * S * .04 * wave;
-      const size = cellB * 1.15 + (cityPitch * 1.05 - cellB * 1.15) * u;
-      if (u > .03 && u < .97) { ctx.fillStyle = p.seed < .04 ? '#f7f2e8' : `rgb(${CREAM})`; drawGlyph(x, y, size, GLYPHS[Math.floor((p.seed * 60 + now * .012) % GLYPHS.length)], veil * presence * (.45 + p.ink * .55)); }
-      else if (u >= .97) cityGlyph(c, x, y, i, tick, now, veil * presence);
-      else { const wait = q < .55 ? 1 - smooth(.04, .13, q) * .65 : 1; ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, size, '#', veil * presence * wait * (.45 + p.ink * .55)); }
-    }
-    cityRest.forEach((c, i) => { const u = progress(c); if (u > .01) cityGlyph(c, c.x + drift, c.y + (1 - u) * cityPitch * 3, i + 99991, tick, now, veil * presence * u); });
+    drawTower(f, t, veil);
     // smoke from the Fairfax stacks once the city stands
-    const standing = q < .55 ? smooth(.3, .36, q) : 1 - smooth(.8, .84, q);
+    const standing = forward ? smooth(.3, .36, q) : 1 - smooth(.8, .84, q);
     if (standing > 0) for (const [sx, sy] of smoke) for (let k = 0; k < 7; k++) {
-      const t = (now / 2600 + k / 7 + hash(sx, k)) % 1, x = sx + drift + Math.sin(t * 5 + k) * cityPitch * .8 + t * cityPitch * 6, y = sy - t * H * .16;
-      ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, cityPitch * (1.1 + t * .8), t < .5 ? '~' : '.', veil * presence * standing * (1 - t) * .9);
+      const p = (now / 2600 + k / 7 + hash(sx, k)) % 1, x = sx + drift + Math.sin(p * 5 + k) * cityPitch * .8 + p * cityPitch * 6, y = sy - p * H * .16;
+      ctx.fillStyle = `rgb(${CREAM})`; drawGlyph(x, y, cityPitch * (1.1 + p * .8), p < .5 ? '~' : '.', veil * standing * (1 - p) * .9);
     }
     ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
   }
