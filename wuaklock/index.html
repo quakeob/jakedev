@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WuakLock</title>
+<meta name="description" content="WuakLock is a Windows companion for Deadlock: live stats on your second screen and over the game, every match recorded on your PC, and community data for heroes and lobbies.">
+<meta property="og:title" content="WuakLock">
+<meta property="og:description" content="Live Deadlock stats on your second screen and over the game.">
+<meta property="og:image" content="https://jakedev.org/wuaklock/emblem.png">
+<link rel="icon" href="logo.png">
+<link rel="preload" href="emblem-small.png" as="image">
+<link rel="preload" href="emblem.png" as="image">
+<style>
+@font-face { font-family: "Geist Mono"; src: url(geist-mono-latin.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+:root { --bg: #000; --fg: #ece7d8; --cream: #efe6c8; --dim: #9e998b; --line: rgba(239, 230, 200, .14); --accent: #8a93ff; color-scheme: dark; }
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 15px/1.65 "Geist Mono", ui-monospace, Consolas, monospace; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+a:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+/* Hero: the emblem fills the first screen and grows from the small mark into the full one. */
+.hero { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
+#emblem { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
+.top { position: absolute; z-index: 2; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 22px clamp(18px, 3.5vw, 44px); }
+.word { font-weight: 700; font-size: 16px; letter-spacing: -.02em; color: var(--cream); text-decoration: none; }
+.top nav { display: flex; gap: 22px; font-size: 13px; }
+.top nav a { color: var(--dim); text-decoration: none; }
+.top nav a:hover { color: var(--fg); }
+.foot { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 0 clamp(18px, 3.5vw, 44px) 26px; pointer-events: none; }
+.line { min-height: 1.65em; max-width: 74ch; color: var(--fg); font-size: 14px; }
+.line .p { color: var(--accent); }
+.line .cur { display: inline-block; width: .6em; height: 1.1em; margin-left: 2px; vertical-align: -.2em; background: var(--accent); animation: blink 1.05s steps(1) infinite; }
+.status { color: var(--dim); font-size: 12.5px; white-space: nowrap; text-align: right; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Sections */
+section.block { max-width: 1120px; margin: 0 auto; padding: 120px clamp(18px, 3.5vw, 44px) 0; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; }
+section.block.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+section.block.flip .copy { order: 2; }
+.label { color: var(--accent); font-size: 12.5px; margin: 0 0 14px; }
+h2 { margin: 0 0 18px; font-size: clamp(28px, 4vw, 44px); line-height: 1.05; font-weight: 500; letter-spacing: -.05em; color: var(--cream); }
+.copy p { margin: 0 0 14px; color: var(--dim); max-width: 46ch; }
+.copy ul { margin: 18px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.copy li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--fg); font-size: 14px; }
+.copy li span { color: var(--dim); }
+figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+figcaption { margin-top: 10px; color: var(--dim); font-size: 12px; }
+.private { max-width: 1120px; margin: 0 auto; padding: 140px clamp(18px, 3.5vw, 44px) 0; }
+.private h2 { max-width: 18ch; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 34px; border-top: 1px solid var(--line); }
+.facts div { padding: 18px 18px 0 0; }
+.facts b { display: block; font-weight: 500; color: var(--cream); margin-bottom: 6px; }
+.facts span { color: var(--dim); font-size: 13.5px; }
+footer { max-width: 1120px; margin: 140px auto 0; padding: 22px clamp(18px, 3.5vw, 44px) 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px 24px; color: var(--dim); font-size: 12.5px; }
+footer a { color: var(--dim); }
+footer .note { flex-basis: 100%; }
+
+@media (max-width: 860px) {
+  section.block, section.block.flip { grid-template-columns: 1fr; gap: 32px; padding-top: 88px; }
+  section.block.flip .copy { order: 0; }
+  .facts { grid-template-columns: 1fr 1fr; }
+  .foot { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .status { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .line .cur { animation: none; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <canvas id="emblem" role="img" aria-label="The WuakLock emblem: a radiant eye above a W, crowned by a spire."></canvas>
+  <div class="top"><a class="word" href="./">wuaklock</a><nav aria-label="WuakLock"><a href="privacy/">Privacy</a><a href="terms/">Terms</a></nav></div>
+  <div class="foot"><p class="line" id="line" aria-live="off"></p><p class="status">Windows · in development</p></div>
+</header>
+
+<main>
+  <section class="block">
+    <div class="copy">
+      <p class="label">&gt; over the game</p>
+      <h2>Your numbers, mid-fight.</h2>
+      <p>A small panel sits over Deadlock and updates about once a second. Locked, clicks pass straight through to the game. Unlocked, you drag it anywhere.</p>
+      <ul>
+        <li>Souls per minute, K/D/A, hero damage <span>· live</span></li>
+        <li>Team soul lead and Mid Boss timer <span>· live</span></li>
+        <li>Your share of each detected fight <span>· live</span></li>
+      </ul>
+    </div>
+    <figure><img src="overlay-shot.jpg" width="1280" height="520" alt="The WuakLock overlay showing souls per minute, K/D/A, hero damage and healing over a bright game scene." loading="lazy"><figcaption>Overlay, shown with sample data.</figcaption></figure>
+  </section>
+
+  <section class="block flip">
+    <div class="copy">
+      <p class="label">&gt; on your second screen</p>
+      <h2>The whole match, measured.</h2>
+      <p>The dashboard draws the soul lead bar by bar on a real scale, keeps every match you play on your PC, and pulls public data for heroes, builds, leaderboards and the players in your lobby.</p>
+      <ul>
+        <li>Recorded matches <span>· saved locally</span></li>
+        <li>Hero win rates with sample sizes <span>· community API</span></li>
+        <li>Lobby scouting from public history <span>· community API</span></li>
+      </ul>
+    </div>
+    <figure><img src="dashboard-shot.jpg" width="2560" height="1560" alt="The WuakLock dashboard during a live match: hero name, match clock, soul advantage chart and the player's stats." loading="lazy"><figcaption>Dashboard, shown with sample data.</figcaption></figure>
+  </section>
+
+  <section class="private">
+    <p class="label">&gt; private by default</p>
+    <h2>Nothing leaves your PC that doesn't have to.</h2>
+    <div class="facts">
+      <div><b>No account</b><span>Nothing to sign up for.</span></div>
+      <div><b>No ads</b><span>No analytics or tracking either.</span></div>
+      <div><b>Local records</b><span>Matches stay in one folder you control.</span></div>
+      <div><b>Read only</b><span>It reads the game and never writes to it.</span></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>WuakLock by Jake Davis</span><a href="privacy/">Privacy</a><a href="terms/">Terms</a><a href="mailto:jake@bryt.works">jake@bryt.works</a>
+  <span class="note">An independent companion app. Not made, endorsed or approved by Valve. Deadlock and Steam are trademarks of Valve Corporation.</span>
+</footer>
+
+<script>
+/* The emblem: the small mark dissolves into its own glyphs, which mutate and grow into the full
+   emblem and then resolve exactly onto it. Idle, it shimmers, and the pointer lifts glyphs apart.
+   Click the emblem to watch it grow again. Reduced motion shows the full emblem at rest. */
+(() => {
+  const canvas = document.getElementById('emblem'), ctx = canvas.getContext('2d');
+  const line = document.getElementById('line');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CREAM = [239, 230, 200], FONT = '"Geist Mono", ui-monospace, monospace';
+  // Anchors measured on the artwork: eye centre and ring radius, as fractions of each image.
+  const A = { src: 'emblem-small.png', eye: [230 / 460, 213 / 460], ring: 120 / 460, pitch: 6 };
+  const B = { src: 'emblem.png', eye: [627 / 1254, 655 / 1254], ring: 300 / 1254, pitch: 12 };
+  const GROW_FROM = .6; // the small mark's ring is this fraction of the full ring when the page opens
+  const T = { appear: 600, hold: 1400, morph: 2400, settle: 700 };
+  let W = 0, H = 0, dpr = 1, S = 0, cx = 0, cy = 0, particles = [], start = 0, pointer = null, ready = false;
+  const hash = (x, y) => { const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return h - Math.floor(h); };
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const load = src => new Promise((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = reject; image.src = src; });
+
+  // Ink cells of an image on its own glyph grid, with their brightness.
+  function cells(image, pitch) {
+    const off = document.createElement('canvas'); off.width = image.naturalWidth; off.height = image.naturalHeight;
+    const o = off.getContext('2d'); o.drawImage(image, 0, 0);
+    const data = o.getImageData(0, 0, off.width, off.height).data, out = [];
+    for (let y = pitch / 2; y < off.height; y += pitch) for (let x = pitch / 2; x < off.width; x += pitch) {
+      let total = 0, count = 0;
+      for (let dy = -pitch / 3; dy <= pitch / 3; dy += 2) for (let dx = -pitch / 3; dx <= pitch / 3; dx += 2) {
+        const i = ((Math.round(y + dy)) * off.width + Math.round(x + dx)) * 4; total += data[i] * .2126 + data[i + 1] * .7152 + data[i + 2] * .0722; count++;
+      }
+      const ink = total / count / 255; if (ink > .16) out.push({ u: x / off.width, v: y / off.height, ink });
+    }
+    return out;
+  }
+
+  // Where each logo sits on screen: the full emblem fills the stage; the small mark is centred on
+  // the same eye, at GROW_FROM of the full ring's size.
+  function frames() {
+    const sizeB = S, sizeA = S * B.ring * GROW_FROM / A.ring;
+    const eye = [cx + (B.eye[0] - .5) * sizeB, cy + (B.eye[1] - .5) * sizeB];
+    return {
+      B: { x: eye[0] - B.eye[0] * sizeB, y: eye[1] - B.eye[1] * sizeB, size: sizeB },
+      A: { x: eye[0] - A.eye[0] * sizeA, y: eye[1] - A.eye[1] * sizeA, size: sizeA }, eye,
+    };
+  }
+
+  function build(cellsA, cellsB) {
+    const f = frames(), ringA = A.ring * f.A.size, ringB = B.ring * f.B.size;
+    const from = cellsA.map(c => { const x = f.A.x + c.u * f.A.size, y = f.A.y + c.v * f.A.size; return { x, y, nx: (x - f.eye[0]) / ringA, ny: (y - f.eye[1]) / ringA, ink: c.ink }; });
+    // Spatial hash on the small mark, in ring-normalised space, so ring maps to ring and eye to eye.
+    const bucket = new Map(), key = (x, y) => `${Math.floor(x * 6)},${Math.floor(y * 6)}`;
+    from.forEach(p => { const k = key(p.nx, p.ny); (bucket.get(k) || bucket.set(k, []).get(k)).push(p); });
+    const nearest = (nx, ny) => {
+      for (let r = 0; r < 14; r++) {
+        let best = null, bestD = Infinity;
+        for (let gx = -r; gx <= r; gx++) for (let gy = -r; gy <= r; gy++) {
+          if (Math.max(Math.abs(gx), Math.abs(gy)) !== r) continue;
+          for (const p of bucket.get(`${Math.floor(nx * 6) + gx},${Math.floor(ny * 6) + gy}`) || []) { const d = (p.nx - nx) ** 2 + (p.ny - ny) ** 2; if (d < bestD) { bestD = d; best = p; } }
+        }
+        if (best) return best;
+      }
+      return from[0];
+    };
+    const ringTop = f.eye[1] - ringB * 1.05;
+    particles = cellsB.map(c => {
+      const tx = f.B.x + c.u * f.B.size, ty = f.B.y + c.v * f.B.size, nx = (tx - f.eye[0]) / ringB, ny = (ty - f.eye[1]) / ringB;
+      const source = nearest(nx, ny), travel = Math.hypot(nx - source.nx, ny - source.ny);
+      // The spire builds upward: the higher above the ring, the later a glyph arrives.
+      const rise = Math.max(0, (ringTop - ty) / S);
+      return { sx: source.x, sy: source.y, tx, ty, ink: c.ink, sink: source.ink, delay: Math.min(.32, travel * .2) + rise * 1.1 + hash(tx, ty) * .08,
+        arc: (hash(ty, tx) - .5) * S * .06 * Math.min(1, travel), seed: hash(tx * .7, ty * 1.3) };
+    });
+  }
+
+  function resize() {
+    dpr = Math.min(2, devicePixelRatio || 1); W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    S = Math.min(W * .94, H * .9, 980); cx = W / 2; cy = H / 2 - Math.min(24, H * .02);
+    if (ready) build(cellsA, cellsB);
+  }
+
+  let images = null, cellsA = null, cellsB = null;
+  const GLYPHS = '#+=*:%@';
+  function drawGlyph(x, y, size, glyph, alpha) {
+    ctx.globalAlpha = alpha; ctx.font = `700 ${size.toFixed(1)}px ${FONT}`; ctx.fillText(glyph, x, y);
+  }
+
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+  // Draws an image scaled about the eye, so both marks grow from the same point.
+  function drawAbout(image, logo, size, alpha, clipTop = null) {
+    if (alpha <= 0) return;
+    const f = frames(), x = f.eye[0] - logo.eye[0] * size, y = f.eye[1] - logo.eye[1] * size;
+    ctx.save(); ctx.globalAlpha = alpha;
+    if (clipTop !== null) { ctx.beginPath(); ctx.rect(0, clipTop, W, H - clipTop); ctx.clip(); }
+    ctx.drawImage(image, x, y, size, size); ctx.restore();
+  }
+  function frame(now) {
+    const t = now - start, f = frames();
+    ctx.clearRect(0, 0, W, H);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = `rgb(${CREAM})`;
+    const morphAt = T.appear + T.hold, end = morphAt + T.morph + T.settle;
+    const m = clamp((t - morphAt) / (T.morph + T.settle)), grow = ease(m);
+    const cellA = f.A.size * A.pitch / 460, cellB = f.B.size * B.pitch / 1254;
+    // The small mark arrives, breathes, then grows and dissolves into its glyphs.
+    const arrive = ease(clamp(t / T.appear));
+    const sizeA = f.A.size * (1 + (1 - arrive) * .06) * (1 + (1 / GROW_FROM - 1) * grow);
+    drawAbout(images[0], A, sizeA, arrive * (1 - smooth(.12, .55, m)));
+    // The full emblem grows in from the small mark's size and is revealed from the ring upward,
+    // so the spire builds last.
+    if (m > 0) {
+      const ringB = B.ring * f.B.size, reveal = smooth(.3, .95, m);
+      const top = f.eye[1] + ringB * 1.15 - (f.eye[1] + ringB * 1.15 - f.B.y) * reveal;
+      drawAbout(images[1], B, f.B.size * (GROW_FROM + (1 - GROW_FROM) * grow), smooth(.2, .62, m), m < 1 ? top : null);
+    }
+    // Glyphs carry the change between the two marks; they peak mid-mutation and settle away.
+    const presence = Math.sin(Math.PI * smooth(0, 1, m)) ** .8;
+    if (presence > .01) {
+      const pm = clamp(m / .85);
+      for (const p of particles) {
+        const local = ease(clamp((pm - p.delay) / Math.max(.2, 1 - p.delay)));
+        const bend = Math.sin(local * Math.PI) * p.arc;
+        const x = p.sx + (p.tx - p.sx) * local - bend * .4, y = p.sy + (p.ty - p.sy) * local + bend;
+        const moving = local > .02 && local < .98;
+        const glyph = moving ? GLYPHS[Math.floor((p.seed * 50 + now * .02) % GLYPHS.length)] : '#';
+        const size = (cellA + (cellB - cellA) * local) * 1.25;
+        const alpha = Math.min(1, presence * (.6 + (moving ? p.ink : p.sink) * .6));
+        if (moving && p.seed < .06) { ctx.fillStyle = p.seed < .015 ? '#8a93ff' : '#fff'; drawGlyph(x, y, size, glyph, alpha); ctx.fillStyle = `rgb(${CREAM})`; }
+        else drawGlyph(x, y, size, glyph, alpha);
+      }
+      ctx.globalAlpha = 1;
+    }
+    if (t >= end) idle(now, f, cellB);
+    if (!typed && m > .9) type();
+    requestAnimationFrame(frame);
+  }
+
+  // At rest: a few glyphs flicker, and near the pointer they lift away from the emblem.
+  function idle(now, f, cellB) {
+    const tick = Math.floor(now / 110);
+    for (let i = 0; i < particles.length; i += 1) {
+      const p = particles[i];
+      if (hash(i, tick) < .006) { ctx.fillStyle = hash(tick, i) < .3 ? '#ffffff' : `rgb(${CREAM})`; drawGlyph(p.tx, p.ty, cellB * 1.15, GLYPHS[(i + tick) % GLYPHS.length], .9); }
+    }
+    if (pointer) {
+      const R = Math.max(70, S * .11);
+      ctx.save(); ctx.beginPath(); ctx.arc(pointer.x, pointer.y, R * 1.35, 0, Math.PI * 2); ctx.clip();
+      ctx.globalAlpha = 1; ctx.fillStyle = '#000'; ctx.fillRect(pointer.x - R * 1.4, pointer.y - R * 1.4, R * 2.8, R * 2.8);
+      ctx.fillStyle = `rgb(${CREAM})`;
+      for (const p of particles) {
+        const dx = p.tx - pointer.x, dy = p.ty - pointer.y, d = Math.hypot(dx, dy);
+        if (d > R * 1.35) continue;
+        const push = d < R ? (1 - d / R) ** 2 * R * .55 : 0, k = d ? push / d : 0;
+        const lifted = push > 1;
+        drawGlyph(p.tx + dx * k, p.ty + dy * k, cellB * 1.15, lifted ? GLYPHS[Math.floor((p.seed * 40 + now * .012) % GLYPHS.length)] : '#', .35 + p.ink * .65);
+      }
+      ctx.restore(); ctx.globalAlpha = 1; ctx.fillStyle = `rgb(${CREAM})`;
+    }
+  }
+
+  // The terminal line under the emblem types itself once the emblem has grown.
+  let typed = false;
+  function type() {
+    typed = true;
+    const text = 'wuaklock. live deadlock stats on your second screen and over the game.';
+    line.innerHTML = '<span class="p">&gt;</span> <span class="t"></span><span class="cur"></span>';
+    const target = line.querySelector('.t'); let i = 0;
+    const step = () => { target.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(step, 22 + Math.random() * 30); };
+    step();
+  }
+
+  addEventListener('resize', resize);
+  canvas.addEventListener('pointermove', event => { const box = canvas.getBoundingClientRect(); pointer = { x: event.clientX - box.left, y: event.clientY - box.top }; });
+  canvas.addEventListener('pointerleave', () => { pointer = null; });
+  canvas.addEventListener('click', () => { if (ready && !reduced) start = performance.now(); });
+
+  resize();
+  Promise.all([load(A.src), load(B.src), document.fonts?.load?.(`700 12px ${FONT}`)]).then(([a, b]) => {
+    images = [a, b];
+    if (reduced) {
+      const f = frames(); ctx.drawImage(b, f.B.x, f.B.y, f.B.size, f.B.size);
+      line.innerHTML = '<span class="p">&gt;</span> wuaklock. live deadlock stats on your second screen and over the game.';
+      addEventListener('resize', () => { const g = frames(); ctx.clearRect(0, 0, W, H); ctx.drawImage(b, g.B.x, g.B.y, g.B.size, g.B.size); });
+      return;
+    }
+    cellsA = cells(a, A.pitch); cellsB = cells(b, B.pitch); ready = true; build(cellsA, cellsB);
+    start = performance.now(); requestAnimationFrame(frame);
+  });
+})();
+</script>
+</body>
+</html>
