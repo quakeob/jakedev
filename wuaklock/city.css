@@ -185,3 +185,66 @@ h3 { margin: 0 0 9px; font-size: 16px; font-weight: 500; letter-spacing: -.04em;
 .masthead nav a { white-space: nowrap; }
 /* Phones: Privacy and Terms stay in the footer, so the top bar keeps Is it safe? and Download. */
 @media (max-width: 560px) { .masthead nav a[href="privacy/"], .masthead nav a[href="terms/"] { display: none; } }
+
+/* ---- Download details under the hero buttons ---- */
+.download-meta { margin: 18px 0 0; color: var(--quiet); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; }
+
+/* ---- 03 Every match: three steps, each with its screenshot ---- */
+.journey { padding-block: 120px 40px; border-top: 1px solid var(--rule); }
+.journey-steps { list-style: none; margin: 56px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+.journey-step { display: flex; flex-direction: column; min-width: 0; padding-top: 18px; border-top: 1px solid var(--rule); }
+.step-label { margin: 0 0 18px; color: var(--muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.step-label span { color: #c0c4b2; margin-right: 6px; }
+.journey-step p:not(.step-label) { margin: 0 0 24px; max-width: 40ch; color: var(--muted); font-size: 12px; line-height: 1.85; flex: 1; }
+.journey-step .image-link { aspect-ratio: 16 / 10; overflow: hidden; }
+.journey-step .image-link > img { height: 100%; object-fit: cover; object-position: top left; }
+.journey .data-note { grid-column: auto; margin-top: 44px; }
+
+/* ---- 04 Leaderboard: copy beside the live top five, screenshot below ---- */
+.board-section { display: grid; grid-template-columns: 1fr 1fr; gap: 56px 100px; align-items: start; padding-block: 128px 120px; }
+.board-copy > p:not(.eyebrow) { max-width: 44ch; margin: 24px 0 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
+.board-copy .board-fine { margin-top: 16px; color: var(--quiet); font-size: 11px; }
+.board-live { min-width: 0; }
+.board-rows { list-style: none; margin: 0; padding: 0; counter-reset: board; }
+.board-rows li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto; gap: 16px; align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--rule); font-size: 12px; }
+.board-rows li:first-child { border-top: 1px solid var(--rule); }
+.board-pos { color: #c0c4b2; }
+.board-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board-games { color: var(--quiet); font-size: 10px; }
+.board-letter { min-width: 22px; text-align: center; padding: 0 4px; border: 1px solid currentColor; font-size: 11px; line-height: 1.6; }
+.board-letter.g-S { color: #e8e2d3; } .board-letter.g-A { color: #9cc27f; } .board-letter.g-B { color: #b3b9a9; } .board-letter.g-C { color: #d6b25e; } .board-letter.g-D, .board-letter.g-F { color: #e58a6c; }
+.board-rows li.board-empty { display: block; color: var(--muted); }
+.board-empty a { color: var(--paper); }
+.board-figure { grid-column: 1 / -1; }
+
+/* ---- 07 Get started: install steps and questions ---- */
+.start-section { display: grid; grid-template-columns: 1fr 1.25fr; gap: 56px 100px; padding-block: 120px 100px; border-top: 1px solid var(--rule); }
+.start-section .section-heading { grid-row: span 2; }
+.install-steps { list-style: none; margin: 0; padding: 0; }
+.install-steps li { display: flex; gap: 28px; padding: 18px 0; border-top: 1px solid var(--rule); }
+.install-steps li:last-child { border-bottom: 1px solid var(--rule); }
+.install-n { color: #c0c4b2; font-size: 10px; line-height: 2.4; }
+.install-steps p { margin: 0; max-width: 50ch; color: var(--muted); font-size: 12px; line-height: 1.85; }
+.install-steps code { font: inherit; color: var(--paper); }
+.faq details { border-bottom: 1px solid var(--rule); }
+.faq details:first-child { border-top: 1px solid var(--rule); }
+.faq summary { display: flex; justify-content: space-between; gap: 16px; padding: 15px 0; cursor: pointer; list-style: none; font-size: 13px; letter-spacing: -.02em; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--muted); font-size: 16px; line-height: 1.4; }
+.faq details[open] summary::after { content: "−"; }
+.faq summary:hover { color: #fffaf0; }
+.faq summary:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
+.faq details p { margin: 0 0 18px; max-width: 60ch; color: var(--muted); font-size: 12px; line-height: 1.85; }
+
+@media (max-width: 1000px) {
+  .journey-steps { grid-template-columns: 1fr; gap: 48px; }
+  .board-section, .start-section { grid-template-columns: 1fr; gap: 40px; }
+  .start-section .section-heading { grid-row: auto; }
+}
+@media (max-width: 720px) {
+  .journey { padding-block: 88px 24px; }
+  .board-section { padding-block: 88px; }
+  .start-section { padding-block: 88px 72px; }
+  .board-rows li { grid-template-columns: 26px minmax(0, 1fr) auto; }
+  .board-games { display: none; }
+}

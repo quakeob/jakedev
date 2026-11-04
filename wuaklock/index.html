@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="city.css">
   <script src="cityscape.js" defer></script>
   <script src="emblem.js" defer></script>
+  <script src="landing.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#companion">Skip to the app</a>
@@ -39,6 +40,7 @@
         <p class="hero-description">What to buy next. Who to watch.<br> A grade for every match.</p>
         <a class="text-link hero-link" href="https://github.com/quakeob/wuaklock-releases/releases/latest">Download for Windows <span aria-hidden="true">↗</span></a>
         <a class="text-link hero-link hero-link-quiet" href="#companion">Explore WuakLock <span aria-hidden="true">↓</span></a>
+        <p class="download-meta" data-release>Free · Windows 10 and 11 · updates itself</p>
       </div>
       <div class="hero-baseline">
         <p class="build-status"><span class="status-dot" aria-hidden="true"></span> Windows <span class="separator" aria-hidden="true">/</span> Free <span class="separator" aria-hidden="true">/</span> Early access</p>
@@ -87,23 +89,55 @@
       </figure>
     </section>
 
-    <section class="intel-section content-width" aria-labelledby="intel-title">
-      <div class="intel-heading">
-        <p class="eyebrow"><span class="index">03</span> Beyond the scoreboard</p>
-        <h2 id="intel-title">Go into the next<br> match with context.</h2>
+    <section class="journey content-width" aria-labelledby="journey-title">
+      <div class="section-heading">
+        <p class="eyebrow"><span class="index">03</span> Every match</p>
+        <h2 id="journey-title">A little sharper,<br> every match.</h2>
       </div>
-      <div class="intel-entries">
-        <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[+]</span><div><h3>Read the lobby.</h3><p>Both teams side by side, every player rated Strong, Average, Weak or New from their public record, with your lane matchup and an early-game plan.</p></div></article>
-        <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[%]</span><div><h3>Grade every match.</h3><p>An S to F grade against players on your hero in games of similar length. An on-pace grade during the match, and one for every game in your history.</p></div></article>
-        <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[≡]</span><div><h3>Climb the board.</h3><p>Join the Wuaklock leaderboard with Steam and see how your grades stack up, overall and on each hero. Optional, and leaving deletes your entry.</p></div></article>
+      <ol class="journey-steps">
+        <li class="journey-step">
+          <p class="step-label"><span aria-hidden="true">01 /</span> In the shop</p>
+          <h3>Know why before you buy.</h3>
+          <p>Hover the next buy for what it does, its key stats, the build it comes from and that build's win rate.</p>
+          <a class="image-link" href="shop-hover.jpg" target="_blank" rel="noopener" aria-label="Open the shop hover screenshot in a new tab"><img src="shop-hover.jpg" width="1280" height="880" alt="The next-buy card with its hover panel: the item's description and stats, and why it's next in the build." loading="lazy" decoding="async"><span class="image-expand" aria-hidden="true">↗</span></a>
+        </li>
+        <li class="journey-step">
+          <p class="step-label"><span aria-hidden="true">02 /</span> After the match</p>
+          <h3>A grade, and one thing to fix.</h3>
+          <p>S to F against players on your hero in games of similar length, with your biggest strength and what to work on.</p>
+          <a class="image-link" href="review-shot.jpg" target="_blank" rel="noopener" aria-label="Open the match review screenshot in a new tab"><img src="review-shot.jpg" width="2560" height="1392" alt="A match review: a C grade, the biggest difference and what to work on, and each stat against the usual." loading="lazy" decoding="async"><span class="image-expand" aria-hidden="true">↗</span></a>
+        </li>
+        <li class="journey-step">
+          <p class="step-label"><span aria-hidden="true">03 /</span> Over time</p>
+          <h3>See anyone's record.</h3>
+          <p>Form over the last 20, a rating, every hero they play and a grade for each recent match. Yours too.</p>
+          <a class="image-link" href="profile-shot.jpg" target="_blank" rel="noopener" aria-label="Open the player profile screenshot in a new tab"><img src="profile-shot.jpg" width="2560" height="1392" alt="A player profile: recent form, a Strong rating, average game and a table of heroes with win rates and damage." loading="lazy" decoding="async"><span class="image-expand" aria-hidden="true">↗</span></a>
+        </li>
+      </ol>
+      <p class="data-note">Scouting, grades, profiles and the leaderboard use public match data from the independent community Deadlock API. Screenshots show sample data.</p>
+    </section>
+
+    <section class="board-section content-width" id="leaderboard" aria-labelledby="board-title">
+      <div class="board-copy">
+        <p class="eyebrow"><span class="index">04</span> The leaderboard</p>
+        <h2 id="board-title">Climb<br> the board.</h2>
+        <p>Join with Steam and get ranked by your average Wuaklock grade over your last 20 matches, overall and on every hero. Scores come from public matches, so nobody can fake them.</p>
+        <p class="board-fine">Optional. Your Steam name and scores are public on the board, and Leave deletes your entry.</p>
       </div>
-      <p class="data-note">Scouting, grades and the leaderboard use public match data from the independent community Deadlock API. Availability depends on the data it provides.</p>
+      <div class="board-live" aria-live="polite">
+        <div class="figure-heading"><span>Right now</span><span class="preview-label" data-board-count>Live</span></div>
+        <ol class="board-rows" data-board-rows><li class="board-empty">Loading the leaderboard…</li></ol>
+      </div>
+      <figure class="board-figure">
+        <a class="image-link" href="leaderboard-shot.jpg" target="_blank" rel="noopener" aria-label="Open the leaderboard screenshot in a new tab"><img src="leaderboard-shot.jpg" width="2560" height="1392" alt="The Wuaklock leaderboard in the app: your position and grade, and the ranked players with grade, games, win rate, main hero and rank." loading="lazy" decoding="async"><span class="image-expand" aria-hidden="true">↗</span></a>
+        <figcaption><span>The leaderboard in the app, shown with sample players.</span><span>Leaderboards / Join with Steam</span></figcaption>
+      </figure>
     </section>
 
     <section class="closing-section content-width" aria-labelledby="privacy-title">
       <div class="closing-mark" aria-hidden="true"><img src="emblem.png" width="1254" height="1254" alt="" loading="lazy" decoding="async"></div>
       <div class="closing-copy">
-        <p class="eyebrow"><span class="index">04</span> Yours to keep</p>
+        <p class="eyebrow"><span class="index">05</span> Yours to keep</p>
         <h2 id="privacy-title">Your matches.<br> Your machine.</h2>
         <p>Match records stay on your PC. No ads, analytics or required account. Public scouting is off until you allow it, and the leaderboard is opt-in.</p>
         <a class="text-link" href="privacy/">How WuakLock handles data <span aria-hidden="true">↗</span></a>
@@ -112,13 +146,33 @@
 
     <section class="intel-section content-width" id="safety" aria-labelledby="safety-title">
       <div class="intel-heading">
-        <p class="eyebrow"><span class="index">05</span> Before you install</p>
+        <p class="eyebrow"><span class="index">06</span> Before you install</p>
         <h2 id="safety-title">Is it safe?</h2>
       </div>
       <div class="intel-entries">
         <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[!]</span><div><h3>It reads the game's memory.</h3><p>Live features come from reading Deadlock's memory while you play. WuakLock only reads: it never writes to the game, injects code or sends input. Even so, anti-cheat can treat any tool that reads game memory as suspicious, and there is no guarantee for your account. Use it at your own risk.</p></div></article>
         <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[~]</span><div><h3>Unofficial.</h3><p>WuakLock is an independent project, not made, endorsed or supported by Valve.</p></div></article>
         <article class="intel-entry"><span class="entry-symbol" aria-hidden="true">[✓]</span><div><h3>Not signed yet.</h3><p>Windows SmartScreen may warn about the download. Choose More info, then Run anyway, if you trust this source.</p></div></article>
+      </div>
+    </section>
+
+    <section class="start-section content-width" id="start" aria-labelledby="start-title">
+      <div class="section-heading">
+        <p class="eyebrow"><span class="index">07</span> Get started</p>
+        <h2 id="start-title">Three steps<br> to the city.</h2>
+      </div>
+      <ol class="install-steps">
+        <li><span class="install-n" aria-hidden="true">01</span><div><h3>Download</h3><p>Get the zip from the <a href="https://github.com/quakeob/wuaklock-releases/releases/latest">latest release</a> and unzip it anywhere.</p></div></li>
+        <li><span class="install-n" aria-hidden="true">02</span><div><h3>Install</h3><p>Run <code>Wuaklock.exe</code>, then Settings › Install on this PC. It adds Start menu and desktop shortcuts and updates itself from then on.</p></div></li>
+        <li><span class="install-n" aria-hidden="true">03</span><div><h3>Play</h3><p>Start Deadlock in borderless or windowed mode. Your hero, lobby and next buy are picked up on their own.</p></div></li>
+      </ol>
+      <div class="faq">
+        <details><summary>Does it cost anything?</summary><p>No. WuakLock is free, with no ads and no account required.</p></details>
+        <details><summary>Will it get me banned?</summary><p>It only reads the game's memory and never changes the game, but anti-cheat can still treat memory-reading tools as suspicious. There is no guarantee for your account; read <a href="#safety">Is it safe?</a> before installing.</p></details>
+        <details><summary>What does it send, and where?</summary><p>Public match lookups go to the community Deadlock API, update checks go to GitHub, and the leaderboard is only contacted if you join it. Your recorded matches never leave your PC. The <a href="privacy/">privacy policy</a> has every detail.</p></details>
+        <details><summary>How do updates work?</summary><p>An installed copy checks a few times a day, downloads a new version, checks its fingerprint and installs it when you close the app. Never during a match.</p></details>
+        <details><summary>Mac or Linux?</summary><p>Windows only for now, because live features read the Windows game client.</p></details>
+        <details><summary>Found a bug or have an idea?</summary><p>Use Feedback in the app, or <a href="https://github.com/quakeob/wuaklock-releases/issues/new">open an issue</a>. Everything is read.</p></details>
       </div>
     </section>
 
