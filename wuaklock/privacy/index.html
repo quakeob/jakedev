@@ -24,43 +24,63 @@ footer a{color:var(--dim)}
 </style></head><body><main>
 <header><a class="mark" href="../"><img src="../logo.png" alt="" width="56" height="56">WuakLock</a><nav aria-label="WuakLock policies"><a href="../privacy/" aria-current=page>Privacy</a><a href="../terms/">Terms</a></nav></header>
 <h1>Privacy Policy</h1>
-<p class="meta"><b>Effective date:</b> October 30, 2026<br><b>Developer:</b> Jake Davis<br><b>Contact:</b> <a href="mailto:jake@bryt.works">jake@bryt.works</a></p>
-<p class="intro">WuakLock is a Windows companion app for Deadlock. It has no accounts, ads or analytics. Your data stays on your PC, and the only service the app contacts is the community Deadlock API, for public match data.</p>
+<p class="meta"><b>Effective date:</b> November 3, 2026<br><b>Developer:</b> Jake Davis<br><b>Contact:</b> <a href="mailto:jake@bryt.works">jake@bryt.works</a></p>
+<p class="intro">WuakLock is a Windows companion app for Deadlock. It has no ads or analytics, and you don't need an account. Your match records stay on your PC. The app contacts the community Deadlock API for public match data and GitHub for updates. It contacts the WuakLock leaderboard only if you choose to join it.</p>
 
 <h2>What stays on your PC</h2>
-<p>WuakLock keeps everything in the <code>data</code> folder next to <code>Wuaklock.exe</code>:</p>
+<p>WuakLock keeps its data in a <code>data</code> folder: <code>%LOCALAPPDATA%\Wuaklock\data</code> once installed, or next to <code>Wuaklock.exe</code> if you run it without installing. That folder holds:</p>
 <ul>
-<li><b>Settings:</b> the Steam account ID you enter (optional), your Deadlock installation folder, and overlay preferences such as opacity, size, position and visibility.</li>
+<li><b>Settings:</b> the Steam account ID you enter (optional), your Deadlock installation folder, overlay preferences such as opacity, size, position and visibility, your theme, and the choices you made: whether public scouting is allowed, whether Discord status is on, and which update notes you've read.</li>
 <li><b>Recorded matches:</b> for each match you play with WuakLock running, the scoreboard it observed. That includes every player's display name, Steam account ID, hero, kills, deaths, assists, souls, damage, healing and items, along with match timing and the result. Recordings stay until you delete them.</li>
 <li><b>Cached community data:</b> copies of recent responses from the community Deadlock API, so pages load quickly and the app respects the service's rate limits.</li>
 <li><b>Diagnostic logs:</b> <code>app.log</code>, with connection and error messages, and the <code>debug.log</code> written by the app's browser engine.</li>
-<li><b>Your light or dark theme choice.</b></li>
+<li><b>Leaderboard sign-in</b>, only if you join the leaderboard: a session key, encrypted with Windows' own data protection.</li>
 </ul>
-<p>WuakLock never uploads this folder. Delete it to remove everything the app has stored.</p>
+<p>WuakLock never uploads this folder. Delete it to remove everything the app has stored on your PC.</p>
 
 <h2>Reading the game</h2>
-<p>While Deadlock is running, WuakLock opens <code>deadlock.exe</code> with permission to query and read its memory, and nothing more. It reads scoreboard statistics, match timing, Mid Boss status and your own permanent buff count. It does not read world positions, hidden enemy information, Steam credentials, chat or your keyboard and mouse input. It never writes to the game, the game's files or your system settings.</p>
-<p>What it reads is shown in the app and saved in your recorded matches. It is not sent anywhere.</p>
+<p>While Deadlock is running, WuakLock opens <code>deadlock.exe</code> with permission to query and read its memory, and nothing more. It reads scoreboard statistics (each player's hero, team, lane, kills, deaths, assists, souls, damage, healing and items), each player's Steam account ID, match timing, Mid Boss status and your own permanent buff count. It does not read world positions, hidden enemy information, Steam credentials, chat or your keyboard and mouse input. It never writes to the game, the game's files or your system settings.</p>
+<p>What it reads is shown in the app and saved in your recorded matches. It is not sent to the developer.</p>
+<p>WuakLock is unofficial. Anti-cheat systems can treat any tool that reads game memory as suspicious, and there is no guarantee for your account.</p>
 
 <h2>The community Deadlock API</h2>
 <p>For public data, WuakLock connects to <code>api.deadlock-api.com</code>, an independent community service. It is not run by Valve or by WuakLock. Requests can include:</p>
 <ul>
-<li>the account ID you entered in Settings, when you open Player history;</li>
-<li>the Steam account IDs of the players in your current match, to look up their public match history and rank. WuakLock does this automatically during live matches, and when you press Scout lobby;</li>
+<li>the account ID you entered in Settings, when you open your history or profile;</li>
+<li>the Steam account IDs of the players in your current match, to look up their public records, ranks and recent matches. This is <b>off until you allow public scouting</b>. Once allowed, it happens automatically on the loading screen and during matches, and you can turn it off again under Scouting › Sources &amp; privacy;</li>
+<li>the account ID of a player whose profile you open;</li>
 <li>match IDs, to fetch final match data after a recorded match ends;</li>
-<li>hero IDs and the filters you choose on the Heroes and Leaderboards pages.</li>
+<li>hero IDs, match lengths and the filters you choose, for builds, grades and leaderboards.</li>
 </ul>
 <p>Hero art and item icons load from the same service's image host. Like any web request, these reveal your IP address, and WuakLock identifies itself by name and version. The service's own practices apply to what it receives; see <a href="https://deadlock-api.com">deadlock-api.com</a>.</p>
 <p>If you block WuakLock's network access, live tracking and local recording keep working. Only the community features stop.</p>
 
-<h2>Links and launching the game</h2>
-<p>The Launch Deadlock button opens Steam through its <code>steam://</code> link. Links to a short list of websites open in your browser, where that website's own policy applies.</p>
+<h2>Updates</h2>
+<p>An installed copy checks <a href="https://github.com/quakeob/wuaklock-releases">github.com/quakeob/wuaklock-releases</a> for a new version about every three hours. It downloads new versions from GitHub and checks each one's SHA-256 fingerprint before installing it. These requests reveal your IP address to GitHub, and WuakLock identifies itself by name. They carry nothing else about you. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>.</p>
+
+<h2>The WuakLock leaderboard (optional)</h2>
+<p>The leaderboard ranks people who choose to join, using their public match history. Nothing is sent unless you press <b>Join with Steam</b>. When you do:</p>
+<ul>
+<li>Steam's own sign-in page opens in your browser to prove which account is yours. WuakLock never sees your Steam password. Steam's policy applies to that page.</li>
+<li>The leaderboard server stores your <b>Steam account ID</b>, your <b>public Steam name</b>, your <b>rank</b>, the date you joined, and scores worked out from your public matches: your average grade, graded games, wins, average K/D/A, main hero and per-hero averages. It gets these from the community Deadlock API; the app never sends match numbers itself.</li>
+<li>Your name, account ID, scores, record, main hero and rank are <b>public</b> on the board, in the app and to anyone who reads the board's address.</li>
+<li>The server keeps only a fingerprint (SHA-256) of your session key. The one-time sign-in hand-off is deleted once the app collects it, and after 10 minutes at most.</li>
+</ul>
+<p><b>Leave</b> on the Leaderboards page deletes your entry, your hero scores and every session at once. The server runs on Cloudflare Workers, which may keep standard request logs such as IP addresses; see <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>.</p>
+
+<h2>Discord, feedback, sharing and links</h2>
+<ul>
+<li><b>Discord status</b> is off until you turn it on in Settings. When it's on, WuakLock tells the Discord app on your PC your hero and match time to show on your profile. It talks to the Discord app directly, not to a WuakLock server.</li>
+<li><b>Feedback</b> opens a new GitHub issue in your browser, filled in with what you wrote and your WuakLock version. Nothing is sent unless you post it there, and GitHub issues are public.</li>
+<li><b>Share images and diagnostics</b> are copied to your clipboard or saved to a file only when you ask. Copied diagnostics leave out account IDs, match IDs and folder paths.</li>
+<li>The <b>Launch Deadlock</b> button opens Steam through its <code>steam://</code> link. Links to a short list of websites open in your browser, where that website's own policy applies.</li>
+</ul>
 
 <h2>What WuakLock doesn't do</h2>
-<p>It doesn't create accounts, use cookies or advertising identifiers, run analytics or crash reporting, or send your recordings, settings or logs to the developer. Your information is never sold or shared.</p>
+<p>It doesn't use cookies or advertising identifiers, run analytics or crash reporting, or send your recordings, settings or logs to the developer. Your information is never sold.</p>
 
 <h2>Children</h2>
-<p>WuakLock is not directed to children under 13, and it does not knowingly collect personal information from them. It stores nothing outside your PC.</p>
+<p>WuakLock is not directed to children under 13, and it does not knowingly collect personal information from them.</p>
 
 <h2>These pages</h2>
 <p>This policy and the terms load no scripts, cookies or analytics. jakedev.org is hosted on GitHub Pages, which may keep standard server logs such as IP addresses; see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>.</p>
@@ -69,6 +89,6 @@ footer a{color:var(--dim)}
 <p>If WuakLock starts handling data differently, this page will be updated, with a new effective date, before that version is released.</p>
 
 <h2>Contact</h2>
-<p>For questions or requests about this policy, email <a href="mailto:jake@bryt.works">jake@bryt.works</a>.</p>
+<p>For questions or requests about this policy, including removing a leaderboard entry you can no longer reach, email <a href="mailto:jake@bryt.works">jake@bryt.works</a>.</p>
 <footer><span>WuakLock by Jake Davis</span><a href="mailto:jake@bryt.works">jake@bryt.works</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a></footer>
 </main></body></html>
