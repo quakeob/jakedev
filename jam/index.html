@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>JAM</title>
+  <meta name="description" content="JAM is an agent development environment for hackathon teams. Cam Hess and Jake Davis built it in one day at the Cloud Native Hackathon in Salt Lake City, using it to build itself.">
+  <meta property="og:title" content="JAM">
+  <meta property="og:description" content="An agent development environment for hackathon teams, built in one day at the Cloud Native Hackathon in Salt Lake City.">
+  <meta property="og:image" content="https://jakedev.org/jam/og.png">
+  <meta property="og:url" content="https://jakedev.org/jam/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#fbfaf6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="app/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/bricolage-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="jam.css">
+  <script>
+    // Same key as the app, so the page and the embedded app share one theme.
+    (() => {
+      let saved = null
+      try { saved = localStorage.getItem('jam-theme') } catch {}
+      const dark = matchMedia('(prefers-color-scheme: dark)').matches
+      document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : dark ? 'dark' : 'light'
+    })()
+  </script>
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="#jam" aria-label="JAM, top of page"><canvas class="mk" data-mark="jam" data-size="18" data-mode="working"></canvas><span class="wm">JAM</span></a>
+  <span class="crumb"><a href="/">jakedev.org</a> / <b>jam</b></span>
+  <button class="cmd" type="button" data-palette><span>Jump to a section</span><kbd>⌘K</kbd></button>
+  <span class="clock" aria-live="off"><b>9 Nov 2026</b> · SLC</span>
+  <button class="icon only-narrow" type="button" data-palette aria-label="Jump to a section"><svg viewBox="0 0 16 16"><path d="M2.5 4h11M2.5 8h11M2.5 12h7"/></svg></button>
+  <button class="icon" type="button" data-theme-toggle aria-label="Switch theme"><svg viewBox="0 0 16 16"><path d="M8 2.2a5.8 5.8 0 1 0 0 11.6A5.8 5.8 0 0 0 8 2.2Z"/><path d="M8 2.2v11.6a5.8 5.8 0 0 0 0-11.6Z" fill="currentColor"/></svg></button>
+  <a class="open-app" href="app/" target="_blank" rel="noopener" aria-label="Open the app in a new tab"><i></i><span>Open the app</span></a>
+</header>
+
+<div class="shell">
+  <nav class="rail" aria-label="Sections">
+    <div class="label"><span>Sections</span><span>1 needs you</span></div>
+    <ul class="sessions">
+      <li><a href="#jam" data-sec="jam"><canvas class="mk" data-mark="jam" data-size="22"></canvas><span class="body"><span class="t"><span>What JAM is</span><em>11:15</em></span><span class="s"><b>Done</b> · cam · jake</span></span></a></li>
+      <li><a href="#app" data-sec="app"><canvas class="mk" data-mark="sonnet-1" data-size="22"></canvas><span class="body"><span class="t"><span>The app</span><em>now</em></span><span class="s"><b class="need">Needs you</b> · try it</span></span></a></li>
+      <li><a href="#capture" data-sec="capture"><canvas class="mk" data-mark="fable" data-size="22"></canvas><span class="body"><span class="t"><span>One capture</span><em>10s</em></span><span class="s"><b>Running</b> · worker · cam</span></span></a></li>
+      <li><a href="#context" data-sec="context"><canvas class="mk" data-mark="opus-2" data-size="22"></canvas><span class="body"><span class="t"><span>Shared context</span><em>10</em></span><span class="s"><b>Review</b> · mcp · cam</span></span></a></li>
+      <li><a href="#day" data-sec="day"><canvas class="mk" data-mark="opus-1" data-size="22"></canvas><span class="body"><span class="t"><span>The day</span><em data-count-merged>41</em></span><span class="s"><b>Merged</b> · main</span></span></a></li>
+      <li><a href="#rules" data-sec="rules"><canvas class="mk" data-mark="sonnet-2" data-size="22"></canvas><span class="body"><span class="t"><span>Merge path</span><em>2</em></span><span class="s"><b>Approved</b> · AGENTS.md</span></span></a></li>
+      <li><a href="#cast" data-sec="cast"><canvas class="mk" data-mark="ghost" data-size="22"></canvas><span class="body"><span class="t"><span>Cast</span><em>6</em></span><span class="s"><b>Queued</b> · credits</span></span></a></li>
+    </ul>
+    <div class="label"><span>People</span><span>2</span></div>
+    <ul class="people">
+      <li><span class="av">c</span>cam<span class="dim">backend</span></li>
+      <li><span class="av">j</span>jake<span class="dim">frontend</span></li>
+    </ul>
+    <div class="keys"><kbd>j</kbd> <kbd>k</kbd> move between sections</div>
+  </nav>
+
+  <main>
+
+    <!-- What JAM is -->
+    <section class="sec hero" id="jam" data-sec="jam">
+      <div class="lockup">
+        <canvas id="hero-mark" aria-hidden="true"></canvas>
+        <h1>JAM</h1>
+      </div>
+      <p class="hint" id="hero-hint">Press and hold the mark.</p>
+      <div class="hero-grid wrap">
+        <div>
+          <p class="lede">An agent development environment for hackathon teams. Hold a key and talk. Seconds later, every coding agent on the team can search what you said.</p>
+          <p class="lede dim">Cam Hess and Jake Davis built JAM in one day at the Cloud Native Hackathon in Salt Lake City. From 1 PM the team talked into it, and the agents building it read from it.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Date</dt><dd>9 Nov 2026, 11:15 to 17:30 MT</dd></div>
+          <div><dt>Merged</dt><dd><span data-count-merged>41</span> pull requests, <span class="num"><span class="plus" data-count-add>+16,683</span> <span class="minus" data-count-del>−337</span></span></dd></div>
+          <div><dt>Written by</dt><dd>Claude Code. A Fable orchestrator on each laptop, Opus 5.5 subagents for features.</dd></div>
+          <div><dt>Stack</dt><dd>TypeScript, React, Hono, Elasticsearch, Whisper, Kubernetes, Argo CD</dd></div>
+          <div><dt>Source</dt><dd><a href="https://github.com/chito-systems/jam">chito-systems/jam</a>, MIT</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- The app -->
+    <section class="sec" id="app" data-sec="app">
+      <div class="meta"><b>apps/web</b><span>stream B</span><span>jake</span></div>
+      <h2>The app</h2>
+      <p class="lede">The real build from main, running on its sample sessions so it works without a backend. Everything in the frame is clickable.</p>
+      <div class="frame rv">
+        <div class="frame-bar">
+          <span class="url">jakedev.org<b>/jam/app/</b></span>
+          <span class="tag">sample data</span>
+          <a href="app/" target="_blank" rel="noopener">Open in a window ↗</a>
+        </div>
+        <iframe id="app-frame" title="JAM, running on sample data" data-src="app/" loading="lazy"></iframe>
+      </div>
+      <div class="keys-row">
+        <span><kbd>j</kbd><kbd>k</kbd>sessions</span>
+        <span><kbd>⌘K</kbd>commands</span>
+        <span><kbd>⌥Space</kbd>hold to capture</span>
+        <span>Red means an agent is waiting on a person.</span>
+      </div>
+    </section>
+
+    <!-- One capture -->
+    <section class="sec" id="capture" data-sec="capture">
+      <div class="meta"><b>apps/worker</b><span>stream A</span><span>cam</span></div>
+      <h2>One capture</h2>
+      <p class="lede">Every voice note takes the same path, and every step is a span in one OpenTelemetry trace. These are the span names from the code.</p>
+      <div class="trace" id="trace">
+        <div class="trace-head"><span>Span</span><span>Service</span><span>What happens</span></div>
+      </div>
+      <div class="trace-foot"><span>Target: searchable within 10 s of letting go, p95</span><span>Traces in Dash0 · bars show order, not duration</span></div>
+    </section>
+
+    <!-- Shared context -->
+    <section class="sec" id="context" data-sec="context">
+      <div class="meta"><b>packages/mcp</b><span>stream D</span><span>cam</span></div>
+      <h2>Shared context</h2>
+      <p class="lede">Every coding agent on the team connects to one MCP server and reads the same brain. Before an agent edits a file it claims the path, and the claim is refused if someone else holds it.</p>
+      <div class="mcp">
+        <ul class="tools" id="tools"></ul>
+        <div class="term" aria-live="polite">
+          <div class="term-head"><canvas class="mk" data-mark="opus-2" data-size="14" id="term-mark"></canvas><b>agent:opus-2</b><span>· frontend · sample session</span></div>
+          <div class="term-body" id="term-body"></div>
+          <div class="term-desc" id="term-desc"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The day -->
+    <section class="sec" id="day" data-sec="day">
+      <div class="meta"><b>main</b><span><span data-count-merged>41</span> merged</span><span><span data-count-open>2</span> open</span><span>times in MT</span></div>
+      <h2>The day</h2>
+      <p class="lede">Every pull request, in the order it landed. Each column is one PR, as tall as its diff. Colour is the agent that wrote it.</p>
+      <div class="strip" id="strip">
+        <canvas id="strip-canvas" aria-label="Pull requests merged across the day, by time and size"></canvas>
+        <div class="axis" id="axis"></div>
+        <div class="tip" id="tip"></div>
+      </div>
+      <div class="legend">
+        <span><canvas class="mk" data-mark="fable" data-size="14"></canvas>Fable, the orchestrator on each side</span>
+        <span><canvas class="mk" data-mark="opus-1" data-size="14"></canvas>Opus 5.5, a subagent with one brief</span>
+      </div>
+      <div class="queue" id="queue">
+        <div class="qh"><span>Time</span><span>PR</span><span>Title</span><span>Agent</span><span class="c-who">Who</span><span style="text-align:right">Diff</span></div>
+      </div>
+    </section>
+
+    <!-- Merge path -->
+    <section class="sec" id="rules" data-sec="rules">
+      <div class="meta"><b>AGENTS.md</b><span>two sides</span><span>four streams</span></div>
+      <h2>Merge path</h2>
+      <p class="lede">Two people and a lot of agents on one repo. The rules live in AGENTS.md, which every agent reads first. Nobody edits the other side's files.</p>
+      <div class="sides">
+        <div class="side">
+          <h3><canvas class="mk" data-mark="fable" data-size="18"></canvas>Backend</h3>
+          <div class="who">cam · Fable orchestrator · streams A, C, D</div>
+          <ul><li>apps/api</li><li>apps/worker</li><li>packages/shared</li><li>packages/mcp</li><li>deploy, argocd, .github</li></ul>
+          <p>Brain, platform and MCP. Elasticsearch, the cluster, credentials.</p>
+        </div>
+        <div class="side">
+          <h3><canvas class="mk" data-mark="jam" data-size="18"></canvas>Frontend</h3>
+          <div class="who">jake · Fable orchestrator · stream B</div>
+          <ul><li>apps/web</li></ul>
+          <p>The app, its design, the demo and the pitch deck.</p>
+        </div>
+      </div>
+      <ol class="loop">
+        <li><b>Worktree</b><span>One per agent, branched from main.</span></li>
+        <li><b>Claim</b><span><code>task_claim</code> the paths before editing.</span></li>
+        <li><b>Pull request</b><span>One task, one branch, one stream label.</span></li>
+        <li><b>Gitar</b><span>Reviews against the team's instructions.</span></li>
+        <li class="need"><b>A person</b><span>Approves. Agents never merge the other side.</span></li>
+        <li><b>Merge queue</b><span>Lands on main. Argo CD deploys.</span></li>
+      </ol>
+      <table class="tracks">
+        <thead><tr><th>Track</th><th>How JAM uses it</th></tr></thead>
+        <tbody>
+          <tr><td>Elasticsearch</td><td>All team context, hybrid BM25 and vector search, retrieval for agents</td></tr>
+          <tr><td>Sonar</td><td>Gitar reviews every PR against the stream rules</td></tr>
+          <tr><td>Radar</td><td>Runs on Radar's cluster in the <code>team-jam</code> namespace</td></tr>
+          <tr><td>Dash0</td><td>Ingest traces, agent token cost, the 10 s SLO and a chaos switch</td></tr>
+          <tr><td>Merge Forward</td><td>Voice-first input and focus mode as accessibility features</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Cast -->
+    <section class="sec" id="cast" data-sec="cast">
+      <div class="meta"><b>README.md</b><span>AI disclosure</span></div>
+      <h2>Cast</h2>
+      <p class="lede">Claude Code wrote most of the code. Cam and Jake designed the product, chose every tool, wrote the agent rules and reviewed every merge.</p>
+      <div class="cast">
+        <div><span class="av">c</span><div><h3>Cam Hess</h3><p>Backend side. Brain, worker, MCP, cluster.</p><p class="mono"><a href="https://github.com/chito-systems">@chito-systems</a></p></div></div>
+        <div><span class="av">j</span><div><h3>Jake Davis</h3><p>Frontend side. The app and its design.</p><p class="mono"><a href="https://github.com/quakeob">@quakeob</a></p></div></div>
+        <div><canvas class="mk" data-mark="jam" data-size="40" data-hover></canvas><div><h3>jam</h3><p>The app's own agent. Drafts work orders from confident todos.</p></div></div>
+        <div><canvas class="mk" data-mark="fable" data-size="40" data-hover></canvas><div><h3>Fable</h3><p>One orchestrator per laptop. Briefs, contracts, merges.</p><p class="mono" data-count-agent="fable"></p></div></div>
+        <div><canvas class="mk" data-mark="opus-1" data-size="40" data-hover></canvas><div><h3>Opus 5.5</h3><p>Subagents. One brief, one worktree, one PR.</p><p class="mono" data-count-agent="opus"></p></div></div>
+        <div><canvas class="mk" data-mark="opus-2" data-size="40" data-hover></canvas><div><h3>Gitar</h3><p>Reviewer on every pull request.</p></div></div>
+      </div>
+      <div class="coda">
+        <span class="wm">JAM</span>
+        <a href="https://github.com/chito-systems/jam">github.com/chito-systems/jam</a>
+        <a href="app/">Open the app</a>
+        <span class="dim">Cloud Native Hackathon · Salt Lake City · 9 Nov 2026</span>
+        <a href="/" class="dim">← jakedev.org</a>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="status">
+  <span><b>main</b> ↑<span data-count-merged>41</span></span>
+  <span class="hide-s"><span data-count-open>2</span> PRs open</span>
+  <span class="hide-s">2 people</span>
+  <span class="hide-s">2 models</span>
+  <span class="grow"></span>
+  <span class="tag hide-s">static</span>
+  <a href="https://github.com/chito-systems/jam">github</a>
+  <span>MIT</span>
+</footer>
+
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Jump to">
+  <div class="box">
+    <input id="palette-input" type="text" placeholder="Jump to a section or run a command" autocomplete="off" spellcheck="false" aria-controls="palette-list">
+    <ul id="palette-list" role="listbox"></ul>
+    <div class="foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></div>
+  </div>
+</div>
+
+<script src="day.js"></script>
+<script src="jam.js"></script>
+</body>
+</html>

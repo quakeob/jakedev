@@ -1,0 +1,16 @@
+{
+  "name": "JAM",
+  "short_name": "JAM",
+  "description": "An Agent Development Environment for hackathon teams.",
+  "id": "/jam/app/",
+  "start_url": "/jam/app/",
+  "scope": "/jam/app/",
+  "display": "standalone",
+  "background_color": "#fbfaf6",
+  "theme_color": "#fbfaf6",
+  "icons": [
+    { "src": "/jam/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/jam/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/jam/app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
