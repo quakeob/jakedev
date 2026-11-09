@@ -475,50 +475,31 @@ h2 {
   font: 800 clamp(120px, 22vw, 340px) / 0.8 "Bricolage Grotesque", var(--sans);
   letter-spacing: -0.06em;
 }
-.hero {
-  position: relative;
-}
-.hero > *:not(.screen) {
-  position: relative;
-  z-index: 1;
-}
-.hero > .screen {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
 .lockup h1 {
   display: flex;
 }
 .ltr {
   position: relative;
-  display: inline-block;
-  cursor: default;
-}
-.ltr canvas {
-  position: absolute;
-  top: -0.06em;
-  bottom: -0.04em;
-  left: -0.02em;
-  right: -0.02em;
-  width: calc(100% + 0.04em);
-  height: calc(100% + 0.1em);
   z-index: 0;
-  pointer-events: none;
 }
-.ltr .g {
-  position: relative;
+/* Inverse video: a solid ink cell behind the letter, no easing, like a terminal cursor. */
+.ltr::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: -0.02em;
+  right: -0.065em;
+  background: var(--ink);
+  visibility: hidden;
+}
+.ltr:hover {
   z-index: 1;
-  transition: color 0.12s;
-}
-.ltr.neg {
-  z-index: 2;
-}
-.ltr.neg .g {
   color: var(--paper);
+}
+.ltr:hover::before {
+  visibility: visible;
 }
 .hint {
   font: 12px var(--mono);

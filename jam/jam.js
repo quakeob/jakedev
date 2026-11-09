@@ -929,189 +929,14 @@
     $$('.rv').forEach((el) => io.observe(el))
   }
 
-  // ---------- JAM letters: hover prints the letter as a negative ----------
-
-  const cssVar = (n) => getComputedStyle(root).getPropertyValue(n).trim()
-  const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v)
+  // ---------- JAM letters: the one under the pointer shows in inverse video, like a block cursor ----------
 
   function letters() {
     const h1 = $('.lockup h1')
     if (!h1) return
     const text = h1.textContent.trim()
     h1.setAttribute('aria-label', text)
-    h1.textContent = ''
-    const dpr = Math.min(2, devicePixelRatio || 1)
-    const all = []
-
-    const draw = (L) => {
-      const { ctx, w, h } = L
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      ctx.clearRect(0, 0, w, h)
-      if (L.dir === 0) return
-      const pitch = Math.max(4, h / 44)
-      const F = pitch * 3.5
-      const e = 1 - Math.pow(1 - L.p, 3)
-      const R = e * (L.maxR + F)
-      // In: ink spreads out from where the pointer entered. Out: a hole opens from where it left.
-      const tone = L.dir > 0 ? (x, y) => clamp01((R - Math.hypot(x - L.ox, y - L.oy)) / F) : (x, y) => clamp01((Math.hypot(x - L.ox, y - L.oy) - R) / F)
-      halftone(ctx, { x0: 0, y0: 0, x1: w, y1: h, angle: 45, pitch, color: cssVar('--ink'), seed: L.seed, gain: 1.15, jitter: 0.14, tone })
-    }
-    const tick = (L) => (now) => {
-      const dt = Math.min(0.05, (now - L.last) / 1000)
-      L.last = now
-      L.p = Math.min(1, L.p + dt / (L.dir > 0 ? 0.32 : 0.42))
-      const e = 1 - Math.pow(1 - L.p, 3)
-      L.s.classList.toggle('neg', L.dir > 0 ? e > 0.3 : e < 0.55)
-      draw(L)
-      if (L.p < 1) L.raf = requestAnimationFrame(tick(L))
-      else {
-        L.raf = 0
-        if (L.dir < 0) {
-          L.dir = 0
-          draw(L)
-        }
-      }
-    }
-    const start = (L, e, dir) => {
-      const r = L.c.getBoundingClientRect()
-      L.ox = e ? e.clientX - r.left : L.w / 2
-      L.oy = e ? e.clientY - r.top : L.h / 2
-      L.maxR = Math.max(...[[0, 0], [L.w, 0], [0, L.h], [L.w, L.h]].map(([x, y]) => Math.hypot(x - L.ox, y - L.oy)))
-      // Reversing halfway: the opposite wipe at the mirrored progress looks about the same.
-      L.p = L.dir !== 0 && L.dir !== dir ? 1 - L.p : L.dir === dir ? L.p : 0
-      L.dir = dir
-      if (reduce) {
-        L.p = 1
-        L.s.classList.toggle('neg', dir > 0)
-        if (dir < 0) L.dir = 0
-        draw(L)
-        return
-      }
-      if (!L.raf) {
-        L.last = performance.now()
-        L.raf = requestAnimationFrame(tick(L))
-      }
-    }
-
-    ;[...text].forEach((ch, i) => {
-      const s = document.createElement('span')
-      s.className = 'ltr'
-      s.setAttribute('aria-hidden', 'true')
-      const c = document.createElement('canvas')
-      const g = document.createElement('span')
-      g.className = 'g'
-      g.textContent = ch
-      s.append(c, g)
-      h1.appendChild(s)
-      const L = { s, c, ctx: c.getContext('2d'), w: 0, h: 0, p: 0, dir: 0, ox: 0, oy: 0, maxR: 0, seed: 17 + i * 13, raf: 0, last: 0 }
-      all.push(L)
-      s.addEventListener('pointerenter', (e) => e.pointerType !== 'touch' && start(L, e, 1))
-      s.addEventListener('pointerleave', (e) => e.pointerType !== 'touch' && start(L, e, -1))
-      // Touch has no hover: a tap prints the negative and lets it go.
-      s.addEventListener('pointerdown', (e) => {
-        if (e.pointerType !== 'touch') return
-        start(L, e, 1)
-        clearTimeout(L.t)
-        L.t = setTimeout(() => start(L, null, -1), 650)
-      })
-    })
-    const fit = () =>
-      all.forEach((L) => {
-        const r = L.c.getBoundingClientRect()
-        L.w = r.width
-        L.h = r.height
-        L.c.width = Math.round(L.w * dpr)
-        L.c.height = Math.round(L.h * dpr)
-        draw(L)
-      })
-    fit()
-    document.fonts?.ready.then(fit)
-    addEventListener('resize', fit)
-    themeHooks.push(() => all.forEach(draw))
-  }
-
-  // ---------- the hero's halftone screen swells around the pointer ----------
-
-  function heroScreen() {
-    if (reduce || !matchMedia('(hover: hover) and (pointer: fine)').matches) return
-    const sec = $('#jam')
-    const c = document.createElement('canvas')
-    c.className = 'screen'
-    c.setAttribute('aria-hidden', 'true')
-    sec.prepend(c)
-    const ctx = c.getContext('2d')
-    const dpr = Math.min(2, devicePixelRatio || 1)
-    const RAD = 190
-    let W = 0
-    let H = 0
-    let tx = -999
-    let ty = -999
-    let x = tx
-    let y = ty
-    let a = 0
-    let want = 0
-    let speed = 0
-    let raf = 0
-    let last = 0
-    let color = cssVar('--soft')
-    const fit = () => {
-      W = sec.clientWidth
-      H = sec.clientHeight
-      c.width = Math.round(W * dpr)
-      c.height = Math.round(H * dpr)
-    }
-    const frame = (now) => {
-      const dt = Math.min(0.05, (now - last) / 1000)
-      last = now
-      const k = 1 - Math.exp(-dt * 9)
-      const px = x
-      const py = y
-      x += (tx - x) * k
-      y += (ty - y) * k
-      speed += (Math.min(1, Math.hypot(x - px, y - py) / (dt * 1400 || 1)) - speed) * (1 - Math.exp(-dt * 5))
-      a += (want - a) * (1 - Math.exp(-dt * (want ? 6 : 3)))
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      ctx.clearRect(0, 0, W, H)
-      const rad = RAD * (1 + speed * 0.45)
-      halftone(ctx, {
-        x0: Math.max(0, x - rad), y0: Math.max(0, y - rad), x1: Math.min(W, x + rad), y1: Math.min(H, y + rad),
-        angle: 15, pitch: 13, color, seed: 2, gain: a * (0.42 + speed * 0.38), jitter: 0.1,
-        tone: (px2, py2) => {
-          const d = Math.hypot(px2 - x, py2 - y) / rad
-          return d >= 1 ? 0 : Math.pow(1 - d, 1.6)
-        },
-      })
-      const settled = Math.abs(tx - x) < 0.3 && Math.abs(ty - y) < 0.3 && Math.abs(want - a) < 0.01 && speed < 0.01
-      raf = settled ? 0 : requestAnimationFrame(frame)
-    }
-    const kickScreen = () => {
-      if (raf) return
-      last = performance.now()
-      raf = requestAnimationFrame(frame)
-    }
-    sec.addEventListener('pointermove', (e) => {
-      const r = sec.getBoundingClientRect()
-      tx = e.clientX - r.left
-      ty = e.clientY - r.top
-      if (!want) {
-        if (a < 0.01) {
-          x = tx
-          y = ty
-        }
-        want = 1
-      }
-      kickScreen()
-    })
-    sec.addEventListener('pointerleave', () => {
-      want = 0
-      kickScreen()
-    })
-    fit()
-    addEventListener('resize', fit)
-    themeHooks.push(() => {
-      color = cssVar('--soft')
-      kickScreen()
-    })
+    h1.innerHTML = [...text].map((ch) => `<span class="ltr" aria-hidden="true">${esc(ch)}</span>`).join('')
   }
 
   // ---------- boot ----------
@@ -1122,7 +947,6 @@
   })
   hero = heroMark()
   letters()
-  heroScreen()
   trace()
   tools()
   const rows = queue()
