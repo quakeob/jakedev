@@ -604,6 +604,15 @@ dl.facts dd {
   border-radius: 3px;
   padding: 0 6px;
 }
+.frame video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--paper);
+}
+#video .frame {
+  max-width: 1100px;
+}
 .frame iframe {
   display: block;
   width: 100%;
