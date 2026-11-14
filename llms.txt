@@ -1,0 +1,50 @@
+# Jake Davis
+
+> Salt Lake City, Utah photographer, filmmaker and software developer. Outdoor and lifestyle photography and vertical UGC video for brands, plus web apps, UI/UX design, workflow automation and AI agents.
+
+I build software and make photographs and films. The work covers web development, UI and UX design, automation, photography and filmmaking, and I like making things that work well and feel considered.
+
+My photo and video work has grown to around 4 million views a month. The places get noticed, but what I'm really working on is how they're captured: composition, pacing, and the balance between simplicity and detail, without letting it feel overdone.
+
+With software, I work closely with the people who'll use it. I learn the problem, map how the tools should connect, design the interface, then build and improve it around real feedback. For clients I stay close to the day-to-day work, so the software fits the process and not the other way round. Most of it is workflow automation, AI agents and web apps, built around clear flows and practical business needs.
+
+Right now I'm building Forma Nova, a design-focused AI development tool, and Pholio, an expressive portfolio and link-in-bio for creators. Both bring my technical and creative work together.
+
+
+## Hire Jake for
+
+- Outdoor, camping and lifestyle product photography (Utah, the Mountain West and US travel). Stills, straight out of camera or graded to match your feed.
+- Vertical UGC video for brands. Vertical, 15 to 60 s. Edit plus raw clips. Filmed on real camping and road trips, not in a studio.
+- Web development, UI/UX design, workflow automation and AI agents for businesses.
+- Reach: about 4M monthly views of photo and video work (Nov 2026).
+- Contact: jake@bryt.works
+
+## Profiles
+
+- https://www.instagram.com/jjakedavis/
+- https://www.linkedin.com/in/jjakedavis/
+- https://github.com/quakeob
+
+## Pages
+
+- [About](https://jakedev.org/about/): bio, services, media kit and contact
+- [Work](https://jakedev.org/work/): every photo story and software project
+- [Building](https://jakedev.org/building/): products in progress
+
+## Photo stories
+
+- [Ben Lomond](https://jakedev.org/work/ben-lomond/): Willard Basin, Utah, September 2026. Shot on a Fujifilm X100V.
+- [Cathedral Group](https://jakedev.org/work/tetons/): Grand Teton National Park, Wyoming, October 2025. Shot on a Fujifilm X100V.
+- [The tunnels](https://jakedev.org/work/tunnels/): West Desert, Utah, January 2026. Shot on a Fujifilm X100V.
+- [Lot days](https://jakedev.org/work/lot-days/): Beaver Mountain and Snowbasin, Utah, January 2026. Shot on a Fujifilm X100V.
+- [First snow](https://jakedev.org/work/first-snow/): Wasatch Back, Utah, October 2025. Shot on a Fujifilm X100V.
+- [High country](https://jakedev.org/work/summer-high/): Utah and the North Cascades, July to August 2026. Shot on a Fujifilm X100V.
+- [Engadin](https://jakedev.org/work/engadin/): Upper Engadin, Switzerland, December 2025. Shot on a Fujifilm X100V.
+
+## Software
+
+- [HQ](https://jakedev.org/software/hq/): Site and founder portal for a private club in Provo.
+- [TodoLock](https://jakedev.org/software/todolock/): A to-do list that locks the apps you choose until you hit your daily quota.
+- [JAM](https://jakedev.org/software/jam/): An open-source agent development environment for hackathon teams: one shared context brain, one safe merge path for people and agents, one focus-first interface.
+- [Forma Nova](https://jakedev.org/building/#forma-nova): A generative web design engine and a collective learning database, in one evolving system. In progress · landing page live.
+- [Pholio](https://jakedev.org/building/#pholio): An expressive portfolio and link-in-bio for creators. Your links, your work and your world, on one page that feels like you. In progress · not public yet.
