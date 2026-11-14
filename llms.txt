@@ -30,6 +30,10 @@ Right now I'm building Forma Nova, a design-focused AI development tool, and Pho
 - [About](https://jakedev.org/about/): bio, services, media kit and contact
 - [Work](https://jakedev.org/work/): every photo story and software project
 - [Building](https://jakedev.org/building/): products in progress
+- [Forma Nova](https://jakedev.org/formanova/): a generative web design engine and collective learning database, with the live site embedded
+- [Pholio](https://jakedev.org/pholio/): an expressive portfolio and link-in-bio for creators (not public yet)
+- [TodoLock](https://jakedev.org/todolock/): iOS to-do list that locks chosen apps until the daily quota is done (App Store, v1.2)
+- [JAM](https://jakedev.org/jam/): agent development environment for hackathon teams, built in one day
 
 ## Photo stories
 
