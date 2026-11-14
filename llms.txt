@@ -41,9 +41,17 @@ Right now I'm building Forma Nova, a design-focused AI development tool, and Pho
 - [Cathedral Group](https://jakedev.org/work/tetons/): Grand Teton National Park, Wyoming, October 2025. Shot on a Fujifilm X100V.
 - [The tunnels](https://jakedev.org/work/tunnels/): West Desert, Utah, January 2026. Shot on a Fujifilm X100V.
 - [Lot days](https://jakedev.org/work/lot-days/): Beaver Mountain and Snowbasin, Utah, January 2026. Shot on a Fujifilm X100V.
-- [First snow](https://jakedev.org/work/first-snow/): Wasatch Back, Utah, October 2025. Shot on a Fujifilm X100V.
+- [First snow](https://jakedev.org/work/first-snow/): Wasatch Back, Utah, September to November 2025. Shot on a Fujifilm X100V.
 - [High country](https://jakedev.org/work/summer-high/): Utah and the North Cascades, July to August 2026. Shot on a Fujifilm X100V.
-- [Engadin](https://jakedev.org/work/engadin/): Upper Engadin, Switzerland, December 2025. Shot on a Fujifilm X100V.
+- [Engadin](https://jakedev.org/work/engadin/): Upper Engadin and Zermatt, Switzerland, December 2025 to January 2026. Shot on a Fujifilm X100V.
+- [Southeast Alaska](https://jakedev.org/work/southeast-alaska/): Ketchikan and Prince of Wales Island, Alaska, September 2025 and 2026. Shot on a Fujifilm X100V.
+- [Lapland](https://jakedev.org/work/lapland/): Rovaniemi, Finland, and the Torne River, Sweden, February 2026. Shot on a Fujifilm X100V.
+- [UK and Ireland](https://jakedev.org/work/uk-ireland/): London, the Scottish Highlands and County Clare, May 2025. Shot on a Fujifilm X100V.
+- [Yellowstone](https://jakedev.org/work/yellowstone/): The Madison River and the Upper Geyser Basin, Wyoming, August 2025. Shot on a Fujifilm X100V.
+- [Summer nights](https://jakedev.org/work/summer-nights/): Northern Utah, July to August 2025. Shot on a Fujifilm X100V.
+- [Paris in snow](https://jakedev.org/work/paris-snow/): Paris, France, January 2026. Shot on a Fujifilm X100V.
+- [El Nido](https://jakedev.org/work/el-nido/): Bacuit Bay, Palawan, Philippines, May 2026. Shot on a Fujifilm X100V.
+- [Black and white](https://jakedev.org/work/black-and-white/): UK and Ireland, Ecuador, 2024–2025. Shot on a Fujifilm X100V.
 
 ## Software
 
