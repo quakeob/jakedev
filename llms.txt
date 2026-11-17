@@ -58,5 +58,6 @@ Right now I'm building Forma Nova, a design-focused AI development tool, and Pho
 - [HQ](https://jakedev.org/software/hq/): Site and founder portal for a private club in Provo.
 - [TodoLock](https://jakedev.org/software/todolock/): A to-do list that locks the apps you choose until you hit your daily quota.
 - [JAM](https://jakedev.org/software/jam/): An open-source agent development environment for hackathon teams: one shared context brain, one safe merge path for people and agents, one focus-first interface.
+- [WuakLock](https://jakedev.org/software/wuaklock/): A local Windows companion for Deadlock: player and team stats, a movable overlay, and match history recorded on your own PC.
 - [Forma Nova](https://jakedev.org/building/#forma-nova): A generative web design engine and a collective learning database, in one evolving system. In progress · landing page live.
 - [Pholio](https://jakedev.org/building/#pholio): An expressive portfolio and link-in-bio for creators. Your links, your work and your world, on one page that feels like you. In progress · not public yet.
