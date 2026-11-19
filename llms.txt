@@ -15,7 +15,8 @@ Right now I'm building Forma Nova, a design-focused AI development tool, and Pho
 
 - Outdoor, camping and lifestyle product photography (Utah, the Mountain West and US travel). Stills, straight out of camera or graded to match your feed.
 - Vertical UGC video for brands. Vertical, 15 to 60 s. Edit plus raw clips. Filmed on real camping and road trips, not in a studio.
-- Web development, UI/UX design, workflow automation and AI agents for businesses.
+- Brand deals, sponsored posts, UGC packages and longer collaborations with outdoor, camping, overlanding, ski and travel brands: https://jakedev.org/brands/
+- Web design and development in Salt Lake City: custom websites, web apps and member portals, UI/UX design, creative direction, iOS apps, workflow automation and AI agents for businesses: https://jakedev.org/about/
 - Reach: about 4M monthly views of photo and video work (Nov 2026).
 - Contact: jake@bryt.works
 
@@ -28,6 +29,8 @@ Right now I'm building Forma Nova, a design-focused AI development tool, and Pho
 ## Pages
 
 - [About](https://jakedev.org/about/): bio, services, media kit and contact
+- [Brands](https://jakedev.org/brands/): brand deals, UGC and outdoor collaborations: reach, deliverables, settings, concepts, rigs and FAQ
+- Rates and the full media kit: on request, by email to jake@bryt.works
 - [Work](https://jakedev.org/work/): every photo story and software project
 - [Building](https://jakedev.org/building/): products in progress
 - [Forma Nova](https://jakedev.org/formanova/): a generative web design engine and collective learning database, with the live site embedded
