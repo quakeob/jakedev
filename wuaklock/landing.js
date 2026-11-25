@@ -22,7 +22,7 @@
     if (count && Number.isFinite(board.members)) count.textContent = `${board.members} ${board.members === 1 ? 'player' : 'players'} joined`;
     if (!list.length) {
       const li = empty('Nobody is ranked yet. ');
-      const a = text('a', 'Be the first.'); a.href = '#start'; li.append(a);
+      const a = text('a', 'Be the first.'); a.href = '#install'; li.append(a);
       return;
     }
     rows.replaceChildren(...list.map(r => {
