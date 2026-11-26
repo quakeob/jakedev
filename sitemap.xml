@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url><loc>https://jakedev.org/</loc><lastmod>2026-11-25</lastmod><priority>1.0</priority>
+  <url><loc>https://jakedev.org/</loc><lastmod>2026-11-26</lastmod><priority>1.0</priority>
   </url>
-  <url><loc>https://jakedev.org/about/</loc><lastmod>2026-11-25</lastmod><priority>0.9</priority>
+  <url><loc>https://jakedev.org/about/</loc><lastmod>2026-11-26</lastmod><priority>0.9</priority>
   </url>
-  <url><loc>https://jakedev.org/brands/</loc><lastmod>2026-11-25</lastmod><priority>0.9</priority>
+  <url><loc>https://jakedev.org/brands/</loc><lastmod>2026-11-26</lastmod><priority>0.9</priority>
     <image:image><image:loc>https://jakedev.org/img/0711-1920.webp</image:loc><image:title>Outdoor brand content by Jake Davis</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7516-1440.webp</image:loc><image:title>Outdoor brand content by Jake Davis</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8246-1440.webp</image:loc><image:title>Outdoor brand content by Jake Davis</image:title></image:image>
@@ -16,19 +16,19 @@
     <image:image><image:loc>https://jakedev.org/img/7328-1440.webp</image:loc><image:title>Outdoor brand content by Jake Davis</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/0440-1920.webp</image:loc><image:title>Outdoor brand content by Jake Davis</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
   </url>
-  <url><loc>https://jakedev.org/building/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/building/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
   </url>
-  <url><loc>https://jakedev.org/formanova/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/formanova/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
   </url>
-  <url><loc>https://jakedev.org/pholio/</loc><lastmod>2026-11-25</lastmod><priority>0.6</priority>
+  <url><loc>https://jakedev.org/pholio/</loc><lastmod>2026-11-26</lastmod><priority>0.6</priority>
   </url>
-  <url><loc>https://jakedev.org/todolock/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/todolock/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
   </url>
-  <url><loc>https://jakedev.org/jam/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/jam/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
   </url>
-  <url><loc>https://jakedev.org/work/ben-lomond/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/ben-lomond/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/1387-1920.webp</image:loc><image:title>Ben Lomond, Willard Basin, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/1348-1920.webp</image:loc><image:title>Ben Lomond, Willard Basin, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/1350-1920.webp</image:loc><image:title>Ben Lomond, Willard Basin, Utah</image:title></image:image>
@@ -50,7 +50,7 @@
     <image:image><image:loc>https://jakedev.org/img/1426-1920.webp</image:loc><image:title>Ben Lomond, Willard Basin, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/1435-1920.webp</image:loc><image:title>Ben Lomond, Willard Basin, Utah</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/tetons/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/tetons/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/7328-1440.webp</image:loc><image:title>Cathedral Group, Grand Teton National Park, Wyoming</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7330-1440.webp</image:loc><image:title>Cathedral Group, Grand Teton National Park, Wyoming</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7336-1440.webp</image:loc><image:title>Cathedral Group, Grand Teton National Park, Wyoming</image:title></image:image>
@@ -67,7 +67,7 @@
     <image:image><image:loc>https://jakedev.org/img/7424-1440.webp</image:loc><image:title>Cathedral Group, Grand Teton National Park, Wyoming</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7451-1440.webp</image:loc><image:title>Cathedral Group, Grand Teton National Park, Wyoming</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/tunnels/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/tunnels/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/8650-1440.webp</image:loc><image:title>The tunnels, West Desert, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8520-1440.webp</image:loc><image:title>The tunnels, West Desert, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8525-768.webp</image:loc><image:title>The tunnels, West Desert, Utah</image:title></image:image>
@@ -89,7 +89,7 @@
     <image:image><image:loc>https://jakedev.org/img/8801-1440.webp</image:loc><image:title>The tunnels, West Desert, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8818-1440.webp</image:loc><image:title>The tunnels, West Desert, Utah</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/lot-days/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/lot-days/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/8246-1440.webp</image:loc><image:title>Lot days, Beaver Mountain and Snowbasin, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8110-1440.webp</image:loc><image:title>Lot days, Beaver Mountain and Snowbasin, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8141-768.webp</image:loc><image:title>Lot days, Beaver Mountain and Snowbasin, Utah</image:title></image:image>
@@ -106,7 +106,7 @@
     <image:image><image:loc>https://jakedev.org/img/8286-1440.webp</image:loc><image:title>Lot days, Beaver Mountain and Snowbasin, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8293-1440.webp</image:loc><image:title>Lot days, Beaver Mountain and Snowbasin, Utah</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/first-snow/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/first-snow/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/7295-1440.webp</image:loc><image:title>First snow, Wasatch Back, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7055-1440.webp</image:loc><image:title>First snow, Wasatch Back, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7123-1440.webp</image:loc><image:title>First snow, Wasatch Back, Utah</image:title></image:image>
@@ -127,7 +127,7 @@
     <image:image><image:loc>https://jakedev.org/img/7583-768.webp</image:loc><image:title>First snow, Wasatch Back, Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7573-1440.webp</image:loc><image:title>First snow, Wasatch Back, Utah</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/summer-high/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/summer-high/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/0711-1920.webp</image:loc><image:title>High country, Utah and the North Cascades</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/0694-1920.webp</image:loc><image:title>High country, Utah and the North Cascades</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/0725-1920.webp</image:loc><image:title>High country, Utah and the North Cascades</image:title></image:image>
@@ -146,7 +146,7 @@
     <image:image><image:loc>https://jakedev.org/img/0854-1920.webp</image:loc><image:title>High country, Utah and the North Cascades</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/0762-1920.webp</image:loc><image:title>High country, Utah and the North Cascades</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/engadin/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/engadin/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/7780-1920.webp</image:loc><image:title>Engadin, Upper Engadin and Zermatt, Switzerland</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7639-768.webp</image:loc><image:title>Engadin, Upper Engadin and Zermatt, Switzerland</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7673-1440.webp</image:loc><image:title>Engadin, Upper Engadin and Zermatt, Switzerland</image:title></image:image>
@@ -168,7 +168,7 @@
     <image:image><image:loc>https://jakedev.org/img/7843-1920.webp</image:loc><image:title>Engadin, Upper Engadin and Zermatt, Switzerland</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7826-1920.webp</image:loc><image:title>Engadin, Upper Engadin and Zermatt, Switzerland</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/southeast-alaska/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/southeast-alaska/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/6442-768.webp</image:loc><image:title>Southeast Alaska, Ketchikan and Prince of Wales Island, Alaska</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/6377-1440.webp</image:loc><image:title>Southeast Alaska, Ketchikan and Prince of Wales Island, Alaska</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/6354-768.webp</image:loc><image:title>Southeast Alaska, Ketchikan and Prince of Wales Island, Alaska</image:title></image:image>
@@ -186,7 +186,7 @@
     <image:image><image:loc>https://jakedev.org/img/1064-1920.webp</image:loc><image:title>Southeast Alaska, Ketchikan and Prince of Wales Island, Alaska</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/1078-1920.webp</image:loc><image:title>Southeast Alaska, Ketchikan and Prince of Wales Island, Alaska</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/lapland/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/lapland/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/9077-768.webp</image:loc><image:title>Lapland, Rovaniemi, Finland, and the Torne River, Sweden</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8869-1440.webp</image:loc><image:title>Lapland, Rovaniemi, Finland, and the Torne River, Sweden</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8886-1440.webp</image:loc><image:title>Lapland, Rovaniemi, Finland, and the Torne River, Sweden</image:title></image:image>
@@ -202,7 +202,7 @@
     <image:image><image:loc>https://jakedev.org/img/9089-1440.webp</image:loc><image:title>Lapland, Rovaniemi, Finland, and the Torne River, Sweden</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/9107-1440.webp</image:loc><image:title>Lapland, Rovaniemi, Finland, and the Torne River, Sweden</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/uk-ireland/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/uk-ireland/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/4333-1440.webp</image:loc><image:title>UK and Ireland, London, the Scottish Highlands and County Clare</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/3205-1440.webp</image:loc><image:title>UK and Ireland, London, the Scottish Highlands and County Clare</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/3239-1440.webp</image:loc><image:title>UK and Ireland, London, the Scottish Highlands and County Clare</image:title></image:image>
@@ -219,7 +219,7 @@
     <image:image><image:loc>https://jakedev.org/img/4276-1440.webp</image:loc><image:title>UK and Ireland, London, the Scottish Highlands and County Clare</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/4374-1440.webp</image:loc><image:title>UK and Ireland, London, the Scottish Highlands and County Clare</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/yellowstone/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/yellowstone/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/5905-768.webp</image:loc><image:title>Yellowstone, The Madison River and the Upper Geyser Basin, Wyoming</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/5732-1440.webp</image:loc><image:title>Yellowstone, The Madison River and the Upper Geyser Basin, Wyoming</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/5735-1440.webp</image:loc><image:title>Yellowstone, The Madison River and the Upper Geyser Basin, Wyoming</image:title></image:image>
@@ -232,7 +232,7 @@
     <image:image><image:loc>https://jakedev.org/img/5952-1440.webp</image:loc><image:title>Yellowstone, The Madison River and the Upper Geyser Basin, Wyoming</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/6005-768.webp</image:loc><image:title>Yellowstone, The Madison River and the Upper Geyser Basin, Wyoming</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/summer-nights/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/summer-nights/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/5179-1440.webp</image:loc><image:title>Summer nights, Northern Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/5118-1440.webp</image:loc><image:title>Summer nights, Northern Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/5185-768.webp</image:loc><image:title>Summer nights, Northern Utah</image:title></image:image>
@@ -249,7 +249,7 @@
     <image:image><image:loc>https://jakedev.org/img/5657-1440.webp</image:loc><image:title>Summer nights, Northern Utah</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/6028-1440.webp</image:loc><image:title>Summer nights, Northern Utah</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/paris-snow/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/paris-snow/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/8107-1440.webp</image:loc><image:title>Paris in snow, Paris, France</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7960-1440.webp</image:loc><image:title>Paris in snow, Paris, France</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/7970-1440.webp</image:loc><image:title>Paris in snow, Paris, France</image:title></image:image>
@@ -262,7 +262,7 @@
     <image:image><image:loc>https://jakedev.org/img/8071-1440.webp</image:loc><image:title>Paris in snow, Paris, France</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/8100-1440.webp</image:loc><image:title>Paris in snow, Paris, France</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/el-nido/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/el-nido/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/9774-1440.webp</image:loc><image:title>El Nido, Bacuit Bay, Palawan, Philippines</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/9663-1440.webp</image:loc><image:title>El Nido, Bacuit Bay, Palawan, Philippines</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/9672-1440.webp</image:loc><image:title>El Nido, Bacuit Bay, Palawan, Philippines</image:title></image:image>
@@ -275,7 +275,7 @@
     <image:image><image:loc>https://jakedev.org/img/9763-768.webp</image:loc><image:title>El Nido, Bacuit Bay, Palawan, Philippines</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/9767-1440.webp</image:loc><image:title>El Nido, Bacuit Bay, Palawan, Philippines</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/work/black-and-white/</loc><lastmod>2026-11-25</lastmod><priority>0.8</priority>
+  <url><loc>https://jakedev.org/work/black-and-white/</loc><lastmod>2026-11-26</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://jakedev.org/img/b4278-1776.webp</image:loc><image:title>Black and white, UK and Ireland, Ecuador</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/b3233-1776.webp</image:loc><image:title>Black and white, UK and Ireland, Ecuador</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/b3289-1776.webp</image:loc><image:title>Black and white, UK and Ireland, Ecuador</image:title></image:image>
@@ -297,24 +297,24 @@
     <image:image><image:loc>https://jakedev.org/img/c5628-1920.webp</image:loc><image:title>Black and white, UK and Ireland, Ecuador</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/img/c5632-1920.webp</image:loc><image:title>Black and white, UK and Ireland, Ecuador</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/software/hq/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/software/hq/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
     <image:image><image:loc>https://jakedev.org/software/hq-membership-desktop-1920.webp</image:loc><image:title>HQ</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/software/todolock/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/software/todolock/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
     <image:image><image:loc>https://jakedev.org/software/tl-store-complete-1320.webp</image:loc><image:title>TodoLock</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/tl-store-focus-1320.webp</image:loc><image:title>TodoLock</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/tl-store-night-1320.webp</image:loc><image:title>TodoLock</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/tl-store-stats-1320.webp</image:loc><image:title>TodoLock</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/tl-store-calendar-1320.webp</image:loc><image:title>TodoLock</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/software/jam/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/software/jam/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
     <image:image><image:loc>https://jakedev.org/software/jam-ide-1440.webp</image:loc><image:title>JAM</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/jam-focus-1440.webp</image:loc><image:title>JAM</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/jam-capture-390.webp</image:loc><image:title>JAM</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/jam-phone-pair-780.webp</image:loc><image:title>JAM</image:title></image:image>
     <image:image><image:loc>https://jakedev.org/software/jam-agent-icons-800.webp</image:loc><image:title>JAM</image:title></image:image>
   </url>
-  <url><loc>https://jakedev.org/software/wuaklock/</loc><lastmod>2026-11-25</lastmod><priority>0.7</priority>
+  <url><loc>https://jakedev.org/software/wuaklock/</loc><lastmod>2026-11-26</lastmod><priority>0.7</priority>
     <image:image><image:loc>https://jakedev.org/software/wl-overlay-1920.webp</image:loc><image:title>WuakLock</image:title></image:image>
   </url>
 </urlset>
